@@ -23,12 +23,14 @@ class GoreNest {
 
 	/**
 	 * the global DB object
+	 *
 	 * @var object
 	 */
 	private $_DB;
 
 	/**
 	 * the current loaded user
+	 *
 	 * @var object
 	 */
 	private $_User;
@@ -36,12 +38,14 @@ class GoreNest {
 	/**
 	 * the already loaded menu information
 	 * to avoid multiple calls to the DB
+	 *
 	 * @var array
 	 */
 	private $_menuData = array();
 
 	/**
 	 * GoreNest constructor.
+	 *
 	 * @param $db
 	 * @param $user
 	 */
@@ -87,6 +91,7 @@ class GoreNest {
 
 	/**
 	 * Allowed page requests based on the menu entries and user
+	 *
 	 * @return array
 	 */
 	public function allowedPageRequests() {
