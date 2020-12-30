@@ -1,15 +1,14 @@
-User management: Adding secondary groups
-User management: Rights for a user and group. Used in user and group selections.
-Field management: Web interface
-Collection fields: final remove from entry table
-Management which fields should be displayed in dashboard
-Use try/catch for mysql stuff
-Better error handling and display while adding / update and delete
-better debug. When debug true, write into log file. -> see if(DEBUG)
-Mass edit of entries
-delete of a collection
-jdoc formatierung
-sort by filter for collection display
-UI
-- responsive and breakpoints
-Advanced search. More options and searchable fields
+* User management: Adding secondary groups
+* User management: Rights for a user and group. Used in user and group selections.
+* Field management: Web interface
+* Collection fields: final remove from entry table
+* Management which fields should be displayed in dashboard
+* Use try/catch for mysql stuff
+* Better error handling and display while adding / update and delete
+* better debug. When debug true, write into log file. -> see if(DEBUG)
+* Mass edit of entries
+* delete of a collection
+* jdoc formatierung
+* sort by filter for collection display
+* responsive and breakpoints
+* Advanced search. More options and searchable fields

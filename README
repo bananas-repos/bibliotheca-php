@@ -13,32 +13,5 @@ https://www.bananas-playground.net/projekt/bibliotheca/
 ## Technical information
 This is build and tested on a linux based OS. Windows support not yet.
 
-### API
-api.php?QUERY_PARAMETERS
-
-collection=NUMBER
-    ID of a collection
-
-p=list
-    Get the latest 10 for given collection
-
-p=add&collection=NUMBER&authKey=API_AUTH_TOKEN
-    POST call to add a new entry to given collection.
-    See p=addInfo for the details which info is needed in the add call
-
-p=addInfo&collection=NUMBER
-    Describes how the data in the POST add call should be formated.
-    The JSON info in the data field, tells which fields are available and in which format the value
-    is accepted.
-    Expected is a curl call with an array as payload
-
-
-The result is json
-{
-    "message": "Message as string",
-    "status": INTEGER based on HTTP_STATUS CODE
-    "data": {}
-}
-
 ## third party
 https://github.com/FabianBeiner/PHP-IMDB-Grabber with some modifications

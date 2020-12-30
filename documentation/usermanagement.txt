@@ -1,4 +1,4 @@
-Curently there is only a user management. Groups or default users can not be changed.
+Currently there is only a user management. Groups or default users can not be changed.
 
 Default users are:
 
