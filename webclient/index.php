@@ -62,25 +62,25 @@ $Gorenest = new GoreNest($DB,$Doomguy);
 
 $_requestMode = false;
 if(isset($_GET['p']) && !empty($_GET['p'])) {
-    $_requestMode = trim($_GET['p']);
-    $_requestMode = Summoner::validate($_requestMode,'nospace') ? $_requestMode : "dashboard";
+	$_requestMode = trim($_GET['p']);
+	$_requestMode = Summoner::validate($_requestMode,'nospace') ? $_requestMode : "dashboard";
 
-    $_validPages = $Gorenest->allowedPageRequests();
-    $_validPages["dashboard"] = "dashboard";
-    if(!isset($_validPages[$_requestMode])) $_requestMode = "dashboard";
+	$_validPages = $Gorenest->allowedPageRequests();
+	$_validPages["dashboard"] = "dashboard";
+	if(!isset($_validPages[$_requestMode])) $_requestMode = "dashboard";
 
-    $ViewScript = Summoner::themefile($_requestMode.'/'.$_requestMode.'.php', UI_THEME);
-    $View = Summoner::themefile($_requestMode.'/'.$_requestMode.'.html', UI_THEME);
+	$ViewScript = Summoner::themefile($_requestMode.'/'.$_requestMode.'.php', UI_THEME);
+	$View = Summoner::themefile($_requestMode.'/'.$_requestMode.'.html', UI_THEME);
 }
 
 # now inlcude the script
 # this sets information into $Data and can overwrite $View
 if(!empty($ViewScript)) {
-    require_once $ViewScript;
+	require_once $ViewScript;
 }
 
 if(!empty($TemplateData['refresh'])) {
-    header("Location: ".$TemplateData['refresh']);
+	header("Location: ".$TemplateData['refresh']);
 }
 
 # header information

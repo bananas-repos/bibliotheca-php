@@ -21,26 +21,26 @@
  */
 class Summoner {
 
-    /**
-     * Return path to given theme file with fallback to default theme
-     *
-     * @param string $file relative path from THEME/
-     * @param string $theme Theme name
-     * @param string $defaultTheme Default theme name can be overwritten
-     * @return boolean|string False of nothing is found
-     */
-    static function themefile($file, $theme, $defaultTheme='default') {
-        $ret = false;
+	/**
+	 * Return path to given theme file with fallback to default theme
+	 *
+	 * @param string $file relative path from THEME/
+	 * @param string $theme Theme name
+	 * @param string $defaultTheme Default theme name can be overwritten
+	 * @return boolean|string False of nothing is found
+	 */
+	static function themefile($file, $theme, $defaultTheme='default') {
+		$ret = false;
 
-        if(file_exists('view/'.$theme.'/'.$file)) {
-            $ret = 'view/'.$theme.'/'.$file;
-        }
-        elseif (file_exists('view/'.$defaultTheme.'/'.$file)) {
-            $ret = 'view/'.$defaultTheme.'/'.$file;
-        }
+		if(file_exists('view/'.$theme.'/'.$file)) {
+			$ret = 'view/'.$theme.'/'.$file;
+		}
+		elseif (file_exists('view/'.$defaultTheme.'/'.$file)) {
+			$ret = 'view/'.$defaultTheme.'/'.$file;
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
 	/**
 	 * validate the given string with the given type. Optional check the string
@@ -69,12 +69,12 @@ class Summoner {
 
 		switch ($mode) {
 			case 'mail':
-			    if(filter_var($input,FILTER_VALIDATE_EMAIL) === $input) {
-			        return true;
-			    }
-                else {
-                    return false;
-			    }
+				if(filter_var($input,FILTER_VALIDATE_EMAIL) === $input) {
+					return true;
+				}
+				else {
+					return false;
+				}
 			break;
 
 			case 'rights':
@@ -152,14 +152,14 @@ class Summoner {
 	static function is_utf8 ( $string ) {
 	   // From http://w3.org/International/questions/qa-forms-utf-8.html
 	   return preg_match('%^(?:
-	         [\x09\x0A\x0D\x20-\x7E]            # ASCII
-	       | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-	       |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
-	       | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-	       |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
-	       |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
-	       | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-	       |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
+			 [\x09\x0A\x0D\x20-\x7E]            # ASCII
+		   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
+		   |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
+		   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
+		   |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
+		   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
+		   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
+		   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
 	   )*$%xs', $string);
 	}
 
@@ -255,39 +255,39 @@ class Summoner {
 		return $ret;
 	}
 
-    /**
-     * Creates from given rights string the rights array
-     * @param $rightsString
-     * @return array
-     */
+	/**
+	 * Creates from given rights string the rights array
+	 * @param $rightsString
+	 * @return array
+	 */
 	static function prepareRightsArray($rightsString) {
-	    $ret = array();
+		$ret = array();
 
-	    if(self::isRightsString($rightsString) === true) {
-            $ret['user']['read'] = '-';
-            $ret['user']['write'] = '-';
-            $ret['user']['delete'] = '-';
-            if($rightsString[0] === 'r') $ret['user']['read'] = 'r';
-            if($rightsString[1] === 'w') $ret['user']['write'] = 'w';
-            if($rightsString[2] === 'x') $ret['user']['delete'] = 'x';
+		if(self::isRightsString($rightsString) === true) {
+			$ret['user']['read'] = '-';
+			$ret['user']['write'] = '-';
+			$ret['user']['delete'] = '-';
+			if($rightsString[0] === 'r') $ret['user']['read'] = 'r';
+			if($rightsString[1] === 'w') $ret['user']['write'] = 'w';
+			if($rightsString[2] === 'x') $ret['user']['delete'] = 'x';
 
-            $ret['group']['read'] = '-';
-            $ret['group']['write'] = '-';
-            $ret['group']['delete'] = '-';
-            if($rightsString[3] === 'r') $ret['group']['read'] = 'r';
-            if($rightsString[4] === 'w') $ret['group']['write'] = 'w';
-            if($rightsString[5] === 'x') $ret['group']['delete'] = 'x';
+			$ret['group']['read'] = '-';
+			$ret['group']['write'] = '-';
+			$ret['group']['delete'] = '-';
+			if($rightsString[3] === 'r') $ret['group']['read'] = 'r';
+			if($rightsString[4] === 'w') $ret['group']['write'] = 'w';
+			if($rightsString[5] === 'x') $ret['group']['delete'] = 'x';
 
-            $ret['other']['read'] = '-';
-            $ret['other']['write'] = '-';
-            $ret['other']['delete'] = '-';
-            if($rightsString[6] === 'r') $ret['other']['read'] = 'r';
-            if($rightsString[7] === 'w') $ret['other']['write'] = 'w';
-            if($rightsString[8] === 'x') $ret['other']['delete'] = 'x';
-        }
+			$ret['other']['read'] = '-';
+			$ret['other']['write'] = '-';
+			$ret['other']['delete'] = '-';
+			if($rightsString[6] === 'r') $ret['other']['read'] = 'r';
+			if($rightsString[7] === 'w') $ret['other']['write'] = 'w';
+			if($rightsString[8] === 'x') $ret['other']['delete'] = 'x';
+		}
 
-	    return $ret;
-    }
+		return $ret;
+	}
 
 	/**
 	 * get the mime type for given file
@@ -302,12 +302,12 @@ class Summoner {
 			$mime = mime_content_type($file);
 		}
 		elseif(function_exists('finfo_open') === true) {
-            # provide empty magic file, system default file will be used
-            $finfo = finfo_open(FILEINFO_MIME_TYPE,null);
-            if($finfo) {
-                $mime = finfo_file($finfo, $file);
-                finfo_close($finfo);
-            }
+			# provide empty magic file, system default file will be used
+			$finfo = finfo_open(FILEINFO_MIME_TYPE,null);
+			if($finfo) {
+				$mime = finfo_file($finfo, $file);
+				finfo_close($finfo);
+			}
 
 			# the mime info returns sometimes "application/x-gzip; charset=binary"
 			# but wee need the part before the ;
@@ -356,17 +356,17 @@ class Summoner {
 			if($file[0] ==".") continue;
 			if(!empty($ignore)) {
 				foreach ($ignore as $ig)  {
-	        		if(strstr($file,$ig)) continue 2;
-	        	}
-	        }
+					if(strstr($file,$ig)) continue 2;
+				}
+			}
 
-	        if(is_file($directory."/".$file)) {
-	            array_push($files, $directory."/".$file);
-	        }
-	        elseif($recursive === true) {
-	        	array_push($files, $directory."/".$file);
-	            $files = array_merge($files, self::readDir($directory."/".$file,$ignore, $recursive));
-	        }
+			if(is_file($directory."/".$file)) {
+				array_push($files, $directory."/".$file);
+			}
+			elseif($recursive === true) {
+				array_push($files, $directory."/".$file);
+				$files = array_merge($files, self::readDir($directory."/".$file,$ignore, $recursive));
+			}
 			elseif(is_dir($directory."/".$file)) {
 				array_push($files, $directory."/".$file);
 			}
@@ -456,12 +456,12 @@ class Summoner {
 		}
 	}
 
-    /**
-     * execute a curl call to the fiven $url
-     * @param string $url The request url
-     * @param int $port
-     * @return bool|string
-     */
+	/**
+	 * execute a curl call to the fiven $url
+	 * @param string $url The request url
+	 * @param int $port
+	 * @return bool|string
+	 */
 	static function curlCall($url,$port=80) {
 		$ret = false;
 
@@ -618,12 +618,12 @@ class Summoner {
 	 * @return bool|mixed
 	 */
 	static function ifset($array,$key) {
-	    return isset($array[$key]) ? $array[$key] : false;
+		return isset($array[$key]) ? $array[$key] : false;
 	}
 
 	/**
 	 * based on self::ifset check also the value
-     *
+	 *
 	 * @param $array
 	 * @param $key
 	 * @param $value
@@ -636,50 +636,50 @@ class Summoner {
 		return false;
 	}
 
-    /**
-     * Replace in $heystack the $needle with $replace only once
-     *
-     * @param $haystack string
-     * @param $needle string
-     * @param $replace string
-     * @return string
-     */
+	/**
+	 * Replace in $heystack the $needle with $replace only once
+	 *
+	 * @param $haystack string
+	 * @param $needle string
+	 * @param $replace string
+	 * @return string
+	 */
 	static function replaceOnce($haystack, $needle, $replace) {
-        $newstring = $haystack;
-        $pos = strpos($haystack, $needle);
-        if ($pos !== false) {
-            $newstring = substr_replace($haystack, $replace, $pos, strlen($needle));
-        }
-        return $newstring;
-    }
+		$newstring = $haystack;
+		$pos = strpos($haystack, $needle);
+		if ($pos !== false) {
+			$newstring = substr_replace($haystack, $replace, $pos, strlen($needle));
+		}
+		return $newstring;
+	}
 
-    /**
-     * http_build_query with modify array
-     * modify will add: key AND value not empty
-     * modify will remove: only key with no value
-     *
-     * @param $array
-     * @param array $modify
-     * @return string
-     */
-    static function createFromParameterLinkQuery($array,$modify=array()) {
-        $ret = '';
+	/**
+	 * http_build_query with modify array
+	 * modify will add: key AND value not empty
+	 * modify will remove: only key with no value
+	 *
+	 * @param $array
+	 * @param array $modify
+	 * @return string
+	 */
+	static function createFromParameterLinkQuery($array,$modify=array()) {
+		$ret = '';
 
-        if(!empty($modify)) {
-            foreach($modify as $k=>$v) {
-                if(empty($v)) {
-                    unset($array[$k]);
-                }
-                else {
-                    $array[$k] = $v;
-                }
-            }
-        }
+		if(!empty($modify)) {
+			foreach($modify as $k=>$v) {
+				if(empty($v)) {
+					unset($array[$k]);
+				}
+				else {
+					$array[$k] = $v;
+				}
+			}
+		}
 
-        if(!empty($array)) {
-            $ret = http_build_query($array);
-        }
+		if(!empty($array)) {
+			$ret = http_build_query($array);
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 }

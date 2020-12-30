@@ -1,49 +1,49 @@
 <?php
 $existingFieldValue = array();
 if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
-    $existingFieldValue = $TemplateData['editData'][$field['identifier']];
+	$existingFieldValue = $TemplateData['editData'][$field['identifier']];
 }
 ?>
 <div class="uk-margin">
-    <label class="uk-form-label" for="<?php echo $field['identifier']; ?>-input"><?php echo $field['displayname']; ?></label>
-    <div class="uk-form-controls">
-        <div class="input-multiple-listbox" id="<?php echo $field['identifier']; ?>-listbox">
-        <?php
-        if(!empty($existingFieldValue)) {
-            foreach($existingFieldValue as $ev) { ?>
+	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>-input"><?php echo $field['displayname']; ?></label>
+	<div class="uk-form-controls">
+		<div class="input-multiple-listbox" id="<?php echo $field['identifier']; ?>-listbox">
+		<?php
+		if(!empty($existingFieldValue)) {
+			foreach($existingFieldValue as $ev) { ?>
 
-            <div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-<?php echo $ev; ?>">
-                <a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="click to remove"><span class="uk-label"><?php echo $ev; ?></span></a>
-            </div>
+			<div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-<?php echo $ev; ?>">
+				<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="click to remove"><span class="uk-label"><?php echo $ev; ?></span></a>
+			</div>
 
-        <?php
-            }
-        }
-        ?>
-        </div>
-        <input class="uk-input" id="<?php echo $field['identifier']; ?>-input" type="text" autocomplete="off"
-            name="<?php echo $field['identifier']; ?>-input"
-            list="<?php echo $field['identifier']; ?>-datalist"
-            onkeypress="addTag(event,'<?php echo $field['identifier']; ?>')"
-            placeholder="Write and press enter."
-        >
-    </div>
+		<?php
+			}
+		}
+		?>
+		</div>
+		<input class="uk-input" id="<?php echo $field['identifier']; ?>-input" type="text" autocomplete="off"
+			name="<?php echo $field['identifier']; ?>-input"
+			list="<?php echo $field['identifier']; ?>-datalist"
+			onkeypress="addTag(event,'<?php echo $field['identifier']; ?>')"
+			placeholder="Write and press enter."
+		>
+	</div>
 </div>
 
 <datalist id="<?php echo $field['identifier']; ?>-datalist">
-    <?php
-        if(isset($field['suggestion'])) {
-            foreach($field['suggestion'] as $t) {
-    ?>
-    <option value="<?php echo $t; ?>"><?php echo $t; ?></option>
-    <?php
-            }
-        }
-    ?>
+	<?php
+		if(isset($field['suggestion'])) {
+			foreach($field['suggestion'] as $t) {
+	?>
+	<option value="<?php echo $t; ?>"><?php echo $t; ?></option>
+	<?php
+			}
+		}
+	?>
 </datalist>
 
 <input type="hidden" name="fdata[<?php echo $field['identifier']; ?>]" id="<?php echo $field['identifier']; ?>-save" value="<?php echo implode(',',$existingFieldValue); ?>" />
 
 <div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-template" style="display: none;">
-    <a onclick="removeTag('','<?php echo $field['identifier']; ?>')" title="click to remove"><span class="uk-label"></span></a>
+	<a onclick="removeTag('','<?php echo $field['identifier']; ?>')" title="click to remove"><span class="uk-label"></span></a>
 </div>

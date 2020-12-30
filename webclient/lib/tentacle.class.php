@@ -21,68 +21,68 @@
  * Tools management
  */
 class Tentacle {
-    /**
-     * the global DB object
-     *
-     * @var object
-     */
-    private $_DB;
+	/**
+	 * the global DB object
+	 *
+	 * @var object
+	 */
+	private $_DB;
 
-    /**
-     * The user object to query with
-     *
-     * @var object
-     */
-    private $_User;
+	/**
+	 * The user object to query with
+	 *
+	 * @var object
+	 */
+	private $_User;
 
-    /**
-     * Tentacle constructor.
-     *
-     * @param $databaseConnectionObject
-     * @param $userObj
-     */
-    public function __construct($databaseConnectionObject, $userObj) {
-        $this->_DB = $databaseConnectionObject;
-        $this->_User = $userObj;
-    }
+	/**
+	 * Tentacle constructor.
+	 *
+	 * @param $databaseConnectionObject
+	 * @param $userObj
+	 */
+	public function __construct($databaseConnectionObject, $userObj) {
+		$this->_DB = $databaseConnectionObject;
+		$this->_User = $userObj;
+	}
 
-    /**
-     * Validate if given action is a valid tool and if the user has access
-     *
-     * @param $identifier
-     * @return bool
-     */
-    public function validate($identifier) {
-        $ret = false;
+	/**
+	 * Validate if given action is a valid tool and if the user has access
+	 *
+	 * @param $identifier
+	 * @return bool
+	 */
+	public function validate($identifier) {
+		$ret = false;
 
-        $queryStr = "SELECT `name`,`description`,`action`
-                    FROM `".DB_PREFIX."_tool`  
-                    WHERE ".$this->_User->getSQLRightsString("read")."
-                    AND `action` = '".$this->_DB->real_escape_string($identifier)."'";
-        try {
-            $query = $this->_DB->query($queryStr);
-            if ($query !== false && $query->num_rows > 0) {
-                $ret = $query->fetch_assoc();
-            }
+		$queryStr = "SELECT `name`,`description`,`action`
+					FROM `".DB_PREFIX."_tool`  
+					WHERE ".$this->_User->getSQLRightsString("read")."
+					AND `action` = '".$this->_DB->real_escape_string($identifier)."'";
+		try {
+			$query = $this->_DB->query($queryStr);
+			if ($query !== false && $query->num_rows > 0) {
+				$ret = $query->fetch_assoc();
+			}
 
-        } catch (Exception $e) {
-            if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
-            if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
-        }
+		} catch (Exception $e) {
+			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Default creation info based on current user
-     *
-     * @return array
-     */
-    public function getDefaultCreationInfo() {
-        return array(
-            'id' => $this->_User->param('id'),
-            'group' => $this->_User->param('baseGroupId'),
-            'rights' => 'rwxrwxr--'
-        );
-    }
+	/**
+	 * Default creation info based on current user
+	 *
+	 * @return array
+	 */
+	public function getDefaultCreationInfo() {
+		return array(
+			'id' => $this->_User->param('id'),
+			'group' => $this->_User->param('baseGroupId'),
+			'rights' => 'rwxrwxr--'
+		);
+	}
 }

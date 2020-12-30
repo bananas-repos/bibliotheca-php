@@ -28,27 +28,27 @@
 // $TemplateData['pagination']
 
 if(!empty($TemplateData['entries']['amount'])) {
-    $TemplateData['pagination']['pages'] = ceil($TemplateData['entries']['amount'] / RESULTS_PER_PAGE);
-    $TemplateData['pagination']['curPage'] = $_curPage;
+	$TemplateData['pagination']['pages'] = ceil($TemplateData['entries']['amount'] / RESULTS_PER_PAGE);
+	$TemplateData['pagination']['curPage'] = $_curPage;
 
-    $TemplateData['pagination']['currentGetParameters']['page'] = $_curPage;
+	$TemplateData['pagination']['currentGetParameters']['page'] = $_curPage;
 }
 
 if($TemplateData['pagination']['pages'] > 11) {
-    # first pages
-    $TemplateData['pagination']['visibleRange'] = range(1,3);
-    # last pages
-    foreach(range($TemplateData['pagination']['pages']-2, $TemplateData['pagination']['pages']) as $e) {
-        array_push($TemplateData['pagination']['visibleRange'], $e);
-    }
-    # pages before and after current page
-    $cRange = range($TemplateData['pagination']['curPage']-1, $TemplateData['pagination']['curPage']+1);
-    foreach($cRange as $e) {
-        array_push($TemplateData['pagination']['visibleRange'], $e);
-    }
-    $TemplateData['pagination']['currentRangeStart'] = array_shift($cRange);
-    $TemplateData['pagination']['currentRangeEnd'] = array_pop($cRange);
+	# first pages
+	$TemplateData['pagination']['visibleRange'] = range(1,3);
+	# last pages
+	foreach(range($TemplateData['pagination']['pages']-2, $TemplateData['pagination']['pages']) as $e) {
+		array_push($TemplateData['pagination']['visibleRange'], $e);
+	}
+	# pages before and after current page
+	$cRange = range($TemplateData['pagination']['curPage']-1, $TemplateData['pagination']['curPage']+1);
+	foreach($cRange as $e) {
+		array_push($TemplateData['pagination']['visibleRange'], $e);
+	}
+	$TemplateData['pagination']['currentRangeStart'] = array_shift($cRange);
+	$TemplateData['pagination']['currentRangeEnd'] = array_pop($cRange);
 }
 else {
-    $TemplateData['pagination']['visibleRange'] = range(1,$TemplateData['pagination']['pages']);
+	$TemplateData['pagination']['visibleRange'] = range(1,$TemplateData['pagination']['pages']);
 }

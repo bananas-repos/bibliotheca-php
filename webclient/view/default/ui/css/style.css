@@ -1,13 +1,13 @@
 .uk-label {
-    text-transform: none;
+	text-transform: none;
 }
 
 .input-multiple-listbox {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 .input-multiple-template {
-    margin: 1px;
+	margin: 1px;
 }

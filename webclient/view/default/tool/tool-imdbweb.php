@@ -24,9 +24,9 @@
 require_once 'lib/imdbwebparser.class.php';
 
 $IMDB = new IMDB(array(
-    'sSearchFor' => 'movie',
-    'storage' => PATH_SYSTEMOUT,
-    'debug' => false
+	'sSearchFor' => 'movie',
+	'storage' => PATH_SYSTEMOUT,
+	'debug' => false
 ));
 
 
@@ -38,116 +38,115 @@ $TemplateData['showMatchingForm'] = false;
 // create one time and then reuse it
 $collectionFields = $ManangeCollectionsFields->getExistingFields();
 if(!empty($collectionFields)) {
-    foreach ($collectionFields as $k=>$v) {
-        $TemplateData['saveToSelection'] .= "<option value='".$k."'>".$v['displayname']."</option>\n";
-    }
+	foreach ($collectionFields as $k=>$v) {
+		$TemplateData['saveToSelection'] .= "<option value='".$k."'>".$v['displayname']."</option>\n";
+	}
 }
 
 if(isset($_POST['submitFormSearch'])) {
-    $fdata = $_POST['fdata'];
-    if (!empty($fdata)) {
-        $search = trim($fdata['search']);
-        $search = Summoner::validate($search) ? $search : false;
+	$fdata = $_POST['fdata'];
+	if (!empty($fdata)) {
+		$search = trim($fdata['search']);
+		$search = Summoner::validate($search) ? $search : false;
 
-        if(!empty($search)) {
-            try {
-                $IMDB->search($search);
-            }
-            catch (Exception $e) {
-                if(DEBUG) error_log("[DEBUG] imdb search catch: ".$e->getMessage());
-            }
+		if(!empty($search)) {
+			try {
+				$IMDB->search($search);
+			}
+			catch (Exception $e) {
+				if(DEBUG) error_log("[DEBUG] imdb search catch: ".$e->getMessage());
+			}
 
-            if ($IMDB->isReady) {
-                $TemplateData['movieData'] = $IMDB->getAll();
-                $TemplateData['movieImdbId'] = "tt".$IMDB->iId; // this is the IMDB id you can search for
-                $TemplateData['showMatchingForm'] = true;
-            } else {
-                $TemplateData['message']['content'] = "Nothing found.";
-                $TemplateData['message']['status'] = "error";
-            }
-        }
-        else {
-            $TemplateData['message']['content'] = "Invalid search term";
-            $TemplateData['message']['status'] = "error";
-        }
-    }
+			if ($IMDB->isReady) {
+				$TemplateData['movieData'] = $IMDB->getAll();
+				$TemplateData['movieImdbId'] = "tt".$IMDB->iId; // this is the IMDB id you can search for
+				$TemplateData['showMatchingForm'] = true;
+			} else {
+				$TemplateData['message']['content'] = "Nothing found.";
+				$TemplateData['message']['status'] = "error";
+			}
+		}
+		else {
+			$TemplateData['message']['content'] = "Invalid search term";
+			$TemplateData['message']['status'] = "error";
+		}
+	}
 }
 
 if(isset($_POST['submitFormSave'])) {
-    $fdata = $_POST['fdata'];
-    if (!empty($fdata)) {
-        $_imdbId = $fdata['imdbId'];
-        $_imdbId = Summoner::validate($_imdbId,'nospace') ? $_imdbId : false;
+	$fdata = $_POST['fdata'];
+	if (!empty($fdata)) {
+		$_imdbId = $fdata['imdbId'];
+		$_imdbId = Summoner::validate($_imdbId,'nospace') ? $_imdbId : false;
 
-        if(!empty($_imdbId)) {
-            try {
-                $IMDB->search($_imdbId);
-            }
-            catch (Exception $e) {
-                if(DEBUG) error_log("[DEBUG] imdb search catch: ".$e->getMessage());
-            }
+		if(!empty($_imdbId)) {
+			try {
+				$IMDB->search($_imdbId);
+			}
+			catch (Exception $e) {
+				if(DEBUG) error_log("[DEBUG] imdb search catch: ".$e->getMessage());
+			}
 
-            if ($IMDB->isReady) {
-                $TemplateData['movieImdbId'] = $_imdbId;
-                $_movieData = $IMDB->getAll();
+			if ($IMDB->isReady) {
+				$TemplateData['movieImdbId'] = $_imdbId;
+				$_movieData = $IMDB->getAll();
 
-                // build data array based on submit
-                // see creation log for structure
-                $_data = array();
-                foreach($fdata['into'] as $k=>$v) {
-                    if(!empty($v)) {
-                        $_t = $IMDB->$k();
+				// build data array based on submit
+				// see creation log for structure
+				$_data = array();
+				foreach($fdata['into'] as $k=>$v) {
+					if(!empty($v)) {
+						$_t = $IMDB->$k();
 
-                        // multiple selections format for field type lookup_multiple
-                        if(strstr($_t, $IMDB->sSeparator)) {
-                            $_t = str_replace($IMDB->sSeparator,",", $_t);
-                        }
+						// multiple selections format for field type lookup_multiple
+						if(strstr($_t, $IMDB->sSeparator)) {
+							$_t = str_replace($IMDB->sSeparator,",", $_t);
+						}
 
-                        if(isset($collectionFields[$v])) {
-                            $_data[$v] = $collectionFields[$v];
-                            $_data[$v]['valueToSave'] = $_t;
-                        }
-                    }
-                }
+						if(isset($collectionFields[$v])) {
+							$_data[$v] = $collectionFields[$v];
+							$_data[$v]['valueToSave'] = $_t;
+						}
+					}
+				}
 
-                $_r = $Tools->getDefaultCreationInfo();
-                if(!empty($TemplateData['editEntry'])) {
-                    // update existing one
-                    $do = $Manageentry->create($_data,
-                        $_r['id'],
-                        $_r['group'],
-                        $_r['rights'],
-                        $TemplateData['editEntry']['id']
-                    );
-                    $TemplateData['message']['content'] = "Date saved successfully";
-                }
-                else {
-                    // create into loaded collection
-                    $do = $Manageentry->create($_data,
-                        $_r['id'],
-                        $_r['group'],
-                        $_r['rights']
-                    );
-                    $TemplateData['message']['content'] = "Date saved successfully: 
-                        <a href='index.php?p=manageentry&collection=".$collection['id']."&id=".$do."'>Here</a>";
-                }
+				$_r = $Tools->getDefaultCreationInfo();
+				if(!empty($TemplateData['editEntry'])) {
+					// update existing one
+					$do = $Manageentry->create($_data,
+						$_r['id'],
+						$_r['group'],
+						$_r['rights'],
+						$TemplateData['editEntry']['id']
+					);
+					$TemplateData['message']['content'] = "Date saved successfully";
+				}
+				else {
+					// create into loaded collection
+					$do = $Manageentry->create($_data,
+						$_r['id'],
+						$_r['group'],
+						$_r['rights']
+					);
+					$TemplateData['message']['content'] = "Date saved successfully: 
+						<a href='index.php?p=manageentry&collection=".$collection['id']."&id=".$do."'>Here</a>";
+				}
 
-                if(!empty($do)) {
-                    $TemplateData['message']['status'] = "success";
-                }
-                else {
-                    $TemplateData['message']['content'] = "Data could not be saved. See logs for more.";
-                    $TemplateData['message']['status'] = "error";
-                }
-            } else {
-                $TemplateData['message']['content'] = "Nothing found.";
-                $TemplateData['message']['status'] = "error";
-            }
-        }
-        else {
-            $TemplateData['message']['content'] = "IMDB search result information lost.";
-            $TemplateData['message']['status'] = "error";
-        }
-    }
+				if(!empty($do)) {
+					$TemplateData['message']['status'] = "success";
+				}
+				else {
+					$TemplateData['message']['content'] = "Data could not be saved. See logs for more.";
+					$TemplateData['message']['status'] = "error";
+				}
+			} else {
+				$TemplateData['message']['content'] = "Nothing found.";
+				$TemplateData['message']['status'] = "error";
+			}
+		}
+		else {
+			$TemplateData['message']['content'] = "IMDB search result information lost.";
+			$TemplateData['message']['status'] = "error";
+		}
+	}
 }
-

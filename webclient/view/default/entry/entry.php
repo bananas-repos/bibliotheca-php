@@ -25,14 +25,14 @@ $Trite = new Trite($DB,$Doomguy);
 
 $_collection = false;
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
-    $_collection = trim($_GET['collection']);
-    $_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+	$_collection = trim($_GET['collection']);
+	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
 }
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
-    $_id = trim($_GET['id']);
-    $_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = trim($_GET['id']);
+	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
 $TemplateData['fieldViewDefault'] = Summoner::themefile('entry/field-unknown.html', UI_THEME);
@@ -42,22 +42,22 @@ $TemplateData['storagePath'] = '';
 $TemplateData['showEdit'] = false;
 
 if(!empty($_collection) && !empty($_id)) {
-    $TemplateData['loadedCollection'] = $Trite->load($_collection);
-    if(!empty($TemplateData['loadedCollection'])) {
-        $Mancubus->setCollection($Trite->param('id'));
-        $TemplateData['entry'] = $Mancubus->getEntry($_id);
-        $TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id') . '/' . $_id;
-        $TemplateData['searchAction'] = 'index.php?p=collections&collection=' . $Trite->param('id');
+	$TemplateData['loadedCollection'] = $Trite->load($_collection);
+	if(!empty($TemplateData['loadedCollection'])) {
+		$Mancubus->setCollection($Trite->param('id'));
+		$TemplateData['entry'] = $Mancubus->getEntry($_id);
+		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id') . '/' . $_id;
+		$TemplateData['searchAction'] = 'index.php?p=collections&collection=' . $Trite->param('id');
 
-        $ManageEntry->setCollection($Trite->param('id'));
-        $TemplateData['showEdit'] = $ManageEntry->canEditEntry($_id);
-    }
-    else {
-        $TemplateData['message']['content'] = 'Can not load given collection.';
-        $TemplateData['message']['status'] = 'error';
-    }
+		$ManageEntry->setCollection($Trite->param('id'));
+		$TemplateData['showEdit'] = $ManageEntry->canEditEntry($_id);
+	}
+	else {
+		$TemplateData['message']['content'] = 'Can not load given collection.';
+		$TemplateData['message']['status'] = 'error';
+	}
 }
 else {
-    $TemplateData['message']['status'] = 'error';
-    $TemplateData['message']['content'] = 'Missing required query parameters.';
+	$TemplateData['message']['status'] = 'error';
+	$TemplateData['message']['content'] = 'Missing required query parameters.';
 }

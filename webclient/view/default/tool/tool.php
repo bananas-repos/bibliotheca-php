@@ -32,52 +32,51 @@ $TemplateData['editEntry'] = array();
 
 $_collection = false;
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
-    $_collection = trim($_GET['collection']);
-    $_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+	$_collection = trim($_GET['collection']);
+	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
 }
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
-    $_id = trim($_GET['id']);
-    $_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = trim($_GET['id']);
+	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
 $_t = false;
 if(isset($_GET['t']) && !empty($_GET['t'])) {
-    $_t = trim($_GET['t']);
-    $_t = Summoner::validate($_t,'nospace') ? $_t : false;
+	$_t = trim($_GET['t']);
+	$_t = Summoner::validate($_t,'nospace') ? $_t : false;
 }
 
 if(!empty($_collection) && !empty($_t)) {
-    $collection = $ManangeCollections->getCollection($_collection,"write");
-    $toolInfo = $Tools->validate($_t);
+	$collection = $ManangeCollections->getCollection($_collection,"write");
+	$toolInfo = $Tools->validate($_t);
 
-    if(!empty($collection) && !empty($toolInfo)) {
-        $TemplateData['tool'] = $toolInfo;
-        $TemplateData['collection'] = $collection;
+	if(!empty($collection) && !empty($toolInfo)) {
+		$TemplateData['tool'] = $toolInfo;
+		$TemplateData['collection'] = $collection;
 
-        $ManangeCollectionsFields->setCollection($_collection);
-        $Manageentry->setCollection($_collection);
+		$ManangeCollectionsFields->setCollection($_collection);
+		$Manageentry->setCollection($_collection);
 
-        if(!empty($_id)) {
-            $TemplateData['editEntry'] = $Manageentry->getEditData($_id);
-        }
+		if(!empty($_id)) {
+			$TemplateData['editEntry'] = $Manageentry->getEditData($_id);
+		}
 
-        $_toolFile = Summoner::themefile('tool/tool-'.$toolInfo['action'].'.php', UI_THEME);
-        $_toolViewFile = Summoner::themefile('tool/tool-'.$toolInfo['action'].'.html', UI_THEME);
-        if(file_exists($_toolFile) && file_exists($_toolViewFile)) {
-            require_once $_toolFile;
-            $TemplateData['tool']['viewFile'] = $_toolViewFile;
-        }
-        else {
-            $TemplateData['tool']['viewFile'] = '';
-            $TemplateData['message']['content'] = "Required tool files can not be found.";
-            $TemplateData['message']['status'] = "error";
-        }
-    }
-    else {
-        $TemplateData['message']['content'] = "Collection nor tool could not be loaded.";
-        $TemplateData['message']['status'] = "error";
-    }
+		$_toolFile = Summoner::themefile('tool/tool-'.$toolInfo['action'].'.php', UI_THEME);
+		$_toolViewFile = Summoner::themefile('tool/tool-'.$toolInfo['action'].'.html', UI_THEME);
+		if(file_exists($_toolFile) && file_exists($_toolViewFile)) {
+			require_once $_toolFile;
+			$TemplateData['tool']['viewFile'] = $_toolViewFile;
+		}
+		else {
+			$TemplateData['tool']['viewFile'] = '';
+			$TemplateData['message']['content'] = "Required tool files can not be found.";
+			$TemplateData['message']['status'] = "error";
+		}
+	}
+	else {
+		$TemplateData['message']['content'] = "Collection nor tool could not be loaded.";
+		$TemplateData['message']['status'] = "error";
+	}
 }
-

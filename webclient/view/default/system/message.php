@@ -17,26 +17,26 @@
  */
 
 if(isset($TemplateData['message']['content'])) {
-    $cssClass = 'primary';
-    if(isset($TemplateData['message']['status'])) {
-        switch($TemplateData['message']['status']) {
-            case 'error':
-                $cssClass = 'danger';
-            break;
-            case 'warning':
-                $cssClass = 'warning';
-            break;
-            case 'success':
-                $cssClass = 'success';
-            break;
+	$cssClass = 'primary';
+	if(isset($TemplateData['message']['status'])) {
+		switch($TemplateData['message']['status']) {
+			case 'error':
+				$cssClass = 'danger';
+			break;
+			case 'warning':
+				$cssClass = 'warning';
+			break;
+			case 'success':
+				$cssClass = 'success';
+			break;
 
-            case 'info':
-            default:
+			case 'info':
+			default:
 
-        }
-    }
+		}
+	}
 ?>
 <div class="uk-alert-<?php echo $cssClass; ?>" uk-alert>
-    <p><?php echo $TemplateData['message']['content']; ?></p>
+	<p><?php echo $TemplateData['message']['content']; ?></p>
 </div>
 <?php } ?>

@@ -4,53 +4,53 @@
 <p>Data will be overwritten</p>
 
 <form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
-    <div class="uk-margin">
-        <label class="uk-form-label" for="search">Search</label>
-        <div class="uk-form-controls">
-            <input class="uk-input" id="search" type="text" autocomplete="off"
-                   name="fdata[search]"
-                   value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
-            >
-        </div>
-        <div class="uk-margin">
-            <button class="uk-button uk-button-primary" type="submit" name="submitFormSearch">
-                Search
-            </button>
-        </div>
-    </div>
+	<div class="uk-margin">
+		<label class="uk-form-label" for="search">Search</label>
+		<div class="uk-form-controls">
+			<input class="uk-input" id="search" type="text" autocomplete="off"
+				   name="fdata[search]"
+				   value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+			>
+		</div>
+		<div class="uk-margin">
+			<button class="uk-button uk-button-primary" type="submit" name="submitFormSearch">
+				Search
+			</button>
+		</div>
+	</div>
 </form>
 
 <?php if($TemplateData['showMatchingForm']) { ?>
 <form class="uk-form-horizontal uk-margin-small uk-grid-small" method="post" enctype="multipart/form-data" uk-grid>
-    <input type="hidden" name="fdata[imdbId]" value="<?php echo $TemplateData['movieImdbId']; ?>">
-    <?php
-    if(!empty($TemplateData['movieData'])) {
-        foreach($TemplateData['movieData'] as $k=>$v) {
-    ?>
+	<input type="hidden" name="fdata[imdbId]" value="<?php echo $TemplateData['movieImdbId']; ?>">
+	<?php
+	if(!empty($TemplateData['movieData'])) {
+		foreach($TemplateData['movieData'] as $k=>$v) {
+	?>
 
-    <div class="uk-width-1-2@s uk-overflow-hidden">
-        <p>
-            <b><?php echo $v['name']; ?></b><br />
-            <?php echo $v['value']; ?>
-        </p>
-    </div>
-    <div class="uk-width-1-2@s">
-        <select class="uk-select" name="fdata[into][<?php echo $k; ?>]">
-            <option value="">None</option>
-            <?php echo $TemplateData['saveToSelection']; ?>
-        </select>
-    </div>
+	<div class="uk-width-1-2@s uk-overflow-hidden">
+		<p>
+			<b><?php echo $v['name']; ?></b><br />
+			<?php echo $v['value']; ?>
+		</p>
+	</div>
+	<div class="uk-width-1-2@s">
+		<select class="uk-select" name="fdata[into][<?php echo $k; ?>]">
+			<option value="">None</option>
+			<?php echo $TemplateData['saveToSelection']; ?>
+		</select>
+	</div>
 
-    <?php
-        }
-    }
-    ?>
+	<?php
+		}
+	}
+	?>
 
-    <div class="uk-margin">
-        <button class="uk-button uk-button-primary" type="submit" name="submitFormSave">
-            Save
-        </button>
-    </div>
+	<div class="uk-margin">
+		<button class="uk-button uk-button-primary" type="submit" name="submitFormSave">
+			Save
+		</button>
+	</div>
 
 </form>
 <?php } ?>

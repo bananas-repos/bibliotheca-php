@@ -1,125 +1,125 @@
 <h3 class="uk-h3">User management</h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
-    <div class="uk-width-1-2">
-        <h4 class="uk-h4">Add or modify a user</h4>
-        <form class="uk-form-horizontal uk-margin-small" method="post">
-            <div class="uk-margin">
-                <label class="uk-form-label" for="username">Username</label>
-                <div class="uk-form-controls">
-                    <input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
-                        value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
-                </div>
-            </div>
-            <div class="uk-margin">
-                <label class="uk-form-label" for="login">Login</label>
-                <div class="uk-form-controls">
-                    <input class="uk-input" id="login" type="text" autocomplete="off" name="fdata[login]"
-                        value="<?php echo Summoner::ifset($TemplateData['editData'], 'login'); ?>">
-                </div>
-            </div>
-            <div class="uk-margin">
-                <label class="uk-form-label" for="password">Password</label>
-                <div class="uk-form-controls">
-                    <input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
-                </div>
-            </div>
-            <div class="uk-margin">
-                <label class="uk-form-label" for="group">Main group</label>
-                <div class="uk-form-controls">
-                    <select class="uk-select" id="group" name="fdata[group]">
-                        <option value="">Please select</option>
-                        <?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
-                        <option value="<?php echo $k; ?>"
-                            <?php if(Summoner::ifsetValue($TemplateData['editData'], 'baseGroupId',$k)) echo 'selected'; ?>
-                            ><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
-                        <?php } ?>
-                    </select>
-                </div>
-            </div>
-            <div class="uk-margin">
-                <label class="uk-form-label" for="group">Additional groups</label>
-                <div class="uk-form-controls">
-                    <select class="uk-select" id="additionalgroups" name="fdata[additionalgroups]">
-                        <option value="">To be done</option>
-                    </select>
-                </div>
-            </div>
-            <div class="uk-margin">
-                <div class="uk-form-label">Can login</div>
-                <div class="uk-form-controls uk-form-controls-text">
-                    <label>
-                        <input class="uk-checkbox" type="checkbox" name="fdata[active]" value="1"
-                            <?php if(Summoner::ifset($TemplateData['editData'], 'active')) echo "checked"; ?>>
-                    </label>
-                </div>
-            </div>
-            <?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
-            <div class="uk-margin">
-                <div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
-                <div class="uk-form-controls uk-form-controls-text">
-                    <label>
-                        <input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
-                    </label>
-                </div>
-            </div>
-            <div class="uk-margin">
-                <div class="uk-form-label">Create API Token</div>
-                <div class="uk-form-controls uk-form-controls-text">
-                    <label>
-                        <input class="uk-checkbox" type="checkbox" name="fdata[refreshApiToken]" value="1"><br />
-                        Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
-                        <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
-                    </label>
-                </div>
-            </div>
-            <?php } ?>
-            <div class="uk-margin">
-                <button class="uk-button uk-button-primary" type="submit" name="submitForm">
-                    Save
-                </button>
-            </div>
-        </form>
-    </div>
-    <div class="uk-width-1-2">
-        <h4 class="uk-h4">Available users</h4>
-        <table class="uk-table">
-            <thead>
-                <tr>
-                    <th>Login</th>
-                    <th>Username</th>
-                    <th>Group(s)</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php foreach($TemplateData['existingUsers'] as $k=>$v) { ?>
-                <tr>
-                    <td>
-                        <?php echo $v['login']; ?><br/>
-                        <small><?php echo $v['created']; ?></small>
-                    </td>
-                    <td><?php echo $v['name']; ?></td>
-                    <td>
-                        <ul class="uk-list uk-list-disc uk-list-collapse">
-                        <?php foreach($v['groups'] as $gk=>$gv) { ?>
-                            <li class="<?php if($gk == $v['baseGroupId']) echo 'uk-text-emphasis'; ?>">
-                                <?php echo $gv['groupName']; ?>
-                            </li>
-                        <?php } ?>
-                        </ul>
-                    </td>
-                    <td><?php echo $v['active']; ?></td>
-                    <td>
-                        <?php if($v['protected'] == "0") { ?>
-                        <a href="index.php?p=manageusers&m=edit&id=<?php echo $k; ?>" uk-icon="pencil"></a>
-                        <?php } ?>
-                    </td>
-                </tr>
-            <?php } ?>
-            </tbody>
-        </table>
+	<div class="uk-width-1-2">
+		<h4 class="uk-h4">Add or modify a user</h4>
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="username">Username</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
+						value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="login">Login</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="login" type="text" autocomplete="off" name="fdata[login]"
+						value="<?php echo Summoner::ifset($TemplateData['editData'], 'login'); ?>">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="password">Password</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="group">Main group</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="group" name="fdata[group]">
+						<option value="">Please select</option>
+						<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
+						<option value="<?php echo $k; ?>"
+							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'baseGroupId',$k)) echo 'selected'; ?>
+							><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="group">Additional groups</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="additionalgroups" name="fdata[additionalgroups]">
+						<option value="">To be done</option>
+					</select>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label">Can login</div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[active]" value="1"
+							<?php if(Summoner::ifset($TemplateData['editData'], 'active')) echo "checked"; ?>>
+					</label>
+				</div>
+			</div>
+			<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
+			<div class="uk-margin">
+				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
+					</label>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label">Create API Token</div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[refreshApiToken]" value="1"><br />
+						Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
+						<?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+					</label>
+				</div>
+			</div>
+			<?php } ?>
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Save
+				</button>
+			</div>
+		</form>
+	</div>
+	<div class="uk-width-1-2">
+		<h4 class="uk-h4">Available users</h4>
+		<table class="uk-table">
+			<thead>
+				<tr>
+					<th>Login</th>
+					<th>Username</th>
+					<th>Group(s)</th>
+					<th>Status</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach($TemplateData['existingUsers'] as $k=>$v) { ?>
+				<tr>
+					<td>
+						<?php echo $v['login']; ?><br/>
+						<small><?php echo $v['created']; ?></small>
+					</td>
+					<td><?php echo $v['name']; ?></td>
+					<td>
+						<ul class="uk-list uk-list-disc uk-list-collapse">
+						<?php foreach($v['groups'] as $gk=>$gv) { ?>
+							<li class="<?php if($gk == $v['baseGroupId']) echo 'uk-text-emphasis'; ?>">
+								<?php echo $gv['groupName']; ?>
+							</li>
+						<?php } ?>
+						</ul>
+					</td>
+					<td><?php echo $v['active']; ?></td>
+					<td>
+						<?php if($v['protected'] == "0") { ?>
+						<a href="index.php?p=manageusers&m=edit&id=<?php echo $k; ?>" uk-icon="pencil"></a>
+						<?php } ?>
+					</td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
 
 
-    </div>
+	</div>
 </div>

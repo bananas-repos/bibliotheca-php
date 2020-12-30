@@ -29,43 +29,43 @@ $TemplateData['existingFields'] = array();
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
-    $_id = trim($_GET['id']);
-    $_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = trim($_GET['id']);
+	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
 if(!empty($_id)) {
-    $TemplateData['editData'] = $ManangeCollections->getEditData($_id);
-    $ManangeCollectionFields->setCollection($_id);
-    $TemplateData['existingFields'] = $ManangeCollectionFields->getExistingFields();
-    // reduce the selection for only the new ones
-    if(!empty($TemplateData['existingFields'])) {
-        foreach ($TemplateData['existingFields'] as $k=>$v) {
-            unset($TemplateData['availableFields'][$k]);
-        }
-    }
+	$TemplateData['editData'] = $ManangeCollections->getEditData($_id);
+	$ManangeCollectionFields->setCollection($_id);
+	$TemplateData['existingFields'] = $ManangeCollectionFields->getExistingFields();
+	// reduce the selection for only the new ones
+	if(!empty($TemplateData['existingFields'])) {
+		foreach ($TemplateData['existingFields'] as $k=>$v) {
+			unset($TemplateData['availableFields'][$k]);
+		}
+	}
 
-    // if loading failed redirect to overview
-    if(!isset($TemplateData['editData']['name'])) {
-        $TemplateData['refresh'] = 'index.php?p=managecolletions';
-    }
+	// if loading failed redirect to overview
+	if(!isset($TemplateData['editData']['name'])) {
+		$TemplateData['refresh'] = 'index.php?p=managecolletions';
+	}
 }
 
 if(isset($_POST['submitForm'])) {
-    $fdata = $_POST['fdata'];
-    if (!empty($fdata)) {
-        $_fieldSortString = trim($fdata['fieldSortString']);
-        if($ManangeCollectionFields->validateFieldSortString($_fieldSortString)) {
-            $do = $ManangeCollectionFields->updateFields($_fieldSortString);
-            if ($do === true) {
-                $TemplateData['refresh'] = 'index.php?p=managecollectionfields&id='.$_id;
-            } else {
-                $TemplateData['message']['content'] = "Fields could not be updated.";
-                $TemplateData['message']['status'] = "error";
-            }
-        }
-        else {
-            $TemplateData['message']['content'] = "Please provide valid fields.";
-            $TemplateData['message']['status'] = "error";
-        }
-    }
+	$fdata = $_POST['fdata'];
+	if (!empty($fdata)) {
+		$_fieldSortString = trim($fdata['fieldSortString']);
+		if($ManangeCollectionFields->validateFieldSortString($_fieldSortString)) {
+			$do = $ManangeCollectionFields->updateFields($_fieldSortString);
+			if ($do === true) {
+				$TemplateData['refresh'] = 'index.php?p=managecollectionfields&id='.$_id;
+			} else {
+				$TemplateData['message']['content'] = "Fields could not be updated.";
+				$TemplateData['message']['status'] = "error";
+			}
+		}
+		else {
+			$TemplateData['message']['content'] = "Please provide valid fields.";
+			$TemplateData['message']['status'] = "error";
+		}
+	}
 }

@@ -24,11 +24,11 @@ $TemplateData['searchAction'] = 'index.php';
 
 $_search = false;
 if(isset($_POST['navSearch'])) {
-    $_search = trim($_POST['navSearch']);
-    $_search = Summoner::validate($_search,'text') ? $_search :  false;
+	$_search = trim($_POST['navSearch']);
+	$_search = Summoner::validate($_search,'text') ? $_search :  false;
 }
 
 $TemplateData['latest'] = $Mancubus->getLatest(5,5,$_search);
 if (!empty($_search)) {
-    $TemplateData['search'] = $_search;
+	$TemplateData['search'] = $_search;
 }

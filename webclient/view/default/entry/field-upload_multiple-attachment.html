@@ -1,9 +1,9 @@
 <div data-field-name="upload_multiple-attachment" class="uk-child-width-1-3@m" uk-grid uk-lightbox="animation: fade">
-    <?php foreach ($field['value'] as $_uEntry) { ?>
-    <div>
-        <a class="uk-inline" href="<?php echo $TemplateData['storagePath'].'/'.$_uEntry; ?>" data-caption="<?php echo $_uEntry; ?>">
-            <img src="<?php echo $TemplateData['storagePath'].'/'.$_uEntry; ?>" alt="<?php echo $_uEntry; ?>">
-        </a>
-    </div>
-    <?php } ?>
+	<?php foreach ($field['value'] as $_uEntry) { ?>
+	<div>
+		<a class="uk-inline" href="<?php echo $TemplateData['storagePath'].'/'.$_uEntry; ?>" data-caption="<?php echo $_uEntry; ?>">
+			<img src="<?php echo $TemplateData['storagePath'].'/'.$_uEntry; ?>" alt="<?php echo $_uEntry; ?>">
+		</a>
+	</div>
+	<?php } ?>
 </div>

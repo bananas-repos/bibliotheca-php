@@ -1,12 +1,12 @@
 <h3 class="uk-h3">Using <?php echo $TemplateData['tool']['name']; ?> with collection: <?php echo $TemplateData['collection']['name']; ?></h3>
 <?php if(!empty($TemplateData['editEntry'])) { ?>
 <h4><span uk-icon="arrow-left"></span>
-    <a href="index.php?p=manageentry&collection=<?php echo $TemplateData['collection']['id']; ?>&id=<?php echo $TemplateData['editEntry']['id']; ?>"><?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?></a>
+	<a href="index.php?p=manageentry&collection=<?php echo $TemplateData['collection']['id']; ?>&id=<?php echo $TemplateData['editEntry']['id']; ?>"><?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?></a>
 </h4>
 <?php } ?>
 
 <div class="uk-grid-small uk-grid-row-small" uk-grid>
-    <div class="uk-width-1-2">
-        <?php if(!empty($TemplateData['tool']['viewFile'])) { require_once $TemplateData['tool']['viewFile']; } ?>
-    </div>
+	<div class="uk-width-1-2">
+		<?php if(!empty($TemplateData['tool']['viewFile'])) { require_once $TemplateData['tool']['viewFile']; } ?>
+	</div>
 </div>

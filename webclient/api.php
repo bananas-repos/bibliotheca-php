@@ -50,177 +50,177 @@ $Spectre = new Spectre($DB, $Doomguy);
 
 $_requestMode = "default";
 if(isset($_GET['p']) && !empty($_GET['p'])) {
-    $_requestMode = trim($_GET['p']);
-    $_requestMode = Summoner::validate($_requestMode,'nospace') ? $_requestMode : "default";
+	$_requestMode = trim($_GET['p']);
+	$_requestMode = Summoner::validate($_requestMode,'nospace') ? $_requestMode : "default";
 
-    if(!$Spectre->allowedRequests($_requestMode)) $_requestMode = "default";
+	if(!$Spectre->allowedRequests($_requestMode)) $_requestMode = "default";
 }
 $_authKey = false;
 if(isset($_GET['authKey']) && !empty($_GET['authKey'])) {
-    $_authKey = trim($_GET['authKey']);
-    $_authKey = Summoner::validate($_authKey,'nospace') ? $_authKey : false;
+	$_authKey = trim($_GET['authKey']);
+	$_authKey = Summoner::validate($_authKey,'nospace') ? $_authKey : false;
 }
 
 $_apiResult = array(
-    'message' => 'Nothing to see here.',
-    'status' => 200,
-    'data' => array()
+	'message' => 'Nothing to see here.',
+	'status' => 200,
+	'data' => array()
 );
 switch ($_requestMode) {
-    case 'list':
-        # get the latest 10 entris for given collection
-        $_msg = 'Missing parameter with value: collection';
-        $_status = 404;
-        $_data = array();
+	case 'list':
+		# get the latest 10 entris for given collection
+		$_msg = 'Missing parameter with value: collection';
+		$_status = 404;
+		$_data = array();
 
-        $_collection = false;
-        if(isset($_GET['collection']) && !empty($_GET['collection'])) {
-            $_collection = trim($_GET['collection']);
-            $_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
-        }
+		$_collection = false;
+		if(isset($_GET['collection']) && !empty($_GET['collection'])) {
+			$_collection = trim($_GET['collection']);
+			$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+		}
 
-        if(!empty($_collection)) {
-            $_msg = 'Invalid collection.';
-            $Mancubus = new Mancubus($DB,$Doomguy);
-            $Trite = new Trite($DB,$Doomguy);
-            $collectionInfo = $Trite->load($_collection);
+		if(!empty($_collection)) {
+			$_msg = 'Invalid collection.';
+			$Mancubus = new Mancubus($DB,$Doomguy);
+			$Trite = new Trite($DB,$Doomguy);
+			$collectionInfo = $Trite->load($_collection);
 
-            $Mancubus->setCollection($Trite->param('id'));
-            $Mancubus->setQueryOptions(array('limit' => 10));
+			$Mancubus->setCollection($Trite->param('id'));
+			$Mancubus->setQueryOptions(array('limit' => 10));
 
-            $entries = $Mancubus->getEntries();
-            if(!empty($entries)) {
-                $_msg = 'Latest entries for collection: '.$collectionInfo['name'];
-                $_status = 200;
-                $_data = $entries;
-            }
-        }
+			$entries = $Mancubus->getEntries();
+			if(!empty($entries)) {
+				$_msg = 'Latest entries for collection: '.$collectionInfo['name'];
+				$_status = 200;
+				$_data = $entries;
+			}
+		}
 
-        $_apiResult = array(
-            'message' => $_msg,
-            'status' => $_status,
-            'data' => $_data
-        );
-    break;
+		$_apiResult = array(
+			'message' => $_msg,
+			'status' => $_status,
+			'data' => $_data
+		);
+	break;
 
-    case 'add':
-        # add a single new entry to given collection
-        # authenticated by api token
-        $_msg = 'Missing parameter with value: collection';
-        $_status = 400;
-        $_data = array();
+	case 'add':
+		# add a single new entry to given collection
+		# authenticated by api token
+		$_msg = 'Missing parameter with value: collection';
+		$_status = 400;
+		$_data = array();
 
-        $Doomguy->authByApiToken($_authKey);
-        if(!$Doomguy->isSignedIn()) {
-            $_apiResult = array(
-                'message' => "Missing API token.",
-                'status' => 401,
-                'data' => $_data
-            );
-            break;
-        }
+		$Doomguy->authByApiToken($_authKey);
+		if(!$Doomguy->isSignedIn()) {
+			$_apiResult = array(
+				'message' => "Missing API token.",
+				'status' => 401,
+				'data' => $_data
+			);
+			break;
+		}
 
-        $_collection = false;
-        if(isset($_GET['collection']) && !empty($_GET['collection'])) {
-            $_collection = trim($_GET['collection']);
-            $_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
-        }
+		$_collection = false;
+		if(isset($_GET['collection']) && !empty($_GET['collection'])) {
+			$_collection = trim($_GET['collection']);
+			$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+		}
 
-        if(!empty($_collection)) {
-            $_msg = 'Invalid POST data.';
+		if(!empty($_collection)) {
+			$_msg = 'Invalid POST data.';
 
-            $Mancubus = new Mancubus($DB,$Doomguy);
-            $ManangeEntry = new Manageentry($DB,$Doomguy);
+			$Mancubus = new Mancubus($DB,$Doomguy);
+			$ManangeEntry = new Manageentry($DB,$Doomguy);
 
-            $ManangeEntry->setCollection($_collection);
-            $editFields = $ManangeEntry->getEditFields();
+			$ManangeEntry->setCollection($_collection);
+			$editFields = $ManangeEntry->getEditFields();
 
-            if(!empty($_POST) && !empty($editFields)) {
-                $fdata = $_POST;
-                if(!empty($_FILES)) {
-                    $fupload = $Spectre->prepareFilesArray($_FILES);
-                }
+			if(!empty($_POST) && !empty($editFields)) {
+				$fdata = $_POST;
+				if(!empty($_FILES)) {
+					$fupload = $Spectre->prepareFilesArray($_FILES);
+				}
 
-                $_owner = $Doomguy->param('id');
-                $_group = $Doomguy->param('baseGroupId');
-                $_rights = 'rwxrwxr--';
+				$_owner = $Doomguy->param('id');
+				$_group = $Doomguy->param('baseGroupId');
+				$_rights = 'rwxrwxr--';
 
-                foreach ($editFields as $fieldId=>$fieldData) {
-                    if(isset($fupload['name'][$fieldData['identifier']])) {
-                        $fieldData['uploadData'] = $fupload;
-                        $_fieldsToSave[$fieldData['identifier']] = $fieldData;
-                    }
-                    elseif(isset($fdata[$fieldData['identifier']])) {
-                        $_value = trim($fdata[$fieldData['identifier']]);
-                        if(!empty($_value)) {
-                            $fieldData['valueToSave'] = trim($fdata[$fieldData['identifier']]);
+				foreach ($editFields as $fieldId=>$fieldData) {
+					if(isset($fupload['name'][$fieldData['identifier']])) {
+						$fieldData['uploadData'] = $fupload;
+						$_fieldsToSave[$fieldData['identifier']] = $fieldData;
+					}
+					elseif(isset($fdata[$fieldData['identifier']])) {
+						$_value = trim($fdata[$fieldData['identifier']]);
+						if(!empty($_value)) {
+							$fieldData['valueToSave'] = trim($fdata[$fieldData['identifier']]);
 
-                            $_fieldsToSave[$fieldData['identifier']] = $fieldData;
-                        }
-                    }
-                }
+							$_fieldsToSave[$fieldData['identifier']] = $fieldData;
+						}
+					}
+				}
 
-                // special case. Title field should be always available.
-                if(!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
-                    $do = $ManangeEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
-                    if(!empty($do)) {
-                        $_msg = 'Added entry: '.$_fieldsToSave['title']['valueToSave'];
-                        $_status = 200;
-                        $_data = array();
-                    }
-                }
-            }
-        }
+				// special case. Title field should be always available.
+				if(!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
+					$do = $ManangeEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
+					if(!empty($do)) {
+						$_msg = 'Added entry: '.$_fieldsToSave['title']['valueToSave'];
+						$_status = 200;
+						$_data = array();
+					}
+				}
+			}
+		}
 
-        $_apiResult = array(
-            'message' => $_msg,
-            'status' => $_status,
-            'data' => $_data
-        );
-    break;
+		$_apiResult = array(
+			'message' => $_msg,
+			'status' => $_status,
+			'data' => $_data
+		);
+	break;
 
-    case 'addInfo':
-        # return information about the given collection to create an ad call.
-        $_msg = 'Missing parameter with value: collection';
-        $_status = 404;
-        $_data = array();
+	case 'addInfo':
+		# return information about the given collection to create an ad call.
+		$_msg = 'Missing parameter with value: collection';
+		$_status = 404;
+		$_data = array();
 
-        $_collection = false;
-        if(isset($_GET['collection']) && !empty($_GET['collection'])) {
-            $_collection = trim($_GET['collection']);
-            $_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
-        }
+		$_collection = false;
+		if(isset($_GET['collection']) && !empty($_GET['collection'])) {
+			$_collection = trim($_GET['collection']);
+			$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+		}
 
-        if(!empty($_collection)) {
-            $_msg = 'Invalid collection.';
-            $Mancubus = new Mancubus($DB,$Doomguy);
-            $Trite = new Trite($DB,$Doomguy);
-            $collectionInfo = $Trite->load($_collection);
+		if(!empty($_collection)) {
+			$_msg = 'Invalid collection.';
+			$Mancubus = new Mancubus($DB,$Doomguy);
+			$Trite = new Trite($DB,$Doomguy);
+			$collectionInfo = $Trite->load($_collection);
 
-            $Mancubus->setCollection($Trite->param('id'));
+			$Mancubus->setCollection($Trite->param('id'));
 
-            // just get one entry fpr given collection and then build the
-            // json information about adding structure
-            $entryStructure = $Mancubus->getEntryStructure();
-            $structure = $Spectre->buildAddStructure($entryStructure['fields']);
+			// just get one entry fpr given collection and then build the
+			// json information about adding structure
+			$entryStructure = $Mancubus->getEntryStructure();
+			$structure = $Spectre->buildAddStructure($entryStructure['fields']);
 
-            if(!empty($structure)) {
-                $_msg = 'API POST and FILES data information for collection: '.$collectionInfo['name'];
-                $_status = 200;
-                $_data = $structure;
-            }
-        }
+			if(!empty($structure)) {
+				$_msg = 'API POST and FILES data information for collection: '.$collectionInfo['name'];
+				$_status = 200;
+				$_data = $structure;
+			}
+		}
 
-        $_apiResult = array(
-            'message' => $_msg,
-            'status' => $_status,
-            'data' => $_data
-        );
-    break;
+		$_apiResult = array(
+			'message' => $_msg,
+			'status' => $_status,
+			'data' => $_data
+		);
+	break;
 
-    case 'default':
-    default:
-        // do nothing
+	case 'default':
+	default:
+		// do nothing
 }
 
 # header information

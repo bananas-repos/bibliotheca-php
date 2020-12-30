@@ -1,13 +1,13 @@
 <div class="uk-margin">
-    <label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
-    <div class="uk-form-controls">
-        <select class="uk-select" id="<?php echo $field['identifier']; ?>" name="fdata[<?php echo $field['identifier']; ?>]">
-            <option value="">Please select</option>
-            <?php foreach($field['options'] as $k=>$v) { ?>
-            <option value="<?php echo $v; ?>"
-                <?php if(Summoner::ifsetValue($TemplateData['editData'], $field['identifier'],$v)) echo 'selected'; ?>
-            ><?php echo $v; ?></option>
-            <?php } ?>
-        </select>
-    </div>
+	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<div class="uk-form-controls">
+		<select class="uk-select" id="<?php echo $field['identifier']; ?>" name="fdata[<?php echo $field['identifier']; ?>]">
+			<option value="">Please select</option>
+			<?php foreach($field['options'] as $k=>$v) { ?>
+			<option value="<?php echo $v; ?>"
+				<?php if(Summoner::ifsetValue($TemplateData['editData'], $field['identifier'],$v)) echo 'selected'; ?>
+			><?php echo $v; ?></option>
+			<?php } ?>
+		</select>
+	</div>
 </div>

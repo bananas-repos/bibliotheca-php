@@ -19,32 +19,32 @@
 // passwords used here: password_hash("somePassword", PASSWORD_DEFAULT);
 
 if(isset($_GET['m']) && !empty($_GET['m'])) {
-    if($_GET['m'] == "logout") {
-        $Doomguy->logOut();
-        $TemplateData['refresh'] = 'index.php';
-    }
+	if($_GET['m'] == "logout") {
+		$Doomguy->logOut();
+		$TemplateData['refresh'] = 'index.php';
+	}
 }
 elseif(isset($_POST['submitForm'])) {
-    $fdata = $_POST['fdata'];
-    if(!empty($fdata)) {
-        $_username = trim($fdata['login']);
-        $_password = trim($fdata['password']);
+	$fdata = $_POST['fdata'];
+	if(!empty($fdata)) {
+		$_username = trim($fdata['login']);
+		$_password = trim($fdata['password']);
 
-        if(!empty($_username) && !empty($_password)) {
-            if(Summoner::validate($_username,'text') === true && Summoner::validate($_password,'text') === true) {
-                $do = $Doomguy->authenticate($_username, $_password);
-                if($do === true) {
-                    $TemplateData['refresh'] = 'index.php';
-                }
-                else {
-                    $TemplateData['message']['content'] = "Invalid username or password.";
-                    $TemplateData['message']['status'] = "error";
-                }
-            }
-            else {
-                $TemplateData['message']['content'] = "Please provide valid e-Mail and password.";
-                $TemplateData['message']['status'] = "error";
-            }
-        }
-    }
+		if(!empty($_username) && !empty($_password)) {
+			if(Summoner::validate($_username,'text') === true && Summoner::validate($_password,'text') === true) {
+				$do = $Doomguy->authenticate($_username, $_password);
+				if($do === true) {
+					$TemplateData['refresh'] = 'index.php';
+				}
+				else {
+					$TemplateData['message']['content'] = "Invalid username or password.";
+					$TemplateData['message']['status'] = "error";
+				}
+			}
+			else {
+				$TemplateData['message']['content'] = "Please provide valid e-Mail and password.";
+				$TemplateData['message']['status'] = "error";
+			}
+		}
+	}
 }

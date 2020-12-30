@@ -1,55 +1,55 @@
 <h3 class="uk-h3"><a href="index.php?p=collections&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>"><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></a></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
-    <div class="uk-width-1-2@l">
-        <article class="uk-article">
-            <?php if($TemplateData['showEdit'] === true) { ?>
-            <p class="uk-article-meta"><a href="index.php?p=manageentry&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>&id=<?php echo $TemplateData['entry']['id']; ?>">EDIT</a></p>
-            <?php
-            }
+	<div class="uk-width-1-2@l">
+		<article class="uk-article">
+			<?php if($TemplateData['showEdit'] === true) { ?>
+			<p class="uk-article-meta"><a href="index.php?p=manageentry&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>&id=<?php echo $TemplateData['entry']['id']; ?>">EDIT</a></p>
+			<?php
+			}
 
-            if(isset($TemplateData['entry']['fields'])) {
-                foreach($TemplateData['entry']['fields'] as $field) {
+			if(isset($TemplateData['entry']['fields'])) {
+				foreach($TemplateData['entry']['fields'] as $field) {
 
-                    if($field['identifier'] == "coverimage") continue;
-                    if($field['identifier'] == "attachment") continue;
+					if($field['identifier'] == "coverimage") continue;
+					if($field['identifier'] == "attachment") continue;
 
-                    $_fieldViewSpecial = Summoner::themefile('entry/field-'.$field['type'].'-'.$field['identifier'].'.html', UI_THEME);
-                    $_fieldView = Summoner::themefile('entry/field-'.$field['type'].'.html', UI_THEME);
-                    if(file_exists($_fieldViewSpecial)) {
-                        require $_fieldViewSpecial;
-                    }
-                    elseif(file_exists($_fieldView)) {
-                        require $_fieldView;
-                    }
-                    else {
-                        require $TemplateData['fieldViewDefault'];
-                    }
-                }
-            }
-            ?>
+					$_fieldViewSpecial = Summoner::themefile('entry/field-'.$field['type'].'-'.$field['identifier'].'.html', UI_THEME);
+					$_fieldView = Summoner::themefile('entry/field-'.$field['type'].'.html', UI_THEME);
+					if(file_exists($_fieldViewSpecial)) {
+						require $_fieldViewSpecial;
+					}
+					elseif(file_exists($_fieldView)) {
+						require $_fieldView;
+					}
+					else {
+						require $TemplateData['fieldViewDefault'];
+					}
+				}
+			}
+			?>
 
-        </article>
-    </div>
-    <div class="uk-width-1-2@l">
-        <?php
-        if(isset($TemplateData['entry']['fields'])) {
-            foreach($TemplateData['entry']['fields'] as $field) {
-                if($field['identifier'] == "coverimage" || $field['identifier'] == "attachment") {
+		</article>
+	</div>
+	<div class="uk-width-1-2@l">
+		<?php
+		if(isset($TemplateData['entry']['fields'])) {
+			foreach($TemplateData['entry']['fields'] as $field) {
+				if($field['identifier'] == "coverimage" || $field['identifier'] == "attachment") {
 
-                    $_fieldViewSpecial = Summoner::themefile('entry/field-'.$field['type'].'-'.$field['identifier'].'.html', UI_THEME);
-                    $_fieldView = Summoner::themefile('entry/field-'.$field['type'].'.html', UI_THEME);
-                    if(file_exists($_fieldViewSpecial)) {
-                        require $_fieldViewSpecial;
-                    }
-                    elseif(file_exists($_fieldView)) {
-                        require $_fieldView;
-                    }
-                    else {
-                        require $TemplateData['fieldViewDefault'];
-                    }
-                }
-            }
-        }
-        ?>
-    </div>
+					$_fieldViewSpecial = Summoner::themefile('entry/field-'.$field['type'].'-'.$field['identifier'].'.html', UI_THEME);
+					$_fieldView = Summoner::themefile('entry/field-'.$field['type'].'.html', UI_THEME);
+					if(file_exists($_fieldViewSpecial)) {
+						require $_fieldViewSpecial;
+					}
+					elseif(file_exists($_fieldView)) {
+						require $_fieldView;
+					}
+					else {
+						require $TemplateData['fieldViewDefault'];
+					}
+				}
+			}
+		}
+		?>
+	</div>
 </div>

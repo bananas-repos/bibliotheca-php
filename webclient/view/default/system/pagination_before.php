@@ -28,24 +28,24 @@ $TemplateData['pagination'] = array('pages' => 0);
 
 $_curPage = 1;
 if(isset($_GET['page']) && !empty($_GET['page'])) {
-    $_curPage = trim($_GET['page']);
-    $_curPage = Summoner::validate($_curPage,'digit') ? $_curPage : 1;
+	$_curPage = trim($_GET['page']);
+	$_curPage = Summoner::validate($_curPage,'digit') ? $_curPage : 1;
 }
 $_sort = false;
 if(isset($_GET['s']) && !empty($_GET['s'])) {
-    $_sort = trim($_GET['s']);
-    $_sort = Summoner::validate($_sort,'nospace') ? $_sort : false;
+	$_sort = trim($_GET['s']);
+	$_sort = Summoner::validate($_sort,'nospace') ? $_sort : false;
 }
 
 $_sortDirection = false;
 if(isset($_GET['sd']) && !empty($_GET['sd'])) {
-    $_sortDirection = trim($_GET['sd']);
-    $_sortDirection = Summoner::validate($_sortDirection,'nospace') ? $_sortDirection : false;
+	$_sortDirection = trim($_GET['sd']);
+	$_sortDirection = Summoner::validate($_sortDirection,'nospace') ? $_sortDirection : false;
 }
 
 $_queryOptions = array(
-    'limit' => RESULTS_PER_PAGE,
-    'offset' => (RESULTS_PER_PAGE * ($_curPage-1)),
-    'orderby' => $_sort,
-    'sortDirection' => $_sortDirection
+	'limit' => RESULTS_PER_PAGE,
+	'offset' => (RESULTS_PER_PAGE * ($_curPage-1)),
+	'orderby' => $_sort,
+	'sortDirection' => $_sortDirection
 );

@@ -23,14 +23,14 @@ $Trite = new Trite($DB,$Doomguy);
 
 $_collection = false;
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
-    $_collection = trim($_GET['collection']);
-    $_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+	$_collection = trim($_GET['collection']);
+	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
 }
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
-    $_id = trim($_GET['id']);
-    $_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = trim($_GET['id']);
+	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
 $TemplateData['loadedCollection'] = array();
@@ -39,26 +39,26 @@ $TemplateData['search'] = false;
 
 $_search = false;
 if(isset($_POST['navSearch'])) {
-    $_search = trim($_POST['navSearch']);
-    $_search = Summoner::validate($_search,'text') ? $_search :  false;
+	$_search = trim($_POST['navSearch']);
+	$_search = Summoner::validate($_search,'text') ? $_search :  false;
 }
 
 
 if(!empty($_collection)) {
-    $TemplateData['loadedCollection'] = $Trite->load($_collection);
-    if(!empty($TemplateData['loadedCollection'])) {
-        $TemplateData['searchAction'] = 'index.php?p=tags&collection='.$Trite->param('id');
-        $Mancubus->setCollection($Trite->param('id'));
-        $TemplateData['tags'] = $Mancubus->getTags($_search);
-        if(!empty($_search)) {
-            $TemplateData['search'] = $_search;
-        }
-    }
-    else {
-        $TemplateData['message']['content'] = "Can not load given collection.";
-        $TemplateData['message']['status'] = "error";
-    }
+	$TemplateData['loadedCollection'] = $Trite->load($_collection);
+	if(!empty($TemplateData['loadedCollection'])) {
+		$TemplateData['searchAction'] = 'index.php?p=tags&collection='.$Trite->param('id');
+		$Mancubus->setCollection($Trite->param('id'));
+		$TemplateData['tags'] = $Mancubus->getTags($_search);
+		if(!empty($_search)) {
+			$TemplateData['search'] = $_search;
+		}
+	}
+	else {
+		$TemplateData['message']['content'] = "Can not load given collection.";
+		$TemplateData['message']['status'] = "error";
+	}
 }
 else {
-    $TemplateData['collections'] = $Trite->getCollections();
+	$TemplateData['collections'] = $Trite->getCollections();
 }

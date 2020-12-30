@@ -24,167 +24,167 @@
  *
  */
 class Trite {
-    /**
-     * The database object
-     *
-     * @var object
-     */
-    private $_DB;
+	/**
+	 * The database object
+	 *
+	 * @var object
+	 */
+	private $_DB;
 
-    /**
-     * The user object to query with
-     *
-     * @var object
-     */
-    private $_User;
+	/**
+	 * The user object to query with
+	 *
+	 * @var object
+	 */
+	private $_User;
 
-    /**
-     * Currently loaded collection to work with
-     *
-     * @var number
-     */
-    private $_id;
+	/**
+	 * Currently loaded collection to work with
+	 *
+	 * @var number
+	 */
+	private $_id;
 
-    /**
-     * Current loaded collection data as an array
-     *
-     * @var array
-     */
-    private $_collectionData;
+	/**
+	 * Current loaded collection data as an array
+	 *
+	 * @var array
+	 */
+	private $_collectionData;
 
-    /**
-     * Options for db queries
-     *  'limit' => int,
-     *  'offset' => int,
-     *  'orderby' => string,
-     *  'sortDirection' => ASC|DESC
-     *
-     * @var array
-     */
-    private $_queryOptions;
+	/**
+	 * Options for db queries
+	 *  'limit' => int,
+	 *  'offset' => int,
+	 *  'orderby' => string,
+	 *  'sortDirection' => ASC|DESC
+	 *
+	 * @var array
+	 */
+	private $_queryOptions;
 
-    /**
-     * Trite constructor.
-     *
-     * @param $databaseConnectionObject
-     * @param $userObj
-     */
-    public function __construct($databaseConnectionObject, $userObj) {
-        $this->_DB = $databaseConnectionObject;
-        $this->_User = $userObj;
+	/**
+	 * Trite constructor.
+	 *
+	 * @param $databaseConnectionObject
+	 * @param $userObj
+	 */
+	public function __construct($databaseConnectionObject, $userObj) {
+		$this->_DB = $databaseConnectionObject;
+		$this->_User = $userObj;
 
-        $this->_setDefaults();
-    }
+		$this->_setDefaults();
+	}
 
-    /**
-     * Set the following options which can be used in DB queries
-     * array(
-     *  'limit' => RESULTS_PER_PAGE,
-     *  'offset' => (RESULTS_PER_PAGE * ($_curPage-1)),
-     *  'orderby' => $_sort,
-     *  'sortDirection' => $_sortDirection
-     * );
-     * @param array $options
-     */
-    public function setQueryOptions($options) {
+	/**
+	 * Set the following options which can be used in DB queries
+	 * array(
+	 *  'limit' => RESULTS_PER_PAGE,
+	 *  'offset' => (RESULTS_PER_PAGE * ($_curPage-1)),
+	 *  'orderby' => $_sort,
+	 *  'sortDirection' => $_sortDirection
+	 * );
+	 * @param array $options
+	 */
+	public function setQueryOptions($options) {
 
-        if(!isset($options['limit'])) $options['limit'] = 5;
-        if(!isset($options['offset'])) $options['offset'] = false;
-        if(!isset($options['sort'])) $options['sort'] = false;
-        if(!isset($options['sortDirection'])) $options['sortDirection'] = false;
+		if(!isset($options['limit'])) $options['limit'] = 5;
+		if(!isset($options['offset'])) $options['offset'] = false;
+		if(!isset($options['sort'])) $options['sort'] = false;
+		if(!isset($options['sortDirection'])) $options['sortDirection'] = false;
 
-        $this->_queryOptions = $options;
-    }
+		$this->_queryOptions = $options;
+	}
 
-    /**
-     * Get information to display for current collection
-     * based on current user and given rights
-     *
-     * @param int $id The collection ID to load
-     * @param string $right The rights mode. read, write or delete
-     * @return array
-     */
-    public function load($id,$right="read") {
-        $this->_collectionData = array();
+	/**
+	 * Get information to display for current collection
+	 * based on current user and given rights
+	 *
+	 * @param int $id The collection ID to load
+	 * @param string $right The rights mode. read, write or delete
+	 * @return array
+	 */
+	public function load($id,$right="read") {
+		$this->_collectionData = array();
 
-        if(!empty($id) && Summoner::validate($id, 'digit')) {
+		if(!empty($id) && Summoner::validate($id, 'digit')) {
 
-            $queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
-                    `c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
-                    `u`.`name` AS username, `g`.`name` AS groupname
-                    FROM `".DB_PREFIX."_collection` AS c
-                    LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
-                    LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
-                    WHERE ".$this->_User->getSQLRightsString($right, "c")."
-                    AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
-            try {
-                $query = $this->_DB->query($queryStr);
-                if ($query !== false && $query->num_rows > 0) {
-                    $this->_collectionData = $query->fetch_assoc();
-                    $this->_id = $this->_collectionData['id'];
-                }
-            } catch (Exception $e) {
-                if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryStr);
-                error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-            }
-        }
+			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
+					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
+					`u`.`name` AS username, `g`.`name` AS groupname
+					FROM `".DB_PREFIX."_collection` AS c
+					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
+					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
+					WHERE ".$this->_User->getSQLRightsString($right, "c")."
+					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows > 0) {
+					$this->_collectionData = $query->fetch_assoc();
+					$this->_id = $this->_collectionData['id'];
+				}
+			} catch (Exception $e) {
+				if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryStr);
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
 
-        return $this->_collectionData;
-    }
+		return $this->_collectionData;
+	}
 
-    /**
-     * get the value of the specified param from the collection data array
-     *
-     * @param string $param
-     * @return bool|mixed
-     */
-    public function param($param) {
-        $ret = false;
+	/**
+	 * get the value of the specified param from the collection data array
+	 *
+	 * @param string $param
+	 * @return bool|mixed
+	 */
+	public function param($param) {
+		$ret = false;
 
-        $param = trim($param);
+		$param = trim($param);
 
-        if(!empty($param) && isset($this->_collectionData[$param])) {
-            $ret = $this->_collectionData[$param];
-        }
+		if(!empty($param) && isset($this->_collectionData[$param])) {
+			$ret = $this->_collectionData[$param];
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * Get all available collections for display based on current user
-     * and read mode
-     *
-     * @return array
-     */
-    public function getCollections() {
-        $ret = array();
+	/**
+	 * Get all available collections for display based on current user
+	 * and read mode
+	 *
+	 * @return array
+	 */
+	public function getCollections() {
+		$ret = array();
 
-        $queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`
-                    FROM `".DB_PREFIX."_collection` AS c
-                    LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
-                    LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
-                    WHERE ".$this->_User->getSQLRightsString("read", "c")."
-                    ORDER BY `c`.`name`";
-        $query = $this->_DB->query($queryStr);
+		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`
+					FROM `".DB_PREFIX."_collection` AS c
+					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
+					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
+					WHERE ".$this->_User->getSQLRightsString("read", "c")."
+					ORDER BY `c`.`name`";
+		$query = $this->_DB->query($queryStr);
 
-        if($query !== false && $query->num_rows > 0) {
-            while(($result = $query->fetch_assoc()) != false) {
-                $ret[$result['id']] = $result;
-            }
-        }
+		if($query !== false && $query->num_rows > 0) {
+			while(($result = $query->fetch_assoc()) != false) {
+				$ret[$result['id']] = $result;
+			}
+		}
 
-        return $ret;
-    }
+		return $ret;
+	}
 
-    /**
-     * set some defaults by init of the class
-     */
-    private function _setDefaults() {
-        // default query options
-        $options['limit'] = 5;
-        $options['offset'] = false;
-        $options['sort'] = false;
-        $options['sortDirection'] = false;
-        $this->setQueryOptions($options);
-    }
+	/**
+	 * set some defaults by init of the class
+	 */
+	private function _setDefaults() {
+		// default query options
+		$options['limit'] = 5;
+		$options['offset'] = false;
+		$options['sort'] = false;
+		$options['sortDirection'] = false;
+		$this->setQueryOptions($options);
+	}
 }

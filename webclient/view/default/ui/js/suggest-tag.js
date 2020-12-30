@@ -5,17 +5,17 @@
  * @param String targetStartString
  */
 function removeTag(tagString,targetStartString) {
-    let toRemove = document.getElementById(targetStartString + '-' + tagString);
-    let saveInput = document.getElementById(targetStartString + '-save');
+	let toRemove = document.getElementById(targetStartString + '-' + tagString);
+	let saveInput = document.getElementById(targetStartString + '-save');
 
-    if(toRemove && saveInput) {
-        let newSaveValue = _removeFromCommaString(saveInput.value,tagString);
-        saveInput.value = newSaveValue;
-        toRemove.remove();
-    }
-    else {
-        console.log("Delete element not found");
-    }
+	if(toRemove && saveInput) {
+		let newSaveValue = _removeFromCommaString(saveInput.value,tagString);
+		saveInput.value = newSaveValue;
+		toRemove.remove();
+	}
+	else {
+		console.log("Delete element not found");
+	}
 }
 
 /**
@@ -26,28 +26,28 @@ function removeTag(tagString,targetStartString) {
  * @param String targetStartString
  */
 function addTag(e,targetStartString) {
-    e = e || window.event;
+	e = e || window.event;
 
-    if(e.keyCode === 13) {
-        let elem = e.srcElement || e.target;
-        let saveInput = document.getElementById(targetStartString + '-save');
-        let listBox = document.getElementById(targetStartString + '-listbox');
-        let newTagTemplate = document.getElementById(targetStartString + '-template');
+	if(e.keyCode === 13) {
+		let elem = e.srcElement || e.target;
+		let saveInput = document.getElementById(targetStartString + '-save');
+		let listBox = document.getElementById(targetStartString + '-listbox');
+		let newTagTemplate = document.getElementById(targetStartString + '-template');
 
-        if(saveInput && listBox && elem && newTagTemplate) {
-            let toAdd = elem.value;
-            let newSaveValue = _appendToCommaString(saveInput.value,toAdd);
+		if(saveInput && listBox && elem && newTagTemplate) {
+			let toAdd = elem.value;
+			let newSaveValue = _appendToCommaString(saveInput.value,toAdd);
 
-            let newT = newTagTemplate.cloneNode(true);
-            newT = _fillTagTemplate(newT,toAdd,targetStartString);
-            listBox.appendChild(newT);
+			let newT = newTagTemplate.cloneNode(true);
+			newT = _fillTagTemplate(newT,toAdd,targetStartString);
+			listBox.appendChild(newT);
 
-            saveInput.value = newSaveValue;
-        }
+			saveInput.value = newSaveValue;
+		}
 
-        elem.value = '';
-        e.preventDefault();
-    }
+		elem.value = '';
+		e.preventDefault();
+	}
 }
 
 /**
@@ -59,17 +59,17 @@ function addTag(e,targetStartString) {
  * @private
  */
 function _appendToCommaString(theString,toAdd) {
-    if(theString.length > 0 && toAdd.length > 0) {
-        let theArray = theString.split(',');
-        if(!theArray.includes(toAdd)) {
-            theString = theString + "," + toAdd
-        }
-    }
-    else if (toAdd.length > 0) {
-        theString = toAdd;
-    }
+	if(theString.length > 0 && toAdd.length > 0) {
+		let theArray = theString.split(',');
+		if(!theArray.includes(toAdd)) {
+			theString = theString + "," + toAdd
+		}
+	}
+	else if (toAdd.length > 0) {
+		theString = toAdd;
+	}
 
-    return theString;
+	return theString;
 }
 
 /**
@@ -81,19 +81,19 @@ function _appendToCommaString(theString,toAdd) {
  * @private
  */
 function _removeFromCommaString(theString,toRemove) {
-    if(theString.length > 0 && toRemove.length > 0) {
-        let theArray = theString.split(',');
+	if(theString.length > 0 && toRemove.length > 0) {
+		let theArray = theString.split(',');
 
-        if(theArray.includes(toRemove)) {
-            for( let i = theArray.length-1; i >= 0; i--){
-                if ( theArray[i] === toRemove) theArray.splice(i, 1);
-            }
+		if(theArray.includes(toRemove)) {
+			for( let i = theArray.length-1; i >= 0; i--){
+				if ( theArray[i] === toRemove) theArray.splice(i, 1);
+			}
 
-            theString = theArray.join(",");
-        }
-    }
+			theString = theArray.join(",");
+		}
+	}
 
-    return theString;
+	return theString;
 }
 
 /**
@@ -104,13 +104,13 @@ function _removeFromCommaString(theString,toRemove) {
  * @private
  */
 function _removeFromDatalist(list, value) {
-    if(list.options.length > 0 && value && value.length > 0) {
-        for (i = 0; i < list.options.length; i++) {
-            if(list.options[i].value == value) {
-                list.options[i].remove();
-            }
-        }
-    }
+	if(list.options.length > 0 && value && value.length > 0) {
+		for (i = 0; i < list.options.length; i++) {
+			if(list.options[i].value == value) {
+				list.options[i].remove();
+			}
+		}
+	}
 }
 
 /**
@@ -124,14 +124,14 @@ function _removeFromDatalist(list, value) {
  * @private
  */
 function _fillTagTemplate(el,newTagString,targetStartString) {
-    el.removeAttribute('style');
-    el.setAttribute('id',targetStartString + '-' + newTagString);
+	el.removeAttribute('style');
+	el.setAttribute('id',targetStartString + '-' + newTagString);
 
-    let spanEl = el.querySelector('span');
-    spanEl.innerHTML = newTagString;
+	let spanEl = el.querySelector('span');
+	spanEl.innerHTML = newTagString;
 
-    let aEl = el.querySelector('a');
-    aEl.setAttribute('onclick', "removeTag('"+newTagString+"','"+targetStartString+"');");
+	let aEl = el.querySelector('a');
+	aEl.setAttribute('onclick', "removeTag('"+newTagString+"','"+targetStartString+"');");
 
-    return el;
+	return el;
 }

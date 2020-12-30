@@ -23,89 +23,89 @@ $TemplateData['editData'] = false;
 
 $_editMode = false;
 if(isset($_GET['m']) && !empty($_GET['m'])) {
-    if($_GET['m'] == "edit") {
-        $_editMode = true;
-    }
+	if($_GET['m'] == "edit") {
+		$_editMode = true;
+	}
 }
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
-    $_id = trim($_GET['id']);
-    $_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = trim($_GET['id']);
+	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
 if($_editMode === true && !empty($_id)) {
-    $TemplateData['editData'] = $Possessed->getEditData($_id);
-    if(!isset($TemplateData['editData']['name'])) {
-        $TemplateData['refresh'] = 'index.php?p=manageusers';
-    }
+	$TemplateData['editData'] = $Possessed->getEditData($_id);
+	if(!isset($TemplateData['editData']['name'])) {
+		$TemplateData['refresh'] = 'index.php?p=manageusers';
+	}
 }
 
 
 if(isset($_POST['submitForm'])) {
-    $fdata = $_POST['fdata'];
-    if(!empty($fdata)) {
+	$fdata = $_POST['fdata'];
+	if(!empty($fdata)) {
 
-        $_login = trim($fdata['login']);
-        $_group = trim($fdata['group']);
-        $_username = trim($fdata['username']);
-        $_password = trim($fdata['password']);
-        $_active = false;
-        if (isset($fdata['active'])) {
-            $_active = true;
-        }
+		$_login = trim($fdata['login']);
+		$_group = trim($fdata['group']);
+		$_username = trim($fdata['username']);
+		$_password = trim($fdata['password']);
+		$_active = false;
+		if (isset($fdata['active'])) {
+			$_active = true;
+		}
 
-        if(!empty($TemplateData['editData'])) {
-            if(isset($fdata['doDelete'])) {
-                $do = $Possessed->deleteUser($_id);
-                if ($do === true) {
-                    $TemplateData['refresh'] = 'index.php?p=manageusers';
-                } else {
-                    $TemplateData['message']['content'] = "User could not be deleted.";
-                    $TemplateData['message']['status'] = "error";
-                }
-            }
-            elseif (!empty($_username) && !empty($_group) && !empty($_login)) {
-                if (Summoner::validate($_username, 'text') === true
-                    && Summoner::validate($_login, 'nospace') === true
-                    && isset($TemplateData['existingGroups'][$_group])
-                ) {
-                    $refreshApi = false;
-                    if(isset($fdata['refreshApiToken'])) {
-                        $refreshApi = true;
-                    }
-                    $do = $Possessed->updateUser($_id, $_username, $_login, $_password, $_group, $_active, $refreshApi);
-                    if ($do === true) {
-                        $TemplateData['refresh'] = 'index.php?p=manageusers';
-                    } else {
-                        $TemplateData['message']['content'] = "User could not be updated.";
-                        $TemplateData['message']['status'] = "error";
-                    }
-                } else {
-                    $TemplateData['message']['content'] = "Provide username, login and a valid user group.";
-                    $TemplateData['message']['status'] = "error";
-                }
-            }
-        }
-        else { // adding mode
-            if (!empty($_username) && !empty($_password) && !empty($_group) && !empty($_login)) {
-                if (Summoner::validate($_username, 'text') === true
-                    && Summoner::validate($_password, 'text') === true
-                    && Summoner::validate($_login, 'nospace') === true
-                    && isset($TemplateData['existingGroups'][$_group])
-                ) {
-                    $do = $Possessed->createUser($_username, $_login, $_password, $_group, $_active);
-                    if ($do === true) {
-                        $TemplateData['refresh'] = 'index.php?p=manageusers';
-                    } else {
-                        $TemplateData['message']['content'] = "User could not be created.";
-                        $TemplateData['message']['status'] = "error";
-                    }
-                } else {
-                    $TemplateData['message']['content'] = "Provide username, login, password and a valid user group.";
-                    $TemplateData['message']['status'] = "error";
-                }
-            }
-        }
-    }
+		if(!empty($TemplateData['editData'])) {
+			if(isset($fdata['doDelete'])) {
+				$do = $Possessed->deleteUser($_id);
+				if ($do === true) {
+					$TemplateData['refresh'] = 'index.php?p=manageusers';
+				} else {
+					$TemplateData['message']['content'] = "User could not be deleted.";
+					$TemplateData['message']['status'] = "error";
+				}
+			}
+			elseif (!empty($_username) && !empty($_group) && !empty($_login)) {
+				if (Summoner::validate($_username, 'text') === true
+					&& Summoner::validate($_login, 'nospace') === true
+					&& isset($TemplateData['existingGroups'][$_group])
+				) {
+					$refreshApi = false;
+					if(isset($fdata['refreshApiToken'])) {
+						$refreshApi = true;
+					}
+					$do = $Possessed->updateUser($_id, $_username, $_login, $_password, $_group, $_active, $refreshApi);
+					if ($do === true) {
+						$TemplateData['refresh'] = 'index.php?p=manageusers';
+					} else {
+						$TemplateData['message']['content'] = "User could not be updated.";
+						$TemplateData['message']['status'] = "error";
+					}
+				} else {
+					$TemplateData['message']['content'] = "Provide username, login and a valid user group.";
+					$TemplateData['message']['status'] = "error";
+				}
+			}
+		}
+		else { // adding mode
+			if (!empty($_username) && !empty($_password) && !empty($_group) && !empty($_login)) {
+				if (Summoner::validate($_username, 'text') === true
+					&& Summoner::validate($_password, 'text') === true
+					&& Summoner::validate($_login, 'nospace') === true
+					&& isset($TemplateData['existingGroups'][$_group])
+				) {
+					$do = $Possessed->createUser($_username, $_login, $_password, $_group, $_active);
+					if ($do === true) {
+						$TemplateData['refresh'] = 'index.php?p=manageusers';
+					} else {
+						$TemplateData['message']['content'] = "User could not be created.";
+						$TemplateData['message']['status'] = "error";
+					}
+				} else {
+					$TemplateData['message']['content'] = "Provide username, login, password and a valid user group.";
+					$TemplateData['message']['status'] = "error";
+				}
+			}
+		}
+	}
 }
