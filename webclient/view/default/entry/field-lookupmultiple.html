@@ -1,0 +1,8 @@
+<p data-field-name="lookupmultiple" data-field-id="<?php echo $field['identifier']; ?>">
+    <span class="uk-text-muted"><?php echo $field['displayname']; ?>:</span>
+    <?php
+    foreach($field['value'] as $_fv) {
+        echo '<a href="index.php?p=collections&collection='.$TemplateData['loadedCollection']['id'].'&fid='.$field['id'].'&fv='.urlencode($_fv).'">'.$_fv.'</a>, ';
+    }
+    ?>
+</p>

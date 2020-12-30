@@ -1,0 +1,60 @@
+<h3 class="uk-h3">Manage your fields for: <?php echo $TemplateData['editData']['name']; ?></h3>
+
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+    <div class="uk-width-1-2">
+        <h4 class="uk-h4">Add or remove a field</h4>
+        <p>
+            Just use drag and drop below to add, remove or order your fields.<br />
+            <span class="" uk-icon="icon: warning"></span> Removing a field will remove
+            the stored data from the collection.<br />
+            <span class="" uk-icon="icon: warning"></span> Make sure at least the <b>title</b>
+            field is available.
+        </p>
+        <div id="collectionFields" uk-sortable="group: sortable-group">
+            <?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
+            <div data-field-id="<?php echo $k; ?>">
+                <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
+                <?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)
+            </div>
+            <?php } ?>
+        </div>
+
+        <form class="uk-form-horizontal uk-margin-small" method="post" onsubmit="return saveOrderAndSubmit()">
+            <input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
+               value="<?php echo Summoner::ifset($TemplateData['editData'], 'fieldSortString'); ?>">
+            <div class="uk-margin">
+                <button class="uk-button uk-button-primary" type="submit" name="submitForm">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="uk-width-1-2">
+        <h4 class="uk-h4">Available fields</h4>
+        <div uk-sortable="group: sortable-group">
+            <?php foreach($TemplateData['availableFields'] as $k=>$v) { ?>
+            <div data-field-id="<?php echo $k; ?>">
+                <span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
+                <?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)
+            </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function saveOrderAndSubmit() {
+        let list = document.getElementById("collectionFields");
+        let fieldSort = document.getElementById("fieldSort");
+        let sortString = '';
+        if(list && list.children.length > 0 && fieldSort) {
+            let fields = Array.from(list.children);
+            fields.forEach(function(item, index) {
+                sortString += item.getAttribute("data-field-id")+",";
+            });
+            fieldSort.value = sortString;
+            return true;
+        }
+        return false;
+    }
+</script>

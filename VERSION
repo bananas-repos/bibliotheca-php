@@ -1,0 +1,9 @@
+0.2 - Vortex Rikers (tba)
+    * Games and movie collection as static files with Hugo (https://gohugo.io)
+    * Tool: Datacrow import into Bibilotheca database
+0.1 - Castle - (2019/09/31)
+	* First usable version
+	* Static collection with hugo (https://gohugo.io)
+	* Static collection design based on CSS/JS Uikit (https://getuikit.com)
+	* Tool: Datacrow (http://www.datacrow.net/) export can be imported into static files for hugo
+	* Tool: Datacrow import can create static md files based on a movie collection

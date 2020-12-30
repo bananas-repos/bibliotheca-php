@@ -1,0 +1,74 @@
+<?php
+if(!empty($TemplateData['editFields'])) {
+	$_entry = '';
+	if(!empty($TemplateData['editData'])) {
+		$_entry = $TemplateData['editData']['id'];
+?>
+		<h3 class="uk-h3">Update an entry in: <?php echo $TemplateData['loadedCollection']['name']; ?></h3>
+		<p><a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $_entry; ?>">View entry</a></p>
+<?php } else { ?>
+		<h3 class="uk-h3">Add an entry to: <?php echo $TemplateData['loadedCollection']['name']; ?></h3>
+<?php } ?>
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-2-3">
+		<form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
+
+			<?php
+			foreach($TemplateData['editFields'] as $field) {
+				$_editFieldView = Summoner::themefile('manageentry/field-'.$field['type'].'.html', UI_THEME);
+				if(file_exists($_editFieldView)) {
+					require $_editFieldView;
+				}
+				else {
+					require $TemplateData['_editFieldViewDefault'];
+				}
+			}
+
+			if(!empty($TemplateData['editData']['_canDelete'])) {
+			?>
+
+			<div class="uk-margin">
+				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
+					</label>
+				</div>
+			</div>
+
+			<?php } ?>
+
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Save
+				</button>
+			</div>
+		</form>
+	</div>
+	<div>
+		<?php if(!empty($TemplateData['availableTools'])) { ?>
+		<h4>Available tools</h4>
+		<ul>
+		<?php foreach($TemplateData['availableTools'] as $tool) { ?>
+			<li><a href="index.php?p=tool&t=<?php echo $tool['action']; ?>&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $_entry; ?>"
+				   target="<?php echo $tool['target']; ?>"><?php echo $tool['name']; ?> (<?php echo $tool['description']; ?>)</a></li>
+		<?php } ?>
+		</ul>
+		<?php } ?>
+	</div>
+</div>
+<script type="text/javascript" src="view/default/ui/js/suggest-tag.js"></script>
+<?php } else { ?>
+<h3 class="uk-h3">Add an entry to your collection</h3>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<h4 class="uk-h4">Please select a collection first:</h4>
+		<dl class="uk-description-list uk-description-list-divider">
+			<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
+			<dt><a href="index.php?p=manageentry&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>
+			<dd><?php echo $v['description']; ?></dd>
+			<?php } ?>
+		</dl>
+	</div>
+</div>
+<?php } ?>

@@ -1,0 +1,9 @@
+<div class="uk-margin">
+    <label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+    <div class="uk-form-controls">
+        <input class="uk-input" id="<?php echo $field['identifier']; ?>" type="text" autocomplete="off"
+           name="fdata[<?php echo $field['identifier']; ?>]"
+           value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+        >
+    </div>
+</div>

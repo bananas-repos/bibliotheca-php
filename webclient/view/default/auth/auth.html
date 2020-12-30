@@ -1,0 +1,31 @@
+<?php if($Doomguy->isSignedIn() === true) { ?>
+<h3 class="uk-h3">Logout</h3>
+<a class="uk-button uk-button-primary" href="index.php?p=auth&m=logout">
+    Logout
+    <span uk-icon="icon: sign-out"></span>
+</a>
+<?php } else { ?>
+<h3 class="uk-h3">Login</h3>
+<div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
+    <form class="uk-form-horizontal uk-margin-small" method="post">
+        <div class="uk-margin">
+            <label class="uk-form-label" for="username">Username</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[login]">
+            </div>
+        </div>
+        <div class="uk-margin">
+            <label class="uk-form-label" for="password">Password</label>
+            <div class="uk-form-controls">
+                <input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
+            </div>
+        </div>
+        <div class="uk-margin">
+            <button class="uk-button uk-button-primary" type="submit" name="submitForm">
+                Login
+                <span class="uk-icon" uk-icon="icon: sign-in"></span>
+            </button>
+        </div>
+    </form>
+</div>
+<?php } ?>

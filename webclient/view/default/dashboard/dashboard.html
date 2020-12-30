@@ -1,0 +1,54 @@
+<?php if(!empty($TemplateData['search'])) { ?>
+<div uk-alert id="searchNotice">
+    <button class="uk-alert-close" type="button" uk-close></button>
+    <p>Display result for: <b><?php echo $TemplateData['search']; ?></b></p>
+</div>
+<script type="text/javascript">
+    UIkit.util.on('#searchNotice', 'hide', function () {
+        window.location.href="index.php";
+    });
+</script>
+<?php } ?>
+
+<div class="uk-grid-divider uk-child-width-expand@s" uk-grid>
+<?php foreach($TemplateData['latest'] as $k=>$v) { ?>
+    <div>
+        <a href="index.php?p=collections&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a><br  />
+        <?php echo $v['description']; ?>
+
+        <?php
+        if(isset($v['entries']['results'])) {
+            foreach($v['entries']['results'] as $entryK=>$entry) { ?>
+
+        <div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
+            <div class="uk-card-media-left uk-cover-container">
+                <?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+                <img src="<?php echo PATH_WEB_STORAGE.'/'.$k.'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
+                     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>" uk-cover>
+                <canvas width="600" height="400"></canvas>
+                <?php } ?>
+            </div>
+            <div>
+                <div class="uk-card-body">
+                    <?php if(Summoner::ifset($entry['fields'], 'title')) { ?>
+                    <h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
+                    <?php } ?>
+
+                    <?php if(Summoner::ifset($entry['fields'], 'description')) { ?>
+                    <p><?php echo $entry['fields']['description']['value']; ?></p>
+                    <?php } ?>
+                </div>
+                <div class="uk-card-footer">
+                    <a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text">View</a>
+                </div>
+            </div>
+        </div>
+
+        <?php
+            }
+        }
+        ?>
+
+    </div>
+<?php } ?>
+</div>

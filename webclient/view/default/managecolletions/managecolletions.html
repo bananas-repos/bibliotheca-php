@@ -1,0 +1,166 @@
+<h3 class="uk-h3">Manage your collections</h3>
+
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<h4 class="uk-h4">Add or modify a collection</h4>
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="name">Name</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="name" type="text" autocomplete="off" name="fdata[name]"
+						placeholder="Unique name. No special chars."
+						value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="description">Description</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="description" type="text" autocomplete="off" name="fdata[description]"
+						   value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="owner">Owner</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="owner" name="fdata[owner]">
+						<option value="">Please select</option>
+						<?php foreach($TemplateData['ownerSelection'] as $k=>$v) { ?>
+						<option value="<?php echo $k; ?>"
+						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'owner',$k)) echo 'selected'; ?>
+						><?php echo $v['login']; ?> (<?php echo $v['name']; ?>)</option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="group">Group</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="group" name="fdata[group]">
+						<option value="">Please select</option>
+						<?php foreach($TemplateData['groupSelection'] as $k=>$v) { ?>
+						<option value="<?php echo $k; ?>"
+							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'group',$k)) echo 'selected'; ?>
+						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label">Rights</div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<table class="uk-table uk-table-small">
+						<tr>
+							<th>User</th>
+							<th>Group</th>
+							<th>Other</th>
+						</tr>
+						<tr>
+							<td>
+								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][read]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>></label>
+								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][write]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>></label>
+								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][delete]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>></label>
+							</td>
+							<td>
+								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][read]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>></label>
+								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][write]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>></label>
+								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][delete]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>></label>
+							</td>
+							<td>
+								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][read]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>></label>
+								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][write]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>></label>
+								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][delete]" value="1"
+									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>></label>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="tool">Tools</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="tool" name="fdata[tool][]" multiple="multiple" size="5">
+						<option value="">None</option>
+						<?php foreach($TemplateData['toolSelection'] as $k=>$v) { ?>
+						<option value="<?php echo $k; ?>"
+						<?php if(Summoner::ifset($TemplateData['editData']['tool'],$k)) echo 'selected'; ?>
+						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+			<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
+			<div class="uk-margin">
+				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
+						Warning: this will delete ALL the data in this collection!
+					</label>
+				</div>
+			</div>
+			<?php } ?>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="defaultSearchField">Default global search field</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="defaultSearchField" name="fdata[defaultSearchField]">
+						<option value="">Please select</option>
+						<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
+						<option value="<?php echo $v['identifier']; ?>"
+						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSearchField', $v['identifier'])) echo 'selected'; ?>
+						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+						<?php } ?>
+					</select>
+					<small>The field is used in the global search.
+					<span class="" uk-icon="icon: warning"></span> Altering the default search field results in
+					a DB reindex. This could take some time, depending on the amount of data.</small>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Save
+				</button>
+			</div>
+		</form>
+	</div>
+	<div class="uk-width-1-2">
+		<h4 class="uk-h4">Available collections</h4>
+		<table class="uk-table">
+			<thead>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Ownership</th>
+				<th></th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
+			<tr>
+				<td>
+					<?php echo $v['name']; ?><br/>
+					<small><?php echo $v['created']; ?></small>
+				</td>
+				<td><?php echo $v['description']; ?></td>
+				<td>
+					<span uk-icon="user"></span> <?php echo $v['username']; ?><br />
+					<span uk-icon="users"></span> <?php echo $v['groupname']; ?><br />
+					<span uk-icon="lock"></span> <?php echo $v['rights']; ?>
+				</td>
+				<td>
+					<a href="index.php?p=managecolletions&m=edit&id=<?php echo $k; ?>" uk-icon="pencil"></a>
+					<a href="index.php?p=managecollectionfields&id=<?php echo $k; ?>" uk-icon="list"></a>
+				</td>
+			</tr>
+			<?php } ?>
+			</tbody>
+		</table>
+	</div>
+</div>
