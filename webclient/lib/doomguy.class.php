@@ -24,24 +24,28 @@ class Doomguy {
 
 	/**
 	 * the global DB object
+	 *
 	 * @var object
 	 */
 	private $_DB;
 
 	/**
 	 * if the user is logged in or not
+	 *
 	 * @var boolean
 	 */
 	protected $isSignedIn = false;
 
 	/**
 	 * the data from the current user
+	 *
 	 * @var array
 	 */
 	protected $userData = false;
 
 	/**
 	 * the user ID from user management or default
+	 *
 	 * @var Int
 	 */
 	protected $userID = 0;
@@ -70,6 +74,11 @@ class Doomguy {
 		)
 	);
 
+	/**
+	 * Doomguy constructor.
+	 *
+	 * @param object $db The database object
+	 */
 	public function __construct($db) {
 		$this->_DB = $db;
 
@@ -86,6 +95,7 @@ class Doomguy {
 
 	/**
 	 * get the value of the specified param from the user data array
+	 *
 	 * @param string $param
 	 * @return bool|mixed
 	 */
@@ -103,6 +113,7 @@ class Doomguy {
 
 	/**
 	 * return the isSignedIn status.
+	 *
 	 * @return boolean
 	 */
 	public function isSignedIn() {
@@ -111,6 +122,7 @@ class Doomguy {
 
 	/**
 	 * get the data from the userSession table
+	 *
 	 * @param string $param
 	 * @return bool
 	 */
@@ -130,6 +142,7 @@ class Doomguy {
 
 	/**
 	 * Log out the current loaded user
+	 *
 	 * @return boolean
 	 */
 	public function logOut () {
@@ -146,6 +159,7 @@ class Doomguy {
 	/**
 	 * check if the loaded user is in this group
 	 * if the user is in ADMIN_GROUP_ID, the he is automatically "in" every group
+	 *
 	 * @param int $groupID
 	 * @return bool
 	 */
@@ -163,7 +177,8 @@ class Doomguy {
 	}
 
 	/**
-	 * authenticate the user. Create session and db entries
+	 * Authenticate the user. Create session and db entries
+	 *
 	 * @param string $username
 	 * @param string $password
 	 * @return boolean
@@ -207,6 +222,7 @@ class Doomguy {
 
 	/**
 	 * Use the user identified by apitoken
+	 *
 	 * @param $token string
 	 */
 	public function authByApiToken($token) {
@@ -331,6 +347,7 @@ class Doomguy {
 	/**
 	 * check if the given username is set in user table
 	 * if so load the user data
+	 *
 	 * @param string $u
 	 * @return boolean
 	 */
@@ -361,7 +378,7 @@ class Doomguy {
 
 		# clean old sessions on session table
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
-		$query = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession`
+		$this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `loginTime` <= '".$timeframe."'");
 	}
 
@@ -407,11 +424,12 @@ class Doomguy {
 
 	/**
 	 * destroy and remove the current session from SESSION and session table
+	 *
 	 * @return boolean
 	 */
 	protected function _destroySession() {
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
-		$query = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession`
+		$this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `fk_user_id` = '".$this->_DB->real_escape_string($this->userID)."'
 				OR `loginTime` <= '".$timeframe."'");
 
