@@ -1,1 +1,36 @@
+1. Unpack
+Unpack the archive in a temp folder. Follow the steps. After you can delete the
+unpacked files
+
+2. DB Setup
+Create a DB and choose a prefix (A _ is added automatically as separation) for your tables.
+Open the provided sql file. Search for #REPLACEME# and replace it with your table prefix.
+Save. Import this file into you newly created DB.
+
+3. Config
+Copy webclient/config/database.php.default to webclient/config/database.php
+Edit and fill in the DB details.
+
+Copy webclient/config/path.php.default to webclient/config/path.php
+Edit the file. Minimum is to change PATH_ABSOLUTE to you installation path and
+PATH_WEB_STORAGE relative to your webroot.
+If you change the other settings you need to change the folders too.
+
+Copy webclient/config/system.php.default to webclient/config/system.php
+No need to change anything unless you know what and why.
+
+4. Move files
+Move the content of webclient folder to your webspace. Make sure the location matches
+the PATH_ABSOLUTE config in path.php file
+
+5. File rights
+Make sure that systemout folder is read/write accessible with your webserver user. Recursive.
+Make sure that storage folder is read/write accessible with your webserver user. Recursive.
+
+6. Access
+Open your browser and visit your newly created bibliotheca installation.
 Default admin user pw: test
+
+7. First steps
+Create your own user.
+Create your first collection.
