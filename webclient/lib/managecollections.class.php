@@ -219,9 +219,9 @@ class ManageCollections {
 				$queryEntry2lookup = "CREATE TABLE `".DB_PREFIX."_collection_entry2lookup_".$newId."` (
 										`fk_field` int NOT NULL,
 										`fk_entry` int NOT NULL,
-										`value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+										`value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 										FULLTEXT KEY `value` (`value`)
-										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 				$this->_DB->query($queryEntry2lookup);
 
 				$queryCollectionFields = "CREATE TABLE `".DB_PREFIX."_collection_fields_".$newId."` (
@@ -229,7 +229,7 @@ class ManageCollections {
 										 `sort` int NOT NULL,
 										 UNIQUE KEY `fk_field_id` (`fk_field_id`),
 										 KEY `sort` (`sort`)
-										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 				$this->_DB->query($queryCollectionFields);
 
 				$queryCollectionEntry = "CREATE TABLE `".DB_PREFIX."_collection_entry_".$newId."` (
@@ -241,7 +241,7 @@ class ManageCollections {
 										 `group` int NOT NULL,
 										 `rights` char(9) COLLATE utf8mb4_bin NOT NULL,
 										 PRIMARY KEY (`id`)
-										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci";
+										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 				$this->_DB->query($queryCollectionEntry);
 
 				$this->_updateToolRelation($newId,$data['tool']);

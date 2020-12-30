@@ -41,7 +41,7 @@ $driver = new mysqli_driver();
 $driver->report_mode = MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT;
 if ($DB->connect_errno) exit('Can not connect to MySQL Server');
 $DB->set_charset("utf8mb4");
-$DB->query("SET collation_connection = 'utf8mb4_0900_ai_ci'");
+$DB->query("SET collation_connection = 'utf8mb4_unicode_ci'");
 
 # user Object
 $Doomguy = new Doomguy($DB);
