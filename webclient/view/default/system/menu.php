@@ -67,6 +67,7 @@ $_menuManage = $Gorenest->get('manage');
 			<div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
 				<form class="uk-search uk-search-navbar uk-width-1-1" method="post" action="<?php echo $TemplateData['searchAction']; ?>">
 					<input class="uk-search-input" type="search" placeholder="Search..." name="navSearch" autofocus>
+					<small><a href="index.php?p=advancedsearch">Advanced</a></small>
 				</form>
 			</div>
 		</div>

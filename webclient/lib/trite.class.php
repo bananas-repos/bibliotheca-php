@@ -177,6 +177,33 @@ class Trite {
 	}
 
 	/**
+	 * Fields for the loaded collection.
+	 *
+	 * @return array
+	 */
+	public function getCollectionFields() {
+		$ret = array();
+
+		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`
+						FROM `".DB_PREFIX."_collection_fields_".$this->_id."` AS cf
+						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
+						ORDER BY `cf`.`sort`";
+		$query = $this->_DB->query($queryStr);
+		try {
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']] = $result;
+				}
+			}
+		} catch (Exception $e) {
+			if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryStr);
+			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * set some defaults by init of the class
 	 *
 	 * @return void

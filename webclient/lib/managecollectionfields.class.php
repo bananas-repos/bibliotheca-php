@@ -52,7 +52,7 @@ class ManageCollectionFields {
 	);
 
 	/**
-	 * Store existing fileds info for runtime
+	 * Store existing fields info for runtime
 	 *
 	 * @var array
 	 */

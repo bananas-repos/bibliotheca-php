@@ -1,0 +1,56 @@
+<?php if(!empty($TemplateData['loadedCollection'])) { ?>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="search">Search for</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="search" type="text" autocomplete="off" name="fdata[search]"
+					       placeholder="See search syntax for options">
+				</div>
+			</div>
+
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Search
+				</button>
+			</div>
+		</form>
+	</div>
+	<div class="uk-width-1-2">
+		<h4>Syntax</h4>
+		<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
+		<p>To search within the possible fields of a collection type the field identifier followed by : and then a space.</p>
+		eg.: <code>title: starwars</code>
+		<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
+		<pre style="white-space: normal">
+		<?php
+		foreach($TemplateData['collectionFields'] as $k=>$v) {
+			echo $v['identifier']." ";
+		}
+		?>
+		</pre>
+		<p>Possible search operators:</p>
+		<p>
+			* = The asterisk serves as the truncation (or wildcard) operator. Unlike the other operators,
+			it is appended to the word to be affected. Words match if they begin with the word preceding the * operator.
+		</p>
+		<p>+ = A leading plus sign indicates that this word must be present in each row that is returned.</p>
+		<p>- = A leading minus sign indicates that this word must not be present in any of the rows that are returned.</p>
+		<p>" = A phrase that is enclosed within double quote (") characters matches only rows that contain the phrase literally, as it was typed.</p>
+	</div>
+</div>
+<?php } else { ?>
+<h3 class="uk-h3">Collection overview</h3>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-2-3@m uk-width-1-2@xl">
+		<dl class="uk-description-list uk-description-list-divider">
+			<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+			<dt><a href="index.php?p=advancedsearch&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>
+			<dd><?php echo $v['description']; ?></dd>
+			<?php } ?>
+		</dl>
+	</div>
+</div>
+<?php } ?>
