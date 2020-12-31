@@ -24,22 +24,22 @@ class Tentacle {
 	/**
 	 * the global DB object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
 	/**
 	 * Tentacle constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
 	public function __construct($databaseConnectionObject, $userObj) {
 		$this->_DB = $databaseConnectionObject;
@@ -49,7 +49,7 @@ class Tentacle {
 	/**
 	 * Validate if given action is a valid tool and if the user has access
 	 *
-	 * @param $identifier
+	 * @param string $identifier
 	 * @return bool
 	 */
 	public function validate($identifier) {
@@ -57,7 +57,7 @@ class Tentacle {
 
 		$queryStr = "SELECT `name`,`description`,`action`
 					FROM `".DB_PREFIX."_tool`  
-					WHERE ".$this->_User->getSQLRightsString("read")."
+					WHERE ".$this->_User->getSQLRightsString()."
 					AND `action` = '".$this->_DB->real_escape_string($identifier)."'";
 		try {
 			$query = $this->_DB->query($queryStr);

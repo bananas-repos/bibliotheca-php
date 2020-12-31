@@ -27,7 +27,7 @@ class Summoner {
 	 * @param string $file relative path from THEME/
 	 * @param string $theme Theme name
 	 * @param string $defaultTheme Default theme name can be overwritten
-	 * @return boolean|string False of nothing is found
+	 * @return bool|string False of nothing is found
 	 */
 	static function themefile($file, $theme, $defaultTheme='default') {
 		$ret = false;
@@ -194,7 +194,7 @@ class Summoner {
 	 * then create the rights string
 	 * IMPORTANT: keep the order otherwise the rights will be messed up
 	 *
-	 * @param $rightsArr array
+	 * @param array $rightsArr
 	 * @return mixed
 	 */
 	static function prepareRightsString($rightsArr) {
@@ -257,7 +257,7 @@ class Summoner {
 
 	/**
 	 * Creates from given rights string the rights array
-	 * @param $rightsString
+	 * @param string $rightsString
 	 * @return array
 	 */
 	static function prepareRightsArray($rightsString) {
@@ -345,7 +345,7 @@ class Summoner {
 	 * with full path to the files
 	 * @param string $directory The absolute path to the directory
 	 * @param array $ignore An Array with strings to ignored
-	 * @param boolean $recursive If we run a recursive scan or not
+	 * @param bool $recursive If we run a recursive scan or not
 	 * @return array
 	 */
 	static function readDir($directory,$ignore=array(),$recursive=false) {
@@ -382,9 +382,9 @@ class Summoner {
 	 * $empty = true => empty the diretory but do not delete it
 	 *
 	 * @param string $directory
-	 * @param boolean $empty
+	 * @param bool $empty
 	 * @param mixed $fTime If not false remove files older then this value in sec.
-	 * @return boolean
+	 * @return bool
 	 */
 	static function recursive_remove_directory($directory, $empty=false,$fTime=false) {
 		// if the path has a slash at the end we remove it here
@@ -459,7 +459,7 @@ class Summoner {
 	/**
 	 * execute a curl call to the fiven $url
 	 * @param string $url The request url
-	 * @param int $port
+	 * @param integer $port
 	 * @return bool|string
 	 */
 	static function curlCall($url,$port=80) {
@@ -477,9 +477,6 @@ class Summoner {
 		if(is_string($do) === true) {
 			$ret = $do;
 		}
-		else {
-			$ret = false;
-		}
 
 		curl_close($ch);
 
@@ -491,7 +488,7 @@ class Summoner {
 	 *
 	 * @param string $haystack
 	 * @param string $needle
-	 * @return boolean
+	 * @return bool
 	 */
 	static function startsWith($haystack, $needle) {
 		$length = strlen($needle);
@@ -503,7 +500,7 @@ class Summoner {
 	 *
 	 * @param string $haystack
 	 * @param string $needle
-	 * @return boolean
+	 * @return bool
 	 */
 	static function endsWith($haystack, $needle) {
 		$length = strlen($needle);
@@ -521,7 +518,7 @@ class Summoner {
 	 * @param string $file The absolute path to the image file
 	 * @param number $width
 	 * @param number $height
-	 * @return boolean
+	 * @return bool
 	 */
 	static function createThumbnail($file,$width=ADMIN_THUMBNAIL_DEFAULT_WIDTH,$height=ADMIN_THUMBNAIL_DEFAULT_HEIGHT) {
 		$ret = false;
@@ -624,9 +621,9 @@ class Summoner {
 	/**
 	 * based on self::ifset check also the value
 	 *
-	 * @param $array
-	 * @param $key
-	 * @param $value
+	 * @param array $array
+	 * @param string $key
+	 * @param string $value
 	 * @return bool
 	 */
 	static function ifsetValue($array,$key,$value) {
@@ -637,11 +634,11 @@ class Summoner {
 	}
 
 	/**
-	 * Replace in $heystack the $needle with $replace only once
+	 * Replace in $haystack the $needle with $replace only once
 	 *
-	 * @param $haystack string
-	 * @param $needle string
-	 * @param $replace string
+	 * @param string $haystack
+	 * @param string $needle
+	 * @param string $replace
 	 * @return string
 	 */
 	static function replaceOnce($haystack, $needle, $replace) {
@@ -658,7 +655,7 @@ class Summoner {
 	 * modify will add: key AND value not empty
 	 * modify will remove: only key with no value
 	 *
-	 * @param $array
+	 * @param array $array
 	 * @param array $modify
 	 * @return string
 	 */

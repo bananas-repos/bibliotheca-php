@@ -23,22 +23,22 @@ class ManageCollections {
 	/**
 	 * The database object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
 	/**
 	 * ManageCollections constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
 	public function __construct($databaseConnectionObject, $userObj) {
 		$this->_DB = $databaseConnectionObject;
@@ -48,17 +48,17 @@ class ManageCollections {
 	/**
 	 * Load collection info from table. Checks user rights
 	 *
-	 * @param $id
-	 * @param string $ritghsMode
+	 * @param string $id
+	 * @param string $rightsMode
 	 * @return array
 	 */
-	public function getCollection($id,$ritghsMode="read") {
+	public function getCollection($id,$rightsMode="read") {
 		$ret = array();
 
 		if (Summoner::validate($id, 'digit')) {
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`
 					FROM `".DB_PREFIX."_collection` AS c
-					WHERE ".$this->_User->getSQLRightsString($ritghsMode, "c")."
+					WHERE ".$this->_User->getSQLRightsString($rightsMode, "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
 			try {
 				$query = $this->_DB->query($queryStr);
@@ -67,7 +67,7 @@ class ManageCollections {
 				}
 			}
 			catch (Exception $e) {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 				if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 			}
 		}
@@ -164,7 +164,7 @@ class ManageCollections {
 	}
 
 	/**
-	 * Fetch all availbale tools based on current user rights
+	 * Fetch all available tools based on current user rights
 	 *
 	 * @return array
 	 */
@@ -357,7 +357,7 @@ class ManageCollections {
 	/**
 	 * Delete collection identified by given id
 	 *
-	 * @param $id string Number
+	 * @param string $id  Number
 	 * @return bool
 	 */
 	public function deleteCollection($id) {
@@ -384,7 +384,7 @@ class ManageCollections {
 	/**
 	 * Load the tools configured to the given collection
 	 *
-	 * @param $id
+	 * @param string $id Number
 	 * @return array
 	 */
 	public function getAvailableTools($id) {
@@ -412,7 +412,7 @@ class ManageCollections {
 	/**
 	 * Check if given name can be used as a new one
 	 *
-	 * @param $name string
+	 * @param string $name
 	 * @return bool
 	 */
 	private function _validNewCollectionName($name) {
@@ -432,8 +432,8 @@ class ManageCollections {
 	/**
 	 * Check if given name can be used as a new name for id
 	 *
-	 * @param $name string
-	 * @param $id string Number
+	 * @param string $name
+	 * @param string $id Number
 	 * @return bool
 	 */
 	private function _validUpdateCollectionName($name, $id) {
@@ -457,8 +457,8 @@ class ManageCollections {
 	/**
 	 * Update the given colletion ($id) with the given tool array
 	 *
-	 * @param $id
-	 * @param $tool
+	 * @param string $id Number
+	 * @param array $tool
 	 * @return bool
 	 */
 	private function _updateToolRelation($id,$tool) {

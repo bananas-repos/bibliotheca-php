@@ -27,21 +27,21 @@ class Trite {
 	/**
 	 * The database object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
 	/**
 	 * Currently loaded collection to work with
 	 *
-	 * @var number
+	 * @var string
 	 */
 	private $_id;
 
@@ -178,6 +178,8 @@ class Trite {
 
 	/**
 	 * set some defaults by init of the class
+	 *
+	 * @return void
 	 */
 	private function _setDefaults() {
 		// default query options

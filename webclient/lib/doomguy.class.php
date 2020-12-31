@@ -25,7 +25,7 @@ class Doomguy {
 	/**
 	 * the global DB object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
@@ -46,7 +46,7 @@ class Doomguy {
 	/**
 	 * the user ID from user management or default
 	 *
-	 * @var Int
+	 * @var integer
 	 */
 	protected $userID = 0;
 
@@ -77,7 +77,7 @@ class Doomguy {
 	/**
 	 * Doomguy constructor.
 	 *
-	 * @param object $db The database object
+	 * @param mysqli $db The database object
 	 */
 	public function __construct($db) {
 		$this->_DB = $db;
@@ -114,7 +114,7 @@ class Doomguy {
 	/**
 	 * return the isSignedIn status.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSignedIn() {
 		return $this->isSignedIn;
@@ -160,7 +160,7 @@ class Doomguy {
 	 * check if the loaded user is in this group
 	 * if the user is in ADMIN_GROUP_ID, the he is automatically "in" every group
 	 *
-	 * @param int $groupID
+	 * @param integer $groupID
 	 * @return bool
 	 */
 	public function isInGroup($groupID) {
@@ -223,7 +223,7 @@ class Doomguy {
 	/**
 	 * Use the user identified by apitoken
 	 *
-	 * @param $token string
+	 * @param string $token
 	 */
 	public function authByApiToken($token) {
 		if(!empty($token)) {
@@ -247,11 +247,12 @@ class Doomguy {
 	 *
 	 * @param string $mode
 	 * @param bool $tableName
-	 * @return string $str
-	 * @throws Exception
+	 * @return string
 	 */
 	public function getSQLRightsString($mode = "read", $tableName=false) {
+		$str = '';
 		$prefix = '';
+
 		if(!empty($tableName)) {
 			$prefix = "`".$tableName."`.";
 		}
@@ -271,7 +272,7 @@ class Doomguy {
 			}
 		}
 		else {
-			throw new Exception("Site User: invalid rights string.");
+			error_log("[ERROR] ".__METHOD__."  invalid rights string: ".var_export($this->_rightsArray, true));
 		}
 
 		return $str;
@@ -281,6 +282,8 @@ class Doomguy {
 	 * check if we can use session
 	 * we only use session if we can use cookies with the session
 	 * THIS DOES NOT CHECK IF THE USER HAS COOKIES ACTIVATED !
+	 *
+	 * @return bool
 	 */
 	protected function _checkSession() {
 
@@ -315,6 +318,8 @@ class Doomguy {
 
 	/**
 	 * we have session data available. Now check if those data is valid
+	 *
+	 * @return bool
 	 */
 	protected function _checkAgainstSessionTable() {
 		$ret = false;
@@ -349,7 +354,7 @@ class Doomguy {
 	 * if so load the user data
 	 *
 	 * @param string $u
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function _checkAgainstUserTable($u) {
 		$ret = false;
@@ -371,6 +376,8 @@ class Doomguy {
 
 	/**
 	 * if we have to run some at login
+	 *
+	 * @return void
 	 */
 	protected function _loginActions() {
 		# @todo:
@@ -384,6 +391,8 @@ class Doomguy {
 
 	/**
 	 * load the user and groups
+	 *
+	 * @return void
 	 */
 	protected function _loadUser() {
 		if(!empty($this->userID)) {
@@ -425,7 +434,7 @@ class Doomguy {
 	/**
 	 * destroy and remove the current session from SESSION and session table
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function _destroySession() {
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
@@ -447,7 +456,7 @@ class Doomguy {
 	 * and a salt
 	 *
 	 * @param bool $salt
-	 * @return bool
+	 * @return bool|array
 	 */
 	protected function _createToken($salt=false) {
 		$ret = false;

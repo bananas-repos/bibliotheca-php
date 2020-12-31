@@ -24,14 +24,14 @@ class GoreNest {
 	/**
 	 * the global DB object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * the current loaded user
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
@@ -46,8 +46,8 @@ class GoreNest {
 	/**
 	 * GoreNest constructor.
 	 *
-	 * @param $db
-	 * @param $user
+	 * @param mysqli $db
+	 * @param Doomguy $user
 	 */
 	public function __construct($db, $user) {
 		$this->_DB = $db;
@@ -59,7 +59,7 @@ class GoreNest {
 	 * This shows only entries which have a category set.
 	 * No category can be used for hidden entries.
 	 *
-	 * @param $category
+	 * @param string $category
 	 * @param bool $reload
 	 * @return array
 	 */

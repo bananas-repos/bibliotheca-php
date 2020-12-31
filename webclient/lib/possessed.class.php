@@ -29,10 +29,14 @@ class Possessed {
 	/**
 	 * the global DB object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
+	/**
+	 * Possessed constructor.
+	 * @param mysqli $db
+	 */
 	public function __construct($db) {
 		$this->_DB = $db;
 	}
@@ -80,10 +84,10 @@ class Possessed {
 	/**
 	 * Create or update a user and set the required user releations
 	 *
-	 * @param $username string
-	 * @param $login string
-	 * @param $password string
-	 * @param $group string Number
+	 * @param string $username
+	 * @param string $login
+	 * @param string $password
+	 * @param string $group Number
 	 * @param bool $active
 	 * @return bool
 	 */
@@ -139,11 +143,11 @@ class Possessed {
 	/**
 	 * Update given user id with given data
 	 *
-	 * @param $id
-	 * @param $username
-	 * @param $login
-	 * @param $password
-	 * @param $group
+	 * @param string $id Number
+	 * @param string $username
+	 * @param string $login
+	 * @param string $password
+	 * @param string $group
 	 * @param bool $active
 	 * @param bool $refreshApiToken
 	 * @return bool
@@ -202,7 +206,7 @@ class Possessed {
 	/**
 	 * Load the userinformation and groups for given id
 	 *
-	 * @param $userId string Number
+	 * @param string $userId Number
 	 * @return array
 	 */
 	public function getEditData($userId) {
@@ -227,7 +231,7 @@ class Possessed {
 	/**
 	 * Delete user by given user id
 	 *
-	 * @param $id string Number
+	 * @param string $id Number
 	 * @return bool
 	 */
 	public function deleteUser($id) {
@@ -318,7 +322,7 @@ class Possessed {
 	}
 
 	/**
-	 * Set user to group releation in database.
+	 * Set user to group relation in database.
 	 * clean will delete all existing ones for given userid first.
 	 *
 	 * @param string $userid Number
@@ -349,7 +353,7 @@ class Possessed {
 	/**
 	 * Load all the groups the user is in and the information of them
 	 *
-	 * @param $userId string Number
+	 * @param string $userId Number
 	 * @return array
 	 */
 	private function _loadUserGroupInfo($userId) {

@@ -24,14 +24,14 @@ class ManageCollectionFields {
 	/**
 	 * The database object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
@@ -61,8 +61,8 @@ class ManageCollectionFields {
 	/**
 	 * ManageCollections constructor
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
 	public function __construct($databaseConnectionObject, $userObj) {
 		$this->_DB = $databaseConnectionObject;
@@ -72,7 +72,7 @@ class ManageCollectionFields {
 	/**
 	 * The id from the collection we are working with
 	 *
-	 * @param $id integer
+	 * @param integer $id
 	 */
 	public function setCollection($id) {
 		if(!empty($id)) {
@@ -106,7 +106,7 @@ class ManageCollectionFields {
 	/**
 	 * Simple comma seperated number string
 	 *
-	 * @param $string string
+	 * @param string $string
 	 * @return bool
 	 */
 	public function validateFieldSortString($string) {
@@ -121,11 +121,11 @@ class ManageCollectionFields {
 	}
 
 	/**
-	 * $fieldsSortString have to valided already
+	 * $fieldsSortString have to be validated already
 	 *
 	 * @todo remove non existing ones from table
 	 *
-	 * @param $fieldsSortString string
+	 * @param string $fieldsSortString
 	 * @return bool
 	 */
 	public function updateFields($fieldsSortString) {
@@ -237,7 +237,7 @@ class ManageCollectionFields {
 	 * Get the required SQL information from given field ids
 	 * to create columns in entry table.
 	 *
-	 * @param $columnIds array sort=>fk_field_id
+	 * @param array $columnIds sort=>fk_field_id
 	 * @return array
 	 */
 	private function _getSQLForCollectionColumns($columnIds) {

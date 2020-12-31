@@ -16,7 +16,7 @@
  *
  *
  * Functionality is the same but modified heavily to remove the does-not-make-sense static helper
- * wich was not static since it depended on the IMDB class. Also some could not be extended or overwritten
+ * which was not static since it depended on the IMDB class. Also some could not be extended or overwritten
  *
  */
 class IMDB

@@ -24,24 +24,29 @@ class Spectre {
 	/**
 	 * the global DB object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
+	/**
+	 * Allowed request params
+	 *
+	 * @var array
+	 */
 	private $_allowedRequests = array('default','list','add','addInfo');
 
 	/**
 	 * Spectre constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
 	public function __construct($databaseConnectionObject, $userObj) {
 		$this->_DB = $databaseConnectionObject;
@@ -51,7 +56,7 @@ class Spectre {
 	/**
 	 * Validate given request string
 	 *
-	 * @param $request string
+	 * @param string $request
 	 * @return bool
 	 */
 	public function allowedRequests($request) {
@@ -68,7 +73,7 @@ class Spectre {
 	 * With given data build the structure to create a add post
 	 * request
 	 *
-	 * @param $data
+	 * @param array $data
 	 * @return array
 	 */
 	public function buildAddStructure($data) {
@@ -88,7 +93,7 @@ class Spectre {
 	 * POST via web frontend creates
 	 * "The problem occurs when you have a form that uses both single file and HTML array feature."
 	 *
-	 * @param $data
+	 * @param array $data
 	 * @return array
 	 */
 	public function prepareFilesArray($data) {

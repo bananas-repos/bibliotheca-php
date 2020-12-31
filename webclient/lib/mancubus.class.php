@@ -23,21 +23,21 @@ class Mancubus {
 	/**
 	 * The database object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
 	/**
 	 * Currently loaded collection to work with
 	 *
-	 * @var number
+	 * @var string Number
 	 */
 	private $_collectionId;
 
@@ -55,8 +55,8 @@ class Mancubus {
 	/**
 	 * Mancubus constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
 	public function __construct($databaseConnectionObject, $userObj) {
 		$this->_DB = $databaseConnectionObject;
@@ -68,7 +68,7 @@ class Mancubus {
 	/**
 	 * Set the to work with collection id
 	 *
-	 * @param $collectionId Number
+	 * @param string $collectionId Number
 	 */
 	public function setCollection($collectionId) {
 		if(!empty($collectionId)) {
@@ -100,8 +100,8 @@ class Mancubus {
 	/**
 	 * Get all available collections for display based on current user
 	 *
-	 * @param int $selections Number of selections
-	 * @param int $entries Number of entries
+	 * @param string $selections Number of selections
+	 * @param string $entries Number of entries
 	 * @param string $search Search string to search for
 	 * @return array
 	 */
@@ -217,8 +217,8 @@ class Mancubus {
 	}
 
 	/**
-	 * Retrive all the data needed to display the entry for given entryId
-	 * @param $entryId
+	 * Retrieve all the data needed to display the entry for given entryId
+	 * @param string $entryId Number
 	 * @return array|mixed
 	 */
 	public function getEntry($entryId) {
@@ -246,8 +246,8 @@ class Mancubus {
 	/**
 	 * Get entries for loaded collection by looking for the given value in given field
 	 *
-	 * @param Number $fieldId ID of the field to search in
-	 * @param String $fieldValue Value of the field
+	 * @param string $fieldId Number ID of the field to search in
+	 * @param string $fieldValue Value of the field
 	 * @return array
 	 */
 	public function getEntriesByFieldValue($fieldId, $fieldValue) {
@@ -314,7 +314,7 @@ class Mancubus {
 	}
 
 	/**
-	 * Get tags for loaded collection. Provide earch term to use match against db search
+	 * Get tags for loaded collection. Provide search term to use match against db search
 	 *
 	 * @todo Replace with trite class
 	 *
@@ -351,6 +351,7 @@ class Mancubus {
 	/**
 	 * Return the storage info for loaded collection
 	 * Used by API
+	 *
 	 * @return array|mixed
 	 */
 	public function getEntryStructure() {
@@ -364,6 +365,7 @@ class Mancubus {
 
 	/**
 	 * Load the fields from the loaded collection
+	 *
 	 * @return array
 	 */
 	private function _getEntryFields() {
@@ -389,6 +391,7 @@ class Mancubus {
 	/**
 	 * Merge the loaded information from collection_entry with the given
 	 * configured fields
+	 *
 	 * @param array $entryData Loaded entry
 	 * @param array $entryFields Loaded fields
 	 * @return mixed
@@ -419,7 +422,8 @@ class Mancubus {
 	/**
 	 * Load the values for given $entryId for $fieldData
 	 * lookup function for field type lookupmultiple
-	 * @param Numer $entryId
+	 *
+	 * @param string $entryId Number
 	 * @param array $fieldData
 	 * @return array
 	 */
@@ -445,8 +449,9 @@ class Mancubus {
 	/**
 	 * Get the single upload file from storage location
 	 * lookup function for field type upload
-	 * @param $entryId
-	 * @param $fieldData
+	 *
+	 * @param string $entryId Number
+	 * @param array $fieldData
 	 * @return string
 	 */
 	private function _loadFieldValue_upload($entryId, $fieldData) {
@@ -467,8 +472,9 @@ class Mancubus {
 	/**
 	 * Get the multiple upload files from storage location
 	 * lookup function for field type upload_multiple
-	 * @param $entryId
-	 * @param $fieldData
+	 *
+	 * @param string $entryId Number
+	 * @param string $fieldData
 	 * @return array
 	 */
 	private function _loadFieldValue_upload_multiple($entryId, $fieldData) {
@@ -488,7 +494,7 @@ class Mancubus {
 	/**
 	 * Load and prepare the value for a selection field
 	 *
-	 * @param $data string
+	 * @param string $data
 	 * @return array
 	 */
 	private function _loadFieldSelection_selection($data) {
@@ -571,8 +577,8 @@ class Mancubus {
 	/**
 	 * Get the distinct data from a col and optionaml search term
 	 *
-	 * @param $colname
-	 * @param $search
+	 * @param string $colname
+	 * @param string $search
 	 * @return array
 	 */
 	private function _loadColAsTagFromEntryTable($colname,$search) {
@@ -614,6 +620,8 @@ class Mancubus {
 
 	/**
 	 * set some defaults by init of the class
+	 *
+	 * @return void
 	 */
 	private function _setDefaults() {
 		// default query options

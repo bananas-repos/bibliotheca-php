@@ -20,14 +20,14 @@ class Manageentry {
 	/**
 	 * The database object
 	 *
-	 * @var object
+	 * @var mysqli
 	 */
 	private $_DB;
 
 	/**
 	 * The user object to query with
 	 *
-	 * @var object
+	 * @var Doomguy
 	 */
 	private $_User;
 
@@ -48,8 +48,8 @@ class Manageentry {
 	/**
 	 * ManageCollections constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
 	public function __construct($databaseConnectionObject, $userObj) {
 		$this->_DB = $databaseConnectionObject;
@@ -59,7 +59,7 @@ class Manageentry {
 	/**
 	 * Set the collection to manage entries from
 	 *
-	 * @param $collectionId
+	 * @param sring $collectionId Number
 	 */
 	public function setCollection($collectionId) {
 		if(!empty($collectionId)) {
@@ -101,7 +101,7 @@ class Manageentry {
 	 * Load required data for edit. Uses some functions from Mancubus but has
 	 * different data layout. Checks write edit too
 	 *
-	 * @param $entryId
+	 * @param string $entryId Number
 	 * @return array
 	 */
 	public function getEditData($entryId) {
@@ -228,7 +228,7 @@ class Manageentry {
 	 * Delete given entryId from currently loaded collection
 	 * Checks userrights too.
 	 *
-	 * @param $entryId
+	 * @param string $entryId Number
 	 * @return bool
 	 */
 	public function delete($entryId) {
@@ -280,7 +280,7 @@ class Manageentry {
 	/**
 	 * Validates that current use can write the given Entry
 	 *
-	 * @param $entryId
+	 * @param string $entryId Number
 	 * @return bool
 	 */
 	public function canEditEntry($entryId) {
@@ -307,7 +307,7 @@ class Manageentry {
 	 * Check if given entryid can be deleted from current collection
 	 * and user
 	 *
-	 * @param $entryId
+	 * @param string $entryId Number
 	 * @return bool
 	 */
 	private function _canDelete($entryId) {
@@ -335,8 +335,8 @@ class Manageentry {
 	 * In this case only the fields which have a _loadFieldValue_ method
 	 * are loaded. More is not needed here.
 	 *
-	 * @param $entryData array
-	 * @param $entryFields array
+	 * @param array $entryData
+	 * @param array $entryFields
 	 * @return array
 	 */
 	private function _mergeEntryWithFields($entryData, $entryFields) {
@@ -357,7 +357,7 @@ class Manageentry {
 	 * lookup function for field type lookupmultiple
 	 *
 	 * @see Mancubus
-	 * @param Number $entryId
+	 * @param string $entryId Number
 	 * @param array $fieldData
 	 * @return array
 	 */
@@ -385,8 +385,8 @@ class Manageentry {
 	 * lookup function for field type upload
 	 *
 	 * @see Mancubus
-	 * @param $entryId
-	 * @param $fieldData
+	 * @param string $entryId Number
+	 * @param array $fieldData
 	 * @return string
 	 */
 	private function _loadFieldValue_upload($entryId, $fieldData) {
@@ -409,8 +409,8 @@ class Manageentry {
 	 * lookup function for field type upload_multiple
 	 *
 	 * @see Mancubus
-	 * @param $entryId
-	 * @param $fieldData
+	 * @param string $entryId Number
+	 * @param array $fieldData
 	 * @return array
 	 */
 	private function _loadFieldValue_upload_multiple($entryId, $fieldData) {
@@ -431,7 +431,7 @@ class Manageentry {
 	 * Provide the options for a selection field by processing the $data['value']
 	 * since the values are stored in the entry DB as a list
 	 *
-	 * @param $data array
+	 * @param array $data
 	 * @return array
 	 */
 	private function _loadField_selection($data) {
@@ -446,7 +446,7 @@ class Manageentry {
 	/**
 	 * Load suggestions based on the existing data for this field
 	 *
-	 * @param $data array Field data
+	 * @param array $data  Field data
 	 * @return array
 	 */
 	private function _loadField_lookupmultiple($data) {
@@ -467,8 +467,8 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type text
 	 *
-	 * @param $data array Field data
-	 * @param $queryData array Query data array
+	 * @param array $data  Field data
+	 * @param array $queryData  Query data array
 	 * @return array
 	 */
 	private function _saveField_text($data, $queryData) {
@@ -479,8 +479,8 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type text3
 	 *
-	 * @param $data array Field data
-	 * @param $queryData array Query data array
+	 * @param array $data Field data
+	 * @param array $queryData Query data array
 	 * @return array
 	 */
 	private function _saveField_text3($data, $queryData) {
@@ -490,8 +490,8 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type textarea
 	 *
-	 * @param $data array Field data
-	 * @param $queryData array Query data array
+	 * @param array $data Field data
+	 * @param array $queryData Query data array
 	 * @return array
 	 */
 	private function _saveField_textarea($data, $queryData) {
@@ -501,8 +501,8 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type selection
 	 *
-	 * @param $data array Field data
-	 * @param $queryData array Query data array
+	 * @param array $data Field data
+	 * @param array $queryData Query data array
 	 * @return array
 	 */
 	private function _saveField_selection($data, $queryData) {
@@ -511,8 +511,8 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type year
 	 *
-	 * @param $data array Field data
-	 * @param $queryData array Query data array
+	 * @param array $data Field data
+	 * @param array $queryData Query data array
 	 * @return array
 	 */
 	private function _saveField_year($data, $queryData) {
@@ -522,8 +522,8 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type lookupmultiple
 	 *
-	 * @param $data array Field data
-	 * @param $queryData array Query data array
+	 * @param array $data Field data
+	 * @param array $queryData Query data array
 	 * @return array
 	 */
 	private function _saveField_lookupmultiple($data, $queryData) {
@@ -553,8 +553,8 @@ class Manageentry {
 	/**
 	 * Single upload field
 	 *
-	 * @param $data array The data from _FILES
-	 * @param $queryData array
+	 * @param array $data The data from _FILES
+	 * @param array $queryData
 	 * @return array
 	 */
 	private function _saveField_upload($data, $queryData) {
@@ -587,8 +587,8 @@ class Manageentry {
 	/**
 	 * Multiple upload field
 	 *
-	 * @param $data array The data from _FILES
-	 * @param $queryData array
+	 * @param array $data The data from _FILES
+	 * @param array $queryData
 	 * @return array
 	 */
 	private function _saveField_upload_multiple($data, $queryData) {
@@ -622,8 +622,8 @@ class Manageentry {
 	/**
 	 * runs the query and throws query execption if false
 	 *
-	 * @param $queryString
-	 * @param $insertId
+	 * @param string $queryString
+	 * @param string $insertId Number
 	 */
 	private function _runAfter_query($queryString, $insertId) {
 		if(!empty($queryString) && !empty($insertId)) {
@@ -641,8 +641,8 @@ class Manageentry {
 	 *
 	 * Also removes the defined uploads from multiple upload field
 	 *
-	 * @param $uploadData
-	 * @param $insertId
+	 * @param array $uploadData
+	 * @param string $insertId Number
 	 * @throws Exception
 	 */
 	private function _runAfter_upload($uploadData, $insertId) {
