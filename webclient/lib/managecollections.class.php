@@ -101,7 +101,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
@@ -129,7 +129,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
@@ -156,7 +156,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
@@ -183,7 +183,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
@@ -250,8 +250,7 @@ class ManageCollections {
 				$ret = true;
 			}
 			catch (Exception $e) {
-				if(DEBUG) var_dump($e->getMessage());
-				error_log('ERROR Failed to create entry: '.var_export($e->getMessage(),true));
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 				$this->_DB->rollback();
 			}
 		}
@@ -277,11 +276,16 @@ class ManageCollections {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				$ret = $query->fetch_assoc();
-				$ret['rights'] = Summoner::prepareRightsArray($ret['rights']);
-				$ret['tool'] = $this->getAvailableTools($id);
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					$ret = $query->fetch_assoc();
+					$ret['rights'] = Summoner::prepareRightsArray($ret['rights']);
+					$ret['tool'] = $this->getAvailableTools($id);
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -318,7 +322,7 @@ class ManageCollections {
 				$ret = true;
 			}
 			catch (Exception $e) {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql catch: ".$e->getMessage());
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 
 			// update the search field if it is a field from the collection entry table
@@ -341,7 +345,7 @@ class ManageCollections {
 			} catch (Exception $e) {
 				if($e->getCode() == "1061") {
 					// duplicate key
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$e->getMessage());
+					error_log("[ERROR] ".__METHOD__."  mysql query: ".$e->getMessage());
 				}
 				else {
 					if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryCheck);
@@ -403,7 +407,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql catch: ".$e->getMessage());
+			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 		}
 
 		return  $ret;
@@ -420,9 +424,14 @@ class ManageCollections {
 		if (Summoner::validate($name, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows < 1) {
-				$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows < 1) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -445,9 +454,14 @@ class ManageCollections {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows < 1) {
-				$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows < 1) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -480,8 +494,8 @@ class ManageCollections {
 			$this->_DB->commit();
 			$ret = true;
 		} catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			$this->_DB->rollback();
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
