@@ -82,15 +82,20 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$_mn = '_loadField_'.$result['type'];
-					if(method_exists($this, $_mn)) {
-						$result = $this->$_mn($result);
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					while(($result = $query->fetch_assoc()) != false) {
+						$_mn = '_loadField_'.$result['type'];
+						if(method_exists($this, $_mn)) {
+							$result = $this->$_mn($result);
+						}
+						$ret[$result['id']] = $result;
 					}
-					$ret[$result['id']] = $result;
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -112,16 +117,21 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
 						WHERE ".$this->_User->getSQLRightsString("write")."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
-			$query = $this->_DB->query($queryStr);
+			try {
+				$query = $this->_DB->query($queryStr);
 
-			if($query !== false && $query->num_rows > 0) {
-				$_entryFields = $this->getEditFields();
+				if($query !== false && $query->num_rows > 0) {
+					$_entryFields = $this->getEditFields();
 
-				if(($result = $query->fetch_assoc()) != false) {
-					$ret = $this->_mergeEntryWithFields($result, $_entryFields);
-					$ret['_canDelete'] = $this->_canDelete($entryId);
+					if(($result = $query->fetch_assoc()) != false) {
+						$ret = $this->_mergeEntryWithFields($result, $_entryFields);
+						$ret['_canDelete'] = $this->_canDelete($entryId);
+					}
+
 				}
-
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -211,9 +221,10 @@ class Manageentry {
 					else {
 						$this->_DB->rollback();
 					}
-				} catch (Exception $e) {
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql catch: ".$e->getMessage());
+				}
+				catch (Exception $e) {
 					$this->_DB->rollback();
+					error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 				}
 			}
 			else {
@@ -267,9 +278,10 @@ class Manageentry {
 
 					$this->_DB->commit();
 					$ret = true;
-				} catch (Exception $e) {
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql catch: ".$e->getMessage());
+				}
+				catch (Exception $e) {
 					$this->_DB->rollback();
+					error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 				}
 			}
 		}
@@ -292,11 +304,16 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND " . $this->_User->getSQLRightsString("write") . "";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows > 0) {
-				if (($result = $query->fetch_assoc()) != false) {
-					$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows > 0) {
+					if (($result = $query->fetch_assoc()) != false) {
+						$ret = true;
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -319,11 +336,16 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND " . $this->_User->getSQLRightsString("delete") . "";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows > 0) {
-				if (($result = $query->fetch_assoc()) != false) {
-					$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows > 0) {
+					if (($result = $query->fetch_assoc()) != false) {
+						$ret = true;
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -369,11 +391,16 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($fieldData['id'])."'
 							AND `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$ret[] = $result['value'];
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					while(($result = $query->fetch_assoc()) != false) {
+						$ret[] = $result['value'];
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -454,11 +481,16 @@ class Manageentry {
 			$queryStr = "SELECT DISTINCT(`value`) 
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($data['id'])."'";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows > 0) {
-				while (($result = $query->fetch_assoc()) != false) {
-					$data['suggestion'][] = $result['value'];
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows > 0) {
+					while (($result = $query->fetch_assoc()) != false) {
+						$data['suggestion'][] = $result['value'];
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 		return $data;
@@ -640,7 +672,12 @@ class Manageentry {
 		if(!empty($queryString) && !empty($insertId)) {
 			// replace only once to avoid replacing actual data
 			$queryStr = Summoner::replaceOnce($queryString,$this->_replaceEntryString, $insertId);
-			$this->_DB->query($queryStr);
+			try {
+				$this->_DB->query($queryStr);
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+			}
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." queryStr: ".var_export($queryStr,true));
 		}
 	}
