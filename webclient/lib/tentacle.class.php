@@ -66,7 +66,7 @@ class Tentacle {
 			}
 
 		} catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql catch: ".$e->getMessage());
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
