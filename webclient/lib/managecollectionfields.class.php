@@ -93,11 +93,16 @@ class ManageCollectionFields {
 						`createstring`, `value`
 					FROM `".DB_PREFIX."_sys_fields`
 					ORDER BY `displayname`";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$ret[$result['id']] = $result;
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']] = $result;
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -145,42 +150,47 @@ class ManageCollectionFields {
 
 			$queryStr1 = "DELETE FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."`
 						WHERE `fk_field_id` NOT IN (".implode(",",$ids).")";
-			$q1 = $this->_DB->query($queryStr1);
-			if($q1 !== false) {
-				// https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html
-				$queryStr = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
-				foreach ($ids as $k => $v) {
-					$queryStr .= "($v,$k),";
-				}
-				$queryStr = trim($queryStr, ",");
-				$queryStr .= " AS newEntry(fid,s) ON DUPLICATE KEY UPDATE `sort`=s";
-
-				$q2 = $this->_DB->query($queryStr);
-				if($q2 !== false) {
-					$_newColumns = $this->_getSQLForCollectionColumns($ids);
-					$alterQuery = false;
-					if(!empty($_newColumns)) {
-						$alterString = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-						foreach($_newColumns as $k=>$v) {
-							$alterString .= " ADD ".$v['createstring'].",";
-						}
-						$alterString = trim($alterString, ",");
-						$alterQuery = $this->_DB->query($alterString);
+			try {
+				$q1 = $this->_DB->query($queryStr1);
+				if($q1 !== false) {
+					// https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html
+					$queryStr = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
+					foreach ($ids as $k => $v) {
+						$queryStr .= "($v,$k),";
 					}
-					if(!empty($_newColumns) && $alterQuery == false) {
-						$this->_DB->rollback();
-						error_log('ERROR Failed to update entry table: '.var_export($alterString, true));
+					$queryStr = trim($queryStr, ",");
+					$queryStr .= " AS newEntry(fid,s) ON DUPLICATE KEY UPDATE `sort`=s";
+
+					$q2 = $this->_DB->query($queryStr);
+					if($q2 !== false) {
+						$_newColumns = $this->_getSQLForCollectionColumns($ids);
+						$alterQuery = false;
+						if(!empty($_newColumns)) {
+							$alterString = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
+							foreach($_newColumns as $k=>$v) {
+								$alterString .= " ADD ".$v['createstring'].",";
+							}
+							$alterString = trim($alterString, ",");
+							$alterQuery = $this->_DB->query($alterString);
+						}
+						if(!empty($_newColumns) && $alterQuery == false) {
+							$this->_DB->rollback();
+							error_log('ERROR Failed to update entry table: '.var_export($alterString, true));
+						}
+						else {
+							$this->_DB->commit();
+							$ret = true;
+						}
 					}
 					else {
-						$this->_DB->commit();
-						$ret = true;
+						$this->_DB->rollback();
+						error_log('ERROR Failed to update collection fields: '.var_export($queryStr1, true));
+						error_log('ERROR Failed to update collection fields: '.var_export($queryStr, true));
 					}
 				}
-				else {
-					$this->_DB->rollback();
-					error_log('ERROR Failed to update collection fields: '.var_export($queryStr1, true));
-					error_log('ERROR Failed to update collection fields: '.var_export($queryStr, true));
-				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -202,11 +212,16 @@ class ManageCollectionFields {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$this->_cacheExistingSysFields[$result['id']] = $result;
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$this->_cacheExistingSysFields[$result['id']] = $result;
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_cacheExistingSysFields;
@@ -221,13 +236,18 @@ class ManageCollectionFields {
 		$ret = array();
 
 		$queryStr = "SHOW COLUMNS FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				if(!in_array($result['Field'], $this->_protectedDBCols, true)) {
-					$ret[$result['Field']] = $result['Field'];
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					if(!in_array($result['Field'], $this->_protectedDBCols, true)) {
+						$ret[$result['Field']] = $result['Field'];
+					}
 				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
