@@ -50,11 +50,16 @@ class Possessed {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description` FROM `".DB_PREFIX."_group` ORDER BY `name`";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$ret[$result['id']] = $result;
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']] = $result;
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -70,12 +75,17 @@ class Possessed {
 
 		$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, `protected`, `created`
 						FROM `".DB_PREFIX."_user`";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$ret[$result['id']] = $result;
-				$ret[$result['id']]['groups'] = $this->_loadUserGroupInfo($result['id']);
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']] = $result;
+					$ret[$result['id']]['groups'] = $this->_loadUserGroupInfo($result['id']);
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -117,23 +127,28 @@ class Possessed {
 							`rights` = 'rwxr--r--',
 							`owner` = 0,
 							`group` = '".$this->_DB->real_escape_string($group)."'";
-			$query = $this->_DB->query($queryStr);
+			try {
+				$query = $this->_DB->query($queryStr);
 
-			if ($query !== false) {
-				$_userid = $this->_DB->insert_id;
-				$this->_DB->query("UPDATE `".DB_PREFIX . "_user`
-									SET `owner` = '".$this->_DB->real_escape_string($_userid)."'
-									WHERE `id` = '".$this->_DB->real_escape_string($_userid)."'");
-				$_setGroupRelation = $this->_setGroupReleation($_userid,$group);
-				if($_setGroupRelation !== false) {
-					$this->_DB->commit();
-					$ret = true;
+				if ($query !== false) {
+					$_userid = $this->_DB->insert_id;
+					$this->_DB->query("UPDATE `".DB_PREFIX . "_user`
+										SET `owner` = '".$this->_DB->real_escape_string($_userid)."'
+										WHERE `id` = '".$this->_DB->real_escape_string($_userid)."'");
+					$_setGroupRelation = $this->_setGroupReleation($_userid,$group);
+					if($_setGroupRelation !== false) {
+						$this->_DB->commit();
+						$ret = true;
+					}
+					$this->_DB->rollback();
+					error_log('ERROR Failed to insert user releation: '.var_export($queryStr, true));
+				} else {
+					$this->_DB->rollback();
+					error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
 				}
-				$this->_DB->rollback();
-				error_log('ERROR Failed to insert user releation: '.var_export($queryStr, true));
-			} else {
-				$this->_DB->rollback();
-				error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -184,19 +199,25 @@ class Possessed {
 			}
 			$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($id)."'
 						AND `protected` = '0'";
-			$query = $this->_DB->query($queryStr);
 
-			if ($query !== false) {
-				$_setGroupRelation = $this->_setGroupReleation($id,$group, true);
-				if($_setGroupRelation !== false) {
-					$this->_DB->commit();
-					$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+
+				if ($query !== false) {
+					$_setGroupRelation = $this->_setGroupReleation($id,$group, true);
+					if($_setGroupRelation !== false) {
+						$this->_DB->commit();
+						$ret = true;
+					}
+					$this->_DB->rollback();
+					error_log('ERROR Failed to insert user releation: '.var_export($queryStr, true));
+				} else {
+					$this->_DB->rollback();
+					error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
 				}
-				$this->_DB->rollback();
-				error_log('ERROR Failed to insert user releation: '.var_export($queryStr, true));
-			} else {
-				$this->_DB->rollback();
-				error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -217,12 +238,16 @@ class Possessed {
 						FROM `".DB_PREFIX."_user`
 						WHERE `protected` = '0'
 						AND `id` = '".$this->_DB->real_escape_string($userId)."'";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows == 1) {
-				$ret = $query->fetch_assoc();
-				$ret['groups'] = $this->_loadUserGroupInfo($userId);
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows == 1) {
+					$ret = $query->fetch_assoc();
+					$ret['groups'] = $this->_loadUserGroupInfo($userId);
+				}
 			}
-
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
 		}
 
 		return $ret;
@@ -240,18 +265,23 @@ class Possessed {
 		if(!empty($id)) {
 			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
-			$d1 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user` 
-				WHERE `id` = '".$this->_DB->real_escape_string($id)."'
-				AND `protected` = '0'");
-			$d2 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
-			$d3 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
+			try {
+				$d1 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user` 
+					WHERE `id` = '".$this->_DB->real_escape_string($id)."'
+					AND `protected` = '0'");
+				$d2 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
+				$d3 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
 
-			if($d1 !== false && $d2 !== false && $d3 !== false) {
-				$this->_DB->commit();
-				$ret = true;
+				if($d1 !== false && $d2 !== false && $d3 !== false) {
+					$this->_DB->commit();
+					$ret = true;
+				}
+				else {
+					$this->_DB->rollback();
+				}
 			}
-			else {
-				$this->_DB->rollback();
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -269,9 +299,14 @@ class Possessed {
 		if (Summoner::validate($login, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows < 1) {
-				$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows < 1) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -291,9 +326,14 @@ class Possessed {
 			$queryStr = "SELECT `id` FROM `" . DB_PREFIX . "_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
-			$query = $this->_DB->query($queryStr);
-			if ($query !== false && $query->num_rows < 1) {
-				$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows < 1) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -312,9 +352,14 @@ class Possessed {
 		if(Summoner::validate($groupId,'digit')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_group`
 						WHERE `id` = '".$this->_DB->real_escape_string($groupId)."'";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				$ret = true;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -336,15 +381,20 @@ class Possessed {
 		if(Summoner::validate($userid,'digit')
 			&& Summoner::validate($groupid,'digit')) {
 
-			if($clean === true) {
-				$this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group`
-					WHERE `fk_user_id` = '".$this->_DB->real_escape_string($userid)."'");
-			}
+			try {
+				if($clean === true) {
+					$this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group`
+						WHERE `fk_user_id` = '".$this->_DB->real_escape_string($userid)."'");
+				}
 
-			$queryStr = "INSERT IGNORE INTO `".DB_PREFIX."_user2group`
-							SET `fk_user_id` = '".$this->_DB->real_escape_string($userid)."',
-								`fk_group_id` = '".$this->_DB->real_escape_string($groupid)."'";
-			$ret = $this->_DB->query($queryStr);
+				$queryStr = "INSERT IGNORE INTO `".DB_PREFIX."_user2group`
+								SET `fk_user_id` = '".$this->_DB->real_escape_string($userid)."',
+									`fk_group_id` = '".$this->_DB->real_escape_string($groupid)."'";
+				$ret = $this->_DB->query($queryStr);
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
 		}
 
 		return $ret;
@@ -366,14 +416,19 @@ class Possessed {
 						`".DB_PREFIX."_group` AS g
 					WHERE u2g.fk_user_id = '".$this->_DB->real_escape_string($userId)."'
 					AND u2g.fk_group_id = g.id";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$ret[$result['groupId']] = array(
-					'groupName' => $result['groupName'],
-					'groupDescription' => $result['groupDescription']
-				);
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['groupId']] = array(
+						'groupName' => $result['groupName'],
+						'groupDescription' => $result['groupDescription']
+					);
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
