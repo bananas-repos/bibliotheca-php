@@ -15,7 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-define('DEBUG',false);
+
+# set to true if you need debug messages in error log file
+define('DEBUG',true);
+# set to ture if you need query log messages in error log file.
+define('QUERY_DEBUG',true);
 
 require_once './config/path.php';
 require_once './config/system.php';

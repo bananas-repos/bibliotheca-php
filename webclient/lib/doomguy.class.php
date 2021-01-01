@@ -121,33 +121,6 @@ class Doomguy {
 	}
 
 	/**
-	 * get the data from the userSession table
-	 *
-	 * @param string $param
-	 * @return bool
-	 */
-	public function getSessionInfo($param) {
-		$ret = false;
-
-		$queryStr = "SELECT `".$param."`
-						FROM `".DB_PREFIX."_userSession`
-						WHERE `fk_user_id` = '".$this->_DB->real_escape_string($this->userID)."'";
-		try {
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				$result = $query->fetch_assoc();
-				$ret = $result[$param];
-			}
-		}
-		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-		}
-
-
-		return $ret;
-	}
-
-	/**
 	 * Log out the current loaded user
 	 *
 	 * @return boolean
@@ -215,7 +188,7 @@ class Doomguy {
 								   `token` = '".$this->_DB->real_escape_string($tokenInfo['token'])."',
 								   `salt` = '".$this->_DB->real_escape_string($tokenInfo['salt'])."',
 								   `loginTime` = NOW()";
-
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 					try {
 						$this->_DB->query($queryStr);
 
@@ -245,6 +218,7 @@ class Doomguy {
 						FROM `".DB_PREFIX."_user`
 						WHERE `apiToken` = '".$this->_DB->real_escape_string($token)."'
 						AND `apiTokenValidDate` > NOW()";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -350,7 +324,7 @@ class Doomguy {
 			WHERE s.token = '".$this->_DB->real_escape_string($_SESSION[SESSION_NAME]['bibliothecatoken'])."'
 			AND s.salt <> ''
 			AND s.loginTime >= '".$timeframe."'";
-
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -389,6 +363,7 @@ class Doomguy {
 					FROM `".DB_PREFIX."_user`
 					WHERE `login` = '". $this->_DB->real_escape_string($u)."'
 					AND `active` = '1'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -418,6 +393,7 @@ class Doomguy {
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `loginTime` <= '".$timeframe."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$this->_DB->query($queryStr);
 		}
@@ -427,52 +403,45 @@ class Doomguy {
 	}
 
 	/**
-	 * load the user and groups
+	 * load the user and groups and fill $this->userData
 	 *
 	 * @return void
 	 */
 	protected function _loadUser() {
 		if(!empty($this->userID)) {
-			$queryStr = "SELECT `id`, `baseGroupId`,`protected`,`password`,`login`
-						FROM `".DB_PREFIX."_user`
-						WHERE `id` = '".$this->_DB->real_escape_string($this->userID)."'";
+			$queryStr = "SELECT u.`id`, u.`baseGroupId`,u.`protected`,u.`password`,u.`login`,
+							g.name AS groupName, g.description AS groupDescription, g.id AS groupId
+						FROM `".DB_PREFIX."_user` AS u
+						LEFT JOIN `".DB_PREFIX."_user2group` AS u2g ON u2g.fk_user_id = u.id
+						LEFT JOIN `".DB_PREFIX."_group` AS g ON g.id= u2g.fk_group_id
+						WHERE u.`id` = '".$this->_DB->real_escape_string($this->userID)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
-					$this->userData = $query->fetch_assoc();
-				}
-			}
-			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			}
 
-			# now the groups
-			$queryStr = "SELECT g.name AS groupName,
-					g.description AS groupDescription,
-					g.id AS groupId
-					FROM `".DB_PREFIX."_user2group` AS u2g,
-						`".DB_PREFIX."_group` AS g
-					WHERE u2g.fk_user_id = '".$this->_DB->real_escape_string($this->userID)."'
-					AND u2g.fk_group_id = g.id";
-			try {
-				$query = $this->_DB->query($queryStr);
-				if($query !== false && $query->num_rows > 0) {
 					while(($result = $query->fetch_assoc()) != false) {
+						$this->userData['id'] = $result['id'];
+						$this->userData['baseGroupId'] = $result['baseGroupId'];
+						$this->userData['protected'] = $result['protected'];
+						$this->userData['password'] = $result['password'];
+						$this->userData['login'] = $result['login'];
+
 						$this->userData['groups'][$result['groupId']] = array(
 							'groupName' => $result['groupName'],
 							'groupDescription' => $result['groupDescription']
 						);
 					}
+
+					$this->userData['isRoot'] = false;
+					$grIds = array_keys($this->userData['groups']);
+					if(in_array(ADMIN_GROUP_ID,$grIds)) {
+						$this->userData['isRoot'] = true;
+					}
 				}
 			}
 			catch (Exception $e) {
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			}
-
-			$this->userData['isRoot'] = false;
-			$grIds = array_keys($this->userData['groups']);
-			if(in_array(ADMIN_GROUP_ID,$grIds)) {
-				$this->userData['isRoot'] = true;
 			}
 		}
 	}
@@ -487,6 +456,7 @@ class Doomguy {
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `fk_user_id` = '".$this->_DB->real_escape_string($this->userID)."'
 				OR `loginTime` <= '".$timeframe."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$this->_DB->query($queryStr);
 		}
