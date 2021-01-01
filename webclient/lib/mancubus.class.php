@@ -117,36 +117,41 @@ class Mancubus {
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`
 					LIMIT $selections";
-		$query = $this->_DB->query($queryStr);
+		try {
+			$query = $this->_DB->query($queryStr);
 
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$_mObj = new Mancubus($this->_DB,$this->_User);
-				$_mObj->setCollection($result['id']);
-				$_mObj->setQueryOptions(array('limit' => $entries));
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$_mObj = new Mancubus($this->_DB,$this->_User);
+					$_mObj->setCollection($result['id']);
+					$_mObj->setQueryOptions(array('limit' => $entries));
 
-				if(!empty($search)) {
-					require_once 'lib/trite.class.php';
-					$_colObj = new Trite($this->_DB,$this->_User);
-					$_colObj->load($result['id']);
-					$_fd = $_colObj->getCollectionFields();
+					if(!empty($search)) {
+						require_once 'lib/trite.class.php';
+						$_colObj = new Trite($this->_DB,$this->_User);
+						$_colObj->load($result['id']);
+						$_fd = $_colObj->getCollectionFields();
 
-					$result['entries'] = $_mObj->getEntries(
-						array(
-							0 => array(
-								'colName' => $_colObj->param('defaultSearchField'),
-								'colValue' => $search,
-								'fieldData' => $_fd[$_colObj->param('defaultSearchField')]
+						$result['entries'] = $_mObj->getEntries(
+							array(
+								0 => array(
+									'colName' => $_colObj->param('defaultSearchField'),
+									'colValue' => $search,
+									'fieldData' => $_fd[$_colObj->param('defaultSearchField')]
+								)
 							)
-						)
-					);
+						);
+					}
+					else {
+						$result['entries'] = $_mObj->getEntries();
+					}
+					$ret[$result['id']] = $result;
+					unset($_mObj);
 				}
-				else {
-					$result['entries'] = $_mObj->getEntries();
-				}
-				$ret[$result['id']] = $result;
-				unset($_mObj);
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -236,20 +241,25 @@ class Mancubus {
 
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".$querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
 
-			$query = $this->_DB->query($querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
+			try {
+				$query = $this->_DB->query($querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
 
-			if($query !== false && $query->num_rows > 0) {
-				$_entryFields = $this->_getEntryFields();
+				if($query !== false && $query->num_rows > 0) {
+					$_entryFields = $this->_getEntryFields();
 
-				while(($result = $query->fetch_assoc()) != false) {
-					$result = $this->_mergeEntryWithFields($result, $_entryFields);
+					while(($result = $query->fetch_assoc()) != false) {
+						$result = $this->_mergeEntryWithFields($result, $_entryFields);
 
-					$ret['results'][$result['id']] = $result;
+						$ret['results'][$result['id']] = $result;
+					}
+
+					$query = $this->_DB->query("SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere);
+					$result = $query->fetch_assoc();
+					$ret['amount'] = $result['amount'];
 				}
-
-				$query = $this->_DB->query("SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere);
-				$result = $query->fetch_assoc();
-				$ret['amount'] = $result['amount'];
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -269,14 +279,19 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
 						WHERE ".$this->_User->getSQLRightsString()."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
-			$query = $this->_DB->query($queryStr);
+			try {
+				$query = $this->_DB->query($queryStr);
 
-			if($query !== false && $query->num_rows > 0) {
-				$_entryFields = $this->_getEntryFields();
+				if($query !== false && $query->num_rows > 0) {
+					$_entryFields = $this->_getEntryFields();
 
-				if(($result = $query->fetch_assoc()) != false) {
-					$ret = $this->_mergeEntryWithFields($result, $_entryFields);
+					if(($result = $query->fetch_assoc()) != false) {
+						$ret = $this->_mergeEntryWithFields($result, $_entryFields);
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -296,11 +311,16 @@ class Mancubus {
 		$fieldData = array();
 		$queryStr = "SELECT `identifier`, `type`, `id`, `searchtype` FROM `".DB_PREFIX."_sys_fields`
 						WHERE `id` = '".$this->_DB->real_escape_string($fieldId)."'";
-		$query = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			if(($result = $query->fetch_assoc()) != false) {
-				$fieldData = $result;
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				if(($result = $query->fetch_assoc()) != false) {
+					$fieldData = $result;
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		if(empty($fieldData)) return $ret;
@@ -346,17 +366,22 @@ class Mancubus {
 			}
 		}
 
-		$query = $this->_DB->query($querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit);
+		try {
+			$query = $this->_DB->query($querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit);
 
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$_r = $this->getEntry($result['fk_entry']);
-				$ret['results'][$_r['id']] = $_r;
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$_r = $this->getEntry($result['fk_entry']);
+					$ret['results'][$_r['id']] = $_r;
+				}
+
+				$query = $this->_DB->query("SELECT COUNT(t.value) AS amount ".$queryFrom.$queryWhere);
+				$result = $query->fetch_assoc();
+				$ret['amount'] = $result['amount'];
 			}
-
-			$query = $this->_DB->query("SELECT COUNT(t.value) AS amount ".$queryFrom.$queryWhere);
-			$result = $query->fetch_assoc();
-			$ret['amount'] = $result['amount'];
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -380,17 +405,22 @@ class Mancubus {
 						WHERE `sf`.`searchtype` = 'tag' 
 						ORDER BY `sf`.`displayname`";
 
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$ret[$result['id']] = $result;
-					$ret[$result['id']]['entries'] = array();
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					while(($result = $query->fetch_assoc()) != false) {
+						$ret[$result['id']] = $result;
+						$ret[$result['id']]['entries'] = array();
 
-					$_mn = '_loadTagDistinct_'.$result['type'];
-					if(method_exists($this, $_mn)) {
-						$ret[$result['id']]['entries'] = $this->$_mn($result,$search);
+						$_mn = '_loadTagDistinct_'.$result['type'];
+						if(method_exists($this, $_mn)) {
+							$ret[$result['id']]['entries'] = $this->$_mn($result,$search);
+						}
 					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -426,11 +456,16 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$ret[$result['id']] = $result;
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					while(($result = $query->fetch_assoc()) != false) {
+						$ret[$result['id']] = $result;
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -484,11 +519,16 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($fieldData['id'])."'
 							AND `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$ret[] = $result['value'];
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					while(($result = $query->fetch_assoc()) != false) {
+						$ret[] = $result['value'];
+					}
 				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
