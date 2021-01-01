@@ -165,12 +165,17 @@ class Trite {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`";
-		$query = $this->_DB->query($queryStr);
+		try {
+			$query = $this->_DB->query($queryStr);
 
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$ret[$result['id']] = $result;
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']] = $result;
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
