@@ -520,6 +520,17 @@ class Manageentry {
 	}
 
 	/**
+	 * Create part of the insert statement for field type number
+	 * @param array $data
+	 * @param array $queryData
+	 * @return mixed
+	 */
+	private function _saveField_number($data, $queryData) {
+		$queryData['init'][] = "`".$data['identifier']."` = ".$this->_DB->real_escape_string($data['valueToSave'])."";
+		return $queryData;
+	}
+
+	/**
 	 * Create part of the insert statement for field type lookupmultiple
 	 *
 	 * @param array $data Field data

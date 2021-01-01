@@ -129,8 +129,17 @@ class Mancubus {
 					require_once 'lib/trite.class.php';
 					$_colObj = new Trite($this->_DB,$this->_User);
 					$_colObj->load($result['id']);
+					$_fd = $_colObj->getCollectionFields();
 
-					$result['entries'] = $_mObj->getEntries($_colObj->param('defaultSearchField'),$search,true);
+					$result['entries'] = $_mObj->getEntries(
+						array(
+							0 => array(
+								'colName' => $_colObj->param('defaultSearchField'),
+								'colValue' => $search,
+								'fieldData' => $_fd[$_colObj->param('defaultSearchField')]
+							)
+						)
+					);
 				}
 				else {
 					$result['entries'] = $_mObj->getEntries();
@@ -144,45 +153,76 @@ class Mancubus {
 	}
 
 	/**
-	 * Get entries for loaded collection limited by search in
-	 * given colName and colValue
+	 * Get entries for loaded collection limited by search
+	 * and already set query options
 	 *
-	 * @param string $colName Table col to search
-	 * @param string $colValue Value to search in col
-	 * @param bool $fulltext If col has a fulltext index use it.
+	 * array[0] => array(
+	 * 		'colName' => 'column name to search in',
+	 * 		'colValue' => 'Value to search for',
+	 * 		'fieldData' => field data from Trite->getCollectionFields()
+	 * )
+	 *
+	 * @param array $searchData
 	 * @return array
 	 */
-	public function getEntries($colName='', $colValue='',$fulltext=false) {
+	public function getEntries($searchData=array()) {
 		$ret = array();
 
 		if(!empty($this->_collectionId)) {
 			// split since part of it is used later
 			$querySelect = "SELECT *";
 			$queryFrom = " FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` AS t";
+			$queryJoin = '';
 			$queryWhere = " WHERE ".$this->_User->getSQLRightsString("read", "t")."";
 
-			if(!empty($colName) && !empty($colValue)) {
-				if($fulltext === true) {
-					$queryWhere .= " AND MATCH (`t`.`".$this->_DB->real_escape_string($colName)."`) 
-						AGAINST ('".$this->_DB->real_escape_string($colValue)."' IN BOOLEAN MODE)";
-				}
-				else {
-					$queryWhere .= " AND `t`.`" . $this->_DB->real_escape_string($colName) . "` = '" . $this->_DB->real_escape_string($colValue) . "'";
+			$_isFulltext = false;
+			if(!empty($searchData)) {
+				// this search supports fulltext search and number <> search.
+				// also can search in the entry2lookup table.
+				// not perfect but works really well
+				foreach($searchData as $k=>$sd) {
+					if(!isset($sd['colName']) || !isset($sd['colValue']) || empty($sd['colValue'])) continue;
+
+					if($sd['fieldData']['searchtype'] == "tag") {
+						$_isFulltext = true;
+
+						$queryJoin = " LEFT JOIN `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."` AS e2l ON e2l.fk_entry=t.id";
+
+						$queryWhere .= " AND e2l.fk_field = '".$this->_DB->real_escape_string($sd['fieldData']['id'])."'";
+						$queryWhere .= " AND MATCH (e2l.value) AGAINST ('".$this->_DB->real_escape_string($sd['colValue'])."' IN BOOLEAN MODE)";
+					}
+					elseif ($sd['fieldData']['searchtype'] == "entrySingleNum" && strstr($sd['colValue'],'<')) {
+						$_s = str_replace('<','',$sd['colValue']);
+						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` < ".(int)$_s."";
+					}
+					elseif ($sd['fieldData']['searchtype'] == "entrySingleNum" && strstr($sd['colValue'],'>')) {
+						$_s = str_replace('>','',$sd['colValue']);
+						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` > ".(int)$_s."";
+					}
+					elseif($sd['fieldData']['searchtype'] == "entryText") {
+						$_isFulltext = true;
+						$queryWhere .= " AND MATCH (`t`.`".$this->_DB->real_escape_string($sd['colName'])."`) 
+											AGAINST ('".$this->_DB->real_escape_string($sd['colValue'])."' IN BOOLEAN MODE)";
+					}
+					else {
+						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` = '".$this->_DB->real_escape_string($sd['colValue'])."'";
+					}
 				}
 			}
 
-			$queryOrder = " ORDER BY";
-			if(!empty($this->_queryOptions['sort'])) {
-				$queryOrder .= ' t.'.$this->_queryOptions['sort'];
-			}
-			else {
-				$queryOrder .= " t.created";
-			}
-			if(!empty($this->_queryOptions['sortDirection'])) {
-				$queryOrder .= ' '.$this->_queryOptions['sortDirection'];
-			}
-			else {
-				$queryOrder .= " DESC";
+			$queryOrder = '';
+			if(!$_isFulltext) { // fulltext do not order. Which results in ordering be relevance of the match
+				$queryOrder = " ORDER BY";
+				if (!empty($this->_queryOptions['sort'])) {
+					$queryOrder .= ' t.' . $this->_queryOptions['sort'];
+				} else {
+					$queryOrder .= " t.created";
+				}
+				if (!empty($this->_queryOptions['sortDirection'])) {
+					$queryOrder .= ' ' . $this->_queryOptions['sortDirection'];
+				} else {
+					$queryOrder .= " DESC";
+				}
 			}
 
 			$queryLimit = '';
@@ -194,9 +234,9 @@ class Mancubus {
 				}
 			}
 
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__."  data: ".$querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit);
+			if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".$querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
 
-			$query = $this->_DB->query($querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit);
+			$query = $this->_DB->query($querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
 
 			if($query !== false && $query->num_rows > 0) {
 				$_entryFields = $this->_getEntryFields();
@@ -207,7 +247,7 @@ class Mancubus {
 					$ret['results'][$result['id']] = $result;
 				}
 
-				$query = $this->_DB->query("SELECT COUNT(t.id) AS amount ".$queryFrom.$queryWhere);
+				$query = $this->_DB->query("SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere);
 				$result = $query->fetch_assoc();
 				$ret['amount'] = $result['amount'];
 			}
@@ -227,7 +267,7 @@ class Mancubus {
 		if(!empty($this->_collectionId) && !empty($entryId)) {
 			$queryStr = "SELECT * 
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
-						WHERE ".$this->_User->getSQLRightsString("read")."
+						WHERE ".$this->_User->getSQLRightsString()."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
 			$query = $this->_DB->query($queryStr);
 
@@ -254,7 +294,7 @@ class Mancubus {
 		$ret = array();
 
 		$fieldData = array();
-		$queryStr = "SELECT `identifier`, `type` FROM `".DB_PREFIX."_sys_fields`
+		$queryStr = "SELECT `identifier`, `type`, `id`, `searchtype` FROM `".DB_PREFIX."_sys_fields`
 						WHERE `id` = '".$this->_DB->real_escape_string($fieldId)."'";
 		$query = $this->_DB->query($queryStr);
 		if($query !== false && $query->num_rows > 0) {
@@ -266,7 +306,16 @@ class Mancubus {
 		if(empty($fieldData)) return $ret;
 
 		if($fieldData['type'] !== "lookupmultiple") {
-			return $this->getEntries($fieldData['identifier'], $fieldValue);
+			return $this->getEntries(
+				array(
+					0 => array(
+						'colName' => $fieldData['identifier'],
+						'colValue' => $fieldValue,
+						'fieldData' => $fieldData
+					)
+				)
+			);
+
 		}
 
 		$querySelect = "SELECT `fk_entry`";

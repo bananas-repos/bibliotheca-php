@@ -1,5 +1,21 @@
 <?php if(!empty($TemplateData['loadedCollection'])) { ?>
-<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+
+<?php if(!empty($TemplateData['search'])) { ?>
+<div uk-alert id="searchNotice">
+	<button class="uk-alert-close" type="button" uk-close></button>
+	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b> (Max. result of 60)</p>
+</div>
+<script type="text/javascript">
+	UIkit.util.on('#searchNotice', 'hide', function () {
+		window.location.href="index.php?p=advancedsearch&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>";
+	});
+</script>
+<button class="uk-button uk-button-default uk-button-small"
+        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden">Toggle search</button>
+<?php } ?>
+
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small <?php if(!empty($TemplateData['search'])) { ?>uk-hidden<?php } ?>"
+	uk-grid id="searchFrame">
 	<div class="uk-width-1-2">
 
 		<form class="uk-form-horizontal uk-margin-small" method="post">
@@ -22,7 +38,7 @@
 		<h4>Syntax</h4>
 		<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
 		<p>To search within the possible fields of a collection type the field identifier followed by : and then a space.</p>
-		eg.: <code>title: starwars</code>
+		eg.: <code>title: bourne</code>
 		<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
 		<pre style="white-space: normal">
 		<?php
@@ -39,8 +55,41 @@
 		<p>+ = A leading plus sign indicates that this word must be present in each row that is returned.</p>
 		<p>- = A leading minus sign indicates that this word must not be present in any of the rows that are returned.</p>
 		<p>" = A phrase that is enclosed within double quote (") characters matches only rows that contain the phrase literally, as it was typed.</p>
+		<p>&gt; = A leading greater than sign indicates that rows greater than the number will be returned.</p>
+		<p>&lt; = A leading less than sign indicates that rows smaller than the number will be returned.</p>
 	</div>
 </div>
+
+<?php if(!empty($TemplateData['entries'])) { ?>
+<div class="uk-grid-small uk-grid-match" uk-grid>
+	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
+	<div class="uk-width-1-4@s uk-width-1-6@l">
+		<div class="uk-card uk-card-default uk-card-small">
+			<div class="uk-card-media-top">
+				<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
+				     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>">
+
+				<?php } ?>
+			</div>
+			<div class="uk-card-body uk-visible@l">
+				<?php if(Summoner::ifset($entry['fields'], 'title')) { ?>
+				<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
+				<?php } ?>
+
+				<?php if(Summoner::ifset($entry['fields'], 'description')) { ?>
+				<p><?php echo $entry['fields']['description']['value']; ?></p>
+				<?php } ?>
+			</div>
+			<div class="uk-card-footer">
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text">View</a>
+			</div>
+		</div>
+	</div>
+	<?php } ?>
+</div>
+<?php } ?>
+
 <?php } else { ?>
 <h3 class="uk-h3">Collection overview</h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>

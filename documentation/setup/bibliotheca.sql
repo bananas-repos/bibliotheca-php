@@ -134,18 +134,17 @@ CREATE TABLE `#REPLACEME#_sys_fields` (
 --
 
 INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES
-(1, 'title', 'Title', 'text', 'text', '`title` varchar(128) NOT NULL', NULL, 'string 128', '2019-09-01 18:26:33', 0, 1, 1, 'rw-r--r--'),
-(2, 'description', 'Description', 'text3', 'text', '`description` varchar(255) NULL DEFAULT NULL', NULL, 'string 64', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
-(3, 'content', 'Main content', 'textarea', 'text', 'content` text NULL DEFAULT NULL,', NULL, 'mysql text', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
-(4, 'releasedate', 'Release date', 'date', 'text', '`releasedate` timestamp NULL DEFAULT NULL', NULL, 'mysql timestamp', '2019-09-01 19:01:39', 0, 1, 1, 'rw-r--r--'),
+(1, 'title', 'Title', 'text', 'entryText', '`title` varchar(128) NOT NULL, ADD FULLTEXT (`title`)', NULL, 'string 128', '2019-09-01 18:26:33', 0, 1, 1, 'rw-r--r--'),
+(2, 'description', 'Description', 'text3', 'entryText', '`description` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`description`)', NULL, 'string 255', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
+(3, 'content', 'Main content', 'textarea', 'entryText', '`content` text NULL DEFAULT NULL, ADD FULLTEXT (`content`)', NULL, 'mysql text', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
 (5, 'tag', 'Tag', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:11:18', 0, 1, 1, 'rw-r--r--'),
 (6, 'category', 'Category', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:11:18', 0, 1, 1, 'rw-r--r--'),
 (7, 'publisher', 'Publisher', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:17:51', 0, 1, 1, 'rw-r--r--'),
 (8, 'developer', 'Developer', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:17:51', 0, 1, 1, 'rw-r--r--'),
 (9, 'platform', 'Platform', 'selection', 'tag', '`platform` varchar(32) NULL DEFAULT NULL', 'PC,Xbox,Playstation,Nintendo,Nintendo Switch', 'One of PC,Xbox,Playstation,Nintendo,Nintendo Switch', '2019-09-01 19:18:33', 0, 1, 1, 'rw-r--r--'),
 (10, 'storage', 'Storage', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:18:33', 0, 1, 1, 'rw-r--r--'),
-(13, 'rating', 'Rating', 'selection', 'tag', '`rating` varchar(16) NULL DEFAULT NULL', '0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', 'One of 0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', '2019-09-01 19:25:35', 0, 1, 1, 'rw-r--r--'),
-(14, 'year', 'Year', 'year', 'tag', '`year` year NULL DEFAULT NULL', NULL, 'mysql year', '2019-09-01 19:30:11', 0, 1, 1, 'rw-r--r--'),
+(13, 'rating', 'Rating', 'selection', 'entrySingleText', '`rating` varchar(16) NULL DEFAULT NULL', '0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', 'One of 0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', '2019-09-01 19:25:35', 0, 1, 1, 'rw-r--r--'),
+(14, 'year', 'Year', 'year', 'entrySingleText', '`year` year NULL DEFAULT NULL', NULL, 'mysql year', '2019-09-01 19:30:11', 0, 1, 1, 'rw-r--r--'),
 (15, 'coverimage', 'Cover image', 'upload', NULL, NULL, NULL, 'One file in $_FILES[uploads] of post', '2019-09-01 19:48:44', 0, 1, 1, 'rw-r--r--'),
 (16, 'attachment', 'Attachments', 'upload_multiple', NULL, NULL, NULL, 'Multiple in $_FILES[uploads] of post', '2019-09-01 19:48:44', 0, 1, 1, 'rw-r--r--'),
 (17, 'os', 'Operating system and version', 'selection', 'tag', '`os` varchar(32) NULL DEFAULT NULL', 'Windows 10,Windows 95, Windows 99,Windows XP, Windows ME, Windows 2000,Windows Vista,Windows 8', 'One of Windows 10,Windows 95, Windows 99,Windows XP, Windows ME, Windows 2000,Windows Vista,Windows 8', '2019-09-01 19:55:13', 0, 1, 1, 'rw-r--r--'),
@@ -154,9 +153,9 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (20, 'directors', 'Directors', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:17:59', NULL, 1, 1, 'rw-r--r--'),
 (21, 'genres', 'Genres', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:18:55', NULL, 1, 1, 'rw-r--r--'),
 (22, 'languages', 'Languages', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:20:45', NULL, 1, 1, 'rw-r--r--'),
-(23, 'runtime', 'Runtime', 'text', 'text', '`runtime` varchar(128) NULL DEFAULT NULL', NULL, 'string 128', '2020-07-26 07:22:24', NULL, 1, 1, 'rw-r--r--'),
-(24, 'imdbrating', 'IMDB Rating', 'text', 'text', '`imdbrating` varchar(128) NULL DEFAULT NULL', NULL, 'string 128', '2020-12-27 10:00:33', 0, 1, 1, 'rw-r--r--'),
-(25, 'viewcount', 'View counter', 'text', 'text', '`viewcount` varchar(128) NULL DEFAULT NULL', NULL, 'string 128', '2020-12-27 10:41:10', 0, 1, 1, 'rw-r--r--');
+(23, 'runtime', 'Runtime (min)', 'number', 'entrySingleNum', '`runtime` int(10) NULL, ADD INDEX (`runtime`)', NULL, 'int 10', '2020-07-26 07:22:24', NULL, 1, 1, 'rw-r--r--'),
+(24, 'imdbrating', 'IMDB Rating', 'text', 'entrySingleText', '`imdbrating` varchar(128) NULL DEFAULT NULL', NULL, 'string 128', '2020-12-27 10:00:33', 0, 1, 1, 'rw-r--r--'),
+(25, 'viewcount', 'View counter', 'number', 'entrySingleNum', '`viewcount` int(10) NULL, ADD INDEX (`viewcount`)', NULL, 'int 10', '2020-12-27 10:41:10', 0, 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 

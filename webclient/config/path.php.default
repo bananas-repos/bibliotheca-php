@@ -17,7 +17,7 @@
  */
 
 # path settings
-define('PATH_ABSOLUTE','/home/banana/code/bibliotheca/webclient');
+define('PATH_ABSOLUTE','/home/some/path/bibliotheca/webclient');
 define('PATH_SYSTEMOUT',PATH_ABSOLUTE.'/systemout');
 define('PATH_STORAGE',PATH_ABSOLUTE.'/storage');
 define('PATH_WEB_STORAGE','storage');

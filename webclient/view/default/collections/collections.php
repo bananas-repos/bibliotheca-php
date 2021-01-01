@@ -63,9 +63,9 @@ if(!empty($_collection)) {
 	if(!empty($TemplateData['loadedCollection'])) {
 		$Mancubus->setCollection($Trite->param('id'));
 		$Mancubus->setQueryOptions($_queryOptions); // this comes from pagination_before!
-		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $_collection;
-		$TemplateData['entryLinkPrefix'] = "index.php?p=entry&collection=".$_collection;
-		$TemplateData['searchAction'] = 'index.php?p=collections&collection='.$_collection;
+		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id');
+		$TemplateData['entryLinkPrefix'] = "index.php?p=entry&collection=".$Trite->param('id');
+		$TemplateData['searchAction'] = 'index.php?p=collections&collection='.$Trite->param('id');
 
 		if (!empty($_fv) && !empty($_fid)) {
 			$TemplateData['entries'] = $Mancubus->getEntriesByFieldValue($_fid, $_fv);
@@ -74,7 +74,16 @@ if(!empty($_collection)) {
 			$TemplateData['pagination']['currentGetParameters']['fid'] = $_fid;
 			$TemplateData['pagination']['currentGetParameters']['fv'] = $_fv;
 		} else {
-			$TemplateData['entries'] = $Mancubus->getEntries($Trite->param('defaultSearchField'),$_search,true);
+			$_fd = $Trite->getCollectionFields();
+			$TemplateData['entries'] = $Mancubus->getEntries(
+				array(
+					0 => array(
+						'colName' => $Trite->param('defaultSearchField'),
+						'colValue' => $_search,
+						'fieldData' =>$_fd[$Trite->param('defaultSearchField')]
+					)
+				)
+			);
 			if (!empty($_search)) {
 				$TemplateData['search'] = $_search;
 			}

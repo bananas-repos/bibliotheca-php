@@ -184,7 +184,8 @@ class Trite {
 	public function getCollectionFields() {
 		$ret = array();
 
-		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`
+		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
+						`sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_id."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
@@ -192,7 +193,7 @@ class Trite {
 		try {
 			if($query !== false && $query->num_rows > 0) {
 				while(($result = $query->fetch_assoc()) != false) {
-					$ret[$result['id']] = $result;
+					$ret[$result['identifier']] = $result;
 				}
 			}
 		} catch (Exception $e) {
