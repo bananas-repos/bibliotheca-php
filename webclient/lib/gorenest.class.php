@@ -44,6 +44,13 @@ class GoreNest {
 	private $_menuData = array();
 
 	/**
+	 * Array for faster check which call is allowed
+	 *
+	 * @var array
+	 */
+	private $_allowedPageRequests = array();
+
+	/**
 	 * GoreNest constructor.
 	 *
 	 * @param mysqli $db
@@ -52,6 +59,34 @@ class GoreNest {
 	public function __construct($db, $user) {
 		$this->_DB = $db;
 		$this->_User = $user;
+	}
+
+	/**
+	 * Load the complete menu
+	 *
+	 * @return void
+	 */
+	public function loadMenu() {
+		# reset the menu
+		$this->_menuData = array();
+
+		$queryStr = "SELECT id, text, action, icon, category
+					FROM `".DB_PREFIX."_menu`
+					WHERE ".$this->_User->getSQLRightsString()."				
+						ORDER BY position";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query  = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$this->_menuData[$result['category']][$result['id']] = $result;
+					$this->_allowedPageRequests[$result['action']] = $result['action'];
+				}
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
 	}
 
 	/**
@@ -70,52 +105,17 @@ class GoreNest {
 		if(empty($reload) && isset($this->_menuData[$category])) {
 			return $this->_menuData[$category];
 		}
-
-		# reset the menu
-		$this->_menuData[$category] = array();
-
-		$queryStr = "SELECT id, text, action, icon, category
-					FROM `".DB_PREFIX."_menu`
-					WHERE ".$this->_User->getSQLRightsString()."
-						AND `category` = '".$this->_DB->real_escape_string($category)."'
-						ORDER BY position";
-		try {
-			$query  = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$this->_menuData[$result['category']][$result['id']] = $result;
-				}
-			}
-		}
-		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-		}
+		$this->loadMenu($reload);
 
 		return $this->_menuData[$category];
 	}
 
 	/**
-	 * Allowed page requests based on the menu entries and user
+	 * Return allowed page requests
 	 *
 	 * @return array
 	 */
 	public function allowedPageRequests() {
-		$ret = array();
-		$queryStr = "SELECT id, action
-					FROM `".DB_PREFIX."_menu`
-					WHERE ".$this->_User->getSQLRightsString()."";
-		try {
-			$query  = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$ret[$result['action']] = $result['action'];
-				}
-			}
-		}
-		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-		}
-
-		return $ret;
+		return $this->_allowedPageRequests;
 	}
 }
