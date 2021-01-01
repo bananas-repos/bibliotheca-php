@@ -79,11 +79,16 @@ class GoreNest {
 					WHERE ".$this->_User->getSQLRightsString()."
 						AND `category` = '".$this->_DB->real_escape_string($category)."'
 						ORDER BY position";
-		$query  = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$this->_menuData[$result['category']][$result['id']] = $result;
+		try {
+			$query  = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$this->_menuData[$result['category']][$result['id']] = $result;
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_menuData[$category];
@@ -99,11 +104,16 @@ class GoreNest {
 		$queryStr = "SELECT id, action
 					FROM `".DB_PREFIX."_menu`
 					WHERE ".$this->_User->getSQLRightsString()."";
-		$query  = $this->_DB->query($queryStr);
-		if($query !== false && $query->num_rows > 0) {
-			while(($result = $query->fetch_assoc()) != false) {
-				$ret[$result['action']] = $result['action'];
+		try {
+			$query  = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['action']] = $result['action'];
+				}
 			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
