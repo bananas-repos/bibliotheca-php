@@ -4,12 +4,6 @@ https://www.bananas-playground.net/projekt/bibliotheca/
 
 ## Usage
 
-## Requirements
-
-* A Webserver (tested on Apache 2.4)
-* PHP 7+
-* MySQL 8+ / MariaDB 10.2
-
 ## Technical information
 This is build and tested on a linux based OS. Windows support not yet, but it could work.
 
