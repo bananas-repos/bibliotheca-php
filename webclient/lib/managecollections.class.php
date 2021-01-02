@@ -2,7 +2,7 @@
 /**
  * Bibliotheca webclient
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_collection` AS c
 					WHERE ".$this->_User->getSQLRightsString($rightsMode, "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -68,7 +69,6 @@ class ManageCollections {
 			}
 			catch (Exception $e) {
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 			}
 		}
 
@@ -91,6 +91,7 @@ class ManageCollections {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -102,7 +103,6 @@ class ManageCollections {
 		}
 		catch (Exception $e) {
 			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
 		return $ret;
@@ -120,6 +120,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_group` 
 					WHERE ".$this->_User->getSQLRightsString()."
 					ORDER BY `name`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -130,7 +131,6 @@ class ManageCollections {
 		}
 		catch (Exception $e) {
 			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
 		return $ret;
@@ -147,6 +147,7 @@ class ManageCollections {
 		$queryStr = "SELECT `id`, `name`, `login`
 						FROM `".DB_PREFIX."_user`
 						WHERE ".$this->_User->getSQLRightsString()."";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -157,7 +158,6 @@ class ManageCollections {
 		}
 		catch (Exception $e) {
 			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
 		return $ret;
@@ -174,6 +174,7 @@ class ManageCollections {
 		$queryStr = "SELECT `id`, `name`, `description`
 						FROM `".DB_PREFIX."_tool`
 						WHERE ".$this->_User->getSQLRightsString()."";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -184,7 +185,6 @@ class ManageCollections {
 		}
 		catch (Exception $e) {
 			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
 		}
 
 		return $ret;
@@ -212,6 +212,7 @@ class ManageCollections {
 								`group` = '".$this->_DB->real_escape_string($data['group'])."',
 								`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
 								`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."'";
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 				$this->_DB->query($queryStr);
 				$newId = $this->_DB->insert_id;
 
@@ -222,6 +223,7 @@ class ManageCollections {
 										`value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
 										FULLTEXT KEY `value` (`value`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryEntry2lookup,true));
 				$this->_DB->query($queryEntry2lookup);
 
 				$queryCollectionFields = "CREATE TABLE `".DB_PREFIX."_collection_fields_".$newId."` (
@@ -230,6 +232,7 @@ class ManageCollections {
 										 UNIQUE KEY `fk_field_id` (`fk_field_id`),
 										 KEY `sort` (`sort`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCollectionFields,true));
 				$this->_DB->query($queryCollectionFields);
 
 				$queryCollectionEntry = "CREATE TABLE `".DB_PREFIX."_collection_entry_".$newId."` (
@@ -242,6 +245,7 @@ class ManageCollections {
 										 `rights` char(9) COLLATE utf8mb4_bin NOT NULL,
 										 PRIMARY KEY (`id`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCollectionEntry,true));
 				$this->_DB->query($queryCollectionEntry);
 
 				$this->_updateToolRelation($newId,$data['tool']);
@@ -276,6 +280,7 @@ class ManageCollections {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -316,6 +321,7 @@ class ManageCollections {
 							`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
 							`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."'
 						WHERE `id` = '".$this->_DB->real_escape_string($data['id'])."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$this->_DB->query($queryStr);
 				$this->_updateToolRelation($data['id'],$data['tool']);
@@ -332,6 +338,8 @@ class ManageCollections {
 			$queryStr = "CREATE FULLTEXT INDEX ".$this->_DB->real_escape_string($data['defaultSearchField'])."
 						ON `".DB_PREFIX."_collection_entry_".$data['id']."`
 							(`".$this->_DB->real_escape_string($data['defaultSearchField'])."`)";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCheck,true));
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryCheck);
 				if($query !== false && $query->num_rows > 0) {
@@ -344,12 +352,10 @@ class ManageCollections {
 				}
 			} catch (Exception $e) {
 				if($e->getCode() == "1061") {
-					// duplicate key
-					error_log("[ERROR] ".__METHOD__."  mysql query: ".$e->getMessage());
+					// duplicate key message if the index is already there.
+					error_log("[NOTICE] ".__METHOD__."  mysql query: ".$e->getMessage());
 				}
 				else {
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryCheck);
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryStr);
 					error_log("[ERROR] ".__METHOD__."  mysql query: ".$e->getMessage());
 				}
 			}
@@ -374,6 +380,7 @@ class ManageCollections {
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
 			$queryStr = "DELETE FROM `".DB_PREFIX."_collection`
 							WHERE `id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			$query = $this->_DB->query($queryStr);
 			if($query !== false) {
 
@@ -398,6 +405,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_tool2collection` AS t2c
 					LEFT JOIN `".DB_PREFIX."_tool` AS t ON t2c.fk_collection_id = t.id
 					WHERE t2c.fk_collection_id = '".$this->_DB->real_escape_string($id)."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -424,6 +432,7 @@ class ManageCollections {
 		if (Summoner::validate($name, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -454,6 +463,7 @@ class ManageCollections {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -479,15 +489,20 @@ class ManageCollections {
 		$ret = false;
 
 		$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+		$queryStr = "DELETE FROM `".DB_PREFIX."_tool2collection`
+								WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
-			$this->_DB->query("DELETE FROM `".DB_PREFIX."_tool2collection`
-								WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'");
+			$this->_DB->query($queryStr);
+
 			if(!empty($tool)) {
 				foreach($tool as $k=>$v) {
 					if(!empty($v)) {
-						$this->_DB->query("INSERT IGNORE INTO `".DB_PREFIX."_tool2collection`
+						$insertQueryStr = "INSERT IGNORE INTO `".DB_PREFIX."_tool2collection`
 											SET `fk_tool_id` = '".$this->_DB->real_escape_string($v)."',
-												`fk_collection_id` = '".$this->_DB->real_escape_string($id)."'");
+												`fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
+						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($insertQueryStr,true));
+						$this->_DB->query($insertQueryStr);
 					}
 				}
 			}
