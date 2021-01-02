@@ -4,10 +4,10 @@ if(!empty($TemplateData['editFields'])) {
 	if(!empty($TemplateData['editData'])) {
 		$_entry = $TemplateData['editData']['id'];
 ?>
-		<h3 class="uk-h3">Update an entry in: <?php echo $TemplateData['loadedCollection']['name']; ?></h3>
+		<h3 class="uk-h3">Update an entry in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 		<p><a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $_entry; ?>">View entry</a></p>
 <?php } else { ?>
-		<h3 class="uk-h3">Add an entry to: <?php echo $TemplateData['loadedCollection']['name']; ?></h3>
+		<h3 class="uk-h3">Add an entry to: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 <?php } ?>
 <div class="uk-grid-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-2-3">

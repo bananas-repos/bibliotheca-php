@@ -577,7 +577,11 @@ class Manageentry {
 	 * @return mixed
 	 */
 	private function _saveField_number($data, $queryData) {
-		$queryData['init'][] = "`".$data['identifier']."` = ".$this->_DB->real_escape_string($data['valueToSave'])."";
+		// make sure there is something (int) to save
+		if(empty($data['valueToSave'])) {
+				$data['valueToSave'] = 0;
+		}
+		$queryData['init'][] = "`".$data['identifier']."` = '".$this->_DB->real_escape_string($data['valueToSave'])."'";
 		return $queryData;
 	}
 

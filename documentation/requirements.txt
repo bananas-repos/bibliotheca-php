@@ -1,4 +1,4 @@
 * A Webserver (tested on Apache 2.4)
-* PHP 7+ with mysqli, mbstring
+* PHP 7+ with mysqli, mbstring, curl
 * MySQL 8+ / MariaDB 10.2
 * At least 20MB storage WITHOUT images

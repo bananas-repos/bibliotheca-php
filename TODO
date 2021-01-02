@@ -8,3 +8,5 @@
 * sort by filter for collection display
 * responsive and breakpoints
 * tag management. Edit, update and unused ones.
+* imdb collector. Number storage -> runtime
+* clickable image in card view
