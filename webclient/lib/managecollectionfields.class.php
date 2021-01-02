@@ -170,7 +170,7 @@ class ManageCollectionFields {
 						$queryStr .= "($v,$k),";
 					}
 					$queryStr = trim($queryStr, ",");
-					$queryStr .= " AS newEntry(fid,s) ON DUPLICATE KEY UPDATE `sort`=s";
+					$queryStr .= " ON DUPLICATE KEY UPDATE `sort` = VALUES(`sort`)";
 
 					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 					$q2 = $this->_DB->query($queryStr);
