@@ -50,6 +50,7 @@ class Possessed {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description` FROM `".DB_PREFIX."_group` ORDER BY `name`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -75,6 +76,7 @@ class Possessed {
 
 		$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, `protected`, `created`
 						FROM `".DB_PREFIX."_user`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -92,7 +94,7 @@ class Possessed {
 	}
 
 	/**
-	 * Create or update a user and set the required user releations
+	 * Create or update a user and set the required user relations
 	 *
 	 * @param string $username
 	 * @param string $login
@@ -127,21 +129,26 @@ class Possessed {
 							`rights` = 'rwxr--r--',
 							`owner` = 0,
 							`group` = '".$this->_DB->real_escape_string($group)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 
 				if ($query !== false) {
 					$_userid = $this->_DB->insert_id;
-					$this->_DB->query("UPDATE `".DB_PREFIX . "_user`
+					$queryStrOwner = "UPDATE `".DB_PREFIX . "_user`
 										SET `owner` = '".$this->_DB->real_escape_string($_userid)."'
-										WHERE `id` = '".$this->_DB->real_escape_string($_userid)."'");
+										WHERE `id` = '".$this->_DB->real_escape_string($_userid)."'";
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrOwner,true));
+					$this->_DB->query($queryStrOwner);
 					$_setGroupRelation = $this->_setGroupReleation($_userid,$group);
 					if($_setGroupRelation !== false) {
 						$this->_DB->commit();
 						$ret = true;
 					}
-					$this->_DB->rollback();
-					error_log('ERROR Failed to insert user releation: '.var_export($queryStr, true));
+					else {
+						$this->_DB->rollback();
+						error_log('ERROR Failed to insert user relation: '.var_export($queryStr, true));
+					}
 				} else {
 					$this->_DB->rollback();
 					error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
@@ -199,7 +206,7 @@ class Possessed {
 			}
 			$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($id)."'
 						AND `protected` = '0'";
-
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 
@@ -209,8 +216,10 @@ class Possessed {
 						$this->_DB->commit();
 						$ret = true;
 					}
-					$this->_DB->rollback();
-					error_log('ERROR Failed to insert user releation: '.var_export($queryStr, true));
+					else {
+						$this->_DB->rollback();
+						error_log('ERROR Failed to insert user relation: '.var_export($queryStr, true));
+					}
 				} else {
 					$this->_DB->rollback();
 					error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
@@ -238,6 +247,7 @@ class Possessed {
 						FROM `".DB_PREFIX."_user`
 						WHERE `protected` = '0'
 						AND `id` = '".$this->_DB->real_escape_string($userId)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows == 1) {
@@ -299,6 +309,7 @@ class Possessed {
 		if (Summoner::validate($login, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -326,6 +337,7 @@ class Possessed {
 			$queryStr = "SELECT `id` FROM `" . DB_PREFIX . "_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -352,6 +364,7 @@ class Possessed {
 		if(Summoner::validate($groupId,'digit')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_group`
 						WHERE `id` = '".$this->_DB->real_escape_string($groupId)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -383,13 +396,16 @@ class Possessed {
 
 			try {
 				if($clean === true) {
-					$this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group`
-						WHERE `fk_user_id` = '".$this->_DB->real_escape_string($userid)."'");
+					$queryStrDelete = "DELETE FROM `".DB_PREFIX."_user2group`
+						WHERE `fk_user_id` = '".$this->_DB->real_escape_string($userid)."'";
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDelete,true));
+					$this->_DB->query($queryStrDelete);
 				}
 
 				$queryStr = "INSERT IGNORE INTO `".DB_PREFIX."_user2group`
 								SET `fk_user_id` = '".$this->_DB->real_escape_string($userid)."',
 									`fk_group_id` = '".$this->_DB->real_escape_string($groupid)."'";
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 				$ret = $this->_DB->query($queryStr);
 			}
 			catch (Exception $e) {
@@ -402,6 +418,8 @@ class Possessed {
 
 	/**
 	 * Load all the groups the user is in and the information of them
+	 *
+	 * @todo Not really needed. Can be done in one query. See Doomguy class
 	 *
 	 * @param string $userId Number
 	 * @return array
@@ -416,6 +434,7 @@ class Possessed {
 						`".DB_PREFIX."_group` AS g
 					WHERE u2g.fk_user_id = '".$this->_DB->real_escape_string($userId)."'
 					AND u2g.fk_group_id = g.id";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
