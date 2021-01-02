@@ -25,8 +25,8 @@ $TemplateData['editFields'] = array();
 $TemplateData['editData'] = array();
 $TemplateData['loadedCollection'] = '';
 $TemplateData['storagePath'] = '';
+$TemplateData['existingCollections'] = array();
 
-$TemplateData['existingCollections'] = $ManangeCollections->getCollections();
 $TemplateData['_editFieldViewDefault'] = Summoner::themefile('manageentry/field-unknown.html', UI_THEME);
 
 $_collection = false;
@@ -140,4 +140,7 @@ if(!empty($_collection)) {
 		$TemplateData['message']['content'] = "Collection could not be loaded.";
 		$TemplateData['message']['status'] = "error";
 	}
+}
+else {
+	$TemplateData['existingCollections'] = $ManangeCollections->getCollections();
 }

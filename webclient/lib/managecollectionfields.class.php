@@ -58,6 +58,11 @@ class ManageCollectionFields {
 	 */
 	private $_cacheExistingSysFields = array();
 
+	/**
+	 * Store available fields info for runtime
+	 *
+	 * @var array
+	 */
 	private $_cacheAvailableFields = array();
 
 	/**

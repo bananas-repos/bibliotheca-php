@@ -2,7 +2,7 @@
 /**
  * Bibliotheca webclient
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,13 @@ class Manageentry {
 	private $_replaceEntryString = 'REPLACE_ENTERY';
 
 	/**
+	 * Store edit fields info for runtime
+	 *
+	 * @var array
+	 */
+	private $_cacheEditFields = array();
+
+	/**
 	 * ManageCollections constructor.
 	 *
 	 * @param mysqli $databaseConnectionObject
@@ -71,10 +78,14 @@ class Manageentry {
 	 * Load the fields for the loaded collection
 	 * Also load additional data based on fieldtype and _loadField_ method
 	 *
+	 * @param bool $refresh
 	 * @return array
 	 */
-	public function getEditFields() {
-		$ret = array();
+	public function getEditFields($refresh=false) {
+
+		if($refresh === false && !empty($this->_cacheEditFields)) {
+			return $this->_cacheEditFields;
+		}
 
 		if(!empty($this->_collectionId)) {
 			$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
@@ -82,6 +93,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -90,7 +102,7 @@ class Manageentry {
 						if(method_exists($this, $_mn)) {
 							$result = $this->$_mn($result);
 						}
-						$ret[$result['id']] = $result;
+						$this->_cacheEditFields[$result['id']] = $result;
 					}
 				}
 			}
@@ -99,7 +111,7 @@ class Manageentry {
 			}
 		}
 
-		return $ret;
+		return $this->_cacheEditFields;
 	}
 
 	/**
@@ -117,6 +129,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
 						WHERE ".$this->_User->getSQLRightsString("write")."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 
@@ -176,23 +189,23 @@ class Manageentry {
 			if(!empty($queryData['init'])) {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
-				try {
-					$queryStr = "INSERT INTO `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-					if($update !== false && is_numeric($update)) {
-						$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-					}
-					$queryStr .= " SET
+				$queryStr = "INSERT INTO `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
+				if($update !== false && is_numeric($update)) {
+					$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
+				}
+				$queryStr .= " SET
 								`modificationuser` = '".$this->_DB->real_escape_string($owner)."',
 								`owner` = '".$this->_DB->real_escape_string($owner)."',
 								`group` = '".$this->_DB->real_escape_string($group)."',
 								`rights`= '".$this->_DB->real_escape_string($rights)."',";
-					$queryStr .= implode(", ",$queryData['init']);
-					if($update !== false && is_numeric($update)) {
-						$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($update)."'";
-					}
+				$queryStr .= implode(", ",$queryData['init']);
+				if($update !== false && is_numeric($update)) {
+					$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($update)."'";
+				}
 
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__." init queryStr: ".var_export($queryStr,true));
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 
+				try {
 					$this->_DB->query($queryStr);
 
 					if($update !== false && is_numeric($update)) {
@@ -267,6 +280,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
 					if(DEBUG) error_log("[DEBUG] ".__METHOD__." remove lookup queryStr: ".var_export($queryStr,true));
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 					$this->_DB->query($queryStr);
 
 					// delete entry
@@ -274,6 +288,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND " . $this->_User->getSQLRightsString("delete") . "";
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 					$this->_DB->query($queryStr);
 
 					$this->_DB->commit();
@@ -304,6 +319,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND " . $this->_User->getSQLRightsString("write") . "";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -336,6 +352,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND " . $this->_User->getSQLRightsString("delete") . "";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -391,6 +408,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($fieldData['id'])."'
 							AND `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -481,6 +499,7 @@ class Manageentry {
 			$queryStr = "SELECT DISTINCT(`value`) 
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($data['id'])."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -672,13 +691,13 @@ class Manageentry {
 		if(!empty($queryString) && !empty($insertId)) {
 			// replace only once to avoid replacing actual data
 			$queryStr = Summoner::replaceOnce($queryString,$this->_replaceEntryString, $insertId);
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$this->_DB->query($queryStr);
 			}
 			catch (Exception $e) {
 				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." queryStr: ".var_export($queryStr,true));
 		}
 	}
 
