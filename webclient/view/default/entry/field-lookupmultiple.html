@@ -2,7 +2,7 @@
 	<span class="uk-text-muted"><?php echo $field['displayname']; ?>:</span>
 	<?php
 	foreach($field['value'] as $_fv) {
-		echo '<a href="index.php?p=collections&collection='.$TemplateData['loadedCollection']['id'].'&fid='.$field['id'].'&fv='.urlencode($_fv).'">'.$_fv.'</a>, ';
+		echo '<a href="index.php?p=collections&collection='.$TemplateData['loadedCollection']['id'].'&fid='.$field['identifier'].'&fv='.urlencode($_fv).'">'.$_fv.'</a>, ';
 	}
 	?>
 </p>

@@ -59,6 +59,7 @@ class Tentacle {
 					FROM `".DB_PREFIX."_tool`  
 					WHERE ".$this->_User->getSQLRightsString()."
 					AND `action` = '".$this->_DB->real_escape_string($identifier)."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if ($query !== false && $query->num_rows > 0) {

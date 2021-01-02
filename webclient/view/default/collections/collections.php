@@ -27,24 +27,24 @@ if(isset($_GET['collection']) && !empty($_GET['collection'])) {
 	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
 }
 
-// field id to search within
+// field identifier to search within
 $_fid = false;
 if(isset($_GET['fid']) && !empty($_GET['fid'])) {
 	$_fid = trim($_GET['fid']);
-	$_fid = Summoner::validate($_fid,'digit') ? $_fid : false;
+	$_fid = Summoner::validate($_fid,'nospace') ? $_fid : false;
 }
 
 // field value to look up
 $_fv = false;
 if(isset($_GET['fv']) && !empty($_GET['fv'])) {
 	$_fv = trim($_GET['fv']);
-	$_fv = Summoner::validate($_fv,'text') ? $_fv : false;
+	$_fv = Summoner::validate($_fv) ? $_fv : false;
 }
 
 $_search = false;
 if(isset($_POST['navSearch'])) {
 	$_search = trim($_POST['navSearch']);
-	$_search = Summoner::validate($_search,'text') ? $_search :  false;
+	$_search = Summoner::validate($_search) ? $_search :  false;
 }
 
 require_once(Summoner::themefile('system/pagination_before.php',UI_THEME));
@@ -67,26 +67,30 @@ if(!empty($_collection)) {
 		$TemplateData['entryLinkPrefix'] = "index.php?p=entry&collection=".$Trite->param('id');
 		$TemplateData['searchAction'] = 'index.php?p=collections&collection='.$Trite->param('id');
 
-		if (!empty($_fv) && !empty($_fid)) {
-			$TemplateData['entries'] = $Mancubus->getEntriesByFieldValue($_fid, $_fv);
-			$TemplateData['search'] = $_fv;
+		$_fd = $Trite->getCollectionFields();
 
+		$_sdata = array();
+		if (!empty($_fv) && !empty($_fid)) {
+			$_sdata[0] = array(
+				'colName' => $_fd[$_fid]['identifier'],
+				'colValue' => $_fv,
+				'fieldData' => $_fd[$_fid]
+			);
+			$_search = $_fv;
 			$TemplateData['pagination']['currentGetParameters']['fid'] = $_fid;
 			$TemplateData['pagination']['currentGetParameters']['fv'] = $_fv;
-		} else {
-			$_fd = $Trite->getCollectionFields();
-			$TemplateData['entries'] = $Mancubus->getEntries(
-				array(
-					0 => array(
-						'colName' => $Trite->param('defaultSearchField'),
-						'colValue' => $_search,
-						'fieldData' =>$_fd[$Trite->param('defaultSearchField')]
-					)
-				)
+		}
+		else {
+			$_sdata[0] = array(
+				'colName' => $Trite->param('defaultSearchField'),
+				'colValue' => $_search,
+				'fieldData' =>$_fd[$Trite->param('defaultSearchField')]
 			);
-			if (!empty($_search)) {
-				$TemplateData['search'] = $_search;
-			}
+		}
+
+		$TemplateData['entries'] = $Mancubus->getEntries($_sdata);
+		if (!empty($_search)) {
+			$TemplateData['search'] = $_search;
 		}
 	}
 	else {

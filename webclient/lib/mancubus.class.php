@@ -53,6 +53,20 @@ class Mancubus {
 	private $_queryOptions;
 
 	/**
+	 * Store the all the values for an entry from lookup table
+	 *
+	 * @var array
+	 */
+	private $_cacheLookupValuesForEntry = array();
+
+	/**
+	 * Store entryFields for run time
+	 *
+	 * @var array
+	 */
+	private $_cacheEntryFields = array();
+
+	/**
 	 * Mancubus constructor.
 	 *
 	 * @param mysqli $databaseConnectionObject
@@ -313,20 +327,9 @@ class Mancubus {
 	public function getEntriesByFieldValue($fieldId, $fieldValue) {
 		$ret = array();
 
-		$fieldData = array();
-		$queryStr = "SELECT `identifier`, `type`, `id`, `searchtype` FROM `".DB_PREFIX."_sys_fields`
-						WHERE `id` = '".$this->_DB->real_escape_string($fieldId)."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-		try {
-			$query = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				if(($result = $query->fetch_assoc()) != false) {
-					$fieldData = $result;
-				}
-			}
-		}
-		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		$_entryFields = $this->_getEntryFields();
+		if(isset($_entryFields[$fieldId])) {
+			$fieldData = $_entryFields[$fieldId];
 		}
 
 		if(empty($fieldData)) return $ret;
@@ -458,11 +461,14 @@ class Mancubus {
 	 * @return array
 	 */
 	private function _getEntryFields() {
-		$ret = array();
+
+		if(!empty($this->_cacheEntryFields)) {
+			return $this->_cacheEntryFields;
+		}
 
 		if(!empty($this->_collectionId)) {
 			$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-								`sf`.`value` AS preValue, `sf`.`apiinfo` 
+								`sf`.`value` AS preValue, `sf`.`apiinfo` , `sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
@@ -471,7 +477,7 @@ class Mancubus {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
 					while(($result = $query->fetch_assoc()) != false) {
-						$ret[$result['id']] = $result;
+						$this->_cacheEntryFields[$result['id']] = $result;
 					}
 				}
 			}
@@ -480,7 +486,7 @@ class Mancubus {
 			}
 		}
 
-		return $ret;
+		return $this->_cacheEntryFields;
 	}
 
 	/**
@@ -526,21 +532,28 @@ class Mancubus {
 		$ret = array();
 
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
-			$queryStr = "SELECT `value` 
-						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
-						WHERE `fk_field` = '".$this->_DB->real_escape_string($fieldData['id'])."'
-							AND `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-			try {
-				$query = $this->_DB->query($queryStr);
-				if($query !== false && $query->num_rows > 0) {
-					while(($result = $query->fetch_assoc()) != false) {
-						$ret[] = $result['value'];
-					}
+
+			// avoid db query for each wanted value
+			if(isset($this->_cacheLookupValuesForEntry[$this->_collectionId])) {
+				if(isset($this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']])) {
+					$ret =  $this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']];
 				}
 			}
-			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			else {
+				$queryStr = "SELECT `fk_field`, `value`, `fk_entry`
+							FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`";
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+				try {
+					$query = $this->_DB->query($queryStr);
+					if($query !== false && $query->num_rows > 0) {
+						while(($result = $query->fetch_assoc()) != false) {
+							$this->_cacheLookupValuesForEntry[$this->_collectionId][$result['fk_entry']][$result['fk_field']][$result['value']] = $result['value'];
+						}
+					}
+				}
+				catch (Exception $e) {
+					error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				}
 			}
 		}
 

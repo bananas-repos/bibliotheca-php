@@ -61,9 +61,11 @@ if(!empty($_collection)) {
 							$_ms = count($_matches[0]);
 							for($i=0;$i<$_ms;$i++) {
 								$_cn = trim(str_replace(':','',$_matches[1][$i]));
-								$_sData[$i]['colName'] = $_cn;
-								$_sData[$i]['colValue'] = trim(str_replace($_matches[1][$i],'',$_matches[0][$i]));
-								$_sData[$i]['fieldData'] = $TemplateData['collectionFields'][$_cn];
+								if(isset($TemplateData['collectionFields'][$_cn])) {
+									$_sData[$i]['colName'] = $_cn;
+									$_sData[$i]['colValue'] = trim(str_replace($_matches[1][$i],'',$_matches[0][$i]));
+									$_sData[$i]['fieldData'] = $TemplateData['collectionFields'][$_cn];
+								}
 							}
 
 							$TemplateData['entries'] = $Mancubus->getEntries($_sData);

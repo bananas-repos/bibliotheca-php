@@ -117,6 +117,7 @@ class Trite {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString($right, "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -124,7 +125,6 @@ class Trite {
 					$this->_id = $this->_collectionData['id'];
 				}
 			} catch (Exception $e) {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryStr);
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
@@ -165,6 +165,7 @@ class Trite {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -194,6 +195,7 @@ class Trite {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_id."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		$query = $this->_DB->query($queryStr);
 		try {
 			if($query !== false && $query->num_rows > 0) {
@@ -202,7 +204,6 @@ class Trite {
 				}
 			}
 		} catch (Exception $e) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__."  mysql query: ".$queryStr);
 			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 		}
 
