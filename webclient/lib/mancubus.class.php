@@ -117,6 +117,7 @@ class Mancubus {
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`
 					LIMIT $selections";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -239,10 +240,11 @@ class Mancubus {
 				}
 			}
 
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".$querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
+			$queryStr = $querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit;
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 
 			try {
-				$query = $this->_DB->query($querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit);
+				$query = $this->_DB->query($queryStr);
 
 				if($query !== false && $query->num_rows > 0) {
 					$_entryFields = $this->_getEntryFields();
@@ -253,7 +255,9 @@ class Mancubus {
 						$ret['results'][$result['id']] = $result;
 					}
 
-					$query = $this->_DB->query("SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere);
+					$queryStrCount = "SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere;
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrCount,true));
+					$query = $this->_DB->query($queryStrCount);
 					$result = $query->fetch_assoc();
 					$ret['amount'] = $result['amount'];
 				}
@@ -279,6 +283,7 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
 						WHERE ".$this->_User->getSQLRightsString()."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 
@@ -311,6 +316,7 @@ class Mancubus {
 		$fieldData = array();
 		$queryStr = "SELECT `identifier`, `type`, `id`, `searchtype` FROM `".DB_PREFIX."_sys_fields`
 						WHERE `id` = '".$this->_DB->real_escape_string($fieldId)."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -366,8 +372,10 @@ class Mancubus {
 			}
 		}
 
+		$queryStr = $querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit;
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
-			$query = $this->_DB->query($querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit);
+			$query = $this->_DB->query($queryStr);
 
 			if($query !== false && $query->num_rows > 0) {
 				while(($result = $query->fetch_assoc()) != false) {
@@ -375,7 +383,9 @@ class Mancubus {
 					$ret['results'][$_r['id']] = $_r;
 				}
 
-				$query = $this->_DB->query("SELECT COUNT(t.value) AS amount ".$queryFrom.$queryWhere);
+				$queryCountStr = "SELECT COUNT(t.value) AS amount ".$queryFrom.$queryWhere;
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCountStr,true));
+				$query = $this->_DB->query($queryCountStr);
 				$result = $query->fetch_assoc();
 				$ret['amount'] = $result['amount'];
 			}
@@ -404,7 +414,7 @@ class Mancubus {
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						WHERE `sf`.`searchtype` = 'tag' 
 						ORDER BY `sf`.`displayname`";
-
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -456,6 +466,7 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -519,6 +530,7 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($fieldData['id'])."'
 							AND `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -632,9 +644,8 @@ class Mancubus {
 				$queryStr .= " AND MATCH (`value`) AGAINST ('" . $this->_DB->real_escape_string($search) . "' IN BOOLEAN MODE)";
 			}
 
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
-
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
 					while (($result = $query->fetch_assoc()) != false) {
@@ -686,9 +697,8 @@ class Mancubus {
 
 			$queryStr .= " ORDER BY `".$this->_DB->real_escape_string($colname)."` DESC";
 
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." mysql query: ".$queryStr);
-
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
 					while(($result = $query->fetch_assoc()) != false) {
