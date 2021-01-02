@@ -58,6 +58,8 @@ class ManageCollectionFields {
 	 */
 	private $_cacheExistingSysFields = array();
 
+	private $_cacheAvailableFields = array();
+
 	/**
 	 * ManageCollections constructor
 	 *
@@ -86,18 +88,22 @@ class ManageCollectionFields {
 	 * @return array
 	 * @todo No rights implemented yet. Maybe not needed. Management done by hand directly on DB
 	 */
-	public function getAvailableFields() {
-		$ret = array();
+	public function getAvailableFields($refresh=false) {
+
+		if($refresh === false && !empty($this->_cacheAvailableFields)) {
+			return $this->_cacheAvailableFields;
+		}
 
 		$queryStr = "SELECT `id`, `identifier`, `displayname`, `type`,
 						`createstring`, `value`
 					FROM `".DB_PREFIX."_sys_fields`
 					ORDER BY `displayname`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
 				while(($result = $query->fetch_assoc()) != false) {
-					$ret[$result['id']] = $result;
+					$this->_cacheAvailableFields[$result['id']] = $result;
 				}
 			}
 		}
@@ -105,7 +111,7 @@ class ManageCollectionFields {
 			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
-		return $ret;
+		return $this->_cacheAvailableFields;
 	}
 
 	/**
@@ -161,6 +167,7 @@ class ManageCollectionFields {
 					$queryStr = trim($queryStr, ",");
 					$queryStr .= " AS newEntry(fid,s) ON DUPLICATE KEY UPDATE `sort`=s";
 
+					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 					$q2 = $this->_DB->query($queryStr);
 					if($q2 !== false) {
 						$_newColumns = $this->_getSQLForCollectionColumns($ids);
@@ -171,11 +178,12 @@ class ManageCollectionFields {
 								$alterString .= " ADD ".$v['createstring'].",";
 							}
 							$alterString = trim($alterString, ",");
+
+							if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($alterQuery,true));
 							$alterQuery = $this->_DB->query($alterString);
 						}
 						if(!empty($_newColumns) && $alterQuery == false) {
 							$this->_DB->rollback();
-							error_log('ERROR Failed to update entry table: '.var_export($alterString, true));
 						}
 						else {
 							$this->_DB->commit();
@@ -184,8 +192,6 @@ class ManageCollectionFields {
 					}
 					else {
 						$this->_DB->rollback();
-						error_log('ERROR Failed to update collection fields: '.var_export($queryStr1, true));
-						error_log('ERROR Failed to update collection fields: '.var_export($queryStr, true));
 					}
 				}
 			}
@@ -212,6 +218,7 @@ class ManageCollectionFields {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -236,6 +243,7 @@ class ManageCollectionFields {
 		$ret = array();
 
 		$queryStr = "SHOW COLUMNS FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
