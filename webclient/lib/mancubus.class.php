@@ -689,7 +689,7 @@ class Mancubus {
 	}
 
 	/**
-	 * Get the distinct data from a col and optionaml search term
+	 * Get the distinct data from a col and optional search term
 	 *
 	 * @param string $colname
 	 * @param string $search

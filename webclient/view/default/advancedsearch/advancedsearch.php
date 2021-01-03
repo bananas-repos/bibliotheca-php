@@ -32,8 +32,6 @@ $TemplateData['collections'] = array();
 $TemplateData['collectionFields'] = array();
 $TemplateData['search'] = false;
 
-//
-
 if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
 	if(!empty($TemplateData['loadedCollection'])) {
