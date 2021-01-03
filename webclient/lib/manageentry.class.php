@@ -567,7 +567,7 @@ class Manageentry {
 	 * @return array
 	 */
 	private function _saveField_year($data, $queryData) {
-		return $this->_saveField_text($data, $queryData);
+		return $this->_saveField_number($data, $queryData);
 	}
 
 	/**
