@@ -23,9 +23,11 @@
 		<div class="uk-card uk-card-default uk-grid-collapse uk-child-width-1-2@s uk-margin" uk-grid>
 			<div class="uk-card-media-left uk-cover-container">
 				<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+				<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>">
 				<img src="<?php echo PATH_WEB_STORAGE.'/'.$k.'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
 					 alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>" uk-cover>
 				<canvas width="600" height="400"></canvas>
+				</a>
 				<?php } ?>
 			</div>
 			<div>

@@ -572,6 +572,8 @@ class Manageentry {
 
 	/**
 	 * Create part of the insert statement for field type number
+	 * Strips everything what is not a digit from it.
+	 *
 	 * @param array $data
 	 * @param array $queryData
 	 * @return mixed
@@ -581,6 +583,7 @@ class Manageentry {
 		if(empty($data['valueToSave'])) {
 				$data['valueToSave'] = 0;
 		}
+		$data['valueToSave'] = preg_replace('/[^\p{N}]/u', '', $data['valueToSave']);
 		$queryData['init'][] = "`".$data['identifier']."` = '".$this->_DB->real_escape_string($data['valueToSave'])."'";
 		return $queryData;
 	}

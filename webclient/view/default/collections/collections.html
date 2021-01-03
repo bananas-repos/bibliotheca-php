@@ -19,9 +19,10 @@
 		<div class="uk-card uk-card-default uk-card-small">
 			<div class="uk-card-media-top">
 				<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
 				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
 					 alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>">
-
+				</a>
 				<?php } ?>
 			</div>
 			<div class="uk-card-body uk-visible@l">

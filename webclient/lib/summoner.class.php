@@ -105,7 +105,7 @@ class Summoner {
 			case 'digit':
 				// only numbers and digit
 				// warning with negative numbers...
-				$pattern = '/[\p{N}\-]/';
+				$pattern = '/[\p{N}\-]/u';
 			break;
 
 			case 'pageTitle':
