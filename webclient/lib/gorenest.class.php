@@ -99,15 +99,20 @@ class GoreNest {
 	 * @return array
 	 */
 	public function get($category,$reload=false) {
+		$ret = array();
 
 		if(empty($category)) return false;
 
 		if(empty($reload) && isset($this->_menuData[$category])) {
 			return $this->_menuData[$category];
 		}
-		$this->loadMenu($reload);
 
-		return $this->_menuData[$category];
+		$this->loadMenu($reload);
+		if(isset($this->_menuData[$category])) {
+			$ret = $this->_menuData[$category];
+		}
+
+		return $ret;
 	}
 
 	/**

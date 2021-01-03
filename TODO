@@ -10,3 +10,4 @@
 * tag management. Edit, update and unused ones.
 * imdb collector. Number storage -> runtime
 * clickable image in card view
+* stats overview page. amount of entries. file and db storage.

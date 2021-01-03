@@ -554,6 +554,7 @@ class Mancubus {
 				catch (Exception $e) {
 					error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 				}
+				$ret =  $this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']];
 			}
 		}
 
