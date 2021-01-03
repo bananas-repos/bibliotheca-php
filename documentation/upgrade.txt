@@ -1,0 +1,4 @@
+Each release has its own version file in the upgrade folder.
+In this file there are the steps needed to make an upgrade.
+
+If you upgrade multiple versions make sure to read all the files in the correct order.
