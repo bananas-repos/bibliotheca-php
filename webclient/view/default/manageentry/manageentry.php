@@ -106,7 +106,7 @@ if(!empty($_collection)) {
 					} elseif (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
 						$do = $ManangeEntry->create($_fieldsToSave, $_owner, $_group, $_rights, $_id);
 						if ($do !== 0) {
-							$TemplateData['refresh'] = 'index.php?p=manageentry&collection='.$_collection.'&id='.$_id;
+							$TemplateData['refresh'] = 'index.php?p=entry&collection='.$_collection.'&id='.$_id;
 						} else {
 							$TemplateData['message']['content'] = "Entry could not be updated.";
 							$TemplateData['message']['status'] = "error";
