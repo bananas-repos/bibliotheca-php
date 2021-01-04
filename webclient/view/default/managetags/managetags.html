@@ -1,0 +1,15 @@
+<?php if(!empty($TemplateData['loadedCollection'])) { ?>
+
+<?php } else { ?>
+<h3 class="uk-h3">Collection overview</h3>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-2-3@m uk-width-1-2@xl">
+		<dl class="uk-description-list uk-description-list-divider">
+			<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+			<dt><a href="index.php?p=managetags&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>
+			<dd><?php echo $v['description']; ?></dd>
+			<?php } ?>
+		</dl>
+	</div>
+</div>
+<?php } ?>

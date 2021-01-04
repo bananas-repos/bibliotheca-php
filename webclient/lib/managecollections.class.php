@@ -221,6 +221,8 @@ class ManageCollections {
 										`fk_field` int NOT NULL,
 										`fk_entry` int NOT NULL,
 										`value` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+										KEY `fk_entry` (`fk_entry`),
+ 										KEY `fk_field` (`fk_field`),
 										FULLTEXT KEY `value` (`value`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryEntry2lookup,true));

@@ -6,7 +6,7 @@ if(!empty($TemplateData['editFields'])) {
 ?>
 		<h3 class="uk-h3">Update an entry in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 		<p><span uk-icon="arrow-left"></span>
-			<a href="index.php?p=manageentry&collection=<?php echo $TemplateData['collection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>">View entry</a>
+			<a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>">View entry</a>
 		</p>
 <?php } else { ?>
 		<h3 class="uk-h3">Add an entry to: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>

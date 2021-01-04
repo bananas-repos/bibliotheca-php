@@ -211,6 +211,51 @@ class Trite {
 	}
 
 	/**
+	 * Get the tag fields (searchtype = tag) and their values.
+	 * Possible optimization can be done here: Do not load everything at once, but per field
+	 * Needs also change in frontend to separate those calls
+	 *
+	 * @param string $search String value to search value against
+	 * @return array
+	 */
+	public function getTags($search='') {
+		$ret = array();
+
+		$queryStr = "SELECT `cf`.`fk_field_id` AS id,
+							`sf`.`type`,
+							`sf`.`displayname`,
+							`sf`.`identifier`,
+							`e2l`.`value`
+						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_id)."` AS cf
+						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
+						LEFT JOIN `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_id)."` AS e2l ON `e2l`.`fk_field` = `sf`.`id`
+						WHERE `sf`.`searchtype` = 'tag'";
+		if(!empty($search)) {
+			$queryStr .= " AND MATCH (`e2l`.`value`) AGAINST ('".$this->_DB->real_escape_string($search)."' IN BOOLEAN MODE)";
+		}
+		else {
+			$queryStr .= " ORDER BY `sf`.`displayname`, `e2l`.`value`";
+		}
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		$query = $this->_DB->query($queryStr);
+		try {
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']]['id'] = $result['id'];
+					$ret[$result['id']]['displayname'] = $result['displayname'];
+					$ret[$result['id']]['identifier'] = $result['identifier'];
+					$ret[$result['id']]['type'] = $result['type'];
+					$ret[$result['id']]['entries'][$result['value']] = $result['value'];
+				}
+			}
+		} catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * set some defaults by init of the class
 	 *
 	 * @return void
