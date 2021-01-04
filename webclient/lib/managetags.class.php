@@ -93,6 +93,7 @@ class ManageTags {
 
 	/**
 	 * Move in field from to given new string
+	 * Does a BINARY compare in SQL for $from
 	 *
 	 * @param string $field Field ID to use in lookup table
 	 * @param string $from Value string to search for in lookup table
@@ -109,7 +110,7 @@ class ManageTags {
 		$queryStr = "UPDATE `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 					SET `value` = '".$this->_DB->real_escape_string($to)."'
 					WHERE `fk_field` = '".$this->_DB->real_escape_string($field)."'
-						AND `value` = '".$this->_DB->real_escape_string($from)."'";
+						AND `value` = BINARY '".$this->_DB->real_escape_string($from)."'";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$this->_DB->query($queryStr);
@@ -123,7 +124,8 @@ class ManageTags {
 	}
 
 	/**
-	 * Delete the given $what for field $field in entry lookup table
+	 * Delete the given $what for field $field in entry lookup table.
+	 * Does a BINARY compare in SQL for $what
 	 *
 	 * @param string $field Field ID to use in lookup table
 	 * @param string $what Value to search for and delete from lookup table
@@ -137,7 +139,7 @@ class ManageTags {
 
 		$queryStr = "DELETE FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 					WHERE `fk_field` = '".$this->_DB->real_escape_string($field)."'
-						AND `value` = '".$this->_DB->real_escape_string($what)."'";
+						AND `value` = BINARY '".$this->_DB->real_escape_string($what)."'";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$this->_DB->query($queryStr);
