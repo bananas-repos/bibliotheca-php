@@ -40,8 +40,6 @@ if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
 	if(!empty($TemplateData['loadedCollection'])) {
 		$ManageTags->setCollection($_collection);
-
-
 		if(isset($_POST['submitForm'])) {
 			$fdata = $_POST['fdata'];
 			$do = array();

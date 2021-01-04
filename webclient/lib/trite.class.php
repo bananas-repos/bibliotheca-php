@@ -245,7 +245,9 @@ class Trite {
 					$ret[$result['id']]['displayname'] = $result['displayname'];
 					$ret[$result['id']]['identifier'] = $result['identifier'];
 					$ret[$result['id']]['type'] = $result['type'];
-					$ret[$result['id']]['entries'][$result['value']] = $result['value'];
+					if(!empty($result['value'])) {
+						$ret[$result['id']]['entries'][$result['value']] = $result['value'];
+					}
 				}
 			}
 		} catch (Exception $e) {
