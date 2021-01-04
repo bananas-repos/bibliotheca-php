@@ -18,6 +18,8 @@
 
 require_once 'lib/trite.class.php';
 $Trite = new Trite($DB,$Doomguy);
+require_once 'lib/managetags.class.php';
+$ManageTags = new ManageTags($DB,$Doomguy);
 
 $_collection = false;
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
@@ -37,6 +39,34 @@ $TemplateData['collections'] = array();
 if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
 	if(!empty($TemplateData['loadedCollection'])) {
+		$ManageTags->setCollection($_collection);
+
+
+		if(isset($_POST['submitForm'])) {
+			$fdata = $_POST['fdata'];
+			$do = array();
+			if(!empty($fdata)) {
+				foreach ($fdata as $ident=>$data) {
+					$do[] = $ManageTags->doWithTag($ident, $data);
+				}
+			}
+			if(!empty($do)) {
+				if(empty(implode($do))) {
+					$TemplateData['refresh'] = 'index.php?p=managetags&collection='.$_collection;
+				}
+				else {
+					$TemplateData['message']['content'] = implode('<br / >',$do);
+					$TemplateData['message']['status'] = "error";
+				}
+			}
+			else {
+				$TemplateData['message']['content'] = "Can not execute given options. See logs for more.";
+				$TemplateData['message']['status'] = "error";
+			}
+		}
+		else {
+			$TemplateData['tags'] = $Trite->getTags();
+		}
 	}
 	else {
 		$TemplateData['message']['content'] = "Can not load given collection.";

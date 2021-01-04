@@ -1,4 +1,75 @@
 <?php if(!empty($TemplateData['loadedCollection'])) { ?>
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<p>
+			The actions are top down. If you choose to move and rename, only move will be executed.<br />
+			Deletion will remove without recover!<br />
+			If you rename and input an existing one a move will be done instead.<br />
+			Tag values are stored how they come. But treated case insensitive in search.
+		</p>
+		<?php if(!empty($TemplateData['tags'])) { ?>
+
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+
+		<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
+			<h4 class="uk-heading-line"><?php echo $v['displayname']; ?></h4>
+
+			<div class="uk-margin">
+				<label class="uk-form-label">Use</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" name="fdata[<?php echo $v['id']; ?>][use]">
+						<option value="">Please select</option>
+						<?php foreach($v['entries'] as $ek=>$ev) { ?>
+						<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+				<label class="uk-form-label">Move to (rename to existing)</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" name="fdata[<?php echo $v['id']; ?>][move]">
+						<option value="">Please select</option>
+						<?php foreach($v['entries'] as $ek=>$ev) { ?>
+						<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+				<label class="uk-form-label" >Rename</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" type="text" autocomplete="off"
+					       name="fdata[<?php echo $v['id']; ?>][rename]"
+					>
+				</div>
+			</div>
+
+
+			<div class="uk-margin">
+				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[<?php echo $v['id']; ?>][doDelete]" value="1">
+					</label>
+				</div>
+			</div>
+
+
+		<?php } ?>
+
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Save
+				</button>
+			</div>
+		</form>
+
+		<?php } ?>
+	</div>
+</div>
 
 <?php } else { ?>
 <h3 class="uk-h3">Collection overview</h3>
