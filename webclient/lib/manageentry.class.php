@@ -187,7 +187,7 @@ class Manageentry {
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." queryData: ".var_export($queryData,true));
 
 			if(!empty($queryData['init'])) {
-				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 
 				$queryStr = "INSERT INTO `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
 				if($update !== false && is_numeric($update)) {
@@ -206,6 +206,8 @@ class Manageentry {
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 
 				try {
+					$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 					$this->_DB->query($queryStr);
 
 					if($update !== false && is_numeric($update)) {
@@ -227,13 +229,13 @@ class Manageentry {
 								$this->_runAfter_upload($q, $newId);
 							}
 						}
-
-						$this->_DB->commit();
-						$ret = $newId;
 					}
 					else {
-						$this->_DB->rollback();
+						throw new Exception('Failed to create entry');
 					}
+
+					$ret = $newId;
+					$this->_DB->commit();
 				}
 				catch (Exception $e) {
 					$this->_DB->rollback();
@@ -261,10 +263,9 @@ class Manageentry {
 		if(!empty($entryId) && !empty($this->_collectionId)) {
 
 			if ($this->_canDelete($entryId)) {
-
-				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-
 				try {
+					$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 					// remove assets
 					$_path = PATH_STORAGE.'/'.$this->_collectionId.'/'.$entryId;
 					if(is_dir($_path) && is_readable($_path)) {

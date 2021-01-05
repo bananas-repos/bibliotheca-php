@@ -116,7 +116,6 @@ class Possessed {
 			} else {
 				$active = "0";
 			}
-			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
 			$_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -131,6 +130,8 @@ class Possessed {
 							`group` = '".$this->_DB->real_escape_string($group)."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 				$query = $this->_DB->query($queryStr);
 
 				if ($query !== false) {
@@ -141,20 +142,18 @@ class Possessed {
 					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrOwner,true));
 					$this->_DB->query($queryStrOwner);
 					$_setGroupRelation = $this->_setGroupReleation($_userid,$group);
-					if($_setGroupRelation !== false) {
-						$this->_DB->commit();
-						$ret = true;
-					}
-					else {
-						$this->_DB->rollback();
-						error_log('ERROR Failed to insert user relation: '.var_export($queryStr, true));
+					if($_setGroupRelation === false) {
+						throw new Exception("Failed to insert user relation");
 					}
 				} else {
-					$this->_DB->rollback();
-					error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
+					throw new Exception("Failed to insert user");
 				}
+
+				$this->_DB->commit();
+				$ret = true;
 			}
 			catch (Exception $e) {
+				$this->_DB->rollback();
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
@@ -190,7 +189,7 @@ class Possessed {
 
 			$_password = password_hash($password, PASSWORD_DEFAULT);
 
-			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 
 			$queryStr = "UPDATE `".DB_PREFIX . "_user`
 						SET `name` = '".$this->_DB->real_escape_string($username)."',
@@ -208,24 +207,23 @@ class Possessed {
 						AND `protected` = '0'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 				$query = $this->_DB->query($queryStr);
 
 				if ($query !== false) {
 					$_setGroupRelation = $this->_setGroupReleation($id,$group, true);
-					if($_setGroupRelation !== false) {
-						$this->_DB->commit();
-						$ret = true;
-					}
-					else {
-						$this->_DB->rollback();
-						error_log('ERROR Failed to insert user relation: '.var_export($queryStr, true));
+					if($_setGroupRelation === false) {
+						throw new Exception('Failed to insert user relation');
 					}
 				} else {
-					$this->_DB->rollback();
-					error_log('ERROR Failed to insert user: '.var_export($queryStr, true));
+					throw new Exception('Failed to insert user');
 				}
+				$this->_DB->commit();
+				$ret = true;
 			}
 			catch (Exception $e) {
+				$this->_DB->rollback();
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
@@ -273,24 +271,22 @@ class Possessed {
 		$ret = false;
 
 		if(!empty($id)) {
-			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-
 			try {
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 				$d1 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user` 
 					WHERE `id` = '".$this->_DB->real_escape_string($id)."'
 					AND `protected` = '0'");
 				$d2 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
 				$d3 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
 
-				if($d1 !== false && $d2 !== false && $d3 !== false) {
-					$this->_DB->commit();
-					$ret = true;
+				if($d1 === false || $d2 === false || $d3 === false) {
+					throw new Exception('Failed to delete the user');
 				}
-				else {
-					$this->_DB->rollback();
-				}
+				$this->_DB->commit();
+				$ret = true;
 			}
 			catch (Exception $e) {
+				$this->_DB->rollback();
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}

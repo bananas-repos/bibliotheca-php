@@ -203,8 +203,10 @@ class ManageCollections {
 		if(!empty($data['name']) === true
 			&& $this->_validNewCollectionName($data['name']) === true
 		) {
-			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 			try {
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 				$queryStr = "INSERT INTO `".DB_PREFIX."_collection`
 							SET `name` = '".$this->_DB->real_escape_string($data['name'])."',
 								`description` = '".$this->_DB->real_escape_string($data['description'])."',
@@ -512,11 +514,13 @@ class ManageCollections {
 	private function _updateToolRelation($id,$tool) {
 		$ret = false;
 
-		$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 		$queryStr = "DELETE FROM `".DB_PREFIX."_tool2collection`
 								WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
+			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 			$this->_DB->query($queryStr);
 
 			if(!empty($tool)) {

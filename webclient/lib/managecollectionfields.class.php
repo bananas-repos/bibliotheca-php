@@ -120,7 +120,7 @@ class ManageCollectionFields {
 	}
 
 	/**
-	 * Simple comma seperated number string
+	 * Simple comma separated number string
 	 *
 	 * @param string $string
 	 * @return bool
@@ -157,11 +157,13 @@ class ManageCollectionFields {
 		}
 
 		if(!empty($ids)) {
-			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 
 			$queryStr1 = "DELETE FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."`
 						WHERE `fk_field_id` NOT IN (".implode(",",$ids).")";
 			try {
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
 				$q1 = $this->_DB->query($queryStr1);
 				if($q1 !== false) {
 					// https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html
@@ -188,19 +190,21 @@ class ManageCollectionFields {
 							$alterQuery = $this->_DB->query($alterString);
 						}
 						if(!empty($_newColumns) && $alterQuery == false) {
-							$this->_DB->rollback();
-						}
-						else {
-							$this->_DB->commit();
-							$ret = true;
+							throw new Exception("Failed to insert alter the table.");
 						}
 					}
 					else {
-						$this->_DB->rollback();
+						throw new Exception("Failed to insert the new fields.");
 					}
 				}
+				else {
+					throw new Exception("Failed to delete old fields.");
+				}
+				$this->_DB->commit();
+				$ret = true;
 			}
 			catch (Exception $e) {
+				$this->_DB->rollback();
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
