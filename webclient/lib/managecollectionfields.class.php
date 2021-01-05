@@ -137,9 +137,9 @@ class ManageCollectionFields {
 	}
 
 	/**
-	 * $fieldsSortString have to be validated already
+	 * Deletes relations and data from the collection!
 	 *
-	 * @todo remove non existing ones from table
+	 * $fieldsSortString have to be validated already
 	 *
 	 * @param string $fieldsSortString
 	 * @return bool
@@ -158,38 +158,74 @@ class ManageCollectionFields {
 
 		if(!empty($ids)) {
 
+			$_newColumns = $this->_getSQLForCollectionColumns($ids);
+			$_existingFields = $this->getExistingFields();
 
-			$queryStr1 = "DELETE FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."`
+			// use the createsting info to determine if the field needs to be remove
+			// from entry table or lookup table
+			$_fieldsToCheckForDelete = $_existingFields;
+			$queriesDeleteEntryTable = array();
+			foreach($ids as $_id) {
+				if(isset($_fieldsToCheckForDelete[$_id])) {
+					unset($_fieldsToCheckForDelete[$_id]);
+				}
+			}
+			if(!empty($_fieldsToCheckForDelete)) {
+				foreach($_fieldsToCheckForDelete as $k=>$v)  {
+					if(!empty($v['createstring'])) {
+						$queriesDeleteEntryTable[] = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
+														DROP `".$v['identifier']."`";
+					}
+				}
+			}
+
+			$queryStrDeleteFields = "DELETE FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."`
 						WHERE `fk_field_id` NOT IN (".implode(",",$ids).")";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDeleteFields,true));
+
+			$queryStrDeletee2l = "DELETE FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_collectionId."`
+						WHERE `fk_field` NOT IN (".implode(",",$ids).")";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDeletee2l,true));
+
+			$queryStrInsertFields = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
+			foreach ($ids as $k => $v) {
+				$queryStrInsertFields .= "($v,$k),";
+			}
+			$queryStrInsertFields = trim($queryStrInsertFields, ",");
+			$queryStrInsertFields .= " ON DUPLICATE KEY UPDATE `sort` = VALUES(`sort`)";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrInsertFields,true));
+
+			if(!empty($_newColumns)) {
+				$queryStrAlterEntry = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
+				foreach($_newColumns as $k=>$v) {
+					$queryStrAlterEntry .= " ADD ".$v['createstring'].",";
+				}
+				$queryStrAlterEntry = trim($queryStrAlterEntry, ",");
+				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrAlterEntry,true));
+			}
+
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
-				$q1 = $this->_DB->query($queryStr1);
-				if($q1 !== false) {
-					// https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html
-					$queryStr = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
-					foreach ($ids as $k => $v) {
-						$queryStr .= "($v,$k),";
-					}
-					$queryStr = trim($queryStr, ",");
-					$queryStr .= " ON DUPLICATE KEY UPDATE `sort` = VALUES(`sort`)";
+				if($this->_DB->query($queryStrDeleteFields) !== false && $this->_DB->query($queryStrDeletee2l) !== false) {
 
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-					$q2 = $this->_DB->query($queryStr);
-					if($q2 !== false) {
-						$_newColumns = $this->_getSQLForCollectionColumns($ids);
+					$_check = true;
+					if(!empty($queriesDeleteEntryTable)) {
+						foreach($queriesDeleteEntryTable as $q) {
+							if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q,true));
+							if($this->_DB->query($q) == false) {
+								$_check = false;
+								break;
+							}
+						}
+					}
+
+					if($this->_DB->query($queryStrInsertFields) !== false && $_check === true) {
 						$alterQuery = false;
 						if(!empty($_newColumns)) {
-							$alterString = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-							foreach($_newColumns as $k=>$v) {
-								$alterString .= " ADD ".$v['createstring'].",";
-							}
-							$alterString = trim($alterString, ",");
-
-							if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($alterQuery,true));
-							$alterQuery = $this->_DB->query($alterString);
+							$alterQuery = $this->_DB->query($queryStrAlterEntry);
 						}
-						if(!empty($_newColumns) && $alterQuery == false) {
+						if(!empty($_newColumns) && $alterQuery === false) {
 							throw new Exception("Failed to insert alter the table.");
 						}
 					}
@@ -223,7 +259,8 @@ class ManageCollectionFields {
 			return $this->_cacheExistingSysFields;
 		}
 
-		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`
+		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
+							`sf`.`createstring`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
