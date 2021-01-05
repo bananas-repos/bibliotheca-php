@@ -32,5 +32,6 @@ Open your browser and visit your newly created bibliotheca installation.
 Default admin user pw: test
 
 7. First steps
+Login with default admin account and change the password!
 Create your own user.
 Create your first collection.

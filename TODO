@@ -1,13 +1,13 @@
-* sort by filter for collection display
 * Collection fields: final remove from entry table
 	Add waring about it!
-* Mass edit of entries
-* delete of a collection
-* Better error handling and display while adding / update and delete
-* rights example setup and also check if it maches the menu and actions
+* rights example setup and also check if it matches the menu and actions
 	+ admin
 	+ Management
 	+ User (only its data)
+* sort by filter for collection display
+* Mass edit of entries
+* Better error handling and display while adding / update and delete
+
 * responsive and breakpoints
 * stats overview page. amount of entries. file and db storage.
 * Export of an entry, collection or everything. Stored on disk.

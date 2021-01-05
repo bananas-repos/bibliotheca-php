@@ -368,26 +368,48 @@ class ManageCollections {
 
 	/**
 	 * Delete collection identified by given id
+	 * This removes everything and drops tables!
 	 *
-	 * @param string $id  Number
+	 * @param string $id Number
 	 * @return bool
 	 */
 	public function deleteCollection($id) {
 		$ret = false;
 
-		// @todo Implement list deletion
-		// what to do with the entries?
-		exit('No implemented yet.');
-
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
 			$queryStr = "DELETE FROM `".DB_PREFIX."_collection`
 							WHERE `id` = '".$this->_DB->real_escape_string($id)."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-			$query = $this->_DB->query($queryStr);
-			if($query !== false) {
 
-				var_dump("Implement list deletion");
+			$queryStrTool = "DELETE FROM `".DB_PREFIX."_tool2collection`
+							WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrTool,true));
+
+			$queryStre2l = "DROP TABLE `bibliotheca`.`bib_collection_entry2lookup_".$this->_DB->real_escape_string($id)."`";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStre2l,true));
+
+			$queryStrEntry = "DROP TABLE `bibliotheca`.`bib_collection_entry_".$this->_DB->real_escape_string($id)."`";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrEntry,true));
+
+			$queryStrFields = "DROP TABLE `bibliotheca`.`bib_collection_fields_".$this->_DB->real_escape_string($id)."`";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrFields,true));
+
+
+			try {
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+
+				$this->_DB->query($queryStr);
+				$this->_DB->query($queryStrTool);
+				$this->_DB->query($queryStre2l);
+				$this->_DB->query($queryStrEntry);
+				$this->_DB->query($queryStrFields);
+
+				$this->_DB->commit();
 				$ret = true;
+			}
+			catch (Exception $e) {
+				$this->_DB->rollback();
+				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
