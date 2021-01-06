@@ -1,0 +1,3 @@
+# Migration of the config files into one config file
+Please copy the new config/config.php.default to config/config.php and adapt the settings which you
+have on the old config files. After that you can delete config/database|path|system files.
