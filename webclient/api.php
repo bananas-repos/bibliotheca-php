@@ -17,9 +17,9 @@
  */
 
 # set to true if you need debug messages in error log file
-define('DEBUG',true);
+define('DEBUG',false);
 # set to ture if you need query log messages in error log file.
-define('QUERY_DEBUG',true);
+define('QUERY_DEBUG',false);
 
 require_once './config/path.php';
 require_once './config/system.php';

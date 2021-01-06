@@ -180,6 +180,7 @@ class Mancubus {
 	 * 		'colName' => 'column name to search in',
 	 * 		'colValue' => 'Value to search for',
 	 * 		'fieldData' => field data from Trite->getCollectionFields()
+	 * 		'exactTagMatch' => true to make a binary compare. false for match against search
 	 * )
 	 *
 	 * @param array $searchData
@@ -209,7 +210,13 @@ class Mancubus {
 						$queryJoin = " LEFT JOIN `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."` AS e2l ON e2l.fk_entry=t.id";
 
 						$queryWhere .= " AND e2l.fk_field = '".$this->_DB->real_escape_string($sd['fieldData']['id'])."'";
-						$queryWhere .= " AND MATCH (e2l.value) AGAINST ('".$this->_DB->real_escape_string($sd['colValue'])."' IN BOOLEAN MODE)";
+						if(isset($sd['exactTagMatch']) && $sd['exactTagMatch'] === true) {
+							$queryWhere .= " AND e2l.value = BINARY '".$this->_DB->real_escape_string($sd['colValue'])."'";
+							$_isFulltext = false;
+						}
+						else {
+							$queryWhere .= " AND MATCH (e2l.value) AGAINST ('".$this->_DB->real_escape_string($sd['colValue'])."' IN BOOLEAN MODE)";
+						}
 					}
 					elseif ($sd['fieldData']['searchtype'] == "entrySingleNum" && strstr($sd['colValue'],'<')) {
 						$_s = str_replace('<','',$sd['colValue']);

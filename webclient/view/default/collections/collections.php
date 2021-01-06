@@ -74,7 +74,8 @@ if(!empty($_collection)) {
 			$_sdata[0] = array(
 				'colName' => $_fd[$_fid]['identifier'],
 				'colValue' => $_fv,
-				'fieldData' => $_fd[$_fid]
+				'fieldData' => $_fd[$_fid],
+				'exactTagMatch' => true
 			);
 			$_search = $_fv;
 			$TemplateData['pagination']['currentGetParameters']['fid'] = $_fid;

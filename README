@@ -3,6 +3,11 @@
 https://www.bananas-playground.net/projekt/bibliotheca/
 
 ## Usage
+Self hosted collection management for movies, music or games.
+Install it on your own webserver (see requirements) and store the information
+about your collected stuff.
+Accessible and usable with a browser. Runs also off a Rapsberry Pi.
+Tag and category support. Fulltext search an individual fields per collection.
 
 ## Technical information
 This is build and tested on a linux based OS. Windows support not yet, but it could work.
