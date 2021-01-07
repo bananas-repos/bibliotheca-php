@@ -156,14 +156,14 @@ class Trite {
 	 *
 	 * @return array
 	 */
-	public function getCollections() {
+	public function getCollections($rightsMode="read") {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
-					WHERE ".$this->_User->getSQLRightsString("read", "c")."
+					WHERE ".$this->_User->getSQLRightsString($rightsMode, "c")."
 					ORDER BY `c`.`name`";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
@@ -184,6 +184,8 @@ class Trite {
 
 	/**
 	 * Fields for the loaded collection.
+	 *
+	 * Works only if collection is already loaded and thus rights are validated
 	 *
 	 * @return array
 	 */
@@ -214,6 +216,8 @@ class Trite {
 	 * Get the tag fields (searchtype = tag) and their values.
 	 * Possible optimization can be done here: Do not load everything at once, but per field
 	 * Needs also change in frontend to separate those calls
+	 *
+	 * Works only if collection is already loaded and thus rights are validated
 	 *
 	 * @param string $search String value to search value against
 	 * @return array
@@ -255,6 +259,34 @@ class Trite {
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Load the tools configured for the current loaded collection
+	 *
+	 * @return array
+	 */
+	public function getAvailableTools() {
+		$ret = array();
+
+		$queryStr = "SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`action`, `t`.`target`
+					FROM `".DB_PREFIX."_tool2collection` AS t2c
+					LEFT JOIN `".DB_PREFIX."_tool` AS t ON t2c.fk_collection_id = t.id
+					WHERE t2c.fk_collection_id = '".$this->_DB->real_escape_string($this->_id)."'";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$ret[$result['id']] = $result;
+				}
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
+
+		return  $ret;
 	}
 
 	/**

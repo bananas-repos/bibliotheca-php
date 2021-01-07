@@ -37,7 +37,7 @@ $TemplateData['loadedCollection'] = array();
 $TemplateData['collections'] = array();
 
 if(!empty($_collection)) {
-	$TemplateData['loadedCollection'] = $Trite->load($_collection);
+	$TemplateData['loadedCollection'] = $Trite->load($_collection, "write");
 	if(!empty($TemplateData['loadedCollection'])) {
 		$ManageTags->setCollection($_collection);
 		if(isset($_POST['submitForm'])) {
@@ -64,6 +64,10 @@ if(!empty($_collection)) {
 		}
 		else {
 			$TemplateData['tags'] = $Trite->getTags();
+			if(empty($TemplateData['tags'])) {
+				$TemplateData['message']['content'] = "No tags available or something went wrong.";
+				$TemplateData['message']['status'] = "warning";
+			}
 		}
 	}
 	else {
@@ -72,5 +76,5 @@ if(!empty($_collection)) {
 	}
 }
 else {
-	$TemplateData['collections'] = $Trite->getCollections();
+	$TemplateData['collections'] = $Trite->getCollections("write");
 }

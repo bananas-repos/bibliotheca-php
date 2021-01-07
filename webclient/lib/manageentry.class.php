@@ -66,7 +66,7 @@ class Manageentry {
 	/**
 	 * Set the collection to manage entries from
 	 *
-	 * @param sring $collectionId Number
+	 * @param string $collectionId Number
 	 */
 	public function setCollection($collectionId) {
 		if(!empty($collectionId)) {
@@ -319,7 +319,7 @@ class Manageentry {
 			$queryStr = "SELECT `id`
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
-							AND " . $this->_User->getSQLRightsString("write") . "";
+							AND ".$this->_User->getSQLRightsString("write")."";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);

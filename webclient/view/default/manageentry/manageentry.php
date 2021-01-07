@@ -16,8 +16,8 @@
  * limitations under the License.
  */
 
-require_once 'lib/managecollections.class.php';
-$ManangeCollections = new ManageCollections($DB,$Doomguy);
+require_once 'lib/trite.class.php';
+$Trite = new Trite($DB,$Doomguy);
 require_once 'lib/manageentry.class.php';
 $ManangeEntry = new Manageentry($DB,$Doomguy);
 
@@ -42,14 +42,13 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 }
 
 if(!empty($_collection)) {
-	$setCollection = $ManangeCollections->getCollection($_collection, "write");
+	$TemplateData['loadedCollection'] = $Trite->load($_collection, "write");
 
-	if(!empty($setCollection)) {
-		$ManangeEntry->setCollection($_collection);
-		$TemplateData['loadedCollection'] = $setCollection;
+	if(!empty($TemplateData['loadedCollection'])) {
+		$ManangeEntry->setCollection($Trite->param('id'));
 
 		$TemplateData['editFields'] = $ManangeEntry->getEditFields();
-		$TemplateData['availableTools'] = $ManangeCollections->getAvailableTools($_collection);
+		$TemplateData['availableTools'] = $Trite->getAvailableTools();
 
 		if(!empty($_id)) {
 			$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $_collection . '/' . $_id;
@@ -71,10 +70,10 @@ if(!empty($_collection)) {
 			}
 			$_fieldsToSave = array();
 			if (!empty($fdata)) {
-				// @todo there is no setting for individual rights available yet
+				// @todo there is no setting for individual rights available yet, use the collection rights for now.
 				$_owner = $Doomguy->param('id');
-				$_group = $Doomguy->param('baseGroupId');
-				$_rights = 'rwxrwxr--';
+				$_group = $Trite->param('group');
+				$_rights = $Trite->param('rights');
 
 				foreach ($TemplateData['editFields'] as $fieldId=>$fieldData) {
 					if(isset($fdata[$fieldData['identifier']])) {
@@ -118,7 +117,7 @@ if(!empty($_collection)) {
 					if (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
 						$do = $ManangeEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
 						if (!empty($do)) {
-							$TemplateData['message']['content'] = "New entry: <a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>".$do."</a>";
+							$TemplateData['message']['content'] = "<a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>View your new entry</a>";
 							$TemplateData['message']['status'] = "success";
 						} else {
 							// use editData to display given data
@@ -139,8 +138,9 @@ if(!empty($_collection)) {
 	else {
 		$TemplateData['message']['content'] = "Collection could not be loaded.";
 		$TemplateData['message']['status'] = "error";
+		$TemplateData['existingCollections'] = $Trite->getCollections("write");
 	}
 }
 else {
-	$TemplateData['existingCollections'] = $ManangeCollections->getCollections();
+	$TemplateData['existingCollections'] = $Trite->getCollections("write");
 }

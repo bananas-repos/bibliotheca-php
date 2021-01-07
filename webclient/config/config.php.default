@@ -47,7 +47,6 @@ define('SESSION_NAME', "bibliotheca-session");
 define('SESSION_SAVE_PATH', PATH_SYSTEMOUT.'/session');
 
 # usersettings
-define('USER_DEFAULT_RIGHTS_STRING','rwxrwx---');
 define('ADMIN_GROUP_ID','1');
 define('ANON_USER_ID','2');
 define('ANON_GROUP_ID','3');
