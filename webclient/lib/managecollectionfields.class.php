@@ -1,6 +1,6 @@
 <?php
 /**
- * Bibliotheca webclient
+ * Bibliotheca
  *
  * Copyright 2018-2021 Johannes Keßler
  *
