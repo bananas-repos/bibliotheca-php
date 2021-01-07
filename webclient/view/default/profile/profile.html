@@ -1,0 +1,51 @@
+<h3 class="uk-h3">Manage your profile</h3>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="username">Username</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
+					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="password">Password</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="group">Main group</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="group" type="text" name="fdata[group]" disabled
+					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'baseGroupName'); ?>"
+					>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="additionalGroups">Additional groups</label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="additionalGroups" type="text" name="fdata[additionalGroups]" disabled
+					       value="To be done"
+					>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label">Create API Token</div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[refreshApiToken]" value="1"><br />
+						Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
+						Key: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+					</label>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Save
+				</button>
+			</div>
+		</form>
+	</div>
+</div>

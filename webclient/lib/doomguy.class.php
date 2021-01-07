@@ -112,6 +112,15 @@ class Doomguy {
 	}
 
 	/**
+	 * Get the currently loaded user data info from $this->userData
+	 *
+	 * @return array|bool
+	 */
+	public function getAllUserData() {
+		return $this->userData;
+	}
+
+	/**
 	 * return the isSignedIn status.
 	 *
 	 * @return bool
@@ -409,7 +418,8 @@ class Doomguy {
 	 */
 	protected function _loadUser() {
 		if(!empty($this->userID)) {
-			$queryStr = "SELECT u.`id`, u.`baseGroupId`,u.`protected`,u.`password`,u.`login`,
+			$queryStr = "SELECT u.`id`, u.`baseGroupId`,u.`protected`,u.`password`,u.`login`,u.`name`,
+								u.`apiToken`,u.`apiTokenValidDate`,
 							g.name AS groupName, g.description AS groupDescription, g.id AS groupId
 						FROM `".DB_PREFIX."_user` AS u
 						LEFT JOIN `".DB_PREFIX."_user2group` AS u2g ON u2g.fk_user_id = u.id
@@ -426,12 +436,17 @@ class Doomguy {
 						$this->userData['protected'] = $result['protected'];
 						$this->userData['password'] = $result['password'];
 						$this->userData['login'] = $result['login'];
+						$this->userData['name'] = $result['name'];
+						$this->userData['apiToken'] = $result['apiToken'];
+						$this->userData['apiTokenValidDate'] = $result['apiTokenValidDate'];
 
 						$this->userData['groups'][$result['groupId']] = array(
 							'groupName' => $result['groupName'],
 							'groupDescription' => $result['groupDescription']
 						);
 					}
+
+					$this->userData['baseGroupName'] = $this->userData['groups'][$this->userData['baseGroupId']]['groupName'];
 
 					$this->userData['isRoot'] = false;
 					$grIds = array_keys($this->userData['groups']);

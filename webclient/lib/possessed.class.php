@@ -187,16 +187,13 @@ class Possessed {
 				$active = "0";
 			}
 
-			$_password = password_hash($password, PASSWORD_DEFAULT);
-
-
-
 			$queryStr = "UPDATE `".DB_PREFIX . "_user`
 						SET `name` = '".$this->_DB->real_escape_string($username)."',
 							`login` = '".$this->_DB->real_escape_string($login)."',
 							`active` = '".$this->_DB->real_escape_string($active)."',
 							`baseGroupId` = '".$this->_DB->real_escape_string($group)."'";
-			if(Summoner::validate($password,'text')) {
+			if(Summoner::validate($password)) {
+				$_password = password_hash($password, PASSWORD_DEFAULT);
 				$queryStr .= ", `password` = '".$this->_DB->real_escape_string($_password)."'";
 			}
 			if($refreshApiToken === true) {
