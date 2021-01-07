@@ -2,6 +2,7 @@
 	* Cleanup and merge to one config file. Read upgrade
 	* Missing changelog file
 	* api has its own log file now.
+	* User profile for editing own settings.
 
 1.0 - Castle 20210106
 	* First usable version
