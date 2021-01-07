@@ -89,7 +89,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
-					WHERE ".$this->_User->getSQLRightsString("read", "c")."
+					WHERE ".$this->_User->getSQLRightsString("write", "c")."
 					ORDER BY `c`.`name`";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
@@ -282,7 +282,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
-					WHERE ".$this->_User->getSQLRightsString("read", "c")."
+					WHERE ".$this->_User->getSQLRightsString("write", "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
