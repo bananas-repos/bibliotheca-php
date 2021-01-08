@@ -138,7 +138,9 @@ class Manageentry {
 
 					if(($result = $query->fetch_assoc()) != false) {
 						$ret = $this->_mergeEntryWithFields($result, $_entryFields);
+						$ret['rights'] = Summoner::prepareRightsArray($result['rights']);
 						$ret['_canDelete'] = $this->_canDelete($entryId);
+						$ret['_isOwner'] = $this->_isOwner($result);
 					}
 
 				}
@@ -166,7 +168,6 @@ class Manageentry {
 
 		if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".var_export($data,true));
 
-		//@todo there is no setting for individual rights available yet
 		if(!empty($data) && !empty($owner) && !empty($group) && !empty($rights)) {
 
 			// create the queryData array
@@ -189,15 +190,16 @@ class Manageentry {
 			if(!empty($queryData['init'])) {
 
 
-				$queryStr = "INSERT INTO `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-				if($update !== false && is_numeric($update)) {
-					$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-				}
-				$queryStr .= " SET
-								`modificationuser` = '".$this->_DB->real_escape_string($owner)."',
+				$queryStr = "INSERT INTO `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
+								SET `modificationuser` = '".$this->_DB->real_escape_string($owner)."',
 								`owner` = '".$this->_DB->real_escape_string($owner)."',
 								`group` = '".$this->_DB->real_escape_string($group)."',
 								`rights`= '".$this->_DB->real_escape_string($rights)."',";
+				if($update !== false && is_numeric($update)) {
+					$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
+								SET `modificationuser` = '".$this->_DB->real_escape_string($owner)."',
+								`rights`= '".$this->_DB->real_escape_string($rights)."',";
+				}
 				$queryStr .= implode(", ",$queryData['init']);
 				if($update !== false && is_numeric($update)) {
 					$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($update)."'";
@@ -352,7 +354,7 @@ class Manageentry {
 			$queryStr = "SELECT `id`
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
-							AND " . $this->_User->getSQLRightsString("delete") . "";
+							AND ".$this->_User->getSQLRightsString("delete")."";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$query = $this->_DB->query($queryStr);
@@ -760,5 +762,26 @@ class Manageentry {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * If the given entry has the current user as its owner
+	 * or if root
+	 *
+	 * @param $data array The entry data from getEditData
+	 * @return bool
+	 */
+	private function _isOwner($data) {
+		$ret = false;
+
+		if($this->_User->param('isRoot')) {
+			$ret = true;
+		}
+		elseif($data['owner'] == $this->_User->param('id')) {
+			$ret = true;
+		}
+
+		return $ret;
 	}
 }

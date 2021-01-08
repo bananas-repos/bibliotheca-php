@@ -4,6 +4,7 @@
 	* api has its own log file now.
 	* User profile for editing own settings.
 	* Collection management has the option to update entry rights with the collection ones.
+	* Entry rights can now be managed. More info about user and rights can be found in documentation.
 
 1.0 - Castle 20210106
 	* First usable version

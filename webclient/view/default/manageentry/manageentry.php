@@ -70,10 +70,17 @@ if(!empty($_collection)) {
 			}
 			$_fieldsToSave = array();
 			if (!empty($fdata)) {
-				// @todo there is no setting for individual rights available yet, use the collection rights for now.
+				// default
 				$_owner = $Doomguy->param('id');
 				$_group = $Trite->param('group');
 				$_rights = $Trite->param('rights');
+
+				if(!empty($fdata['rights'])) {
+					$_rightsString = Summoner::prepareRightsString($fdata['rights']);
+					if(!empty($_rightsString)) {
+						$_rights = $_rightsString;
+					}
+				}
 
 				foreach ($TemplateData['editFields'] as $fieldId=>$fieldData) {
 					if(isset($fdata[$fieldData['identifier']])) {
@@ -85,7 +92,7 @@ if(!empty($_collection)) {
 							$fieldData['deleteData'] = $fdata[$fieldData['identifier']."_delete"];
 						}
 						// special case upload
-						// $_FILES data is combinend
+						// $_FILES data is combined
 						$fieldData['uploadData'] = $fupload;
 
 						$_fieldsToSave[$fieldData['identifier']] = $fieldData;

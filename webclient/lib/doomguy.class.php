@@ -395,9 +395,6 @@ class Doomguy {
 	 * @return void
 	 */
 	protected function _loginActions() {
-		# @todo:
-		# garbage collection for error files
-
 		# clean old sessions on session table
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
