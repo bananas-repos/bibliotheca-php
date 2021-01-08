@@ -3,11 +3,12 @@
 	* Missing changelog file
 	* api has its own log file now.
 	* User profile for editing own settings.
+	* Collection management has the option to update entry rights with the collection ones.
 
 1.0 - Castle 20210106
 	* First usable version
 	* Using as a collection management software will work
-	* Rights management needs tweeking, so use the admin account for a start
+	* Rights management needs tweaking, so use the admin account for a start
 	* Documentation covers the basics
 	* Use it and give feedback.
 	* Also, make backups.

@@ -329,6 +329,9 @@ class ManageCollections {
 			try {
 				$this->_DB->query($queryStr);
 				$this->_updateToolRelation($data['id'],$data['tool']);
+				if($data['doRightsForEntries'] === true) {
+					$this->_updateEntryRights($data['id'], $data['owner'], $data['group'], $data['rights']);
+				}
 				$ret = true;
 			}
 			catch (Exception $e) {
@@ -536,11 +539,37 @@ class ManageCollections {
 			}
 			$this->_DB->commit();
 			$ret = true;
-		} catch (Exception $e) {
+		}
+		catch (Exception $e) {
 			$this->_DB->rollback();
 			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
+	}
+
+	private function _updateEntryRights($collectionId, $owner=false, $group=false, $rights=false) {
+		if(!empty($collectionId)) {
+			$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."` SET";
+
+			if(Summoner::validate($owner, "digit")) {
+				$queryStr .= " `owner` = '".$this->_DB->real_escape_string($owner)."',";
+			}
+			if(Summoner::validate($group, "digit")) {
+				$queryStr .= " `group` = '".$this->_DB->real_escape_string($group)."',";
+			}
+			if(Summoner::validate($rights, "rights")) {
+				$queryStr .= " `rights` = '".$this->_DB->real_escape_string($rights)."',";
+			}
+			$queryStr = trim($queryStr, ",");
+
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$this->_DB->query($queryStr);
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
 	}
 }

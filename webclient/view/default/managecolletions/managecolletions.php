@@ -71,6 +71,11 @@ if(isset($_POST['submitForm'])) {
 			$_saveData['tool'] = $fdata['tool'];
 		}
 
+		$_saveData['doRightsForEntries'] = false;
+		if(isset($fdata['doRightsForEntries'])) {
+			$_saveData['doRightsForEntries'] = true;
+		}
+
 		if(!empty($TemplateData['editData']['name'])) { // EDIT
 			if(isset($fdata['doDelete'])) {
 				$do = $ManangeCollections->deleteCollection($_id);
