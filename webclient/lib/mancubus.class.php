@@ -242,12 +242,14 @@ class Mancubus {
 				$queryOrder = " ORDER BY";
 				if (!empty($this->_queryOptions['sort'])) {
 					$queryOrder .= ' t.' . $this->_queryOptions['sort'];
-				} else {
+				}
+				else {
 					$queryOrder .= " t.created";
 				}
 				if (!empty($this->_queryOptions['sortDirection'])) {
 					$queryOrder .= ' ' . $this->_queryOptions['sortDirection'];
-				} else {
+				}
+				else {
 					$queryOrder .= " DESC";
 				}
 			}

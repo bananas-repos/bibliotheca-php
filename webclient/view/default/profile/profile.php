@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 require_once 'lib/possessed.class.php';
-$Possessed = new Possessed($DB);
+$Possessed = new Possessed($DB, $Doomguy);
 
 $TemplateData['editData'] = $Doomguy->getAllUserData();
 

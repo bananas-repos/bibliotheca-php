@@ -53,7 +53,7 @@
 					</label>
 				</div>
 			</div>
-			<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
+			<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
 			<div class="uk-margin">
 				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">
@@ -113,9 +113,7 @@
 					</td>
 					<td><?php echo $v['active']; ?></td>
 					<td>
-						<?php if($v['protected'] == "0") { ?>
-						<a href="index.php?p=manageusers&m=edit&id=<?php echo $k; ?>" uk-icon="pencil"></a>
-						<?php } ?>
+						<a href="index.php?p=manageusers&id=<?php echo $k; ?>" uk-icon="pencil"></a>
 					</td>
 				</tr>
 			<?php } ?>

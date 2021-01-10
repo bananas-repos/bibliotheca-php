@@ -16,17 +16,10 @@
  * limitations under the License.
  */
 require_once 'lib/possessed.class.php';
-$Possessed = new Possessed($DB);
+$Possessed = new Possessed($DB, $Doomguy);
 $TemplateData['existingGroups'] = $Possessed->getGroups();
 $TemplateData['existingUsers'] = $Possessed->getUsers();
 $TemplateData['editData'] = false;
-
-$_editMode = false;
-if(isset($_GET['m']) && !empty($_GET['m'])) {
-	if($_GET['m'] == "edit") {
-		$_editMode = true;
-	}
-}
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
@@ -34,7 +27,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
-if($_editMode === true && !empty($_id)) {
+if(!empty($_id)) {
 	$TemplateData['editData'] = $Possessed->getEditData($_id);
 	if(!isset($TemplateData['editData']['name'])) {
 		$TemplateData['refresh'] = 'index.php?p=manageusers';
@@ -60,13 +53,14 @@ if(isset($_POST['submitForm'])) {
 				$do = $Possessed->deleteUser($_id);
 				if ($do === true) {
 					$TemplateData['refresh'] = 'index.php?p=manageusers';
-				} else {
+				}
+				else {
 					$TemplateData['message']['content'] = "User could not be deleted.";
 					$TemplateData['message']['status'] = "error";
 				}
 			}
 			elseif (!empty($_username) && !empty($_group) && !empty($_login)) {
-				if (Summoner::validate($_username, 'text') === true
+				if (Summoner::validate($_username) === true
 					&& Summoner::validate($_login, 'nospace') === true
 					&& isset($TemplateData['existingGroups'][$_group])
 				) {
@@ -77,11 +71,13 @@ if(isset($_POST['submitForm'])) {
 					$do = $Possessed->updateUser($_id, $_username, $_login, $_password, $_group, $_active, $refreshApi);
 					if ($do === true) {
 						$TemplateData['refresh'] = 'index.php?p=manageusers';
-					} else {
-						$TemplateData['message']['content'] = "User could not be updated.";
+					}
+					else {
+						$TemplateData['message']['content'] = "User could not be updated. Either wrong input or duplicate user name";
 						$TemplateData['message']['status'] = "error";
 					}
-				} else {
+				}
+				else {
 					$TemplateData['message']['content'] = "Provide username, login and a valid user group.";
 					$TemplateData['message']['status'] = "error";
 				}
@@ -97,11 +93,13 @@ if(isset($_POST['submitForm'])) {
 					$do = $Possessed->createUser($_username, $_login, $_password, $_group, $_active);
 					if ($do === true) {
 						$TemplateData['refresh'] = 'index.php?p=manageusers';
-					} else {
+					}
+					else {
 						$TemplateData['message']['content'] = "User could not be created.";
 						$TemplateData['message']['status'] = "error";
 					}
-				} else {
+				}
+				else {
 					$TemplateData['message']['content'] = "Provide username, login, password and a valid user group.";
 					$TemplateData['message']['status'] = "error";
 				}

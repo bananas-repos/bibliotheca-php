@@ -1,9 +1,6 @@
-* rights example setup and also check if it matches the menu and actions
-	+ admin
-	+ Management
-	+ User (only its data)
 * sort by filter for collection display
 * Mass edit of entries
+* User and groupmanagement: Check where a user or group is used!
 * Better error handling and display while adding / update and delete
 
 * responsive and breakpoints

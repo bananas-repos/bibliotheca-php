@@ -621,13 +621,13 @@ class Summoner {
 	/**
 	 * based on self::ifset check also the value
 	 *
-	 * @param array $array
-	 * @param string $key
-	 * @param string $value
+	 * @param array $array The array to use
+	 * @param string $key The key to check
+	 * @param string $value The value to compare
 	 * @return bool
 	 */
 	static function ifsetValue($array,$key,$value) {
-		if(self::ifset($array,$key)) {
+		if(self::ifset($array,$key) !== false) {
 			return $array[$key] == $value;
 		}
 		return false;

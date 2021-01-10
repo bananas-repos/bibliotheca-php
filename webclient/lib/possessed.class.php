@@ -18,9 +18,8 @@
 
 /**
  * Class Possessed
- * User management
- * There is no group management yet. It uses the defined groups
- * from the initial setup. Don't change em, could break something.
+ * User and group management
+ * Some groups are protected and should not be removed.
  *
  * passwords used here: password_hash("somePassword", PASSWORD_DEFAULT);
  *
@@ -34,11 +33,21 @@ class Possessed {
 	private $_DB;
 
 	/**
-	 * Possessed constructor.
-	 * @param mysqli $db
+	 * The user object to query with
+	 *
+	 * @var Doomguy
 	 */
-	public function __construct($db) {
-		$this->_DB = $db;
+	private $_User;
+
+	/**
+	 * Possessed constructor.
+	 *
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
+	 */
+	public function __construct($databaseConnectionObject, $userObj) {
+		$this->_DB = $databaseConnectionObject;
+		$this->_User = $userObj;
 	}
 
 	/**
@@ -49,7 +58,10 @@ class Possessed {
 	public function getGroups() {
 		$ret = array();
 
-		$queryStr = "SELECT `id`, `name`, `description` FROM `".DB_PREFIX."_group` ORDER BY `name`";
+		$queryStr = "SELECT `id`, `name`, `description`, `created`, `protected`
+		 				FROM `".DB_PREFIX."_group`
+		 				WHERE ".$this->_User->getSQLRightsString("delete")." 
+		 				ORDER BY `name`";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
@@ -75,7 +87,8 @@ class Possessed {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, `protected`, `created`
-						FROM `".DB_PREFIX."_user`";
+						FROM `".DB_PREFIX."_user`
+						WHERE ".$this->_User->getSQLRightsString("delete")."";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
@@ -106,11 +119,7 @@ class Possessed {
 	public function createUser($username, $login, $password, $group, $active=false) {
 		$ret = false;
 
-		if(!empty($login) === true
-			&& $this->_validNewLogin($login) == true
-			&& $this->_validUsergroup($group) == true
-			&&(!empty($password))
-		) {
+		if($this->_validNewLogin($login) && $this->_validUsergroup($group)) {
 			if ($active === true) {
 				$active = "1";
 			} else {
@@ -176,11 +185,7 @@ class Possessed {
 	public function updateUser($id, $username, $login, $password, $group, $active=false, $refreshApiToken=false) {
 		$ret = false;
 
-		if(!empty($login) === true
-			&& $this->_validUpdateLogin($login,$id) == true
-			&& $this->_validUsergroup($group) == true
-			&& !empty($id)
-		) {
+		if($this->_validUpdateLogin($login,$id) && $this->_validUsergroup($group)) {
 			if ($active === true) {
 				$active = "1";
 			} else {
@@ -201,7 +206,7 @@ class Possessed {
 				$queryStr .= ", `apiTokenValidDate` = CURRENT_TIMESTAMP() + INTERVAL 1 DAY";
 			}
 			$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($id)."'
-						AND `protected` = '0'";
+						AND ".$this->_User->getSQLRightsString("delete")."";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
@@ -238,9 +243,10 @@ class Possessed {
 		$ret = array();
 
 		if(Summoner::validate($userId,'digit')) {
-			$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, `created`,`apiToken`,`apiTokenValidDate`
+			$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, 
+						`created`,`apiToken`,`apiTokenValidDate`, `protected`
 						FROM `".DB_PREFIX."_user`
-						WHERE `protected` = '0'
+						WHERE ".$this->_User->getSQLRightsString("delete")."
 						AND `id` = '".$this->_DB->real_escape_string($userId)."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
@@ -267,11 +273,12 @@ class Possessed {
 	public function deleteUser($id) {
 		$ret = false;
 
-		if(!empty($id)) {
+		if(Summoner::validate($id,'digit')) {
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 				$d1 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user` 
 					WHERE `id` = '".$this->_DB->real_escape_string($id)."'
+					AND ".$this->_User->getSQLRightsString("delete")."
 					AND `protected` = '0'");
 				$d2 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
 				$d3 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
@@ -292,6 +299,181 @@ class Possessed {
 	}
 
 	/**
+	 * Create group with given data. Validates duplicates based on name
+	 *
+	 * @param string $name
+	 * @param string $description
+	 * @return bool
+	 */
+	public function createGroup($name, $description) {
+		$ret = false;
+
+		if($this->_validNewGroup($name)) {
+			$queryStr = "INSERT INTO `".DB_PREFIX."_group` SET 
+						`name` = '".$this->_DB->real_escape_string($name)."',
+						`description` = '".$this->_DB->real_escape_string($description)."',
+						`modificationuser` = '".$this->_DB->real_escape_string($this->_User->param('id'))."',
+						`owner` = '".$this->_DB->real_escape_string($this->_User->param('id'))."',
+						`group` = '".ADMIN_GROUP_ID."',
+						`rights` = 'rwxr--r--'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$this->_DB->query($queryStr);
+				$ret = true;
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Update given group identified by id with given name and description
+	 * Checks for duplicate
+	 *
+	 * @param string $id Number
+	 * @param string $name
+	 * @param string $description
+	 * @return bool
+	 */
+	public function updateGroup($id, $name, $description) {
+		$ret = false;
+
+		if($this->_validUpdateGroup($name, $id)) {
+			$queryStr = "UPDATE `".DB_PREFIX."_group` SET 
+						`name` = '".$this->_DB->real_escape_string($name)."',
+						`description` = '".$this->_DB->real_escape_string($description)."',
+						`modificationuser` = '".$this->_DB->real_escape_string($this->_User->param('id'))."'
+						WHERE `id` = '".$this->_DB->real_escape_string($id)."'
+							AND ".$this->_User->getSQLRightsString("delete")."";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$this->_DB->query($queryStr);
+				$ret = true;
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Delete given group identified by id from group table. No relation check yet.
+	 *
+	 * @param string $id Number
+	 * @return bool
+	 */
+	public function deleteGroup($id) {
+		$ret = false;
+
+		if(Summoner::validate($id,'digit')) {
+			$queryStr = "DELETE FROM `".DB_PREFIX."_group`
+						WHERE ".$this->_User->getSQLRightsString("delete")."
+							AND `protected` = '0'
+							AND `id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$this->_DB->query($queryStr);
+				$ret = true;
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Load groupd data from group table fo edit
+	 *
+	 * @param string $id Number
+	 * @return array
+	 */
+	public function getEditGroupData($id) {
+		$ret = array();
+
+		if(Summoner::validate($id,'digit')) {
+			$queryStr = "SELECT `id`, `name`, `description`, `created`, `protected`
+							FROM `".DB_PREFIX."_group`
+							WHERE ".$this->_User->getSQLRightsString("delete")." 
+							AND `id` = '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$query = $this->_DB->query($queryStr);
+				if($query !== false && $query->num_rows > 0) {
+					$ret = $query->fetch_assoc();
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Check if given group name can be used as a new one
+	 *
+	 * @param string $name
+	 * @return bool
+	 */
+	private function _validNewGroup($name) {
+		$ret = false;
+
+		if (Summoner::validate($name, 'nospace')) {
+			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_group`
+								WHERE `name` = '".$this->_DB->real_escape_string($name)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows < 1) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Check if given group name can be used as an update to given group id
+	 *
+	 * @param string $name
+	 * @param string $id Number
+	 * @return bool
+	 */
+	private function _validUpdateGroup($name,$id) {
+		$ret = false;
+
+		if (Summoner::validate($name, 'nospace') && Summoner::validate($id,"digit")) {
+			$queryStr = "SELECT `id` FROM `" . DB_PREFIX . "_group`
+								WHERE `name` = '".$this->_DB->real_escape_string($name)."'
+								AND `id` != '".$this->_DB->real_escape_string($id)."'";
+			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			try {
+				$query = $this->_DB->query($queryStr);
+				if ($query !== false && $query->num_rows < 1) {
+					$ret = true;
+				}
+			}
+			catch (Exception $e) {
+				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			}
+		}
+
+		return $ret;
+	}
+
+	/**
 	 * Check if given login can be used as a new one
 	 *
 	 * @param string $login
@@ -299,6 +481,7 @@ class Possessed {
 	 */
 	private function _validNewLogin($login) {
 		$ret = false;
+
 		if (Summoner::validate($login, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'";
@@ -326,7 +509,8 @@ class Possessed {
 	 */
 	private function _validUpdateLogin($login,$id) {
 		$ret = false;
-		if (Summoner::validate($login, 'nospace')) {
+
+		if (Summoner::validate($login, 'nospace') && Summoner::validate($id,"digit")) {
 			$queryStr = "SELECT `id` FROM `" . DB_PREFIX . "_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
