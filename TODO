@@ -2,10 +2,11 @@
 * Mass edit of entries
 * User and groupmanagement: Check where a user or group is used!
 * Better error handling and display while adding / update and delete
-
-* responsive and breakpoints
-* stats overview page. amount of entries. file and db storage.
+* stats overview page. amount of entries. file and db storage. Version info and where to find it.
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
+
+* responsive and breakpoints
 * Field management: Web interface
 * minimal theme
+* Automatic upgrade from DB changes

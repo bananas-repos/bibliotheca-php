@@ -10,7 +10,7 @@ Copy config/config-imdbweb.php.default to config/config-imdbweb.php
 See too-imdbweb.txt documentation for more information.
 
 # DB changes. Run each line against your bibliotheca DB.
-# Replace #REPLACEME# with your table prefix. Default  is bib
+# Replace #REPLACEME# with your table prefix. Default is bib
 UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 10;
 UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `bib_menu`.`id` = 10;
 INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Profile', 'profile', 'user', '1', '2', 'rw-rw----', '5', 'manage');
