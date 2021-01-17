@@ -6,9 +6,10 @@ have on the old config files. After that you can delete config/database|path|sys
 The definition of USER_DEFAULT_RIGHTS_STRING can be removed from config file.
 
 # DB changes. Run each line against your bibliotheca DB.
-UPDATE `bib_menu` SET `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 10;
-UPDATE `bib_menu` SET `group` = '2' WHERE `bib_menu`.`id` = 10;
-INSERT INTO `bib_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Profile', 'profile', 'user', '1', '2', 'rw-rw----', '5', 'manage');
-DELETE FROM `bib_menu` WHERE `bib_menu`.`id` = 13;
-INSERT INTO `bib_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Groups', 'managegroups', 'users', '1', '1', 'rw-------', '5', 'manage');
-UPDATE `bib_menu` SET `position` = '6' WHERE `bib_menu`.`id` = 16;
+# Replace #REPLACEME# with your table prefix. Default  is bib
+UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 10;
+UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `bib_menu`.`id` = 10;
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Profile', 'profile', 'user', '1', '2', 'rw-rw----', '5', 'manage');
+DELETE FROM `#REPLACEME#_menu` WHERE `bib_menu`.`id` = 13;
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Groups', 'managegroups', 'users', '1', '1', 'rw-------', '5', 'manage');
+UPDATE `#REPLACEME#_menu` SET `position` = '6' WHERE `bib_menu`.`id` = 16;

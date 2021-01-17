@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2020 at 10:41 AM
+-- Generation Time: Jan 17, 2021 at 03:22 PM
 -- Server version: 8.0.22
 -- PHP Version: 7.4.13
 
@@ -18,14 +18,18 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `bibliotheca`
+--
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bib_collection`
+-- Table structure for table `#REPLACEME#_collection`
 --
 
 DROP TABLE IF EXISTS `#REPLACEME#_collection`;
-CREATE TABLE `bib_collection` (
+CREATE TABLE `#REPLACEME#_collection` (
   `id` int NOT NULL,
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -41,7 +45,7 @@ CREATE TABLE `bib_collection` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bib_group`
+-- Table structure for table `#REPLACEME#_group`
 --
 
 DROP TABLE IF EXISTS `#REPLACEME#_group`;
@@ -99,11 +103,12 @@ INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`
 (7, 'Collections', 'managecolletions', 'database', 1, 2, 'rw-rw----', 3, 'manage'),
 (8, 'Users', 'manageusers', 'users', 1, 1, 'rw-------', 4, 'manage'),
 (9, 'Login', 'auth', '', 1, 1, 'rw-r--r--', 0, ''),
-(10, 'Collection fields', 'managecollectionfields', '', 1, 1, 'rw-------', 0, ''),
+(10, 'Collection fields', 'managecollectionfields', '', 1, 2, 'rw-rw----', 0, ''),
 (11, 'Entry', 'entry', '', 1, 1, 'rw-r--r--', 0, ''),
 (12, 'Search', 'search', '', 1, 1, 'rw-r--r--', 0, ''),
-(13, 'Edit', 'collections', 'pencil', 1, 2, 'rw-rw----', 1, 'manage'),
-(14, 'Tool', 'tool', '', 1, 1, 'rw-------', 0, '');
+(14, 'Tool', 'tool', '', 1, 1, 'rw-------', 0, ''),
+(15, 'Profile', 'profile', 'user', 1, 2, 'rw-rw----', 5, 'manage'),
+(16, 'Groups', 'managegroups', 'users', 1, 1, 'rw-------', 6, 'manage');
 
 -- --------------------------------------------------------
 
@@ -170,7 +175,7 @@ CREATE TABLE `#REPLACEME#_tool` (
   `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `target` varchar(16) NOT NULL,
+  `target` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner` int NOT NULL,
   `group` int NOT NULL,
   `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
@@ -264,10 +269,6 @@ CREATE TABLE `#REPLACEME#_userSession` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `#REPLACEME#_userSession`
---
-
---
 -- Indexes for dumped tables
 --
 
@@ -347,13 +348,13 @@ ALTER TABLE `#REPLACEME#_group`
 -- AUTO_INCREMENT for table `#REPLACEME#_menu`
 --
 ALTER TABLE `#REPLACEME#_menu`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_sys_fields`
 --
 ALTER TABLE `#REPLACEME#_sys_fields`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_tool`
