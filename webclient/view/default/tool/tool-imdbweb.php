@@ -22,10 +22,17 @@
  */
 
 require_once 'lib/imdbwebparser.class.php';
+if(file_exists(PATH_ABSOLUTE.'/config/config-imdbweb.php')) {
+	require_once 'config/config-imdbweb.php';
+}
 
 $IMDB = new IMDB(array(
-	'sSearchFor' => 'movie',
+	'sSearchFor' => TOOL_IMDBWEB_SEARCH,
+	'showFields' => TOOL_IMDBWEB_FIELDS,
 	'storage' => PATH_SYSTEMOUT,
+	'browserAgent' => TOOL_IMDBWEB_BROWSER_AGENT,
+	'browserLang' => TOOL_IMDBWEB_BROWSER_ACCEPT_LANG,
+	'browserAccept' => TOOL_IMDBWEB_BROWSER_ACCEPT,
 	'debug' => false
 ));
 
@@ -36,7 +43,7 @@ $TemplateData['showMatchingForm'] = false;
 
 // prepare fields to save into selection
 // create one time and then reuse it
-$collectionFields = $ManangeCollectionsFields->getExistingFields();
+$collectionFields = $ManangeCollectionsFields->getExistingFields(false, true);
 if(!empty($collectionFields)) {
 	foreach ($collectionFields as $k=>$v) {
 		$TemplateData['saveToSelection'] .= "<option value='".$k."'>".$v['displayname']."</option>\n";

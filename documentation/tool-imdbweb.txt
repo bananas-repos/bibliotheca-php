@@ -1,0 +1,13 @@
+IMDB web parser tool
+
+It provides easy searching for a movie entry within https://www.imdb.com.
+Creating a new one with the selected fields or updating an existing one.
+
+It uses: https://github.com/FabianBeiner/PHP-IMDB-Grabber with some modifications
+
+You can search for words or the exact imdb id, which is in tt* format of an entry url.
+It searches for movies only.
+
+Which fields are available for you to select, are configured in the config.imdbweb.php file to make it
+easier since not every field the tool provides are needed.
+Follow the comments in the file for more details.

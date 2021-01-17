@@ -8,6 +8,11 @@
 	* User management: Honor rights from current logged in user
 	* Group management now available. But no relation check yet.
 	* User management: Additional groups
+	* Page title available
+	* Deletion of a collection removes the storage too
+	* IMDB Tool. Order of save to field now A-Z
+	* Documentation for tools
+	* Documentation for tool imdbweb grabber. Default config added.
 
 1.0 - Castle 20210106
 	* First usable version

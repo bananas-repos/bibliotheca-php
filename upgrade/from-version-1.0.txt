@@ -5,6 +5,10 @@ have on the old config files. After that you can delete config/database|path|sys
 # Deletion of config definition
 The definition of USER_DEFAULT_RIGHTS_STRING can be removed from config file.
 
+# New config file
+Copy config/config-imdbweb.php.default to config/config-imdbweb.php
+See too-imdbweb.txt documentation for more information.
+
 # DB changes. Run each line against your bibliotheca DB.
 # Replace #REPLACEME# with your table prefix. Default  is bib
 UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 10;

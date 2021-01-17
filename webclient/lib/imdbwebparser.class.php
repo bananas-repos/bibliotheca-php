@@ -29,7 +29,17 @@ class IMDB
 	/**
 	 * Set the preferred language for the User Agent.
 	 */
-	private $IMDB_LANG = 'en-US,en;q=0.9';
+	private $IMDB_BROWSER_LANG;
+
+	/**
+	 * @var string The accept string for curl call
+	 */
+	private $IMDB_BROWSER_ACCEPT;
+
+	/**
+	 * @var string The user-agent string fpr curl call
+	 */
+	private $IMDB_BROWSER_AGENT;
 
 	/**
 	 * Define the timeout for cURL requests.
@@ -134,13 +144,18 @@ class IMDB
 	private $sSearchFor = 'all';
 
 	/**
+	 * @var array The fields to return at getAll
+	 */
+	private $_showFields;
+
+	/**
 	 * IMDB constructor. Can now set some options
 	 *
 	 * @param $options array with the following options
 	 *      int iCache Custom cache time in minutes.
 	 *      string sSearchFor What type to search for?
 	 *      string storage Where to store data. Absolute path
-	 *      boolean debug Show depubg messages or not
+	 *      boolean debug Show debug messages or not
 	 */
 	public function __construct($options) {
 
@@ -168,6 +183,15 @@ class IMDB
 			)) {
 				$this->sSearchFor = $options['sSearchFor'];
 			}
+		}
+
+		$this->IMDB_BROWSER_AGENT = $options['browserAgent'];
+		$this->IMDB_BROWSER_LANG = $options['browserLang'];
+		$this->IMDB_BROWSER_ACCEPT = $options['browserAccept'];
+
+		$this->_showFields = array();
+		if(isset($options['showFields']) && !empty($options['showFields'])) {
+			$this->_showFields = $options['showFields'];
 		}
 	}
 
@@ -336,6 +360,7 @@ class IMDB
 		$aData = [];
 		foreach (get_class_methods(__CLASS__) as $method) {
 			if (substr($method, 0, 3) === 'get' && $method !== 'getAll' && $method !== 'getCastImages') {
+				if(!empty($this->_showFields) && !in_array($method,$this->_showFields)) continue;
 				$aData[$method] = [
 					'name'  => ltrim($method, 'get'),
 					'value' => $this->{$method}(),
@@ -1717,23 +1742,21 @@ class IMDB
 		curl_setopt_array(
 			$oCurl,
 			[
-				CURLOPT_BINARYTRANSFER => ($bDownload ? true : false),
 				CURLOPT_CONNECTTIMEOUT => $this->IMDB_TIMEOUT,
 				CURLOPT_ENCODING       => '',
 				CURLOPT_FOLLOWLOCATION => 0,
 				CURLOPT_FRESH_CONNECT  => 0,
 				CURLOPT_HEADER         => ($bDownload ? false : true),
 				CURLOPT_HTTPHEADER     => [
-					'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-					'Accept-Charset: utf-8, iso-8859-1;q=0.5',
-					'Accept-Language: ' . $this->IMDB_LANG,
+					'Accept: '.$this->IMDB_BROWSER_ACCEPT,
+					'Accept-Language: ' . $this->IMDB_BROWSER_LANG,
 				],
 				CURLOPT_REFERER        => 'https://www.imdb.com',
 				CURLOPT_RETURNTRANSFER => 1,
 				CURLOPT_SSL_VERIFYHOST => 0,
 				CURLOPT_SSL_VERIFYPEER => 0,
 				CURLOPT_TIMEOUT        => $this->IMDB_TIMEOUT,
-				CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0',
+				CURLOPT_USERAGENT      => $this->IMDB_BROWSER_AGENT,
 				CURLOPT_VERBOSE        => 0,
 			]
 		);

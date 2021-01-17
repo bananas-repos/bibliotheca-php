@@ -1,0 +1,9 @@
+Each collection can have additional tools. The availability is configured in collection management.
+
+A tool needs an DB entry in _tool and matching files in view/THEME/tool/.
+Filenames are tool-ACTION.html|php
+A option configuration file config/config-ACTION.php
+A documentation is a must.
+
+As a base the provided imdbweb parse is already included. It makes it possible to search for a movie within
+https://www.imdb.com and let you pick with information should be saved into the entry.

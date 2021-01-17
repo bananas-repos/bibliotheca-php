@@ -247,9 +247,10 @@ class ManageCollectionFields {
 	 * Get the fields for currently loaded collection.
 	 *
 	 * @param bool $refresh True to reload from DB
+	 * @param bool $sortAZ
 	 * @return array
 	 */
-	public function getExistingFields($refresh=false) {
+	public function getExistingFields($refresh=false, $sortAZ=false) {
 		if($refresh === false && !empty($this->_cacheExistingSysFields)) {
 			return $this->_cacheExistingSysFields;
 		}
@@ -257,8 +258,13 @@ class ManageCollectionFields {
 		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
 							`sf`.`createstring`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
-						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
-						ORDER BY `cf`.`sort`";
+						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`";
+		if($sortAZ === true) {
+			$queryStr .= " ORDER BY `sf`.`displayname`";
+		}
+		else {
+			$queryStr .= " ORDER BY `cf`.`sort`";
+		}
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);

@@ -1,0 +1,23 @@
+<?php
+/**
+ * Options for the grabber
+ *
+ * TOOL_IMDBWEB_SEARCH can be 'movie','tv','episode','game','all'. Default is movie
+ * TOOL_IMDBWEB_FIELDS is an array to define which fields from IMDB are displayed for selection
+ * 		an empty array() shows all.
+ * 		getAka, getAkas, getAspectRatio, getAwards, getBudget, getCast, getCastAndCharacter, CastAndCharacterAsUrl,
+ * 		getCastAsUrl, getCertification, getColor, getCompany, getCompanyAsUrl, getCountry, getCountryAsUrl,
+ * 		getCreator, getCreatorAsUrl, getDescription, getDirector, getDirectorAsUrl, getGenre, getGenreAsUrl,
+ * 		getGross, getLanguage, getLanguageAsUrl, getLocation, getLocationAsUrl, getLocations, getMpaa, getPlot,
+ * 		getPlotKeywords, getPoster, getRating, getRatingCount, getReleaseDate, getReleaseDates, getRuntime,
+ * 		getSeasons, getSeasonsAsUrl, getSoundMix, getTagline, getTitle, getTrailerAsUrl, getUrl, getUserReview,
+ * 		getVotes, getWriter, getWriterAsUrl, getYear
+ * TOOL_IMDBWEB_BROWSERSTRING a current browser agent string. Should be updated from time to time. See default config file.
+ * TOOL_IMDBWEB_BROWSER_ACCEPT_LANG should define in which language the content returns
+*/
+define('TOOL_IMDBWEB_SEARCH','movie');
+define('TOOL_IMDBWEB_FIELDS', array('getCast','getDescription', 'getDirector', 'getGenre', 'getPlot', 'getRating', 'getRuntime','getTitle', 'getWriter', 'getYear'));
+
+define('TOOL_IMDBWEB_BROWSER_AGENT','Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0');
+define('TOOL_IMDBWEB_BROWSER_ACCEPT','text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8');
+define('TOOL_IMDBWEB_BROWSER_ACCEPT_LANG','en-US,en;q=0.5');
