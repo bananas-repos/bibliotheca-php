@@ -35,7 +35,7 @@ define('DB_HOST','127.0.0.1');
 define('DB_USERNAME','user');
 define('DB_PASSWORD','test');
 define('DB_NAME','bibliotheca');
-define('DB_PREFIX','bib'); # a _ is added automatically as seperation
+define('DB_PREFIX','bib'); # a _ is added automatically as separation
 
 ## theme support
 # fallback is default theme
