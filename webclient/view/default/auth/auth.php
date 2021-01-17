@@ -18,6 +18,8 @@
 
 // passwords used here: password_hash("somePassword", PASSWORD_DEFAULT);
 
+$TemplateData['pageTitle'] = 'Auth';
+
 if(isset($_GET['m']) && !empty($_GET['m'])) {
 	if($_GET['m'] == "logout") {
 		$Doomguy->logOut();

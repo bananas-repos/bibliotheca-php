@@ -33,6 +33,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
+$TemplateData['pageTitle'] = 'Tags - ';
 $TemplateData['loadedCollection'] = array();
 $TemplateData['tags'] = array();
 $TemplateData['search'] = false;
@@ -56,6 +57,8 @@ if(!empty($_collection)) {
 		}
 
 		$Trite->getTags();
+
+		$TemplateData['pageTitle'] = $Trite->param('name');
 	}
 	else {
 		$TemplateData['message']['content'] = "Can not load given collection.";
@@ -63,5 +66,6 @@ if(!empty($_collection)) {
 	}
 }
 else {
+	$TemplateData['pageTitle'] .= 'collection overview';
 	$TemplateData['collections'] = $Trite->getCollections();
 }

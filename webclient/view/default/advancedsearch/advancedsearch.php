@@ -27,6 +27,7 @@ if(isset($_GET['collection']) && !empty($_GET['collection'])) {
 	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
 }
 
+$TemplateData['pageTitle'] = 'Advanced search';
 $TemplateData['loadedCollection'] = array();
 $TemplateData['collections'] = array();
 $TemplateData['collectionFields'] = array();

@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="view/default/ui/js/uikit-icons.min.js"></script>
 
 	<meta name="author" content="https://www.bananas-playground.net/projekt/bibliotheca" />
-	<title>Bibliotheca</title>
+	<title><?php echo $TemplateData['pageTitle']; ?> - Bibliotheca</title>
 </head>
 <body>
 	<header>

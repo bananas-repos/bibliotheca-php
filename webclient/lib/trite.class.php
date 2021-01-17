@@ -252,6 +252,9 @@ class Trite {
 					if(!empty($result['value'])) {
 						$ret[$result['id']]['entries'][$result['value']] = $result['value'];
 					}
+					elseif(!isset($ret[$result['id']]['entries'])) {
+						$ret[$result['id']]['entries'] = array();
+					}
 				}
 			}
 		} catch (Exception $e) {

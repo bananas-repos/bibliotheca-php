@@ -21,6 +21,7 @@ $Trite = new Trite($DB,$Doomguy);
 require_once 'lib/manageentry.class.php';
 $ManangeEntry = new Manageentry($DB,$Doomguy);
 
+$TemplateData['pageTitle'] = 'Manage entry - ';
 $TemplateData['editFields'] = array();
 $TemplateData['editData'] = array();
 $TemplateData['loadedCollection'] = '';
@@ -50,6 +51,8 @@ if(!empty($_collection)) {
 		$TemplateData['editFields'] = $ManangeEntry->getEditFields();
 		$TemplateData['availableTools'] = $Trite->getAvailableTools();
 
+		$TemplateData['pageTitle'] = 'Add - '.$Trite->param('name');
+
 		if(!empty($_id)) {
 			$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $_collection . '/' . $_id;
 
@@ -59,6 +62,9 @@ if(!empty($_collection)) {
 			if(!isset($TemplateData['editData']['title'])) {
 				$TemplateData['message']['content'] = "Entry has no value in title field.";
 				$TemplateData['message']['status'] = "error";
+			}
+			else {
+				$TemplateData['pageTitle'] = 'Edit - '.$TemplateData['editData']['title'].' - '.$Trite->param('name');
 			}
 		}
 
@@ -149,5 +155,6 @@ if(!empty($_collection)) {
 	}
 }
 else {
+	$TemplateData['pageTitle'] .= 'collection overview';
 	$TemplateData['existingCollections'] = $Trite->getCollections("write");
 }

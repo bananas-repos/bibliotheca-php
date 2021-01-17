@@ -31,6 +31,8 @@ $TemplateData['editData']['rights'] = Summoner::prepareRightsArray('rwxr--r--');
 $TemplateData['editData']['tool'] = array();
 $TemplateData['existingFields'] = array();
 
+$TemplateData['pageTitle'] = 'Manage collection';
+
 // @todo providing the id is enough
 $_editMode = false;
 if(isset($_GET['m']) && !empty($_GET['m'])) {

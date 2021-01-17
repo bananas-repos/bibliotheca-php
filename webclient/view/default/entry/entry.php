@@ -35,6 +35,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = Summoner::validate($_id,'digit') ? $_id : false;
 }
 
+$TemplateData['pageTitle'] = '?';
 $TemplateData['fieldViewDefault'] = Summoner::themefile('entry/field-unknown.html', UI_THEME);
 $TemplateData['entry'] = array();
 $TemplateData['loadedCollection'] = array();
@@ -51,6 +52,13 @@ if(!empty($_collection) && !empty($_id)) {
 
 		$ManageEntry->setCollection($Trite->param('id'));
 		$TemplateData['showEdit'] = $ManageEntry->canEditEntry($_id);
+
+		if(isset($TemplateData['entry']['fields']['title'])) {
+			$TemplateData['pageTitle'] = $TemplateData['entry']['fields']['title']['value'].' - '.$Trite->param('name');
+		}
+		else {
+			$TemplateData['pageTitle'] = ' - '.$Trite->param('name');
+		}
 	}
 	else {
 		$TemplateData['message']['content'] = 'Can not load given collection.';

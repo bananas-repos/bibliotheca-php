@@ -18,13 +18,14 @@
 
 require_once 'lib/tentacle.class.php';
 $Tools = new Tentacle($DB,$Doomguy);
-require_once 'lib/managecollections.class.php';
-$ManangeCollections = new ManageCollections($DB,$Doomguy);
 require_once 'lib/managecollectionfields.class.php';
 $ManangeCollectionsFields = new ManageCollectionFields($DB, $Doomguy);
 require_once  'lib/manageentry.class.php';
 $Manageentry = new Manageentry($DB,$Doomguy);
+require_once 'lib/trite.class.php';
+$Trite = new Trite($DB,$Doomguy);
 
+$TemplateData['pageTitle'] = 'Tool';
 $TemplateData['tool'] = array();
 $TemplateData['tool']['viewFile'] = '';
 $TemplateData['collection'] = array();
@@ -49,15 +50,15 @@ if(isset($_GET['t']) && !empty($_GET['t'])) {
 }
 
 if(!empty($_collection) && !empty($_t)) {
-	$collection = $ManangeCollections->getCollection($_collection,"write");
+	$collection = $Trite->load($_collection,"write");
 	$toolInfo = $Tools->validate($_t);
 
 	if(!empty($collection) && !empty($toolInfo)) {
 		$TemplateData['tool'] = $toolInfo;
 		$TemplateData['collection'] = $collection;
 
-		$ManangeCollectionsFields->setCollection($_collection);
-		$Manageentry->setCollection($_collection);
+		$ManangeCollectionsFields->setCollection($Trite->param('id'));
+		$Manageentry->setCollection($Trite->param('id'));
 
 		if(!empty($_id)) {
 			$TemplateData['editEntry'] = $Manageentry->getEditData($_id);
@@ -68,6 +69,8 @@ if(!empty($_collection) && !empty($_t)) {
 		if(file_exists($_toolFile) && file_exists($_toolViewFile)) {
 			require_once $_toolFile;
 			$TemplateData['tool']['viewFile'] = $_toolViewFile;
+
+			$TemplateData['pageTitle'] .= ' - '.$toolInfo['name'];
 		}
 		else {
 			$TemplateData['tool']['viewFile'] = '';

@@ -415,6 +415,8 @@ class ManageCollections {
 				$this->_DB->query($queryStrEntry);
 				$this->_DB->query($queryStrFields);
 
+				Summoner::recursive_remove_directory(PATH_STORAGE.'/'.$id);
+
 				$ret = true;
 			}
 			catch (Exception $e) {

@@ -20,6 +20,8 @@ $Possessed = new Possessed($DB, $Doomguy);
 $TemplateData['existingGroups'] = $Possessed->getGroups();
 $TemplateData['editData'] = false;
 
+$TemplateData['pageTitle'] = 'Manage groups';
+
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);

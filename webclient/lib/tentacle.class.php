@@ -50,7 +50,7 @@ class Tentacle {
 	 * Validate if given action is a valid tool and if the user has access
 	 *
 	 * @param string $identifier
-	 * @return bool
+	 * @return bool|mixed
 	 */
 	public function validate($identifier) {
 		$ret = false;

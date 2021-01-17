@@ -49,6 +49,7 @@ if(isset($_POST['navSearch'])) {
 
 require_once(Summoner::themefile('system/pagination_before.php',UI_THEME));
 
+$TemplateData['pageTitle'] = "Collection overview";
 $TemplateData['loadedCollection'] = array();
 $TemplateData['storagePath'] = '';
 $TemplateData['entries'] = array();
@@ -93,6 +94,9 @@ if(!empty($_collection)) {
 		if (!empty($_search)) {
 			$TemplateData['search'] = $_search;
 		}
+
+		$TemplateData['pageTitle'] = $Trite->param('name');
+
 	}
 	else {
 		$TemplateData['message']['content'] = "Can not load given collection.";

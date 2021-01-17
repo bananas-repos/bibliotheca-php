@@ -13,3 +13,4 @@ INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`
 DELETE FROM `#REPLACEME#_menu` WHERE `bib_menu`.`id` = 13;
 INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Groups', 'managegroups', 'users', '1', '1', 'rw-------', '5', 'manage');
 UPDATE `#REPLACEME#_menu` SET `position` = '6' WHERE `bib_menu`.`id` = 16;
+UPDATE `#REPLACEME#_menu` SET `group` = '2', `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 14;

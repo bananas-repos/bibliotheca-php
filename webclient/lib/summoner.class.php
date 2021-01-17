@@ -377,9 +377,9 @@ class Summoner {
 	}
 
 	/**
-	 * delete and/or empty a diretory
+	 * delete and/or empty a directory
 	 *
-	 * $empty = true => empty the diretory but do not delete it
+	 * $empty = true => empty the directory but do not delete it
 	 *
 	 * @param string $directory
 	 * @param bool $empty

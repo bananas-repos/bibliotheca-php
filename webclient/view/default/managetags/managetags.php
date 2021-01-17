@@ -35,6 +35,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 
 $TemplateData['loadedCollection'] = array();
 $TemplateData['collections'] = array();
+$TemplateData['pageTitle'] = 'Manage tags';
 
 if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection, "write");

@@ -59,6 +59,7 @@ $DB = false;
 $TemplateData = array();
 $TemplateData['pagination'] = array();
 $TemplateData['searchAction'] = 'index.php';
+$TemplateData['pageTitle'] = 'Dashboard';
 # the view
 $View = Summoner::themefile('dashboard/dashboard.html', UI_THEME);
 # the script
@@ -97,7 +98,7 @@ if(isset($_GET['p']) && !empty($_GET['p'])) {
 	$View = Summoner::themefile($_requestMode.'/'.$_requestMode.'.html', UI_THEME);
 }
 
-# now inlcude the script
+# now include the script
 # this sets information into $Data and can overwrite $View
 if(!empty($ViewScript)) {
 	require_once $ViewScript;

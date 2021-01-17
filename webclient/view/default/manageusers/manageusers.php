@@ -21,6 +21,7 @@ $TemplateData['existingGroups'] = $Possessed->getGroups();
 $TemplateData['existingUsers'] = $Possessed->getUsers();
 $TemplateData['editData'] = false;
 $TemplateData['editData']['groups'] = array();
+$TemplateData['pageTitle'] = 'Manage users';
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {

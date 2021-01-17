@@ -27,6 +27,8 @@ $ManangeCollectionFields = new ManageCollectionFields($DB,$Doomguy);
 $TemplateData['availableFields'] = $ManangeCollectionFields->getAvailableFields();
 $TemplateData['existingFields'] = array();
 
+$TemplateData['pageTitle'] = 'Manage collection fields';
+
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);

@@ -19,6 +19,7 @@ require_once 'lib/possessed.class.php';
 $Possessed = new Possessed($DB, $Doomguy);
 
 $TemplateData['editData'] = $Doomguy->getAllUserData();
+$TemplateData['pageTitle'] = 'Profile';
 
 if(!empty($TemplateData['editData'])) {
 	if(isset($_POST['submitForm'])) {
