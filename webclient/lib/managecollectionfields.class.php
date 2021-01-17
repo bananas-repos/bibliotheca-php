@@ -196,52 +196,47 @@ class ManageCollectionFields {
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrInsertFields,true));
 
 			if(!empty($_newColumns)) {
-				$queryStrAlterEntry = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
+				$queryStrAlterEntry = array();
 				foreach($_newColumns as $k=>$v) {
-					$queryStrAlterEntry .= " ADD ".$v['createstring'].",";
+					$queryStrAlterEntry[] = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$this->_collectionId."` ADD ".$v['createstring']."";
 				}
-				$queryStrAlterEntry = trim($queryStrAlterEntry, ",");
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrAlterEntry,true));
 			}
 
+			// this is not good. mysql implicit commit is triggered with alter table.
+			// needs a rewrite without alter table to fully use transactions..
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
-				if($this->_DB->query($queryStrDeleteFields) !== false && $this->_DB->query($queryStrDeletee2l) !== false) {
+				$this->_DB->query($queryStrDeleteFields);
+				$this->_DB->query($queryStrDeletee2l);
 
-					$_check = true;
-					if(!empty($queriesDeleteEntryTable)) {
-						foreach($queriesDeleteEntryTable as $q) {
-							if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q,true));
-							if($this->_DB->query($q) == false) {
-								$_check = false;
-								break;
-							}
-						}
-					}
-
-					if($this->_DB->query($queryStrInsertFields) !== false && $_check === true) {
-						$alterQuery = false;
-						if(!empty($_newColumns)) {
-							$alterQuery = $this->_DB->query($queryStrAlterEntry);
-						}
-						if(!empty($_newColumns) && $alterQuery === false) {
-							throw new Exception("Failed to insert alter the table.");
-						}
-					}
-					else {
-						throw new Exception("Failed to insert the new fields.");
-					}
-				}
-				else {
-					throw new Exception("Failed to delete old fields.");
-				}
 				$this->_DB->commit();
+
+				// mysql implicit commit
+				if(!empty($queriesDeleteEntryTable)) {
+					foreach($queriesDeleteEntryTable as $q) {
+						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q,true));
+						$this->_DB->query($q);
+					}
+				}
+
+				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+				$this->_DB->query($queryStrInsertFields);
+				$this->_DB->commit();
+
+				// mysql implicit commit
+				if(!empty($_newColumns)) {
+					foreach ($queryStrAlterEntry as $q1) {
+						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q1,true));
+						$this->_DB->query($q1);
+					}
+				}
+
 				$ret = true;
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				error_log("[ERROR] asd ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 

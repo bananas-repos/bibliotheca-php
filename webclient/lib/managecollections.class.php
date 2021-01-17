@@ -218,7 +218,12 @@ class ManageCollections {
 				$this->_DB->query($queryStr);
 				$newId = $this->_DB->insert_id;
 
+				$this->_updateToolRelation($newId,$data['tool']);
+				$this->_DB->commit();
 
+
+				// mysql implicit commit with create table
+				// rollback does not really solve if there is an error
 				$queryEntry2lookup = "CREATE TABLE `".DB_PREFIX."_collection_entry2lookup_".$newId."` (
 										`fk_field` int NOT NULL,
 										`fk_entry` int NOT NULL,
@@ -252,9 +257,6 @@ class ManageCollections {
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCollectionEntry,true));
 				$this->_DB->query($queryCollectionEntry);
 
-				$this->_updateToolRelation($newId,$data['tool']);
-
-				$this->_DB->commit();
 				$ret = true;
 			}
 			catch (Exception $e) {
@@ -400,16 +402,19 @@ class ManageCollections {
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrFields,true));
 
 
+			// mysql implicit commit with drop command
+			// transaction does not really help here.
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
 				$this->_DB->query($queryStr);
 				$this->_DB->query($queryStrTool);
+				$this->_DB->commit();
+
 				$this->_DB->query($queryStre2l);
 				$this->_DB->query($queryStrEntry);
 				$this->_DB->query($queryStrFields);
 
-				$this->_DB->commit();
 				$ret = true;
 			}
 			catch (Exception $e) {
