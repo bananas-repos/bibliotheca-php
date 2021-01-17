@@ -189,7 +189,7 @@ class ManageCollectionFields {
 
 			$queryStrInsertFields = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
 			foreach ($ids as $k => $v) {
-				$queryStrInsertFields .= "($v,$k),";
+				$queryStrInsertFields .= "('".$this->_DB->real_escape_string($v)."','".$this->_DB->real_escape_string($k)."'),";
 			}
 			$queryStrInsertFields = trim($queryStrInsertFields, ",");
 			$queryStrInsertFields .= " ON DUPLICATE KEY UPDATE `sort` = VALUES(`sort`)";

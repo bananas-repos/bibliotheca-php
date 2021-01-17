@@ -20,6 +20,7 @@ $Possessed = new Possessed($DB, $Doomguy);
 $TemplateData['existingGroups'] = $Possessed->getGroups();
 $TemplateData['existingUsers'] = $Possessed->getUsers();
 $TemplateData['editData'] = false;
+$TemplateData['editData']['groups'] = array();
 
 $_id = false;
 if(isset($_GET['id']) && !empty($_GET['id'])) {
@@ -48,6 +49,11 @@ if(isset($_POST['submitForm'])) {
 			$_active = true;
 		}
 
+		$_groups = array();
+		if(isset($fdata['groups'])) {
+			$_groups = $fdata['groups'];
+		}
+
 		if(!empty($TemplateData['editData'])) {
 			if(isset($fdata['doDelete'])) {
 				$do = $Possessed->deleteUser($_id);
@@ -68,7 +74,7 @@ if(isset($_POST['submitForm'])) {
 					if(isset($fdata['refreshApiToken'])) {
 						$refreshApi = true;
 					}
-					$do = $Possessed->updateUser($_id, $_username, $_login, $_password, $_group, $_active, $refreshApi);
+					$do = $Possessed->updateUser($_id, $_username, $_login, $_password, $_group, $_groups, $_active, $refreshApi);
 					if ($do === true) {
 						$TemplateData['refresh'] = 'index.php?p=manageusers';
 					}
@@ -90,7 +96,7 @@ if(isset($_POST['submitForm'])) {
 					&& Summoner::validate($_login, 'nospace') === true
 					&& isset($TemplateData['existingGroups'][$_group])
 				) {
-					$do = $Possessed->createUser($_username, $_login, $_password, $_group, $_active);
+					$do = $Possessed->createUser($_username, $_login, $_password, $_group, $_groups, $_active);
 					if ($do === true) {
 						$TemplateData['refresh'] = 'index.php?p=manageusers';
 					}

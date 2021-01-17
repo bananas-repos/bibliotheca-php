@@ -37,10 +37,16 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="additionalgroups">Additional groups</label>
+				<label class="uk-form-label" for="groups">Additional groups</label>
 				<div class="uk-form-controls">
-					<select class="uk-select" id="additionalgroups" name="fdata[additionalgroups]">
-						<option value="">To be done</option>
+					<select class="uk-select" id="groups" name="fdata[groups][]" multiple="multiple"
+						size="5">
+						<option value="">None</option>
+						<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
+						<option value="<?php echo $k; ?>"
+						<?php if(Summoner::ifset($TemplateData['editData']['groups'],$k)) echo 'selected'; ?>
+						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
+						<?php } ?>
 					</select>
 				</div>
 			</div>

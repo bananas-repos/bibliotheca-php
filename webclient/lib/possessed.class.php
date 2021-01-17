@@ -113,10 +113,11 @@ class Possessed {
 	 * @param string $login
 	 * @param string $password
 	 * @param string $group Number
+	 * @param array $groups
 	 * @param bool $active
 	 * @return bool
 	 */
-	public function createUser($username, $login, $password, $group, $active=false) {
+	public function createUser($username, $login, $password, $group, $groups, $active=false) {
 		$ret = false;
 
 		if($this->_validNewLogin($login) && $this->_validUsergroup($group)) {
@@ -150,7 +151,13 @@ class Possessed {
 										WHERE `id` = '".$this->_DB->real_escape_string($_userid)."'";
 					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrOwner,true));
 					$this->_DB->query($queryStrOwner);
-					$_setGroupRelation = $this->_setGroupReleation($_userid,$group);
+					if(!empty($groups)) {
+						$groups[] = $group;
+					}
+					else {
+						$groups = array($group);
+					}
+					$_setGroupRelation = $this->_setGroupReleation($_userid,$groups);
 					if($_setGroupRelation === false) {
 						throw new Exception("Failed to insert user relation");
 					}
@@ -178,11 +185,12 @@ class Possessed {
 	 * @param string $login
 	 * @param string $password
 	 * @param string $group
+	 * @param array $groups
 	 * @param bool $active
 	 * @param bool $refreshApiToken
 	 * @return bool
 	 */
-	public function updateUser($id, $username, $login, $password, $group, $active=false, $refreshApiToken=false) {
+	public function updateUser($id, $username, $login, $password, $group, $groups, $active=false, $refreshApiToken=false) {
 		$ret = false;
 
 		if($this->_validUpdateLogin($login,$id) && $this->_validUsergroup($group)) {
@@ -214,7 +222,13 @@ class Possessed {
 				$query = $this->_DB->query($queryStr);
 
 				if ($query !== false) {
-					$_setGroupRelation = $this->_setGroupReleation($id,$group, true);
+					if(!empty($groups)) {
+						$groups[] = $group;
+					}
+					else {
+						$groups = array($group);
+					}
+					$_setGroupRelation = $this->_setGroupReleation($id,$groups,true);
 					if($_setGroupRelation === false) {
 						throw new Exception('Failed to insert user relation');
 					}
@@ -561,15 +575,15 @@ class Possessed {
 	 * clean will delete all existing ones for given userid first.
 	 *
 	 * @param string $userid Number
-	 * @param string $groupid Number
+	 * @param array $group Array with group ids
 	 * @param bool $clean
 	 * @return bool
 	 */
-	private function _setGroupReleation($userid, $groupid, $clean=false) {
+	private function _setGroupReleation($userid, $group, $clean=false) {
 		$ret = false;
 
 		if(Summoner::validate($userid,'digit')
-			&& Summoner::validate($groupid,'digit')) {
+			&& is_array($group) && !empty($group)) {
 
 			try {
 				if($clean === true) {
@@ -579,9 +593,11 @@ class Possessed {
 					$this->_DB->query($queryStrDelete);
 				}
 
-				$queryStr = "INSERT IGNORE INTO `".DB_PREFIX."_user2group`
-								SET `fk_user_id` = '".$this->_DB->real_escape_string($userid)."',
-									`fk_group_id` = '".$this->_DB->real_escape_string($groupid)."'";
+				$queryStr = "INSERT IGNORE INTO `".DB_PREFIX."_user2group` (`fk_user_id`, `fk_group_id`) VALUES ";
+				foreach($group as $g) {
+					$queryStr .= "('".$this->_DB->real_escape_string($userid)."','".$this->_DB->real_escape_string($g)."'),";
+				}
+				$queryStr = trim($queryStr, ",");
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 				$ret = $this->_DB->query($queryStr);
 			}

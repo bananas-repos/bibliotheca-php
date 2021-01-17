@@ -7,6 +7,7 @@
 	* Entry rights can now be managed. More info about user and rights can be found in documentation.
 	* User management: Honor rights from current logged in user
 	* Group management now available. But no relation check yet.
+	* User management: Additional groups
 
 1.0 - Castle 20210106
 	* First usable version

@@ -81,7 +81,7 @@ if(!empty($_collection)) {
 			$TemplateData['pagination']['currentGetParameters']['fid'] = $_fid;
 			$TemplateData['pagination']['currentGetParameters']['fv'] = $_fv;
 		}
-		else {
+		elseif(isset($_fd[$Trite->param('defaultSearchField')])) {
 			$_sdata[0] = array(
 				'colName' => $Trite->param('defaultSearchField'),
 				'colValue' => $_search,

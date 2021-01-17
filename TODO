@@ -7,7 +7,5 @@
 * stats overview page. amount of entries. file and db storage.
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
-* User management: Adding secondary groups
-* User management: Rights for a user and group. Used in user and group selections.
 * Field management: Web interface
 * minimal theme
