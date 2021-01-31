@@ -11,10 +11,10 @@ See too-imdbweb.txt documentation for more information.
 
 # DB changes. Run each line against your bibliotheca DB.
 # Replace #REPLACEME# with your table prefix. Default is bib
-UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 10;
-UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `bib_menu`.`id` = 10;
+UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 10;
+UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `#REPLACEME#_menu`.`id` = 10;
 INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Profile', 'profile', 'user', '1', '2', 'rw-rw----', '5', 'manage');
-DELETE FROM `#REPLACEME#_menu` WHERE `bib_menu`.`id` = 13;
+DELETE FROM `#REPLACEME#_menu` WHERE `#REPLACEME#_menu`.`id` = 13;
 INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Groups', 'managegroups', 'users', '1', '1', 'rw-------', '5', 'manage');
-UPDATE `#REPLACEME#_menu` SET `position` = '6' WHERE `bib_menu`.`id` = 16;
-UPDATE `#REPLACEME#_menu` SET `group` = '2', `rights` = 'rw-rw----' WHERE `bib_menu`.`id` = 14;
+UPDATE `#REPLACEME#_menu` SET `position` = '6' WHERE `#REPLACEME#_menu`.`id` = 16;
+UPDATE `#REPLACEME#_menu` SET `group` = '2', `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 14;
