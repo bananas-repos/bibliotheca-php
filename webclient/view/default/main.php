@@ -26,8 +26,10 @@
 	</main>
 
 	<footer>
-		<div class="uk-container uk-container-expand">
-			<p>&nbsp;</p>
+		<div class="uk-section uk-section-default">
+			<div class="uk-container uk-container-expand">
+				<p class="uk-text-muted uk-text-small">&copy; 2018 - <?php echo date('Y'); ?> <a href="https://www.bananas-playground.net/projekt/bibliotheca/" target=_blank>Bibliotheca</a></p>
+			</div>
 		</div>
 	</footer>
 </body>
