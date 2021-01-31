@@ -13,6 +13,7 @@
 	* IMDB Tool. Order of save to field now A-Z
 	* Documentation for tools
 	* Documentation for tool imdbweb grabber. Default config added.
+	* Fixed bug #3
 
 1.0 - Castle 20210106
 	* First usable version
