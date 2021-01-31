@@ -197,7 +197,7 @@ class ManageCollections {
 	 * @param array $data
 	 * @return bool
 	 */
-	public function createCollection($data) {
+	public function createCollection(array $data): bool {
 		$ret = false;
 
 		if(!empty($data['name']) === true
@@ -213,7 +213,8 @@ class ManageCollections {
 								`owner` = '".$this->_DB->real_escape_string($data['owner'])."',
 								`group` = '".$this->_DB->real_escape_string($data['group'])."',
 								`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
-								`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."'";
+								`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."',
+								`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."'";
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 				$this->_DB->query($queryStr);
 				$newId = $this->_DB->insert_id;
@@ -274,12 +275,13 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return array
 	 */
-	public function getEditData($id) {
+	public function getEditData(string $id): array {
 		$ret = array();
 
 		if (Summoner::validate($id, 'digit')) {
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
 					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
+					`c`.`defaultSortField`,
 					`u`.`name` AS username, `g`.`name` AS groupname
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
@@ -310,7 +312,7 @@ class ManageCollections {
 	 * @param array $data
 	 * @return bool
 	 */
-	public function updateCollection($data) {
+	public function updateCollection(array $data): bool {
 		$ret = false;
 
 		if(DEBUG) error_log("[DEBUG] ".__METHOD__."  data: ".var_export($data,true));
@@ -325,7 +327,8 @@ class ManageCollections {
 							`owner` = '".$this->_DB->real_escape_string($data['owner'])."',
 							`group` = '".$this->_DB->real_escape_string($data['group'])."',
 							`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
-							`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."'
+							`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."',
+							`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."'
 						WHERE `id` = '".$this->_DB->real_escape_string($data['id'])."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {

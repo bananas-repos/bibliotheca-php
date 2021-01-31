@@ -20,7 +20,6 @@
 	<main>
 		<div class="uk-container uk-container-expand uk-margin-top">
 			<?php require_once $ViewMessage; ?>
-			<?php require_once $ViewPagination; ?>
 			<?php require_once $View; ?>
 		</div>
 	</main>

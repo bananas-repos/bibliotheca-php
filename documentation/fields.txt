@@ -9,7 +9,7 @@ Each collection can have there own set of fields. But at least the title field s
 Fields can be managed after a collection has been created.
 
 
-# If you want to create new ones here is a explanation how they work
+# If you want to create new ones here is an explanation how they work
 A field is defined in the sys_fields table. It needs a _saveField and optinal _loadFieldValue method
 in manageentry.class and the _loadFieldValue also in mancubus.class
 HTML definitions are needed in view/UI_THEME/entry and view/UI_THEME/manageentry
@@ -32,6 +32,7 @@ A _saveField_TYPE method in manageentry.class for data saving.
 Modification on advancedsearch.php if search needs some special treatment for this field
 
 searchtype
+Every field with entry* is a simple search field and can be used in global search.
 - tag = releation to lookup2entry table
 - entryText = text col in entry table
 - entrySingleText = entry col in entry table. Single value

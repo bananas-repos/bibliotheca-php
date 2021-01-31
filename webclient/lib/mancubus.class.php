@@ -241,13 +241,13 @@ class Mancubus {
 			if(!$_isFulltext) { // fulltext do not order. Which results in ordering be relevance of the match
 				$queryOrder = " ORDER BY";
 				if (!empty($this->_queryOptions['sort'])) {
-					$queryOrder .= ' t.' . $this->_queryOptions['sort'];
+					$queryOrder .= ' t.'.$this->_queryOptions['sort'];
 				}
 				else {
 					$queryOrder .= " t.created";
 				}
 				if (!empty($this->_queryOptions['sortDirection'])) {
-					$queryOrder .= ' ' . $this->_queryOptions['sortDirection'];
+					$queryOrder .= ' '.$this->_queryOptions['sortDirection'];
 				}
 				else {
 					$queryOrder .= " DESC";

@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,7 @@ $TemplateData['editData']['rights'] = Summoner::prepareRightsArray('rwxr--r--');
 // tool needs to be preset
 $TemplateData['editData']['tool'] = array();
 $TemplateData['existingFields'] = array();
+$TemplateData['simpleSearchFields'] = array();
 
 $TemplateData['pageTitle'] = 'Manage collection';
 
@@ -51,6 +52,7 @@ if($_editMode === true && !empty($_id)) {
 	$TemplateData['editData'] = $ManangeCollections->getEditData($_id);
 	$ManangeCollectionFields->setCollection($_id);
 	$TemplateData['existingFields'] = $ManangeCollectionFields->getExistingFields();
+	$TemplateData['simpleSearchFields'] = $ManangeCollectionFields->getSimpleSearchFields();
 	if(!isset($TemplateData['editData']['name'])) {
 		$TemplateData['refresh'] = 'index.php?p=managecolletions';
 	}
@@ -66,6 +68,7 @@ if(isset($_POST['submitForm'])) {
 		$_saveData['group'] = trim($fdata['group']);
 		$_saveData['rights'] = Summoner::prepareRightsString($fdata['rights']);
 		$_saveData['defaultSearchField'] = trim($fdata['defaultSearchField']);
+		$_saveData['defaultSortField'] = trim($fdata['defaultSortField']);
 		$_saveData['id'] = $_id;
 
 		$_saveData['tool'] = array();

@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,6 +64,13 @@ class Trite {
 	private $_queryOptions;
 
 	/**
+	 * Cache for already loaded collection fields
+	 *
+	 * @var array
+	 */
+	private $_cacheExistingCollectionFields = array();
+
+	/**
 	 * Trite constructor.
 	 *
 	 * @param $databaseConnectionObject
@@ -100,17 +107,18 @@ class Trite {
 	 * Get information to display for current collection
 	 * based on current user and given rights
 	 *
-	 * @param int $id The collection ID to load
+	 * @param string $id The collection ID to load
 	 * @param string $right The rights mode. read, write or delete
 	 * @return array
 	 */
-	public function load($id,$right="read") {
+	public function load(string $id,$right="read"): array {
 		$this->_collectionData = array();
 
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
 
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
 					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
+					`c`.`defaultSortField`,
 					`u`.`name` AS username, `g`.`name` AS groupname
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
@@ -189,8 +197,11 @@ class Trite {
 	 *
 	 * @return array
 	 */
-	public function getCollectionFields() {
-		$ret = array();
+	public function getCollectionFields(): array {
+		if(!empty($this->_cacheExistingCollectionFields)) {
+			return $this->_cacheExistingCollectionFields;
+		}
+		$this->_cacheExistingCollectionFields = array();
 
 		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
 						`sf`.`searchtype`
@@ -202,11 +213,33 @@ class Trite {
 		try {
 			if($query !== false && $query->num_rows > 0) {
 				while(($result = $query->fetch_assoc()) != false) {
-					$ret[$result['identifier']] = $result;
+					$this->_cacheExistingCollectionFields[$result['identifier']] = $result;
 				}
 			}
 		} catch (Exception $e) {
 			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+		}
+
+		return $this->_cacheExistingCollectionFields;
+	}
+
+	/**
+	 * return the simple search fields for loaded collection
+	 * Every field witch has a column in the entry table is a simple search field.
+	 * Name starts with entry
+	 *
+	 * @return array
+	 */
+	public function getSimpleSearchFields(): array {
+		$ret = array();
+
+		$fields = $this->getCollectionFields();
+		if(!empty($fields)) {
+			foreach($fields as $k=>$v) {
+				if(isset($v['searchtype']) && strpos($v['searchtype'],'entry') !== false) {
+					$ret[$k] = $v;
+				}
+			}
 		}
 
 		return $ret;

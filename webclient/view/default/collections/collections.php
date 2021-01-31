@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,34 @@ if(isset($_POST['navSearch'])) {
 	$_search = Summoner::validate($_search) ? $_search :  false;
 }
 
-require_once(Summoner::themefile('system/pagination_before.php',UI_THEME));
+## pagination
+$TemplateData['pagination'] = array('pages' => 0);
+
+$_curPage = 1;
+if(isset($_GET['page']) && !empty($_GET['page'])) {
+	$_curPage = trim($_GET['page']);
+	$_curPage = Summoner::validate($_curPage,'digit') ? $_curPage : 1;
+}
+
+$_sort = false;
+if(isset($_GET['s']) && !empty($_GET['s'])) {
+	$_sort = trim($_GET['s']);
+	$_sort = Summoner::validate($_sort,'nospace') ? $_sort : false;
+}
+
+$_sortDirection = false;
+if(isset($_GET['sd']) && !empty($_GET['sd'])) {
+	$_sortDirection = trim($_GET['sd']);
+	$_sortDirection = Summoner::validate($_sortDirection,'nospace') ? $_sortDirection : false;
+}
+
+$_queryOptions = array(
+	'limit' => RESULTS_PER_PAGE,
+	'offset' => (RESULTS_PER_PAGE * ($_curPage-1)),
+	'sort' => $_sort,
+	'sortDirection' => $_sortDirection
+);
+## pagination end
 
 $TemplateData['pageTitle'] = "Collection overview";
 $TemplateData['loadedCollection'] = array();
@@ -63,7 +90,17 @@ if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
 	if(!empty($TemplateData['loadedCollection'])) {
 		$Mancubus->setCollection($Trite->param('id'));
-		$Mancubus->setQueryOptions($_queryOptions); // this comes from pagination_before!
+
+		$TemplateData['defaultSortField'] = $defaultSortField = $Trite->param('defaultSortField');
+		$TemplateData['simpleSearchFields'] = $Trite->getSimpleSearchFields();
+		if(!empty($TemplateData['defaultSortField'])) {
+			unset($TemplateData['simpleSearchFields'][$TemplateData['defaultSortField']]);
+			if(empty($_queryOptions['sort'])) {
+				$_queryOptions['sort'] = $TemplateData['defaultSortField'];
+			}
+		}
+		$Mancubus->setQueryOptions($_queryOptions);
+
 		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id');
 		$TemplateData['entryLinkPrefix'] = "index.php?p=entry&collection=".$Trite->param('id');
 		$TemplateData['searchAction'] = 'index.php?p=collections&collection='.$Trite->param('id');
@@ -107,4 +144,32 @@ else {
 	$TemplateData['collections'] = $Trite->getCollections();
 }
 
-require_once(Summoner::themefile('system/pagination_after.php',UI_THEME));
+# pagination
+if(!empty($TemplateData['entries']['amount'])) {
+	$TemplateData['pagination']['pages'] = ceil($TemplateData['entries']['amount'] / RESULTS_PER_PAGE);
+	$TemplateData['pagination']['curPage'] = $_curPage;
+
+	$TemplateData['pagination']['currentGetParameters']['page'] = $_curPage;
+	$TemplateData['pagination']['currentGetParameters']['s'] = $_sort;
+	$TemplateData['pagination']['currentGetParameters']['sd'] = $_sortDirection;
+}
+
+if($TemplateData['pagination']['pages'] > 11) {
+	# first pages
+	$TemplateData['pagination']['visibleRange'] = range(1,3);
+	# last pages
+	foreach(range($TemplateData['pagination']['pages']-2, $TemplateData['pagination']['pages']) as $e) {
+		array_push($TemplateData['pagination']['visibleRange'], $e);
+	}
+	# pages before and after current page
+	$cRange = range($TemplateData['pagination']['curPage']-1, $TemplateData['pagination']['curPage']+1);
+	foreach($cRange as $e) {
+		array_push($TemplateData['pagination']['visibleRange'], $e);
+	}
+	$TemplateData['pagination']['currentRangeStart'] = array_shift($cRange);
+	$TemplateData['pagination']['currentRangeEnd'] = array_pop($cRange);
+}
+else {
+	$TemplateData['pagination']['visibleRange'] = range(1,$TemplateData['pagination']['pages']);
+}
+# pagination end

@@ -68,8 +68,6 @@ $ViewScript = Summoner::themefile('dashboard/dashboard.php', UI_THEME);
 $ViewMessage = Summoner::themefile('system/message.php',UI_THEME);
 # the menu
 $ViewMenu = Summoner::themefile('system/menu.php',UI_THEME);
-# the pagination
-$ViewPagination = Summoner::themefile('system/pagination.html',UI_THEME);
 
 ## DB connection
 $DB = new mysqli(DB_HOST, DB_USERNAME,DB_PASSWORD, DB_NAME);

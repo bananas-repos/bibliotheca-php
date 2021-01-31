@@ -255,8 +255,10 @@ class ManageCollectionFields {
 			return $this->_cacheExistingSysFields;
 		}
 
+		$this->_cacheExistingSysFields = array();
+
 		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-							`sf`.`createstring`
+							`sf`.`createstring`, `sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`";
 		if($sortAZ === true) {
@@ -279,6 +281,28 @@ class ManageCollectionFields {
 		}
 
 		return $this->_cacheExistingSysFields;
+	}
+
+	/**
+	 * return the simple search fields for loaded collection
+	 * Every field witch has a column in the entry table is a simple search field.
+	 * Name starts with entry
+	 *
+	 * @return array
+	 */
+	public function getSimpleSearchFields(): array {
+		$ret = array();
+
+		$fields = $this->getExistingFields();
+		if(!empty($fields)) {
+			foreach($fields as $k=>$v) {
+				if(isset($v['searchtype']) && strpos($v['searchtype'],'entry') !== false) {
+					$ret[$k] = $v;
+				}
+			}
+		}
+
+		return $ret;
 	}
 
 	/**

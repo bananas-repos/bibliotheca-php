@@ -24,7 +24,7 @@
 				<div class="uk-form-controls">
 					<select class="uk-select" id="defaultSearchField" name="fdata[defaultSearchField]">
 						<option value="">Please select</option>
-						<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
+						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['identifier']; ?>"
 						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSearchField', $v['identifier'])) echo 'selected'; ?>
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
@@ -33,6 +33,19 @@
 					<small>The field is used in the global search.
 						<span class="" uk-icon="icon: warning"></span> Altering the default search field results in
 						a DB reindex. This could take some time, depending on the amount of data.</small>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<label class="uk-form-label" for="defaultSortField">Default sort field</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="defaultSortField" name="fdata[defaultSortField]">
+						<option value="">Please select</option>
+						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
+						<option value="<?php echo $v['identifier']; ?>"
+						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortField', $v['identifier'])) echo 'selected'; ?>
+						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+						<?php } ?>
+					</select>
 				</div>
 			</div>
 			<div class="uk-margin">
