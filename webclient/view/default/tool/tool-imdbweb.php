@@ -46,7 +46,7 @@ $TemplateData['showMatchingForm'] = false;
 $collectionFields = $ManangeCollectionsFields->getExistingFields(false, true);
 if(!empty($collectionFields)) {
 	foreach ($collectionFields as $k=>$v) {
-		$TemplateData['saveToSelection'] .= "<option value='".$k."'>".$v['displayname']."</option>\n";
+		$TemplateData['saveToSelection'] .= "<option value='".$k."' sel_".$v['identifier'].">".$v['displayname']."</option>\n";
 	}
 }
 
@@ -156,4 +156,26 @@ if(isset($_POST['submitFormSave'])) {
 			$TemplateData['message']['status'] = "error";
 		}
 	}
+}
+
+
+/**
+ * Helper function. Takes the prebuild options for the target selection field and search for a matching key.
+ * Since the optionString is prebuild, avoiding looping over and over again, the selection needs to be done
+ * by search and replace.
+ * Checks if TOOL_IMDBWEB_FIELDS_TO is defined and a matching key=>value pair is available
+ *
+ * @param string $optionString
+ * @param string $imdbKey
+ * @return string
+ */
+function toolMethod_GetTargetSelection(string $optionString, string $imdbKey): string {
+	if(defined('TOOL_IMDBWEB_FIELDS_TO') & !empty($imdbKey)) {
+		if(isset(TOOL_IMDBWEB_FIELDS_TO[$imdbKey])) {
+			$_k = "sel_".TOOL_IMDBWEB_FIELDS_TO[$imdbKey];
+			$optionString = str_replace($_k,'selected="selected"',$optionString);
+		}
+	}
+
+	return $optionString;
 }

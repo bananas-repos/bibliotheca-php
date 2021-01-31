@@ -40,8 +40,9 @@ class Tentacle {
 	 *
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
+	 *
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 	}
@@ -50,10 +51,10 @@ class Tentacle {
 	 * Validate if given action is a valid tool and if the user has access
 	 *
 	 * @param string $identifier
-	 * @return bool|mixed
+	 * @return array
 	 */
-	public function validate($identifier) {
-		$ret = false;
+	public function validate(string $identifier): array {
+		$ret = array();
 
 		$queryStr = "SELECT `name`,`description`,`action`
 					FROM `".DB_PREFIX."_tool`  
@@ -79,7 +80,7 @@ class Tentacle {
 	 *
 	 * @return array
 	 */
-	public function getDefaultCreationInfo() {
+	public function getDefaultCreationInfo(): array {
 		return array(
 			'id' => $this->_User->param('id'),
 			'group' => $this->_User->param('baseGroupId'),

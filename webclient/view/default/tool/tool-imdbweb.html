@@ -37,7 +37,7 @@
 	<div class="uk-width-1-2@s">
 		<select class="uk-select" name="fdata[into][<?php echo $k; ?>]">
 			<option value="">None</option>
-			<?php echo $TemplateData['saveToSelection']; ?>
+			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
 		</select>
 	</div>
 

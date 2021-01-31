@@ -56,7 +56,7 @@ class GoreNest {
 	 * @param mysqli $db
 	 * @param Doomguy $user
 	 */
-	public function __construct($db, $user) {
+	public function __construct(mysqli $db, Doomguy $user) {
 		$this->_DB = $db;
 		$this->_User = $user;
 	}
@@ -98,7 +98,7 @@ class GoreNest {
 	 * @param bool $reload
 	 * @return array
 	 */
-	public function get($category,$reload=false) {
+	public function get(string $category, $reload=false) {
 		$ret = array();
 
 		if(empty($category)) return false;
@@ -120,7 +120,7 @@ class GoreNest {
 	 *
 	 * @return array
 	 */
-	public function allowedPageRequests() {
+	public function allowedPageRequests(): array {
 		return $this->_allowedPageRequests;
 	}
 }

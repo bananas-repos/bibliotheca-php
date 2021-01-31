@@ -14,7 +14,7 @@
 			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 			<div data-field-id="<?php echo $k; ?>">
 				<span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
-				<?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)
+				<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
 			</div>
 			<?php } ?>
 		</div>
@@ -35,7 +35,7 @@
 			<?php foreach($TemplateData['availableFields'] as $k=>$v) { ?>
 			<div data-field-id="<?php echo $k; ?>">
 				<span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>
-				<?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)
+				<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
 			</div>
 			<?php } ?>
 		</div>

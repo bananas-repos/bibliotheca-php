@@ -11,3 +11,5 @@ It searches for movies only.
 Which fields are available for you to select, are configured in the config.imdbweb.php file to make it
 easier since not every field the tool provides are needed.
 Follow the comments in the file for more details.
+
+An option to make the target fields automatically selected by default to given values.
