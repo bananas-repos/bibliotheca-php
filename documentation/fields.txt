@@ -41,6 +41,10 @@ Every field with entry* is a simple search field and can be used in global searc
 createstring
 The SQL create string which is run as you add it to your collection. Not everyone needs one!
 
+inputValidation
+Defines the additional input validation. Currently only allowSpace is available. Used for lookupmultiple field to
+allow tags with whitespace in its values.
+
 value
 The value which is displayed as a selection for the user. Needed for a selection type field
 

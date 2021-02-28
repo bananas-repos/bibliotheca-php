@@ -24,9 +24,17 @@ if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
 		<input class="uk-input" id="<?php echo $field['identifier']; ?>-input" type="text" autocomplete="off"
 			name="<?php echo $field['identifier']; ?>-input"
 			list="<?php echo $field['identifier']; ?>-datalist"
-			onkeypress="addTag(event,'<?php echo $field['identifier']; ?>')"
+			onkeypress="addTag(event,'<?php echo $field['identifier']; ?>','<?php echo $field['inputValidation']; ?>')"
 			placeholder="Write and press enter."
 		>
+		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
+			<option value="">Select bulk edit option</option>
+			<option value="add">Add</option>
+			<option value="replace">Replace</option>
+			<option value="empty">Clear</option>
+		</select>
+		<?php } ?>
 	</div>
 </div>
 

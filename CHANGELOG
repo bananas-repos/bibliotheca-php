@@ -3,9 +3,9 @@
 	* Missing changelog file
 	* api has its own log file now.
 	* User profile for editing own settings.
-	* Collection management has the option to update entry rights with the 
+	* Collection management has the option to update entry rights with the
 		collection ones.
-	* Entry rights can now be managed. More info about user and rights can 
+	* Entry rights can now be managed. More info about user and rights can
 		be found in documentation.
 	* User management: Honor rights from current logged in user
 	* Group management now available. But no relation check yet.
@@ -16,11 +16,15 @@
 	* Documentation for tools
 	* Documentation for tool imdbweb grabber. Default config added.
 	* Fixed bug #3
-	* Added feature #2. There is now a new definition which defines the default 
-		targets of the imdb grabber values. See the config-imdbweb.php.default 
+	* Added feature #2. There is now a new definition which defines the default
+		targets of the imdb grabber values. See the config-imdbweb.php.default
 		for more details
 	* Added sort filter. Collection has a default sort field config now.
 		Sort fields are the simple fields. See fields documentation.
+	* Fields do have a new inputValidation option. See fields documentation for more info.
+		Currently used to allow whitespace in a tag
+	* Mass edit of entries. Entries found with advanced search can now be editied.
+		Upload fields are not supported yet.
 
 1.0 - Castle 20210106
 	* First usable version

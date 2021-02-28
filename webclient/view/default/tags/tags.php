@@ -41,7 +41,7 @@ $TemplateData['search'] = false;
 $_search = false;
 if(isset($_POST['navSearch'])) {
 	$_search = trim($_POST['navSearch']);
-	$_search = Summoner::validate($_search,'text') ? $_search :  false;
+	$_search = Summoner::validate($_search) ? $_search :  false;
 }
 
 

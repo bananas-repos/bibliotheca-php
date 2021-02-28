@@ -198,6 +198,8 @@ class Trite {
 	 * @return array
 	 */
 	public function getCollectionFields(): array {
+		if(empty($this->_id)) return array();
+
 		if(!empty($this->_cacheExistingCollectionFields)) {
 			return $this->_cacheExistingCollectionFields;
 		}

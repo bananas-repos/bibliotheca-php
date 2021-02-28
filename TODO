@@ -1,7 +1,6 @@
-* Mass edit of entries
+* stats overview page. amount of entries. file / cache and db storage. Version info and where to find it.
 * User and groupmanagement: Check where a user or group is used!
 * Better error handling and display while adding / update and delete
-* stats overview page. amount of entries. file / cache and db storage. Version info and where to find it.
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
 
@@ -9,4 +8,4 @@
 * Field management: Web interface
 * minimal theme
 * Automatic upgrade from DB changes
-* PHP 7 syntax ans specifications
+* PHP 7 syntax and specifications

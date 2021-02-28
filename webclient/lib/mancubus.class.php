@@ -119,7 +119,7 @@ class Mancubus {
 	 * @param string $search Search string to search for
 	 * @return array
 	 */
-	public function getLatest($selections, $entries, $search='') {
+	public function getLatest(string $selections, string $entries, $search=''): array {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
@@ -183,10 +183,16 @@ class Mancubus {
 	 * 		'exactTagMatch' => true to make a binary compare. false for match against search
 	 * )
 	 *
+	 * return array(
+	 * 		'results' => array(),
+	 * 		'amount' => int,
+	 * 		'ids' => array()
+	 * )
+	 *
 	 * @param array $searchData
 	 * @return array
 	 */
-	public function getEntries($searchData=array()) {
+	public function getEntries($searchData=array()): array {
 		$ret = array();
 
 		if(!empty($this->_collectionId)) {
@@ -276,6 +282,7 @@ class Mancubus {
 						$result = $this->_mergeEntryWithFields($result, $_entryFields);
 
 						$ret['results'][$result['id']] = $result;
+						$ret['ids'][] = $result['id'];
 					}
 
 					$queryStrCount = "SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere;
@@ -295,10 +302,11 @@ class Mancubus {
 
 	/**
 	 * Retrieve all the data needed to display the entry for given entryId
+	 *
 	 * @param string $entryId Number
 	 * @return array|mixed
 	 */
-	public function getEntry($entryId) {
+	public function getEntry(string $entryId): array {
 		$ret = array();
 
 		if(!empty($this->_collectionId) && !empty($entryId)) {

@@ -19,7 +19,7 @@
 require_once 'lib/trite.class.php';
 $Trite = new Trite($DB,$Doomguy);
 require_once 'lib/manageentry.class.php';
-$ManangeEntry = new Manageentry($DB,$Doomguy);
+$ManageEntry = new Manageentry($DB,$Doomguy);
 
 $TemplateData['pageTitle'] = 'Manage entry - ';
 $TemplateData['editFields'] = array();
@@ -46,9 +46,9 @@ if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection, "write");
 
 	if(!empty($TemplateData['loadedCollection'])) {
-		$ManangeEntry->setCollection($Trite->param('id'));
+		$ManageEntry->setCollection($Trite->param('id'));
 
-		$TemplateData['editFields'] = $ManangeEntry->getEditFields();
+		$TemplateData['editFields'] = $ManageEntry->getEditFields();
 		$TemplateData['availableTools'] = $Trite->getAvailableTools();
 
 		$TemplateData['pageTitle'] = 'Add - '.$Trite->param('name');
@@ -57,7 +57,7 @@ if(!empty($_collection)) {
 			$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $_collection . '/' . $_id;
 
 			// prefill template data. Used also later to check if on edit mode
-			$TemplateData['editData'] = $ManangeEntry->getEditData($_id);
+			$TemplateData['editData'] = $ManageEntry->getEditData($_id);
 			// special case. Title field should be always available.
 			if(!isset($TemplateData['editData']['title'])) {
 				$TemplateData['message']['content'] = "Entry has no value in title field.";
@@ -108,7 +108,7 @@ if(!empty($_collection)) {
 				// special case. Title field should be always available.
 				if(!empty($TemplateData['editData']['title'])) { // EDIT
 					if(isset($fdata['doDelete'])) {
-						$do = $ManangeEntry->delete($_id);
+						$do = $ManageEntry->delete($_id);
 						if ($do === true) {
 							$TemplateData['refresh'] = 'index.php?p=collections&collection='.$_collection;
 						} else {
@@ -116,7 +116,7 @@ if(!empty($_collection)) {
 							$TemplateData['message']['status'] = "error";
 						}
 					} elseif (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
-						$do = $ManangeEntry->create($_fieldsToSave, $_owner, $_group, $_rights, $_id);
+						$do = $ManageEntry->create($_fieldsToSave, $_owner, $_group, $_rights, $_id);
 						if ($do !== 0) {
 							$TemplateData['refresh'] = 'index.php?p=entry&collection='.$_collection.'&id='.$_id;
 						} else {
@@ -128,7 +128,7 @@ if(!empty($_collection)) {
 				else { // ADD
 					// special case. Title field should be always available.
 					if (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
-						$do = $ManangeEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
+						$do = $ManageEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
 						if (!empty($do)) {
 							$TemplateData['message']['content'] = "<a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>View your new entry</a>";
 							$TemplateData['message']['status'] = "success";

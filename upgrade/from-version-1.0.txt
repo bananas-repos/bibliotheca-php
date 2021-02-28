@@ -24,3 +24,11 @@ INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`
 UPDATE `#REPLACEME#_menu` SET `position` = '6' WHERE `#REPLACEME#_menu`.`id` = 16;
 UPDATE `#REPLACEME#_menu` SET `group` = '2', `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 14;
 ALTER TABLE `#REPLACEME#_collection` ADD `defaultSortField` VARCHAR(16) NOT NULL AFTER `defaultSearchField`;
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Bulkedit', 'bulkedit', '', '1', '2', 'rw-rw----', '0', '');
+ALTER TABLE `#REPLACEME#_sys_fields` ADD `inputValidation` VARCHAR(32) NOT NULL AFTER `createstring`;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 18;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 19;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 7;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 8;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 20;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 26;

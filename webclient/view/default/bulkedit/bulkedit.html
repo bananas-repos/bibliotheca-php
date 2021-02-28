@@ -1,0 +1,39 @@
+<h3 class="uk-h3">Bulkedit these entries in: <a href="index.php?p=colletions&collection<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+
+<?php if(!empty($TemplateData['itemsToWorkWith'])) { ?>
+
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
+			<ul>
+				<?php foreach($TemplateData['itemsToWorkWith'] as $entry) { ?>
+				<input type="hidden" name="bulkedit[]" value="<?php echo $entry['id']; ?>" />
+				<li><a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $entry['id']; ?>"><?php echo $entry['title']; ?></a></li>
+				<?php } ?>
+			</ul>
+
+<?php
+	foreach($TemplateData['editFields'] as $field) {
+		$field['bulkedit'] = true;
+		$_editFieldView = Summoner::themefile('manageentry/field-'.$field['type'].'.html', UI_THEME);
+		if(file_exists($_editFieldView)) {
+			require $_editFieldView;
+		}
+		else {
+			require $TemplateData['_editFieldViewDefault'];
+		}
+	}
+?>
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					Save
+				</button>
+			</div>
+
+		</form>
+	</div>
+	<div class="uk-width-1-2"></div>
+</div>
+<script type="text/javascript" src="view/default/ui/js/suggest-tag.js"></script>
+
+<?php } ?>

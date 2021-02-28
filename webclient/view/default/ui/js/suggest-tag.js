@@ -25,7 +25,7 @@ function removeTag(tagString,targetStartString) {
  * @param Object e
  * @param String targetStartString
  */
-function addTag(e,targetStartString) {
+function addTag(e,targetStartString,allowWhiteSpace) {
 	e = e || window.event;
 
 	if(e.keyCode === 13) {
@@ -34,7 +34,12 @@ function addTag(e,targetStartString) {
 		let listBox = document.getElementById(targetStartString + '-listbox');
 		let newTagTemplate = document.getElementById(targetStartString + '-template');
 
-		let checkString = _checkForSpaceString(elem.value,'nospace');
+		let validateMethod = false;
+		if (allowWhiteSpace !== undefined && allowWhiteSpace.length > 0) {
+			validateMethod = allowWhiteSpace;
+		}
+
+		let checkString = _checkForSpaceString(elem.value,validateMethod);
 
 		if(saveInput && listBox && elem && newTagTemplate && checkString) {
 			let toAdd = elem.value;
@@ -145,8 +150,12 @@ function _fillTagTemplate(el,newTagString,targetStartString) {
  * @returns boolean
  * @private
  */
-function _checkForSpaceString(stringTocheck) {
+function _checkForSpaceString(stringTocheck,validateMethod) {
 	let check = stringTocheck.replace(/\s/gm,'');
+	if(validateMethod && validateMethod == "allowSpace") {
+		check = stringTocheck.trim();
+	}
+
 	if(check === stringTocheck && check.length > 0) {
 		return true;
 	}

@@ -89,7 +89,7 @@ class Manageentry {
 
 		if(!empty($this->_collectionId)) {
 			$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-							`sf`.`value`
+							`sf`.`value`, `sf`.`inputValidation`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
@@ -121,7 +121,7 @@ class Manageentry {
 	 * @param string $entryId Number
 	 * @return array
 	 */
-	public function getEditData($entryId) {
+	public function getEditData(string $entryId): array {
 		$ret = array();
 
 		if(!empty($this->_collectionId) && !empty($entryId)) {
@@ -157,16 +157,17 @@ class Manageentry {
 	 * Create an entry with given data
 	 *
 	 * @param array $data
-	 * @param number $owner
-	 * @param number $group
+	 * @param string $owner Number
+	 * @param string $group Number
 	 * @param string $rights
 	 * @param mixed $update Either false for no update or the ID to update
-	 * @return mixed
+	 * @return int
 	 */
-	public function create($data, $owner, $group, $rights, $update=false) {
-		$ret = false;
+	public function create(array $data, string $owner, string $group, string $rights, $update=false): int {
+		$ret = 0;
 
 		if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".var_export($data,true));
+		if(DEBUG) error_log("[DEBUG] ".__METHOD__." update: ".var_export($update,true));
 
 		if(!empty($data) && !empty($owner) && !empty($group) && !empty($rights)) {
 
@@ -187,8 +188,7 @@ class Manageentry {
 
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." queryData: ".var_export($queryData,true));
 
-			if(!empty($queryData['init'])) {
-
+			if(!empty($queryData['init']) || ($update !== false && is_numeric($update))) {
 
 				$queryStr = "INSERT INTO `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 								SET `modificationuser` = '".$this->_DB->real_escape_string($owner)."',
@@ -201,6 +201,7 @@ class Manageentry {
 								`rights`= '".$this->_DB->real_escape_string($rights)."',";
 				}
 				$queryStr .= implode(", ",$queryData['init']);
+				$queryStr = trim($queryStr,",");
 				if($update !== false && is_numeric($update)) {
 					$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($update)."'";
 				}
@@ -313,7 +314,7 @@ class Manageentry {
 	 * @param string $entryId Number
 	 * @return bool
 	 */
-	public function canEditEntry($entryId) {
+	public function canEditEntry(string $entryId): bool {
 		$ret = false;
 
 		if(!empty($entryId) && !empty($this->_collectionId)) {

@@ -12,6 +12,15 @@
 </script>
 <button class="uk-button uk-button-default uk-button-small"
         type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden">Toggle search</button>
+<?php if(!empty($TemplateData['entries'])) { ?>
+<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>" class="uk-display-inline-block">
+	<button type="submit" class="uk-button uk-button-default uk-button-small">Bulkedit these results</button>
+	<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
+	<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
+	<?php } ?>
+</form>
+<?php } ?>
+
 <?php } ?>
 
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small <?php if(!empty($TemplateData['search'])) { ?>uk-hidden<?php } ?>"
