@@ -25,6 +25,8 @@
 		Currently used to allow whitespace in a tag
 	* Mass edit of entries. Entries found with advanced search can now be editied.
 		Upload fields are not supported yet.
+	* Fixed bug #5
+	* Added feature #1. Collections overview has pagination at the bottom too.
 
 1.0 - Castle 20210106
 	* First usable version
