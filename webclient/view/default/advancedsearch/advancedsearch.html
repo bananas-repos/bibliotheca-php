@@ -5,34 +5,43 @@
 	<button class="uk-alert-close" type="button" uk-close></button>
 	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b> (Max. result of 60)</p>
 </div>
-<script type="text/javascript">
-	UIkit.util.on('#searchNotice', 'hide', function () {
-		window.location.href="index.php?p=advancedsearch&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>";
-	});
-</script>
-<button class="uk-button uk-button-default uk-button-small"
-        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden">Toggle search</button>
-<?php if(!empty($TemplateData['entries'])) { ?>
-<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>" class="uk-display-inline-block">
-	<button type="submit" class="uk-button uk-button-default uk-button-small">Bulkedit these results</button>
-	<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
-	<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
+<div class="uk-padding-small uk-padding-remove-left">
+	<script type="text/javascript">
+		UIkit.util.on('#searchNotice', 'hide', function () {
+			window.location.href="index.php?p=advancedsearch&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>";
+		});
+	</script>
+	<button class="uk-button uk-button-default uk-button-small"
+	        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden">Toggle search</button>
+	<?php if(!empty($TemplateData['entries'])) { ?>
+	<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>" class="uk-display-inline-block">
+		<button type="submit" class="uk-button uk-button-default uk-button-small">Bulkedit these results</button>
+		<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
+		<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
+		<?php } ?>
+	</form>
 	<?php } ?>
-</form>
-<?php } ?>
+</div>
 
 <?php } ?>
 
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small <?php if(!empty($TemplateData['search'])) { ?>uk-hidden<?php } ?>"
 	uk-grid id="searchFrame">
 	<div class="uk-width-1-2">
-
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
 				<label class="uk-form-label" for="search">Search for</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="search" type="text" autocomplete="off" name="fdata[search]"
 					       placeholder="See search syntax for options">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label">Table view</div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[tableView]" value="1">
+					</label>
 				</div>
 			</div>
 
@@ -46,7 +55,10 @@
 	<div class="uk-width-1-2">
 		<h4>Syntax</h4>
 		<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
-		<p>To search within the possible fields of a collection type the field identifier followed by : and then a space. Not every search operator does make sense with tag search fields.</p>
+		<p>
+			To search within the possible fields of a collection type the field identifier followed by : and then a space. Not every search operator does make sense with tag search fields.
+			If the search is within a field witch is not configured to be displayed in the table view, it will be added.
+		</p>
 		eg.: <code>title: bourne</code>
 		<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
 		<pre style="white-space: normal">
@@ -70,13 +82,65 @@
 </div>
 
 <?php if(!empty($TemplateData['entries'])) { ?>
-<div class="uk-grid-small uk-grid-match" uk-grid>
+<div>
+	<?php if($TemplateData['searchResultStyle'] == "table") { ?>
+
+	<table class="uk-table uk-table-small uk-table-divider uk-table-justify">
+		<thead>
+			<tr>
+				<th class="">#</th>
+			<?php
+				foreach($TemplateData['collectionFields'] as $f) {
+					if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
+						echo '<th>'.$f['displayname'].'</th>';
+					}
+				}
+			?>
+			</tr>
+		</thead>
+		<tbody>
+
 	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
+		<tr>
+			<td class="">
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank><span class="" uk-icon="icon: link"></span></a>
+			</td>
+
+		<?php
+		foreach($entry['fields'] as $f) {
+			if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
+		?>
+			<td>
+				<?php
+				if(Summoner::ifset($f, 'value')) {
+					if(is_array($f['value'])) {
+						echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
+					}
+					else {
+						echo Summoner::limitWithDots($f['value'],100,'...');
+					}
+				}
+				?>
+			</td>
+		<?php
+		    }
+		}
+		?>
+		</tr>
+	<?php } ?>
+		</tbody>
+	</table>
+</div>
+	<?php
+	} else {
+	?>
+<div class="uk-grid-small uk-grid-match" uk-grid>
+	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) {	?>
 	<div class="uk-width-1-4@s uk-width-1-6@l">
 		<div class="uk-card uk-card-default uk-card-small">
 			<div class="uk-card-media-top">
 				<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
-				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank>
 				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
 				     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>">
 				</a>
@@ -92,11 +156,14 @@
 				<?php } ?>
 			</div>
 			<div class="uk-card-footer">
-				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text">View</a>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text" target=_blank>View</a>
 			</div>
 		</div>
 	</div>
-	<?php } ?>
+	<?php
+		}
+	}
+	?>
 </div>
 <?php } ?>
 

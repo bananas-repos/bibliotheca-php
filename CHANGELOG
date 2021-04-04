@@ -27,6 +27,8 @@
 		Upload fields are not supported yet.
 	* Fixed bug #5
 	* Added feature #1. Collections overview has pagination at the bottom too.
+	* Advanced search has a table view option
+		Displayed fields are configured in collection management. See notes there.
 
 1.0 - Castle 20210106
 	* First usable version

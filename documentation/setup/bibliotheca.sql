@@ -34,12 +34,14 @@ CREATE TABLE `#REPLACEME#_collection` (
   `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `defaultSearchField` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `defaultSortField` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `advancedSearchTableFields` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `modificationuser` int DEFAULT NULL,
   `owner` int NOT NULL,
   `group` int NOT NULL,
-  `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -87,7 +89,8 @@ CREATE TABLE `#REPLACEME#_menu` (
   `group` int NOT NULL DEFAULT '0',
   `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` int NOT NULL DEFAULT '0',
-  `category` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `category` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -106,9 +109,11 @@ INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`
 (10, 'Collection fields', 'managecollectionfields', '', 1, 2, 'rw-rw----', 0, ''),
 (11, 'Entry', 'entry', '', 1, 1, 'rw-r--r--', 0, ''),
 (12, 'Search', 'search', '', 1, 1, 'rw-r--r--', 0, ''),
-(14, 'Tool', 'tool', '', 1, 1, 'rw-------', 0, ''),
-(15, 'Profile', 'profile', 'user', 1, 2, 'rw-rw----', 5, 'manage'),
-(16, 'Groups', 'managegroups', 'users', 1, 1, 'rw-------', 6, 'manage');
+(14, 'Tool', 'tool', '', 1, 2, 'rw-rw----', 0, ''),
+(15, 'Advanced search', 'advancedsearch', '', 1, 1, 'rw-r--r--', 0, ''),
+(16, 'Profile', 'profile', 'user', 1, 2, 'rw-rw----', 6, 'manage'),
+(17, 'Groups', 'managegroups', 'users', 1, 1, 'rw-------', 5, 'manage'),
+(18, 'Bulkedit', 'bulkedit', '', 1, 2, 'rw-rw----', 0, '');
 
 -- --------------------------------------------------------
 
@@ -348,7 +353,7 @@ ALTER TABLE `#REPLACEME#_group`
 -- AUTO_INCREMENT for table `#REPLACEME#_menu`
 --
 ALTER TABLE `#REPLACEME#_menu`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_sys_fields`

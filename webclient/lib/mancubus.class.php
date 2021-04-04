@@ -206,7 +206,7 @@ class Mancubus {
 			if(!empty($searchData)) {
 				// this search supports fulltext search and number <> search.
 				// also can search in the entry2lookup table.
-				// not perfect but works really well
+				// not perfect but it works
 				foreach($searchData as $k=>$sd) {
 					if(!isset($sd['colName']) || !isset($sd['colValue']) || empty($sd['colValue'])) continue;
 

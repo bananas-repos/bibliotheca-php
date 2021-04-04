@@ -610,12 +610,26 @@ class Summoner {
 	 *
 	 * http://php.net/manual/en/migration70.new-features.php#migration70.new-features.null-coalesce-op
 	 *
-	 * @param $array
-	 * @param $key
+	 * @param array $array
+	 * @param array|string $key
 	 * @return bool|mixed
 	 */
 	static function ifset($array,$key) {
-		return isset($array[$key]) ? $array[$key] : false;
+		if(is_array($key)) {
+			$_t = $array;
+			$_c = 0;
+			foreach ($key as $k) {
+				if(isset($_t[$k])) {
+					$_t = $_t[$k];
+					$_c++;
+				}
+			}
+
+			return sizeof($key)==$_c ? $_t : false;
+
+		} else {
+			return isset($array[$key]) ? $array[$key] : false;
+		}
 	}
 
 	/**
@@ -675,6 +689,24 @@ class Summoner {
 
 		if(!empty($array)) {
 			$ret = http_build_query($array);
+		}
+
+		return $ret;
+	}
+
+	/**
+	 * Return given string with given $endChar with the max $length
+	 *
+	 * @param string $string
+	 * @param int $length
+	 * @param string $endChar
+	 * @return string
+	 */
+	static function limitWithDots($string, $length, $endChar) {
+		$ret = $string;
+
+		if(strlen($string.$endChar) > $length) {
+			$ret = substr($string,0, $length).$endChar;
 		}
 
 		return $ret;

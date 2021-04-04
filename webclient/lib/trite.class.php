@@ -118,7 +118,7 @@ class Trite {
 
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
 					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
-					`c`.`defaultSortField`,
+					`c`.`defaultSortField`,`c`.`advancedSearchTableFields`,
 					`u`.`name` AS username, `g`.`name` AS groupname
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
@@ -130,6 +130,7 @@ class Trite {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
 					$this->_collectionData = $query->fetch_assoc();
+					$this->_collectionData['advancedSearchTableFields'] = $this->_loadAdvancedSearchTableFields($this->_collectionData['advancedSearchTableFields']);
 					$this->_id = $this->_collectionData['id'];
 				}
 			} catch (Exception $e) {
@@ -339,5 +340,22 @@ class Trite {
 		$options['sort'] = false;
 		$options['sortDirection'] = false;
 		$this->setQueryOptions($options);
+	}
+
+	/**
+	 * Make a key=>value array of a comma seperated string and use the value as key
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	private function _loadAdvancedSearchTableFields($data) {
+		$ret = array();
+
+		$_t = explode(',',$data);
+		foreach($_t as $e) {
+			$ret[$e] = $e;
+		}
+
+		return $ret;
 	}
 }

@@ -67,8 +67,8 @@ if(isset($_POST['submitForm'])) {
 		$_saveData['owner'] = trim($fdata['owner']);
 		$_saveData['group'] = trim($fdata['group']);
 		$_saveData['rights'] = Summoner::prepareRightsString($fdata['rights']);
-		$_saveData['defaultSearchField'] = trim($fdata['defaultSearchField']);
-		$_saveData['defaultSortField'] = trim($fdata['defaultSortField']);
+		$_saveData['defaultSearchField'] = $fdata['defaultSearchField'];
+		$_saveData['defaultSortField'] = $fdata['defaultSortField'];
 		$_saveData['id'] = $_id;
 
 		$_saveData['tool'] = array();
@@ -79,6 +79,11 @@ if(isset($_POST['submitForm'])) {
 		$_saveData['doRightsForEntries'] = false;
 		if(isset($fdata['doRightsForEntries'])) {
 			$_saveData['doRightsForEntries'] = true;
+		}
+
+		$_saveData['advancedSearchTableFields'] = '';
+		if(isset($fdata['advancedSearchTableFields'])) {
+			$_saveData['advancedSearchTableFields'] = implode(',',$fdata['advancedSearchTableFields']);
 		}
 
 		if(!empty($TemplateData['editData']['name'])) { // EDIT

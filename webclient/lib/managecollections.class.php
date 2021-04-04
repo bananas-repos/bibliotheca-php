@@ -214,7 +214,8 @@ class ManageCollections {
 								`group` = '".$this->_DB->real_escape_string($data['group'])."',
 								`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
 								`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."',
-								`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."'";
+								`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."',
+								`advancedSearchTableFields` = '".$this->_DB->real_escape_string($data['advancedSearchTableFields'])."'";
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 				$this->_DB->query($queryStr);
 				$newId = $this->_DB->insert_id;
@@ -281,7 +282,7 @@ class ManageCollections {
 		if (Summoner::validate($id, 'digit')) {
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
 					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
-					`c`.`defaultSortField`,
+					`c`.`defaultSortField`, `c`.`advancedSearchTableFields`,
 					`u`.`name` AS username, `g`.`name` AS groupname
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
@@ -295,6 +296,7 @@ class ManageCollections {
 					$ret = $query->fetch_assoc();
 					$ret['rights'] = Summoner::prepareRightsArray($ret['rights']);
 					$ret['tool'] = $this->getAvailableTools($id);
+					$ret['advancedSearchTableFields'] = $this->_loadAdvancedSearchTableFields($ret['advancedSearchTableFields']);
 				}
 			}
 			catch (Exception $e) {
@@ -328,7 +330,8 @@ class ManageCollections {
 							`group` = '".$this->_DB->real_escape_string($data['group'])."',
 							`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
 							`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."',
-							`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."'
+							`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."',
+							`advancedSearchTableFields` = '".$this->_DB->real_escape_string($data['advancedSearchTableFields'])."'
 						WHERE `id` = '".$this->_DB->real_escape_string($data['id'])."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 			try {
@@ -558,6 +561,14 @@ class ManageCollections {
 		return $ret;
 	}
 
+	/**
+	 * Update the rights from the group to the entries in this collection
+	 *
+	 * @param string $collectionId
+	 * @param string|bool $owner
+	 * @param string|bool $group
+	 * @param string|bool $rights
+	 */
 	private function _updateEntryRights($collectionId, $owner=false, $group=false, $rights=false) {
 		if(!empty($collectionId)) {
 			$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."` SET";
@@ -581,5 +592,22 @@ class ManageCollections {
 				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
+	}
+
+	/**
+	 * Make a key=>value array of a comma seperated string and use the value as key
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	private function _loadAdvancedSearchTableFields($data) {
+		$ret = array();
+
+		$_t = explode(',',$data);
+		foreach($_t as $e) {
+			$ret[$e] = $e;
+		}
+
+		return $ret;
 	}
 }

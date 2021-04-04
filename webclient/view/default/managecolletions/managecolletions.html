@@ -49,6 +49,20 @@
 				</div>
 			</div>
 			<div class="uk-margin">
+				<label class="uk-form-label" for="advancedSearchTableFields">Table advanced search view</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
+						<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
+						<option value="<?php echo $v['id']; ?>"
+						<?php if(Summoner::ifset($TemplateData['editData']['advancedSearchTableFields'], $v['id'])) echo 'selected'; ?>
+						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+						<?php } ?>
+					</select>
+					<small>Make sure that the default global search field is in this list.<br />
+						This does not limit the fields to search in.</small>
+				</div>
+			</div>
+			<div class="uk-margin">
 				<label class="uk-form-label" for="tool">Tools</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="tool" name="fdata[tool][]" multiple="multiple" size="5">

@@ -1,20 +1,20 @@
-# Migration of the config files into one config file
+#1 Migration of the config files into one config file
 Please copy the new config/config.php.default to config/config.php and adapt the settings which you
 have on the old config files. After that you can delete config/database|path|system files.
 
-# Deletion of config definition
+#2 Deletion of config definition
 The definition of USER_DEFAULT_RIGHTS_STRING can be removed from config file.
 
-# New config file
+#3 New config file
 Copy config/config-imdbweb.php.default to config/config-imdbweb.php
 See too-imdbweb.txt documentation for more information.
 
-# following files can be removed
+#4 following files can be removed
 view/default/system/pagination.html
 view/default/system/pagination_after.php
 view/default/system/pagination_before.php
 
-# DB changes. Run each line against your bibliotheca DB.
+#5 DB changes. Run each line against your bibliotheca DB.
 # Replace #REPLACEME# with your table prefix. Default is bib
 UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 10;
 UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `#REPLACEME#_menu`.`id` = 10;
@@ -32,3 +32,8 @@ UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_
 UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 8;
 UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 20;
 UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 26;
+ALTER TABLE `#REPLACEME#_collection` ADD `advancedSearchTableFields` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `defaultSortField`;
+ALTER TABLE `#REPLACEME#_sys_fields` ADD UNIQUE (`identifier`);
+
+# 6
+Update your collection settings. There are new options which should be set.

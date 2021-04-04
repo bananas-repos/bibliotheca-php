@@ -32,6 +32,7 @@ $TemplateData['loadedCollection'] = array();
 $TemplateData['collections'] = array();
 $TemplateData['collectionFields'] = array();
 $TemplateData['search'] = false;
+$TemplateData['searchResultStyle'] = 'grid';
 
 if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
@@ -47,6 +48,10 @@ if(!empty($_collection)) {
 			$fdata = $_POST['fdata'];
 			if (!empty($fdata)) {
 				$_search = trim($fdata['search']);
+
+				if(isset($fdata['tableView'])) {
+					$TemplateData['searchResultStyle'] = 'table';
+				}
 
 				if (!empty($_search) && Summoner::validate($_search)) {
 					if (strstr($_search, ':')) { // field search
@@ -64,6 +69,10 @@ if(!empty($_collection)) {
 									$_sData[$i]['colName'] = $_cn;
 									$_sData[$i]['colValue'] = trim(str_replace($_matches[1][$i],'',$_matches[0][$i]));
 									$_sData[$i]['fieldData'] = $TemplateData['collectionFields'][$_cn];
+
+									if(!isset($TemplateData['loadedCollection']['advancedSearchTableFields'][$_sData[$i]['fieldData']['id']])) {
+										$TemplateData['loadedCollection']['advancedSearchTableFields'][$_sData[$i]['fieldData']['id']] = $_sData[$i]['fieldData']['id'];
+									}
 								}
 							}
 
