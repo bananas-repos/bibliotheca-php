@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.9.6
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Jan 17, 2021 at 03:22 PM
--- Server version: 8.0.22
--- PHP Version: 7.4.13
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -19,7 +10,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `bibliotheca`
+-- Database: `#REPLACEME#liotheca`
 --
 
 -- --------------------------------------------------------
@@ -41,7 +32,7 @@ CREATE TABLE `#REPLACEME#_collection` (
   `modificationuser` int DEFAULT NULL,
   `owner` int NOT NULL,
   `group` int NOT NULL,
-  `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -89,8 +80,7 @@ CREATE TABLE `#REPLACEME#_menu` (
   `group` int NOT NULL DEFAULT '0',
   `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` int NOT NULL DEFAULT '0',
-  `category` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-   PRIMARY KEY (`id`)
+  `category` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -129,6 +119,7 @@ CREATE TABLE `#REPLACEME#_sys_fields` (
   `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `searchtype` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createstring` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `inputValidation` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `apiinfo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -143,30 +134,30 @@ CREATE TABLE `#REPLACEME#_sys_fields` (
 -- Dumping data for table `#REPLACEME#_sys_fields`
 --
 
-INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES
-(1, 'title', 'Title', 'text', 'entryText', '`title` varchar(128) NOT NULL, ADD FULLTEXT (`title`)', NULL, 'string 128', '2019-09-01 18:26:33', 0, 1, 1, 'rw-r--r--'),
-(2, 'description', 'Description', 'text3', 'entryText', '`description` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`description`)', NULL, 'string 255', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
-(3, 'content', 'Main content', 'textarea', 'entryText', '`content` text NULL DEFAULT NULL, ADD FULLTEXT (`content`)', NULL, 'mysql text', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
-(5, 'tag', 'Tag', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:11:18', 0, 1, 1, 'rw-r--r--'),
-(6, 'category', 'Category', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:11:18', 0, 1, 1, 'rw-r--r--'),
-(7, 'publisher', 'Publisher', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:17:51', 0, 1, 1, 'rw-r--r--'),
-(8, 'developer', 'Developer', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:17:51', 0, 1, 1, 'rw-r--r--'),
-(9, 'platform', 'Platform', 'selection', 'entrySingleText', '`platform` varchar(32) NULL DEFAULT NULL', 'PC,Xbox,Playstation,Nintendo,Nintendo Switch', 'One of PC,Xbox,Playstation,Nintendo,Nintendo Switch', '2019-09-01 19:18:33', 0, 1, 1, 'rw-r--r--'),
-(10, 'storage', 'Storage', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2019-09-01 19:18:33', 0, 1, 1, 'rw-r--r--'),
-(13, 'rating', 'Rating', 'selection', 'entrySingleText', '`rating` varchar(16) NULL DEFAULT NULL', '0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', 'One of 0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', '2019-09-01 19:25:35', 0, 1, 1, 'rw-r--r--'),
-(14, 'year', 'Year', 'number', 'entrySingleNum', '`year` int(10) NULL, ADD INDEX (`year`)', NULL, 'int 10', '2019-09-01 19:30:11', 0, 1, 1, 'rw-r--r--'),
-(15, 'coverimage', 'Cover image', 'upload', NULL, NULL, NULL, 'One file in $_FILES[uploads] of post', '2019-09-01 19:48:44', 0, 1, 1, 'rw-r--r--'),
-(16, 'attachment', 'Attachments', 'upload_multiple', NULL, NULL, NULL, 'Multiple in $_FILES[uploads] of post', '2019-09-01 19:48:44', 0, 1, 1, 'rw-r--r--'),
-(17, 'os', 'Operating system and version', 'selection', 'entrySingleNum', '`os` varchar(32) NULL DEFAULT NULL', 'Windows 10,Windows 95, Windows 99,Windows XP, Windows ME, Windows 2000,Windows Vista,Windows 8', 'One of Windows 10,Windows 95, Windows 99,Windows XP, Windows ME, Windows 2000,Windows Vista,Windows 8', '2019-09-01 19:55:13', 0, 1, 1, 'rw-r--r--'),
-(18, 'actors', 'Actors', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:12:48', NULL, 1, 1, 'rw-r--r--'),
-(19, 'countries', 'Countries', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:16:08', NULL, 1, 1, 'rw-r--r--'),
-(20, 'directors', 'Directors', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:17:59', NULL, 1, 1, 'rw-r--r--'),
-(21, 'genres', 'Genres', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:18:55', NULL, 1, 1, 'rw-r--r--'),
-(22, 'languages', 'Languages', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2020-07-26 07:20:45', NULL, 1, 1, 'rw-r--r--'),
-(23, 'runtime', 'Runtime (min)', 'number', 'entrySingleNum', '`runtime` int(10) NULL, ADD INDEX (`runtime`)', NULL, 'int 10', '2020-07-26 07:22:24', NULL, 1, 1, 'rw-r--r--'),
-(24, 'imdbrating', 'IMDB Rating', 'text', 'entrySingleText', '`imdbrating` varchar(128) NULL DEFAULT NULL', NULL, 'string 128', '2020-12-27 10:00:33', 0, 1, 1, 'rw-r--r--'),
-(25, 'viewcount', 'View counter', 'number', 'entrySingleNum', '`viewcount` int(10) NULL, ADD INDEX (`viewcount`)', NULL, 'int 10', '2020-12-27 10:41:10', 0, 1, 1, 'rw-r--r--'),
-(26, 'writers', 'Writers', 'lookupmultiple', 'tag', NULL, NULL, 'string 64', '2021-01-03 14:19:16', NULL, 1, 1, 'rw-r--r--');
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES
+(1, 'title', 'Title', 'text', 'entryText', '`title` varchar(128) NOT NULL, ADD FULLTEXT (`title`)', '', NULL, 'string 128', '2019-09-01 18:26:33', 0, 1, 1, 'rw-r--r--'),
+(2, 'description', 'Description', 'text3', 'entryText', '`description` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`description`)', '', NULL, 'string 255', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
+(3, 'content', 'Main content', 'textarea', 'entryText', '`content` text NULL DEFAULT NULL, ADD FULLTEXT (`content`)', '', NULL, 'mysql text', '2019-09-01 18:28:35', 0, 1, 1, 'rw-r--r--'),
+(5, 'tag', 'Tag', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:11:18', 0, 1, 1, 'rw-r--r--'),
+(6, 'category', 'Category', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:11:18', 0, 1, 1, 'rw-r--r--'),
+(7, 'publisher', 'Publisher', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2019-09-01 19:17:51', 0, 1, 1, 'rw-r--r--'),
+(8, 'developer', 'Developer', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2019-09-01 19:17:51', 0, 1, 1, 'rw-r--r--'),
+(9, 'platform', 'Platform', 'selection', 'entrySingleText', '`platform` varchar(32) NULL DEFAULT NULL', '', 'PC,Xbox,Playstation,Nintendo,Nintendo Switch', 'One of PC,Xbox,Playstation,Nintendo,Nintendo Switch', '2019-09-01 19:18:33', 0, 1, 1, 'rw-r--r--'),
+(10, 'storage', 'Storage', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:18:33', 0, 1, 1, 'rw-r--r--'),
+(13, 'rating', 'Rating', 'selection', 'entrySingleText', '`rating` varchar(16) NULL DEFAULT NULL', '', '0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', 'One of 0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', '2019-09-01 19:25:35', 0, 1, 1, 'rw-r--r--'),
+(14, 'year', 'Year', 'number', 'entrySingleNum', '`year` int(10) NULL, ADD INDEX (`year`)', '', NULL, 'int 10', '2019-09-01 19:30:11', 0, 1, 1, 'rw-r--r--'),
+(15, 'coverimage', 'Cover image', 'upload', NULL, NULL, '', NULL, 'One file in $_FILES[uploads] of post', '2019-09-01 19:48:44', 0, 1, 1, 'rw-r--r--'),
+(16, 'attachment', 'Attachments', 'upload_multiple', NULL, NULL, '', NULL, 'Multiple in $_FILES[uploads] of post', '2019-09-01 19:48:44', 0, 1, 1, 'rw-r--r--'),
+(17, 'os', 'Operating system and version', 'selection', 'entrySingleNum', '`os` varchar(32) NULL DEFAULT NULL', '', 'Windows 10,Windows 95, Windows 99,Windows XP, Windows ME, Windows 2000,Windows Vista,Windows 8', 'One of Windows 10,Windows 95, Windows 99,Windows XP, Windows ME, Windows 2000,Windows Vista,Windows 8', '2019-09-01 19:55:13', 0, 1, 1, 'rw-r--r--'),
+(18, 'actors', 'Actors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:12:48', NULL, 1, 1, 'rw-r--r--'),
+(19, 'countries', 'Countries', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:16:08', NULL, 1, 1, 'rw-r--r--'),
+(20, 'directors', 'Directors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:17:59', NULL, 1, 1, 'rw-r--r--'),
+(21, 'genres', 'Genres', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2020-07-26 07:18:55', NULL, 1, 1, 'rw-r--r--'),
+(22, 'languages', 'Languages', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2020-07-26 07:20:45', NULL, 1, 1, 'rw-r--r--'),
+(23, 'runtime', 'Runtime (min)', 'number', 'entrySingleNum', '`runtime` int(10) NULL, ADD INDEX (`runtime`)', '', NULL, 'int 10', '2020-07-26 07:22:24', NULL, 1, 1, 'rw-r--r--'),
+(24, 'imdbrating', 'IMDB Rating', 'text', 'entrySingleText', '`imdbrating` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2020-12-27 10:00:33', 0, 1, 1, 'rw-r--r--'),
+(25, 'viewcount', 'View counter', 'number', 'entrySingleNum', '`viewcount` int(10) NULL, ADD INDEX (`viewcount`)', '', NULL, 'int 10', '2020-12-27 10:41:10', 0, 1, 1, 'rw-r--r--'),
+(26, 'writers', 'Writers', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-01-05 09:47:20', NULL, 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -180,7 +171,7 @@ CREATE TABLE `#REPLACEME#_tool` (
   `name` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `target` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `target` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner` int NOT NULL,
   `group` int NOT NULL,
   `rights` char(9) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
@@ -299,7 +290,8 @@ ALTER TABLE `#REPLACEME#_menu`
 -- Indexes for table `#REPLACEME#_sys_fields`
 --
 ALTER TABLE `#REPLACEME#_sys_fields`
-  ADD PRIMARY KEY (`id`) USING BTREE;
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD UNIQUE KEY `identifier` (`identifier`);
 
 --
 -- Indexes for table `#REPLACEME#_tool`

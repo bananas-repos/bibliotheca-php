@@ -29,6 +29,7 @@
 	* Added feature #1. Collections overview has pagination at the bottom too.
 	* Advanced search has a table view option
 		Displayed fields are configured in collection management. See notes there.
+	* Updated installtion files
 
 1.0 - Castle 20210106
 	* First usable version
