@@ -34,6 +34,7 @@ UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_
 UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 26;
 ALTER TABLE `#REPLACEME#_collection` ADD `advancedSearchTableFields` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `defaultSortField`;
 ALTER TABLE `#REPLACEME#_sys_fields` ADD UNIQUE (`identifier`);
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'localizedTitle', 'localized Title', 'text', 'entryText', '`localizedTitle` varchar(128) NOT NULL, ADD FULLTEXT (`localizedTitle`)', '', NULL, 'string 128', NOW(), '0', '1', '1', 'rw-r--r--');
 
 # 6
 Update your collection settings. There are new options which should be set.

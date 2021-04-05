@@ -4,14 +4,14 @@
 		<h4 class="uk-h4">Add or modify a group</h4>
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="name">Name</label>
+				<label class="uk-form-label" for="name">Name *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="name" type="text" autocomplete="off" name="fdata[name]"
 					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="description">Description</label>
+				<label class="uk-form-label" for="description">Description *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="description" type="text" autocomplete="off" name="fdata[description]"
 					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">

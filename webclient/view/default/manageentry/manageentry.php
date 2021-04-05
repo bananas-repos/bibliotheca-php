@@ -130,7 +130,7 @@ if(!empty($_collection)) {
 					if (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
 						$do = $ManageEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
 						if (!empty($do)) {
-							$TemplateData['message']['content'] = "<a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>View your new entry</a>";
+							$TemplateData['message']['content'] = "<a href='index.php?p=entry&collection=".$_collection."&id=".$do."'>View your new entry</a> | <a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>Edit your new entry</a>";
 							$TemplateData['message']['status'] = "success";
 						} else {
 							// use editData to display given data
