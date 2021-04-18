@@ -32,7 +32,7 @@ if(!empty($TemplateData['editData'])) {
 				$refreshApi = true;
 			}
 			$do = $Possessed->updateUser($Doomguy->param('id'), $_username, $Doomguy->param('login'),
-											$_password, $Doomguy->param('baseGroupId'), true, $refreshApi);
+											$_password, $Doomguy->param('baseGroupId'), array(), true, $refreshApi);
 			if ($do === true) {
 				$TemplateData['refresh'] = 'index.php?p=profile';
 			} else {

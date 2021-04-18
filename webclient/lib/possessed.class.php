@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ class Possessed {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 	}
@@ -83,7 +83,7 @@ class Possessed {
 	 *
 	 * @return array
 	 */
-	public function getUsers() {
+	public function getUsers(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, `protected`, `created`
@@ -117,7 +117,7 @@ class Possessed {
 	 * @param bool $active
 	 * @return bool
 	 */
-	public function createUser($username, $login, $password, $group, $groups, $active=false) {
+	public function createUser(string $username, string $login, string $password, string $group, array $groups, $active=false): bool {
 		$ret = false;
 
 		if($this->_validNewLogin($login) && $this->_validUsergroup($group)) {
@@ -190,7 +190,7 @@ class Possessed {
 	 * @param bool $refreshApiToken
 	 * @return bool
 	 */
-	public function updateUser($id, $username, $login, $password, $group, $groups, $active=false, $refreshApiToken=false) {
+	public function updateUser(string $id, string $username, string $login, string $password, string $group, array $groups, $active=false, $refreshApiToken=false): bool {
 		$ret = false;
 
 		if($this->_validUpdateLogin($login,$id) && $this->_validUsergroup($group)) {
