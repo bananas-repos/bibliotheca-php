@@ -151,6 +151,7 @@ switch ($_requestMode) {
 
 		if(!empty($_collection)) {
 			$_msg = 'Invalid POST data.';
+			$_data = $_REQUEST;
 
 			$Mancubus = new Mancubus($DB,$Doomguy);
 			$ManangeEntry = new Manageentry($DB,$Doomguy);
@@ -189,7 +190,7 @@ switch ($_requestMode) {
 					if(!empty($do)) {
 						$_msg = 'Added entry: '.$_fieldsToSave['title']['valueToSave'];
 						$_status = 200;
-						$_data = array();
+						$_data = array($_fieldsToSave, $_owner, $_group, $_rights);
 					}
 				}
 			}

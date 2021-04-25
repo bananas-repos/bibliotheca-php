@@ -93,12 +93,16 @@ if(!empty($_collection)) {
 
 		$TemplateData['defaultSortField'] = $defaultSortField = $Trite->param('defaultSortField');
 		$TemplateData['simpleSearchFields'] = $Trite->getSimpleSearchFields();
+		if(!empty($_queryOptions['sort'])) {
+			$TemplateData['simpleSearchFields'][$_queryOptions['sort']]['selected'] = true;
+		}
 		if(!empty($TemplateData['defaultSortField'])) {
 			unset($TemplateData['simpleSearchFields'][$TemplateData['defaultSortField']]);
 			if(empty($_queryOptions['sort'])) {
 				$_queryOptions['sort'] = $TemplateData['defaultSortField'];
 			}
 		}
+
 		$Mancubus->setQueryOptions($_queryOptions);
 
 		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id');

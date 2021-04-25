@@ -256,7 +256,7 @@ class Mancubus {
 					$queryOrder .= ' '.$this->_queryOptions['sortDirection'];
 				}
 				else {
-					$queryOrder .= " DESC";
+					$queryOrder .= " ASC";
 				}
 			}
 
@@ -380,7 +380,7 @@ class Mancubus {
 			$queryOrder .= ' '.$this->_queryOptions['sortDirection'];
 		}
 		else {
-			$queryOrder .= " DESC";
+			$queryOrder .= " ASC";
 		}
 
 		$queryLimit = '';
@@ -531,7 +531,9 @@ class Mancubus {
 				catch (Exception $e) {
 					error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 				}
-				$ret =  $this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']];
+				if(isset($this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']])) {
+					$ret =  $this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']];
+				}
 			}
 		}
 

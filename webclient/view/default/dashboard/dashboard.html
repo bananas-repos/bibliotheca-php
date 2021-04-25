@@ -36,7 +36,7 @@
 					<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
 					<?php } ?>
 
-					<?php if(Summoner::ifset($entry['fields'], 'description')) { ?>
+					<?php if(Summoner::ifset($entry['fields'], array('description','value'))) { ?>
 					<p><?php echo $entry['fields']['description']['value']; ?></p>
 					<?php } ?>
 				</div>

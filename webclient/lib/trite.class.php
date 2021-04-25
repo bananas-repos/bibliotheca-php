@@ -231,6 +231,8 @@ class Trite {
 	 * Every field witch has a column in the entry table is a simple search field.
 	 * Name starts with entry
 	 *
+	 * @see ManageCollectionFields->getSimpleSearchFields()
+	 *
 	 * @return array
 	 */
 	public function getSimpleSearchFields(): array {
@@ -244,6 +246,10 @@ class Trite {
 				}
 			}
 		}
+
+		$def['created'] = array('identifier' => 'created', 'displayname' => 'Created', 'type' => 'systemfield');
+		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'Modified', 'type' => 'systemfield');
+		$ret = $def + $ret;
 
 		return $ret;
 	}
