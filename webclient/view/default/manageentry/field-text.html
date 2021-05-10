@@ -4,7 +4,9 @@
 		<input class="uk-input" id="<?php echo $field['identifier']; ?>" type="text" autocomplete="off"
 		   name="fdata[<?php echo $field['identifier']; ?>]"
 		   value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+	       maxlength="128"
 		>
+		<small id="<?php echo $field['identifier']; ?>_counter" class="uk-float-right"><?php echo 128-strlen(Summoner::ifset($TemplateData['editData'], $field['identifier'])); ?></small>
 		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 			<option value="">Select bulk edit option</option>
@@ -15,3 +17,18 @@
 		<?php } ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	{
+	const inputElement = document.getElementById("<?php echo $field['identifier']; ?>");
+	const inputCounter = document.getElementById("<?php echo $field['identifier']; ?>_counter");
+
+	inputElement.addEventListener("input", event => {
+		const target = event.currentTarget;
+		const maxLength = target.getAttribute("maxlength");
+		const currentLength = target.value.length;
+
+		inputCounter.innerHTML = `${maxLength - currentLength}`;
+	});
+	}
+</script>

@@ -36,6 +36,7 @@
 	* After adding an entry the option to view or edit the entry is now available
 	* Added game info tool.
 	* Added new fields for a game collection
+	* input and textarea do have a maxlength now. JS used to display the remaining chars
 
 1.0 - Castle 20210106
 	* First usable version

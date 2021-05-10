@@ -2,8 +2,10 @@
 	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
 	<div class="uk-form-controls">
 		<textarea class="uk-textarea" autocomplete="off"
-				  id="<?php echo $field['identifier']; ?>" rows="3"
+				  id="<?php echo $field['identifier']; ?>"
+				  rows="3" maxlength="255"
 				  name="fdata[<?php echo $field['identifier']; ?>]"><?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?></textarea>
+		<small id="<?php echo $field['identifier']; ?>_counter" class="uk-float-right"><?php echo 255-strlen(Summoner::ifset($TemplateData['editData'], $field['identifier'])); ?></small>
 		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 			<option value="">Select bulk edit option</option>
@@ -14,3 +16,18 @@
 		<?php } ?>
 	</div>
 </div>
+
+<script type="text/javascript">
+	{
+	const textarea = document.getElementById("<?php echo $field['identifier']; ?>");
+	const textareaCounter = document.getElementById("<?php echo $field['identifier']; ?>_counter");
+
+	textarea.addEventListener("input", event => {
+		const target = event.currentTarget;
+		const maxLength = target.getAttribute("maxlength");
+		const currentLength = target.value.length;
+
+		textareaCounter.innerHTML = `${maxLength - currentLength}`;
+	});
+	}
+</script>
