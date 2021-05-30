@@ -10,7 +10,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `#REPLACEME#liotheca`
+-- Database: `bibliotheca`
 --
 
 -- --------------------------------------------------------
@@ -183,7 +183,8 @@ CREATE TABLE `#REPLACEME#_tool` (
 --
 
 INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES
-(1, 'IMDB web', 'Web parser', 'imdbweb', '_self', 1, 1, 'rw-r--r--');
+(1, 'IMDB web', 'Web parser', 'imdbweb', '_self', 1, 1, 'rw-r--r--'),
+(2, 'Game infos', 'Weblinks', 'gameinfo', '_self', 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -358,7 +359,7 @@ ALTER TABLE `#REPLACEME#_sys_fields`
 -- AUTO_INCREMENT for table `#REPLACEME#_tool`
 --
 ALTER TABLE `#REPLACEME#_tool`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_user`
