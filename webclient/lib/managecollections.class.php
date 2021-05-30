@@ -445,7 +445,7 @@ class ManageCollections {
 
 		$queryStr = "SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`action`, `t`.`target`
 					FROM `".DB_PREFIX."_tool2collection` AS t2c
-					LEFT JOIN `".DB_PREFIX."_tool` AS t ON t2c.fk_collection_id = t.id
+					LEFT JOIN `".DB_PREFIX."_tool` AS t ON t.id = t2c.fk_tool_id
 					WHERE t2c.fk_collection_id = '".$this->_DB->real_escape_string($id)."'";
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
