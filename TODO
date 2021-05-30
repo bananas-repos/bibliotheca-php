@@ -3,6 +3,7 @@
 * Better error handling and display while adding / update and delete
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
+* drop in updates
 
 * responsive and breakpoints
 * Field management: Web interface
