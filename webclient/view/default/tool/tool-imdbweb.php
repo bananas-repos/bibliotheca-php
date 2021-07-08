@@ -88,7 +88,7 @@ if(isset($_POST['submitFormSave'])) {
 
 		if(!empty($_imdbId)) {
 			try {
-				$IMDB->search($_imdbId);
+				$IMDB->search($_imdbId); // cache used
 			}
 			catch (Exception $e) {
 				if(DEBUG) error_log("[DEBUG] imdb search catch: ".$e->getMessage());

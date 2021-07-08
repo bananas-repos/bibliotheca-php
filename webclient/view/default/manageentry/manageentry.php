@@ -93,12 +93,12 @@ if(!empty($_collection)) {
 						$_value = trim($fdata[$fieldData['identifier']]);
 						$fieldData['valueToSave'] = trim($fdata[$fieldData['identifier']]);
 						$_fieldsToSave[$fieldData['identifier']] = $fieldData;
-					} elseif(isset($fupload['name'][$fieldData['identifier']])) {
+					} elseif(isset($fupload['name'][$fieldData['identifier']])) { // special case upload
 						if(isset($fdata[$fieldData['identifier']."_delete"])) {
 							$fieldData['deleteData'] = $fdata[$fieldData['identifier']."_delete"];
 						}
-						// special case upload
-						// $_FILES data is combined
+
+						// $_FILES data is combined if multiple
 						$fieldData['uploadData'] = $fupload;
 
 						$_fieldsToSave[$fieldData['identifier']] = $fieldData;

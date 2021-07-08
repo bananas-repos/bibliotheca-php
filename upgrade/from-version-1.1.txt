@@ -1,0 +1,5 @@
+# DB changes. Run each line against your bibliotheca DB.
+# Replace #REPLACEME# with your table prefix. Default is bib
+INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES (NULL, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', '1', '1', 'rw-r--r--');
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'artist', 'Artist', 'text', 'entrySingleText', '`artists` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', NOW(), NOW(), NULL, '1', '1', 'rw-r--r--');
+UPDATE `#REPLACEME#_sys_fields` SET `type` = 'year' WHERE `bib_sys_fields`.`id` = 14;

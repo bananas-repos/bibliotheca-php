@@ -12,4 +12,9 @@ Which fields are available for you to select, are configured in the config.imdbw
 easier since not every field the tool provides are needed.
 Follow the comments in the file for more details.
 
-An option to make the target fields automatically selected by default to given values.
+An option to make the target fields automatically selected by default to given values is also available
+in the config file.
+
+# Setup
+Rename the config-imdbweb.php.default to config-imdbweb.php in the config folder.
+Follow the comments to update the settings.

@@ -1,0 +1,75 @@
+<form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
+	<div class="uk-margin">
+		<label class="uk-form-label" for="artist">Artist</label>
+		<div class="uk-form-controls">
+			<input class="uk-input" id="artist" type="text" autocomplete="off"
+			       name="fdata[artist]"
+			       value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'artist'); ?>"
+			>
+		</div>
+	</div>
+	<div class="uk-margin">
+		<label class="uk-form-label" for="album">Album/Title</label>
+		<div class="uk-form-controls">
+			<input class="uk-input" id="album" type="text" autocomplete="off"
+			       name="fdata[album]"
+			       value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+			>
+		</div>
+	</div>
+	<div class="uk-margin">
+		<button class="uk-button uk-button-primary" type="submit" name="submitFormSearch">
+			Search
+		</button>
+	</div>
+</form>
+
+<?php if(!empty($TemplateData['releases'])) { ?>
+<form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
+	<div class="uk-margin">
+		<div class="uk-form-controls">
+
+			<?php foreach($TemplateData['releases'] as $k=>$v) { ?>
+
+			<label><input class="uk-radio" type="radio" name="fdata[rselect]" value="<?php echo $k; ?>"> <?php echo $v; ?></label><br>
+
+			<?php } ?>
+		</div>
+	</div>
+
+	<div class="uk-margin">
+		<button class="uk-button uk-button-primary" type="submit" name="submitFormReleaseSelect">
+			Select
+		</button>
+	</div>
+</form>
+<?php } ?>
+
+<?php if(!empty($TemplateData['release'])) { ?>
+<a href="https://musicbrainz.org/release/<?php echo $TemplateData['release']['id']; ?>" target=_blank>Musibrainz release page</a>
+<form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data" uk-grid>
+
+	<?php foreach($TemplateData['release'] as $k=>$v) { ?>
+	<input name="fdata[from][<?php echo $k; ?>]" type="hidden" value="<?php echo $v; ?>"  />
+	<div class="uk-width-1-2@s uk-overflow-hidden">
+		<p>
+			<b><?php echo $k; ?></b><br />
+			<?php echo nl2br($v); ?>
+		</p>
+	</div>
+	<div class="uk-width-1-2@s">
+		<select class="uk-select" name="fdata[into][<?php echo $k; ?>]">
+			<option value="">None</option>
+			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
+		</select>
+	</div>
+
+	<?php } ?>
+
+	<div class="uk-margin">
+		<button class="uk-button uk-button-primary" type="submit" name="submitFormSave">
+			Save
+		</button>
+	</div>
+</form>
+<?php } ?>

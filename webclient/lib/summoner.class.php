@@ -457,34 +457,7 @@ class Summoner {
 	}
 
 	/**
-	 * execute a curl call to the fiven $url
-	 * @param string $url The request url
-	 * @param integer $port
-	 * @return bool|string
-	 */
-	static function curlCall($url,$port=80) {
-		$ret = false;
-
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_PORT, $port);
-
-		$do = curl_exec($ch);
-		if(is_string($do) === true) {
-			$ret = $do;
-		}
-
-		curl_close($ch);
-
-		return $ret;
-	}
-
-	/**
-	 * check if a string strts with a given string
+	 * check if a string starts with a given string
 	 *
 	 * @param string $haystack
 	 * @param string $needle

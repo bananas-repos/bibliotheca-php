@@ -563,14 +563,21 @@ class Manageentry {
 	private function _saveField_selection($data, $queryData) {
 		return $this->_saveField_text($data, $queryData);
 	}
+
 	/**
 	 * Create part of the insert statement for field type year
+	 * Uses some simple 4 digit patter to extract the year if the input is
+	 * something like 2001-02-03
 	 *
 	 * @param array $data Field data
 	 * @param array $queryData Query data array
 	 * @return array
 	 */
 	private function _saveField_year($data, $queryData) {
+		preg_match('/[0-9]{4}/', $data['valueToSave'], $matches);
+		if(isset($matches[0]) && !empty($matches[0])) {
+			$data['valueToSave'] = $matches[0];
+		}
 		return $this->_saveField_number($data, $queryData);
 	}
 
@@ -585,7 +592,7 @@ class Manageentry {
 	private function _saveField_number($data, $queryData) {
 		// make sure there is something (int) to save
 		if(empty($data['valueToSave'])) {
-				$data['valueToSave'] = 0;
+			$data['valueToSave'] = 0;
 		}
 		$data['valueToSave'] = preg_replace('/[^\p{N}]/u', '', $data['valueToSave']);
 		$queryData['init'][] = "`".$data['identifier']."` = '".$this->_DB->real_escape_string($data['valueToSave'])."'";
@@ -630,7 +637,7 @@ class Manageentry {
 	 * @param array $queryData
 	 * @return array
 	 */
-	private function _saveField_upload($data, $queryData) {
+	private function _saveField_upload(array $data, array $queryData): array {
 		$_up = $data['uploadData'];
 
 		// delete the single upload
@@ -651,7 +658,8 @@ class Manageentry {
 				'identifier' => $data['identifier'],
 				'name' => $newFilename,
 				'tmp_name' => $_up['tmp_name'][$data['identifier']],
-				'multiple' => false
+				'multiple' => false,
+				'rebuildUpload' => $_up['rebuildUpload'][$data['identifier']]
 			);
 		}
 		return $queryData;
@@ -664,7 +672,7 @@ class Manageentry {
 	 * @param array $queryData
 	 * @return array
 	 */
-	private function _saveField_upload_multiple($data, $queryData) {
+	private function _saveField_upload_multiple(array $data, array $queryData): array {
 		$_up = $data['uploadData'];
 
 		if(isset($data['deleteData'])) {
@@ -684,7 +692,8 @@ class Manageentry {
 					'identifier' => $data['identifier'],
 					'name' => $newFilename,
 					'tmp_name' => $_up['tmp_name'][$data['identifier']][$k],
-					'multiple' => true
+					'multiple' => true,
+					'rebuildUpload' => $_up['rebuildUpload'][$data['identifier']][$k]
 				);
 			}
 		}
@@ -723,7 +732,7 @@ class Manageentry {
 	 * @param string $insertId Number
 	 * @throws Exception
 	 */
-	private function _runAfter_upload($uploadData, $insertId) {
+	private function _runAfter_upload(array $uploadData, string $insertId) {
 		if(!empty($uploadData) && !empty($insertId)) {
 			if(DEBUG) error_log("[DEBUG] ".__METHOD__." uploadata: ".var_export($uploadData,true));
 			$_path = PATH_STORAGE.'/'.$this->_collectionId.'/'.$insertId;
@@ -758,7 +767,13 @@ class Manageentry {
 			}
 
 			if(isset($uploadData['tmp_name']) && isset($uploadData['name'])) {
-				if(!move_uploaded_file($uploadData['tmp_name'],$_path.'/'.$uploadData['identifier'].'-'.$uploadData['name'])) {
+				// special case if the image is already uploaded and not a real POST/FILES request
+				if(isset($uploadData['rebuildUpload']) && $uploadData['rebuildUpload'] === true) {
+					if(!rename($uploadData['tmp_name'],$_path.'/'.$uploadData['identifier'].'-'.$uploadData['name'])) {
+						throw new Exception("Can not rename file to: ".$_path.'/'.$uploadData['identifier'].'-'.$uploadData['name']);
+					}
+				}
+				elseif(!move_uploaded_file($uploadData['tmp_name'],$_path.'/'.$uploadData['identifier'].'-'.$uploadData['name'])) {
 					throw new Exception("Can not move file to: ".$_path.'/'.$uploadData['identifier'].'-'.$uploadData['name']);
 				}
 			}
@@ -773,7 +788,7 @@ class Manageentry {
 	 * @param $data array The entry data from getEditData
 	 * @return bool
 	 */
-	private function _isOwner($data) {
+	private function _isOwner(array $data): bool {
 		$ret = false;
 
 		if($this->_User->param('isRoot')) {
