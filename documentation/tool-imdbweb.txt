@@ -18,3 +18,4 @@ in the config file.
 # Setup
 Rename the config-imdbweb.php.default to config-imdbweb.php in the config folder.
 Follow the comments to update the settings.
+Add the tool to your music collection

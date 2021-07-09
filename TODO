@@ -1,5 +1,6 @@
 * User friendly setup
 * stats overview page. amount of entries. file / cache and db storage. Version info and where to find it.
+* Definition of fields in "card view"
 * User and groupmanagement: Check where a user or group is used!
 * Better error handling and display while adding / update and delete
 * Export of an entry, collection or everything. Stored on disk.
