@@ -654,6 +654,10 @@ class Manageentry {
 			$_ext = pathinfo($_up['name'][$data['identifier']],PATHINFO_EXTENSION);
 			$newFilename = sha1($_up['name'][$data['identifier']]).".".$_ext;
 
+			if(!isset($_up['rebuildUpload'][$data['identifier']])) {
+				$_up['rebuildUpload'][$data['identifier']] = false;
+			}
+
 			$queryData['after']['upload'][] = array(
 				'identifier' => $data['identifier'],
 				'name' => $newFilename,
@@ -662,6 +666,7 @@ class Manageentry {
 				'rebuildUpload' => $_up['rebuildUpload'][$data['identifier']]
 			);
 		}
+
 		return $queryData;
 	}
 
@@ -688,6 +693,10 @@ class Manageentry {
 				$_ext = pathinfo($_up['name'][$data['identifier']][$k],PATHINFO_EXTENSION);
 				$newFilename = sha1($_up['name'][$data['identifier']][$k]).".".$_ext;
 
+				if(!isset($_up['rebuildUpload'][$data['identifier']][$k])) {
+					$_up['rebuildUpload'][$data['identifier']][$k] = false;
+				}
+
 				$queryData['after']['upload'][] = array(
 					'identifier' => $data['identifier'],
 					'name' => $newFilename,
@@ -707,7 +716,7 @@ class Manageentry {
 	 * @param string $queryString
 	 * @param string $insertId Number
 	 */
-	private function _runAfter_query($queryString, $insertId) {
+	private function _runAfter_query(string $queryString, string $insertId) {
 		if(!empty($queryString) && !empty($insertId)) {
 			// replace only once to avoid replacing actual data
 			$queryStr = Summoner::replaceOnce($queryString,$this->_replaceEntryString, $insertId);
