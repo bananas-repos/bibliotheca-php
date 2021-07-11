@@ -195,14 +195,17 @@ class Musicbrainz {
 				$ret['tracks'] = '';
 				$ret['image'] = '';
 				$ret['runtime'] = 0;
-				foreach($data['media'][0]['tracks'] as $track) {
-					$ret['runtime'] += $track['length'];
-					$l = $track['length'] / 1000;
-					$l = date("i:s",$l);
-					$ret['tracks'] .= $track['number'].' - '.$track['title'].' - '.$l."\n";
+
+				foreach($data['media'] as $media) {
+					foreach($media['tracks'] as $track) {
+						$ret['runtime'] += $track['length'];
+						$l = $track['length'] / 1000;
+						$l = date("i:s",$l);
+						$ret['tracks'] .= $track['number'].' - '.$track['title'].' - '.$l."\n";
+					}
 				}
-				$ret['runtime'] = $ret['runtime'] / 1000;
-				$ret['runtime'] = date("i",$ret['runtime']);
+
+				$ret['runtime'] = round($ret['runtime'] / 1000 / 60);
 
 				// image
 				$do = $this->_curlCall($this->_IMAGE_ENDPOINT.$releaseId);
