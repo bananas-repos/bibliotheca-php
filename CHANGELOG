@@ -3,6 +3,7 @@
 	* Added Musicbrainz grabber
 	* Added new field: artist
 	* Fixed: #11 Undefined index while adding new entry
+	* Fixed: #10, #09, #08
 
 1.1 - Vortex Rikers 20210530
 	* Cleanup and merge to one config file. Read upgrade
