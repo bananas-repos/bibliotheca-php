@@ -1,5 +1,3 @@
-TBD
-
 Bibliotheca provides a set of fields which can be used to define which data an entry in your collection
 can be saved.
 Those field definitions are stored in the DB itself and can currently only managed there. But only of
@@ -50,3 +48,9 @@ The value which is displayed as a selection for the user. Needed for a selection
 
 apiinfo
 Text description what type of data the api expects if you want to fill this field.
+
+
+# Fieldmigration
+Here is an example to migrate a single text field into a lookupmultiple
+INSERT INTO bib_collection_entry2lookup_3 (`fk_field`,`fk_entry`,`value`) SELECT '32',`id`,`artist` FROM `bib_collection_entry_3` WHERE `artist` <> '';
+The 32 is the ID from the target field.
