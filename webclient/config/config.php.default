@@ -17,25 +17,25 @@
  */
 
 # set to true if you need debug messages in error log file
-define('DEBUG',true);
+define('DEBUG',false);
 # set to ture if you need query log messages in error log file.
-define('QUERY_DEBUG',true);
+define('QUERY_DEBUG',false);
 
 # timezone settings
-define('TIMEZONE','Europe/Berlin');
+define('TIMEZONE','~timezone~');
 
 # path settings
-define('PATH_ABSOLUTE','/home/some/path/bibliotheca/webclient');
+define('PATH_ABSOLUTE','~pathabsolute~');
 define('PATH_SYSTEMOUT',PATH_ABSOLUTE.'/systemout');
 define('PATH_STORAGE',PATH_ABSOLUTE.'/storage');
 define('PATH_WEB_STORAGE','storage');
 
 # database config
-define('DB_HOST','127.0.0.1');
-define('DB_USERNAME','user');
-define('DB_PASSWORD','test');
-define('DB_NAME','bibliotheca');
-define('DB_PREFIX','bib'); # a _ is added automatically as separation
+define('DB_HOST','~dbhost~');
+define('DB_USERNAME','~dbuser~');
+define('DB_PASSWORD','~dbpassword~');
+define('DB_NAME','~dbname~');
+define('DB_PREFIX','~dbprefix~'); # a _ is added automatically as separation
 
 ## theme support
 # fallback is default theme

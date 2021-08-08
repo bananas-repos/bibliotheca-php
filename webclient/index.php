@@ -25,7 +25,6 @@ ini_set('error_reporting',-1); // E_ALL & E_STRICT
 # check request
 $_urlToParse = filter_var($_SERVER['QUERY_STRING'],FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
 if(!empty($_urlToParse)) {
-	# see http://de2.php.net/manual/en/regexp.reference.unicode.php
 	if(preg_match('/[\p{C}\p{M}\p{Sc}\p{Sk}\p{So}\p{Zl}\p{Zp}]/u',$_urlToParse) === 1) {
 		die('Malformed request. Make sure you know what you are doing.');
 	}
