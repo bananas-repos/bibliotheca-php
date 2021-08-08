@@ -347,3 +347,7 @@ function stepDBCreateTables(): string {
 </p>
 RET;
 }
+
+function clearSetup() {
+	unlink('../setup');
+}
