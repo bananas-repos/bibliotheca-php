@@ -285,6 +285,7 @@ function stepConfigForm(array $data): string {
 		$timeZoneOptions .= "<option ".$selected." value='".$tz."'>".$tz."</option>";
 	}
 	$absPath = getcwd();
+	$absPath = str_replace("setup", "", $absPath);
 
 	return <<<RET
 <p>
@@ -295,6 +296,7 @@ function stepConfigForm(array $data): string {
 </p>
 <p>
 	The absolute path to this installation on your webspace. Current <b>{$absPath}</b> should be the right one.<br />
+	Make sure there is a / at the end<br />
 	<input type="text" name="pathabsolute" value="{$data['pathabsolute']}" size="50">
 </p>
 <p>
