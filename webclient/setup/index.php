@@ -349,5 +349,6 @@ RET;
 }
 
 function clearSetup() {
-	unlink('../setup');
+	array_map('unlink', glob("../setup/*"));
+	rmdir('../setup');
 }
