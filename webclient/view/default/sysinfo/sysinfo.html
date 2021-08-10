@@ -1,0 +1,32 @@
+<h3 class="uk-h3">System information</h3>
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<div class="uk-grid-divider uk-child-width-expand@s" uk-grid>
+			<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
+			<div>
+				<p>
+					<b><?php echo $v['name']; ?></b><br/>
+					<?php echo $v['description']; ?>
+				</p>
+				<p>
+					Created: <code><?php echo $v['created']; ?></code></code><br />
+					Entries: <code><?php echo $v['stats']['entriesCount']; ?></code><br />
+					Tags: <code><?php echo $v['stats']['tagsCount']; ?></code><br />
+					DB Usage: <code><?php echo $v['stats']['tableSize']; ?></code><br />
+					Disk Usage: <code><?php echo $v['stats']['storageSize']; ?></code>
+				</p>
+			</div>
+			<?php } ?>
+		</div>
+	</div>
+	<div class="uk-width-1-2">
+		<ul>
+			<li>Bibliotheca: <code><?php echo $TemplateData['bibVersion']; ?></code></li>
+			<li>Apache (depends on ServerTokens setting): <code><?php echo $TemplateData['apacheVersion']; ?></code></li>
+			<li>PHP: <code><?php echo $TemplateData['phpVersion']; ?></code></li>
+			<li>MySQL server: <code><?php echo $TemplateData['mysqlVersion']; ?></code></li>
+			<li>MySQL data usage: <code><?php echo $TemplateData['overallTableSize']; ?></code>MB</li>
+			<li>Storage usage: <code><?php echo $TemplateData['overallStorageSize']; ?></code></li>
+		</ul>
+	</div>
+</div>

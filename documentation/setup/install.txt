@@ -26,3 +26,6 @@ Default admin user pw: test
 Login with default admin account and change the password!
 Create your own user.
 Create your first collection.
+
+To re run the setup:
+Upload the setup folder again. It deletes itself after a successfull setup

@@ -104,7 +104,7 @@ class Trite {
 	}
 
 	/**
-	 * Get information to display for current collection
+	 * Get information to display for given collection
 	 * based on current user and given rights
 	 *
 	 * @param string $id The collection ID to load
@@ -145,10 +145,10 @@ class Trite {
 	 * get the value of the specified param from the collection data array
 	 *
 	 * @param string $param
-	 * @return bool|mixed
+	 * @return string
 	 */
-	public function param($param) {
-		$ret = false;
+	public function param(string $param): string {
+		$ret = '';
 
 		$param = trim($param);
 
@@ -163,9 +163,10 @@ class Trite {
 	 * Get all available collections for display based on current user
 	 * and read mode
 	 *
+	 * @param string $rightsMode
 	 * @return array
 	 */
-	public function getCollections($rightsMode="read") {
+	public function getCollections($rightsMode="read"): array {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`
@@ -264,7 +265,7 @@ class Trite {
 	 * @param string $search String value to search value against
 	 * @return array
 	 */
-	public function getTags($search='') {
+	public function getTags($search=''): array {
 		$ret = array();
 
 		$queryStr = "SELECT `cf`.`fk_field_id` AS id,
@@ -311,7 +312,7 @@ class Trite {
 	 *
 	 * @return array
 	 */
-	public function getAvailableTools() {
+	public function getAvailableTools(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`action`, `t`.`target`
@@ -335,6 +336,64 @@ class Trite {
 	}
 
 	/**
+	 * Some statistics about the current collection.
+	 * Entries, tags, storage
+	 * Adds a stats array to _collectionData
+	 *
+	 * @return array
+	 */
+	public function getStats(): array {
+		if(empty($this->_id)) return array();
+
+		$this->_collectionData['stats'] = array();
+
+		$queryStr = "SELECT COUNT(*) AS entries FROM `".DB_PREFIX."_collection_entry_".$this->_id."`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				$result = $query->fetch_assoc();
+				$this->_collectionData['stats']['entriesCount'] = $result['entries'];
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
+
+		$tags = $this->getTags();
+		$tagsCount = 0;
+		foreach ($tags as $k=>$v) {
+			$tagsCount += count($v['entries']);
+		}
+		$this->_collectionData['stats']['tagsCount'] = $tagsCount;
+
+		$tableSize = 0; // in MB
+		$queryStr = "SELECT (DATA_LENGTH + INDEX_LENGTH) AS `size`
+						FROM information_schema.TABLES
+						WHERE TABLE_SCHEMA = 'bibliotheca'
+  						AND TABLE_NAME LIKE 'bib_collection_%_".$this->_id."'
+						ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$tableSize += $result['size'];
+				}
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
+		$this->_collectionData['stats']['tableSize'] = Summoner::bytesToHuman($tableSize);
+
+		$this->_collectionData['stats']['storageSize'] = Summoner::bytesToHuman(Summoner::folderSize(PATH_STORAGE.'/'.$this->_id));
+
+
+		return $this->_collectionData;
+	}
+
+	/**
 	 * set some defaults by init of the class
 	 *
 	 * @return void
@@ -351,15 +410,20 @@ class Trite {
 	/**
 	 * Make a key=>value array of a comma seperated string and use the value as key
 	 *
-	 * @param array $data
+	 * @param string $data
 	 * @return array
 	 */
-	private function _loadAdvancedSearchTableFields($data) {
+	private function _loadAdvancedSearchTableFields(string $data): array {
 		$ret = array();
 
-		$_t = explode(',',$data);
-		foreach($_t as $e) {
-			$ret[$e] = $e;
+		if(!strstr($data, ',')) {
+			$ret[$data] = $data;
+		}
+		else {
+			$_t = explode(',',$data);
+			foreach($_t as $e) {
+				$ret[$e] = $e;
+			}
 		}
 
 		return $ret;

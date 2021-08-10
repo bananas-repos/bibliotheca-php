@@ -1,7 +1,8 @@
 1.x - Rrajigar Mine
 	* Fixed install sql file.
 	* New field: artists - lookupmultiple field
-	* Added setup file. See setup/install.txt for more details
+	* Added setup process. See setup/install.txt for more details
+	* Stats info page
 
 1.2 - NyLeve's Falls 20210717
 	* Updated requirements information

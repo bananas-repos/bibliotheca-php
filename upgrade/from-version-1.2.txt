@@ -1,3 +1,4 @@
 # DB changes. Run each line against your bibliotheca DB.
 # Replace #REPLACEME# with your table prefix. Default is bib
 INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', NOW(), NOW(), NULL, '1', '1', 'rw-r--r--');
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'System Information', 'sysinfo', 'info', '1', '1', 'rw-------', '3', 'show');

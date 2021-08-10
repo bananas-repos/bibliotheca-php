@@ -18,6 +18,8 @@
 
 require_once './config/config.php';
 
+define('BIB_VERSION','1.x - Rrajigar Mine ()');
+
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
 ini_set('error_reporting',-1); // E_ALL & E_STRICT

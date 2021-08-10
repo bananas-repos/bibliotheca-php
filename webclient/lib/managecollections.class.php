@@ -40,39 +40,9 @@ class ManageCollections {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
-	}
-
-	/**
-	 * Load collection info from table. Checks user rights
-	 *
-	 * @param string $id
-	 * @param string $rightsMode
-	 * @return array
-	 */
-	public function getCollection($id,$rightsMode="read") {
-		$ret = array();
-
-		if (Summoner::validate($id, 'digit')) {
-			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`
-					FROM `".DB_PREFIX."_collection` AS c
-					WHERE ".$this->_User->getSQLRightsString($rightsMode, "c")."
-					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-			try {
-				$query = $this->_DB->query($queryStr);
-				if ($query !== false && $query->num_rows > 0) {
-					$ret = $query->fetch_assoc();
-				}
-			}
-			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			}
-		}
-
-		return $ret;
 	}
 
 	/**
@@ -80,7 +50,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getCollections() {
+	public function getCollections(): array{
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
@@ -94,7 +64,6 @@ class ManageCollections {
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
-
 			if ($query !== false && $query->num_rows > 0) {
 				while (($result = $query->fetch_assoc()) != false) {
 					$ret[$result['id']] = $result;

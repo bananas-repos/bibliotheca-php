@@ -251,7 +251,7 @@ class Doomguy {
 	 * @param bool $tableName
 	 * @return string
 	 */
-	public function getSQLRightsString($mode = "read", $tableName=false) {
+	public function getSQLRightsString($mode = "read", $tableName=false): string {
 		$str = '';
 		$prefix = '';
 

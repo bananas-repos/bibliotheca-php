@@ -16,6 +16,13 @@
  * limitations under the License.
  */
 
+/**
+ * A plain and simple setup for bibliotheca
+ * It creates the config file based on the .default file.
+ * It creates the default database tables.
+ * It self deletes after a setup is complete to reduce some sercuirty risks
+ */
+
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
 ini_set('error_reporting',-1); // E_ALL & E_STRICT
@@ -40,6 +47,9 @@ if(!is_dir('../storage') || !is_writeable('../storage')) {
 }
 if(!is_dir('../systemout') || !is_writeable('../systemout')) {
 	die('Missing correct write permissions for ../systemout dir');
+}
+if(!is_writeable(getcwd())) {
+	die('Missing correct write/delete permissions for the setup folder');
 }
 
 $configStep = 'ready';
@@ -163,7 +173,6 @@ switch($configStep) {
 			$DB->set_charset("utf8mb4");
 			$DB->query("SET collation_connection = 'utf8mb4_unicode_ci'");
 		}
-
 
 		if(!empty($_conCheck)) {
 			try {
