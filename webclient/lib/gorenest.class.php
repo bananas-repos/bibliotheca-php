@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,16 +98,16 @@ class GoreNest {
 	 * @param bool $reload
 	 * @return array
 	 */
-	public function get(string $category, $reload=false) {
+	public function get(string $category, $reload=false): array {
 		$ret = array();
 
-		if(empty($category)) return false;
+		if(empty($category)) return array();
 
 		if(empty($reload) && isset($this->_menuData[$category])) {
 			return $this->_menuData[$category];
 		}
 
-		$this->loadMenu($reload);
+		$this->loadMenu();
 		if(isset($this->_menuData[$category])) {
 			$ret = $this->_menuData[$category];
 		}

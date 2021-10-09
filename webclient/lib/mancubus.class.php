@@ -72,7 +72,7 @@ class Mancubus {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 
@@ -84,7 +84,7 @@ class Mancubus {
 	 *
 	 * @param string $collectionId Number
 	 */
-	public function setCollection($collectionId) {
+	public function setCollection(string $collectionId) {
 		if(!empty($collectionId)) {
 			$this->_collectionId = $collectionId;
 		}
@@ -101,7 +101,7 @@ class Mancubus {
 	 *
 	 * @param array $options
 	 */
-	public function setQueryOptions($options) {
+	public function setQueryOptions(array $options) {
 
 		if(!isset($options['limit'])) $options['limit'] = 5;
 		if(!isset($options['offset'])) $options['offset'] = false;
@@ -341,7 +341,7 @@ class Mancubus {
 	 * @param string $fieldValue Value of the field
 	 * @return array
 	 */
-	public function getEntriesByFieldValue($fieldId, $fieldValue) {
+	public function getEntriesByFieldValue(string $fieldId, string $fieldValue): array {
 		$ret = array();
 
 		$_entryFields = $this->_getEntryFields();
@@ -421,9 +421,9 @@ class Mancubus {
 	 * Return the storage info for loaded collection
 	 * Used by API
 	 *
-	 * @return array|mixed
+	 * @return array
 	 */
-	public function getEntryStructure() {
+	public function getEntryStructure(): array {
 		$ret = array();
 
 		$_entryFields = $this->_getEntryFields();
@@ -437,7 +437,7 @@ class Mancubus {
 	 *
 	 * @return array
 	 */
-	private function _getEntryFields() {
+	private function _getEntryFields(): array {
 
 		if(!empty($this->_cacheEntryFields)) {
 			return $this->_cacheEntryFields;
@@ -474,7 +474,7 @@ class Mancubus {
 	 * @param array $entryFields Loaded fields
 	 * @return mixed
 	 */
-	private function _mergeEntryWithFields($entryData, $entryFields) {
+	private function _mergeEntryWithFields(array $entryData, array $entryFields): array {
 		if(!empty($entryFields)) {
 			foreach($entryFields as $f) {
 				$_mnValue = '_loadFieldValue_'.$f['type'];
@@ -505,7 +505,7 @@ class Mancubus {
 	 * @param array $fieldData
 	 * @return array
 	 */
-	private function _loadFieldValue_lookupmultiple($entryId, $fieldData) {
+	private function _loadFieldValue_lookupmultiple(string $entryId, array $fieldData): array {
 		$ret = array();
 
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
@@ -548,7 +548,7 @@ class Mancubus {
 	 * @param array $fieldData
 	 * @return string
 	 */
-	private function _loadFieldValue_upload($entryId, $fieldData) {
+	private function _loadFieldValue_upload(string $entryId, array $fieldData): string {
 		$ret = "";
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
 
@@ -571,7 +571,7 @@ class Mancubus {
 	 * @param string $fieldData
 	 * @return array
 	 */
-	private function _loadFieldValue_upload_multiple($entryId, $fieldData) {
+	private function _loadFieldValue_upload_multiple(string $entryId, string $fieldData): array {
 		$ret = array();
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
 
@@ -591,7 +591,7 @@ class Mancubus {
 	 * @param string $data
 	 * @return array
 	 */
-	private function _loadFieldSelection_selection($data) {
+	private function _loadFieldSelection_selection(string $data): array {
 		$ret = array();
 
 		if(is_string($data)) {

@@ -71,7 +71,7 @@ class ManageCollectionFields {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 	}
@@ -90,10 +90,11 @@ class ManageCollectionFields {
 	/**
 	 * Get available fields based on user
 	 *
+	 * @param bool $refresh
 	 * @return array
 	 * @todo No rights implemented yet. Maybe not needed. Management done by hand directly on DB
 	 */
-	public function getAvailableFields($refresh=false) {
+	public function getAvailableFields($refresh=false): array {
 
 		if($refresh === false && !empty($this->_cacheAvailableFields)) {
 			return $this->_cacheAvailableFields;
@@ -125,7 +126,7 @@ class ManageCollectionFields {
 	 * @param string $string
 	 * @return bool
 	 */
-	public function validateFieldSortString($string) {
+	public function validateFieldSortString(string $string): bool {
 		$ret = false;
 
 		$_t = str_replace(",","",$string);
@@ -144,7 +145,7 @@ class ManageCollectionFields {
 	 * @param string $fieldsSortString
 	 * @return bool
 	 */
-	public function updateFields($fieldsSortString) {
+	public function updateFields(string $fieldsSortString): bool {
 		$ret = false;
 		$ids = array();
 
@@ -250,7 +251,7 @@ class ManageCollectionFields {
 	 * @param bool $sortAZ
 	 * @return array
 	 */
-	public function getExistingFields($refresh=false, $sortAZ=false) {
+	public function getExistingFields($refresh=false, $sortAZ=false): array {
 		if($refresh === false && !empty($this->_cacheExistingSysFields)) {
 			return $this->_cacheExistingSysFields;
 		}
@@ -316,7 +317,7 @@ class ManageCollectionFields {
 	 *
 	 * @return array
 	 */
-	private function _getExistingCollectionColumns() {
+	private function _getExistingCollectionColumns(): array {
 		$ret = array();
 
 		$queryStr = "SHOW COLUMNS FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
@@ -345,7 +346,7 @@ class ManageCollectionFields {
 	 * @param array $columnIds sort=>fk_field_id
 	 * @return array
 	 */
-	private function _getSQLForCollectionColumns($columnIds) {
+	private function _getSQLForCollectionColumns(array $columnIds): array {
 		$_fields = array();
 		// enrich with information
 		$_sysFields = $this->getAvailableFields();

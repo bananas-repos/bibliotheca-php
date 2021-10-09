@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2021 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,8 +78,9 @@ class Doomguy {
 	 * Doomguy constructor.
 	 *
 	 * @param mysqli $db The database object
+	 * @return void
 	 */
-	public function __construct($db) {
+	public function __construct(mysqli $db) {
 		$this->_DB = $db;
 
 		if($this->_checkSession() === true) {
@@ -99,7 +100,7 @@ class Doomguy {
 	 * @param string $param
 	 * @return bool|mixed
 	 */
-	public function param($param) {
+	public function param(string $param) {
 		$ret = false;
 
 		$param = trim($param);
@@ -114,9 +115,9 @@ class Doomguy {
 	/**
 	 * Get the currently loaded user data info from $this->userData
 	 *
-	 * @return array|bool
+	 * @return array
 	 */
-	public function getAllUserData() {
+	public function getAllUserData(): array {
 		return $this->userData;
 	}
 
@@ -125,7 +126,7 @@ class Doomguy {
 	 *
 	 * @return bool
 	 */
-	public function isSignedIn() {
+	public function isSignedIn(): bool {
 		return $this->isSignedIn;
 	}
 
@@ -134,7 +135,7 @@ class Doomguy {
 	 *
 	 * @return boolean
 	 */
-	public function logOut () {
+	public function logOut (): bool {
 		$ret = false;
 
 		if($this->_checkAgainstSessionTable() === true) {
@@ -152,7 +153,7 @@ class Doomguy {
 	 * @param integer $groupID
 	 * @return bool
 	 */
-	public function isInGroup($groupID) {
+	public function isInGroup(int $groupID): bool {
 		$ret = false;
 
 		if($this->userData['isRoot'] === true) {
@@ -172,7 +173,7 @@ class Doomguy {
 	 * @param string $password
 	 * @return boolean
 	 */
-	public function authenticate($username,$password) {
+	public function authenticate(string $username, string $password): bool {
 		$ret = false;
 
 		if(!empty($username) && !empty($password)) {
@@ -220,8 +221,9 @@ class Doomguy {
 	 * Use the user identified by apitoken
 	 *
 	 * @param string $token
+	 * @return void
 	 */
-	public function authByApiToken($token) {
+	public function authByApiToken(string $token) {
 		if(!empty($token)) {
 			$queryStr = "SELECT `id`
 						FROM `".DB_PREFIX."_user`
@@ -287,7 +289,7 @@ class Doomguy {
 	 *
 	 * @return bool
 	 */
-	protected function _checkSession() {
+	protected function _checkSession(): bool {
 
 		if(ini_set('session.use_only_cookies',true) === false ||
 			ini_set('session.cookie_httponly',true) === false ||
@@ -323,7 +325,7 @@ class Doomguy {
 	 *
 	 * @return bool
 	 */
-	protected function _checkAgainstSessionTable() {
+	protected function _checkAgainstSessionTable(): bool {
 		$ret = false;
 
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
@@ -364,7 +366,7 @@ class Doomguy {
 	 * @param string $u
 	 * @return bool
 	 */
-	protected function _checkAgainstUserTable($u) {
+	protected function _checkAgainstUserTable(string $u): bool {
 		$ret = false;
 
 		if(!empty($u)) {
@@ -463,7 +465,7 @@ class Doomguy {
 	 *
 	 * @return bool
 	 */
-	protected function _destroySession() {
+	protected function _destroySession(): bool {
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `fk_user_id` = '".$this->_DB->real_escape_string($this->userID)."'

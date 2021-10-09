@@ -82,7 +82,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getGroupsForSelection() {
+	public function getGroupsForSelection(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description` 
@@ -110,7 +110,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getUsersForSelection() {
+	public function getUsersForSelection(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `login`
@@ -137,7 +137,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getToolsForSelection() {
+	public function getToolsForSelection(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description`
@@ -355,7 +355,7 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	public function deleteCollection($id) {
+	public function deleteCollection(string $id): bool {
 		$ret = false;
 
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
@@ -409,7 +409,7 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return array
 	 */
-	public function getAvailableTools($id) {
+	public function getAvailableTools(string $id): array {
 		$ret = array();
 
 		$queryStr = "SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`action`, `t`.`target`
@@ -438,7 +438,7 @@ class ManageCollections {
 	 * @param string $name
 	 * @return bool
 	 */
-	private function _validNewCollectionName($name) {
+	private function _validNewCollectionName(string $name): bool {
 		$ret = false;
 		if (Summoner::validate($name, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
@@ -465,7 +465,7 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	private function _validUpdateCollectionName($name, $id) {
+	private function _validUpdateCollectionName(string $name, string $id): bool {
 		$ret = false;
 
 		if (Summoner::validate($name, 'nospace')
@@ -496,7 +496,7 @@ class ManageCollections {
 	 * @param array $tool
 	 * @return bool
 	 */
-	private function _updateToolRelation($id,$tool) {
+	private function _updateToolRelation(string $id, array $tool): bool {
 		$ret = false;
 
 
@@ -538,7 +538,7 @@ class ManageCollections {
 	 * @param string|bool $group
 	 * @param string|bool $rights
 	 */
-	private function _updateEntryRights($collectionId, $owner=false, $group=false, $rights=false) {
+	private function _updateEntryRights(string $collectionId, $owner=false, $group=false, $rights=false) {
 		if(!empty($collectionId)) {
 			$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."` SET";
 
@@ -569,7 +569,7 @@ class ManageCollections {
 	 * @param array $data
 	 * @return array
 	 */
-	private function _loadAdvancedSearchTableFields($data) {
+	private function _loadAdvancedSearchTableFields(array $data): array {
 		$ret = array();
 
 		$_t = explode(',',$data);

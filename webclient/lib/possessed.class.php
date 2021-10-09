@@ -55,7 +55,7 @@ class Possessed {
 	 *
 	 * @return array
 	 */
-	public function getGroups() {
+	public function getGroups(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description`, `created`, `protected`
@@ -253,7 +253,7 @@ class Possessed {
 	 * @param string $userId Number
 	 * @return array
 	 */
-	public function getEditData($userId) {
+	public function getEditData(string $userId): array {
 		$ret = array();
 
 		if(Summoner::validate($userId,'digit')) {
@@ -284,7 +284,7 @@ class Possessed {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	public function deleteUser($id) {
+	public function deleteUser(string $id): bool {
 		$ret = false;
 
 		if(Summoner::validate($id,'digit')) {
@@ -319,7 +319,7 @@ class Possessed {
 	 * @param string $description
 	 * @return bool
 	 */
-	public function createGroup($name, $description) {
+	public function createGroup(string $name, string $description): bool {
 		$ret = false;
 
 		if($this->_validNewGroup($name)) {
@@ -352,7 +352,7 @@ class Possessed {
 	 * @param string $description
 	 * @return bool
 	 */
-	public function updateGroup($id, $name, $description) {
+	public function updateGroup(string $id, string $name, string $description): bool {
 		$ret = false;
 
 		if($this->_validUpdateGroup($name, $id)) {
@@ -381,7 +381,7 @@ class Possessed {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	public function deleteGroup($id) {
+	public function deleteGroup(string $id): bool {
 		$ret = false;
 
 		if(Summoner::validate($id,'digit')) {
@@ -408,7 +408,7 @@ class Possessed {
 	 * @param string $id Number
 	 * @return array
 	 */
-	public function getEditGroupData($id) {
+	public function getEditGroupData(string $id): array {
 		$ret = array();
 
 		if(Summoner::validate($id,'digit')) {
@@ -437,7 +437,7 @@ class Possessed {
 	 * @param string $name
 	 * @return bool
 	 */
-	private function _validNewGroup($name) {
+	private function _validNewGroup(string $name): bool {
 		$ret = false;
 
 		if (Summoner::validate($name, 'nospace')) {
@@ -465,7 +465,7 @@ class Possessed {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	private function _validUpdateGroup($name,$id) {
+	private function _validUpdateGroup(string $name, string $id): bool {
 		$ret = false;
 
 		if (Summoner::validate($name, 'nospace') && Summoner::validate($id,"digit")) {
@@ -493,7 +493,7 @@ class Possessed {
 	 * @param string $login
 	 * @return bool
 	 */
-	private function _validNewLogin($login) {
+	private function _validNewLogin(string $login): bool {
 		$ret = false;
 
 		if (Summoner::validate($login, 'nospace')) {
@@ -521,7 +521,7 @@ class Possessed {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	private function _validUpdateLogin($login,$id) {
+	private function _validUpdateLogin(string $login, string $id): bool {
 		$ret = false;
 
 		if (Summoner::validate($login, 'nospace') && Summoner::validate($id,"digit")) {
@@ -549,7 +549,7 @@ class Possessed {
 	 * @param string $groupId Number
 	 * @return bool
 	 */
-	private function _validUsergroup($groupId) {
+	private function _validUsergroup(string $groupId): bool {
 		$ret = false;
 
 		if(Summoner::validate($groupId,'digit')) {
@@ -579,7 +579,7 @@ class Possessed {
 	 * @param bool $clean
 	 * @return bool
 	 */
-	private function _setGroupReleation($userid, $group, $clean=false) {
+	private function _setGroupReleation(string $userid, array $group, $clean=false): bool {
 		$ret = false;
 
 		if(Summoner::validate($userid,'digit')
@@ -612,12 +612,12 @@ class Possessed {
 	/**
 	 * Load all the groups the user is in and the information of them
 	 *
-	 * @todo Not really needed. Can be done in one query. See Doomguy class
-	 *
 	 * @param string $userId Number
 	 * @return array
+	 * @todo Not really needed. Can be done in one query. See Doomguy class
+	 *
 	 */
-	private function _loadUserGroupInfo($userId) {
+	private function _loadUserGroupInfo(string $userId): array{
 		$ret = array();
 
 		$queryStr = "SELECT g.name AS groupName,
