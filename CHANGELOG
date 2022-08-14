@@ -3,7 +3,7 @@
 	* New field: artists - lookupmultiple field
 	* Added setup process. See setup/install.txt for more details
 	* Stats info page
-	* Some more PHP 7 syntax
+	* Some more PHP 7/8 syntax and support
 
 1.2 - NyLeve's Falls 20210717
 	* Updated requirements information

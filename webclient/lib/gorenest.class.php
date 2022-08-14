@@ -26,14 +26,14 @@ class GoreNest {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * the current loaded user
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * the already loaded menu information
@@ -41,14 +41,14 @@ class GoreNest {
 	 *
 	 * @var array
 	 */
-	private $_menuData = array();
+	private array $_menuData = array();
 
 	/**
 	 * Array for faster check which call is allowed
 	 *
 	 * @var array
 	 */
-	private $_allowedPageRequests = array();
+	private array $_allowedPageRequests = array();
 
 	/**
 	 * GoreNest constructor.
@@ -66,7 +66,7 @@ class GoreNest {
 	 *
 	 * @return void
 	 */
-	public function loadMenu() {
+	public function loadMenu(): void {
 		# reset the menu
 		$this->_menuData = array();
 
@@ -98,12 +98,12 @@ class GoreNest {
 	 * @param bool $reload
 	 * @return array
 	 */
-	public function get(string $category, $reload=false): array {
+	public function get(string $category, bool $reload = false): array {
 		$ret = array();
 
-		if(empty($category)) return array();
+		if(empty($category)) return $ret;
 
-		if(empty($reload) && isset($this->_menuData[$category])) {
+		if($reload === false && isset($this->_menuData[$category])) {
 			return $this->_menuData[$category];
 		}
 

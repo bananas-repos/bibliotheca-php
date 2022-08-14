@@ -27,10 +27,10 @@ class Summoner {
 	 * @param string $file relative path from THEME/
 	 * @param string $theme Theme name
 	 * @param string $defaultTheme Default theme name can be overwritten
-	 * @return bool|string False of nothing is found
+	 * @return string False of nothing is found
 	 */
-	static function themefile(string $file, string $theme, $defaultTheme='default') {
-		$ret = false;
+	static function themefile(string $file, string $theme, string $defaultTheme = 'default'): string {
+		$ret = '';
 
 		if(file_exists('view/'.$theme.'/'.$file)) {
 			$ret = 'view/'.$theme.'/'.$file;
@@ -48,7 +48,7 @@ class Summoner {
 	 *
 	 * @param string $input The string to check
 	 * @param string $mode How the string should be checked
-	 * @param mixed $limit If int given the string is checked for length
+	 * @param integer $limit If int given the string is checked for length
 	 *
 	 * @return bool
 	 * @see http://de.php.net/manual/en/regexp.reference.unicode.php
@@ -59,7 +59,7 @@ class Summoner {
 	 * allowed
 	 *
 	 */
-	static function validate(string $input, $mode='text', $limit=false): bool {
+	static function validate(string $input, string $mode = 'text', int $limit = 0): bool {
 		// check if we have input
 		$input = trim($input);
 
@@ -175,11 +175,11 @@ class Summoner {
 	 * IMPORTANT: keep the order otherwise the rights will be messed up
 	 *
 	 * @param array $rightsArr
-	 * @return array
+	 * @return string
 	 */
-	static function prepareRightsString(array $rightsArr): array {
+	static function prepareRightsString(array $rightsArr): string {
 		$rsArr = array();
-		$ret = array();
+		$ret = '';
 
 		if(!empty($rightsArr)) {
 			// we need a complete type list
@@ -224,7 +224,7 @@ class Summoner {
 			$rString .= $rsArr['other']['read'].$rsArr['other']['write'].$rsArr['other']['delete'];
 
 			if(strlen($rString) != 9) {
-				$ret = array();
+				$ret = '';
 				// invalid rights string !!
 			}
 			else {
@@ -279,7 +279,7 @@ class Summoner {
 	 * @param bool $recursive If we run a recursive scan or not
 	 * @return array
 	 */
-	static function readDir(string $directory, $ignore=array(), $recursive=false): array {
+	static function readDir(string $directory, array $ignore = array(), bool $recursive = false): array {
 		$files = array();
 
 		$dh = opendir($directory);
@@ -314,10 +314,10 @@ class Summoner {
 	 *
 	 * @param string $directory
 	 * @param bool $empty
-	 * @param mixed $fTime If not false remove files older then this value in sec.
+	 * @param int $fTime If not false remove files older then this value in sec.
 	 * @return bool
 	 */
-	static function recursive_remove_directory(string $directory, $empty=false, $fTime=false): bool {
+	static function recursive_remove_directory(string $directory, bool $empty = false, int $fTime = 0): bool {
 		// if the path has a slash at the end we remove it here
 		if(substr($directory,-1) == '/') {
 			$directory = substr($directory,0,-1);
@@ -449,7 +449,7 @@ class Summoner {
 	 * @param array|string $key
 	 * @return bool|mixed
 	 */
-	static function ifset(array $array, $key) {
+	static function ifset(array $array, array|string $key): mixed {
 		if(is_array($key)) {
 			$_t = $array;
 			$_c = 0;
