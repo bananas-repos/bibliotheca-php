@@ -25,21 +25,21 @@ class Mancubus {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Currently loaded collection to work with
 	 *
 	 * @var string Number
 	 */
-	private $_collectionId;
+	private string $_collectionId;
 
 	/**
 	 * Options for db queries
@@ -50,21 +50,21 @@ class Mancubus {
 	 *
 	 * @var array
 	 */
-	private $_queryOptions;
+	private array $_queryOptions;
 
 	/**
 	 * Store the all the values for an entry from lookup table
 	 *
 	 * @var array
 	 */
-	private $_cacheLookupValuesForEntry = array();
+	private array $_cacheLookupValuesForEntry = array();
 
 	/**
 	 * Store entryFields for run time
 	 *
 	 * @var array
 	 */
-	private $_cacheEntryFields = array();
+	private array $_cacheEntryFields = array();
 
 	/**
 	 * Mancubus constructor.
@@ -84,7 +84,7 @@ class Mancubus {
 	 *
 	 * @param string $collectionId Number
 	 */
-	public function setCollection(string $collectionId) {
+	public function setCollection(string $collectionId): void {
 		if(!empty($collectionId)) {
 			$this->_collectionId = $collectionId;
 		}
@@ -101,7 +101,7 @@ class Mancubus {
 	 *
 	 * @param array $options
 	 */
-	public function setQueryOptions(array $options) {
+	public function setQueryOptions(array $options): void {
 
 		if(!isset($options['limit'])) $options['limit'] = 5;
 		if(!isset($options['offset'])) $options['offset'] = false;
@@ -119,7 +119,7 @@ class Mancubus {
 	 * @param string $search Search string to search for
 	 * @return array
 	 */
-	public function getLatest(string $selections, string $entries, $search=''): array {
+	public function getLatest(string $selections, string $entries, string $search = ''): array {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
@@ -192,7 +192,7 @@ class Mancubus {
 	 * @param array $searchData
 	 * @return array
 	 */
-	public function getEntries($searchData=array()): array {
+	public function getEntries(array $searchData = array()): array {
 		$ret = array();
 
 		if(!empty($this->_collectionId)) {
@@ -304,7 +304,7 @@ class Mancubus {
 	 * Retrieve all the data needed to display the entry for given entryId
 	 *
 	 * @param string $entryId Number
-	 * @return array|mixed
+	 * @return array
 	 */
 	public function getEntry(string $entryId): array {
 		$ret = array();
@@ -568,10 +568,10 @@ class Mancubus {
 	 * lookup function for field type upload_multiple
 	 *
 	 * @param string $entryId Number
-	 * @param string $fieldData
+	 * @param array $fieldData
 	 * @return array
 	 */
-	private function _loadFieldValue_upload_multiple(string $entryId, string $fieldData): array {
+	private function _loadFieldValue_upload_multiple(string $entryId, array $fieldData): array {
 		$ret = array();
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
 
@@ -611,7 +611,7 @@ class Mancubus {
 	 *
 	 * @return void
 	 */
-	private function _setDefaults() {
+	private function _setDefaults(): void {
 		// default query options
 		$options['limit'] = 5;
 		$options['offset'] = false;

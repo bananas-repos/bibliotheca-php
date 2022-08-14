@@ -27,28 +27,28 @@ class Doomguy {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * if the user is logged in or not
 	 *
 	 * @var boolean
 	 */
-	protected $isSignedIn = false;
+	protected bool $isSignedIn = false;
 
 	/**
 	 * the data from the current user
 	 *
 	 * @var array
 	 */
-	protected $userData = false;
+	protected array $userData = array();
 
 	/**
 	 * the user ID from user management or default
 	 *
-	 * @var integer
+	 * @var string|int
 	 */
-	protected $userID = 0;
+	protected string|int $userID = 0;
 
 	/**
 	 * the rights string defined the mysql query !
@@ -56,7 +56,7 @@ class Doomguy {
 	 *
 	 * @var array
 	 */
-	protected $_rightsArray = array(
+	protected array $_rightsArray = array(
 		'user' => array(
 			'read' => 'r________',
 			'write' => 'rw_______',
@@ -100,7 +100,7 @@ class Doomguy {
 	 * @param string $param
 	 * @return bool|mixed
 	 */
-	public function param(string $param) {
+	public function param(string $param): mixed {
 		$ret = false;
 
 		$param = trim($param);
@@ -223,7 +223,7 @@ class Doomguy {
 	 * @param string $token
 	 * @return void
 	 */
-	public function authByApiToken(string $token) {
+	public function authByApiToken(string $token): void {
 		if(!empty($token)) {
 			$queryStr = "SELECT `id`
 						FROM `".DB_PREFIX."_user`
@@ -250,10 +250,10 @@ class Doomguy {
 	 * create the sql string for rights sql
 	 *
 	 * @param string $mode
-	 * @param bool $tableName
+	 * @param string $tableName
 	 * @return string
 	 */
-	public function getSQLRightsString($mode = "read", $tableName=false): string {
+	public function getSQLRightsString(string $mode = "read", string $tableName = ''): string {
 		$str = '';
 		$prefix = '';
 
@@ -297,7 +297,6 @@ class Doomguy {
 
 			return false;
 		}
-
 
 		$garbage_timeout = SESSION_LIFETIME + 300;
 		ini_set('session.gc_maxlifetime', $garbage_timeout);
@@ -343,12 +342,18 @@ class Doomguy {
 				# existing session info
 				$result = $query->fetch_assoc();
 
-				# valide the token
+				# validate the token
 				$_check = $this->_createToken($result['salt']);
 				if (!empty($_check) && $result['token'] === $_check['token']) {
 					$this->userID = $result['fk_user_id'];
-
 					$ret = true;
+				}
+				else {
+					error_log("[ERROR] ".__METHOD__." mismatched token.");
+					if(isset($result['fk_user_id']) && !empty($result['fk_user_id'])) {
+						$this->userID = $result['fk_user_id'];
+					}
+					$this->_destroySession();
 				}
 			}
 		}
@@ -396,7 +401,7 @@ class Doomguy {
 	 *
 	 * @return void
 	 */
-	protected function _loginActions() {
+	protected function _loginActions(): void {
 		# clean old sessions on session table
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
@@ -415,7 +420,7 @@ class Doomguy {
 	 *
 	 * @return void
 	 */
-	protected function _loadUser() {
+	protected function _loadUser(): void {
 		if(!empty($this->userID)) {
 			$queryStr = "SELECT u.`id`, u.`baseGroupId`,u.`protected`,u.`password`,u.`login`,u.`name`,
 								u.`apiToken`,u.`apiTokenValidDate`,
@@ -491,11 +496,11 @@ class Doomguy {
 	 * HTTP_ACCEPT_ENCODING, HTTP_VIA
 	 * and a salt
 	 *
-	 * @param bool $salt
-	 * @return bool|array
+	 * @param string $salt
+	 * @return array
 	 */
-	protected function _createToken($salt=false) {
-		$ret = false;
+	protected function _createToken(string $salt = ''): array {
+		$ret = array();
 
 		$defaultStr = "unknown";
 
