@@ -10,3 +10,4 @@
 * Field management: Web interface
 * minimal theme
 * Automatic upgrade from DB changes
+* PHP 8 syntax and specifications
