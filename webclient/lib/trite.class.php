@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,28 +29,28 @@ class Trite {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Currently loaded collection to work with
 	 *
 	 * @var string
 	 */
-	private $_id;
+	private string $_id;
 
 	/**
 	 * Current loaded collection data as an array
 	 *
 	 * @var array
 	 */
-	private $_collectionData;
+	private array $_collectionData;
 
 	/**
 	 * Options for db queries
@@ -61,22 +61,22 @@ class Trite {
 	 *
 	 * @var array
 	 */
-	private $_queryOptions;
+	private array $_queryOptions;
 
 	/**
 	 * Cache for already loaded collection fields
 	 *
 	 * @var array
 	 */
-	private $_cacheExistingCollectionFields = array();
+	private array $_cacheExistingCollectionFields = array();
 
 	/**
 	 * Trite constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 
@@ -91,9 +91,10 @@ class Trite {
 	 *  'orderby' => $_sort,
 	 *  'sortDirection' => $_sortDirection
 	 * );
+	 *
 	 * @param array $options
 	 */
-	public function setQueryOptions($options) {
+	public function setQueryOptions(array $options): void {
 
 		if(!isset($options['limit'])) $options['limit'] = 5;
 		if(!isset($options['offset'])) $options['offset'] = false;
@@ -111,7 +112,7 @@ class Trite {
 	 * @param string $right The rights mode. read, write or delete
 	 * @return array
 	 */
-	public function load(string $id,$right="read"): array {
+	public function load(string $id, string $right="read"): array {
 		$this->_collectionData = array();
 
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
@@ -166,7 +167,7 @@ class Trite {
 	 * @param string $rightsMode
 	 * @return array
 	 */
-	public function getCollections($rightsMode="read"): array {
+	public function getCollections(string $rightsMode="read"): array {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`
@@ -265,7 +266,7 @@ class Trite {
 	 * @param string $search String value to search value against
 	 * @return array
 	 */
-	public function getTags($search=''): array {
+	public function getTags(string $search=''): array {
 		$ret = array();
 
 		$queryStr = "SELECT `cf`.`fk_field_id` AS id,
@@ -398,7 +399,7 @@ class Trite {
 	 *
 	 * @return void
 	 */
-	private function _setDefaults() {
+	private function _setDefaults(): void {
 		// default query options
 		$options['limit'] = 5;
 		$options['offset'] = false;

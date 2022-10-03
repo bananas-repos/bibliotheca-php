@@ -22,35 +22,35 @@ class Manageentry {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Currently loaded collection to manage entries from
 	 *
 	 * @var string Number
 	 */
-	private $_collectionId;
+	private string $_collectionId;
 
 	/**
 	 * Placeholder in query strings for inserted DB id
 	 *
 	 * @var string
 	 */
-	private $_replaceEntryString = 'REPLACE_ENTERY';
+	private string $_replaceEntryString = 'REPLACE_ENTERY';
 
 	/**
 	 * Store edit fields info for runtime
 	 *
 	 * @var array
 	 */
-	private $_cacheEditFields = array();
+	private array $_cacheEditFields = array();
 
 	/**
 	 * ManageCollections constructor.
@@ -81,7 +81,7 @@ class Manageentry {
 	 * @param bool $refresh
 	 * @return array
 	 */
-	public function getEditFields($refresh=false): array {
+	public function getEditFields(bool $refresh=false): array {
 
 		if($refresh === false && !empty($this->_cacheEditFields)) {
 			return $this->_cacheEditFields;
@@ -160,10 +160,10 @@ class Manageentry {
 	 * @param string $owner Number
 	 * @param string $group Number
 	 * @param string $rights
-	 * @param mixed $update Either false for no update or the ID to update
+	 * @param mixed|false $update Either false for no update or the ID to update
 	 * @return int
 	 */
-	public function create(array $data, string $owner, string $group, string $rights, $update=false): int {
+	public function create(array $data, string $owner, string $group, string $rights, mixed $update=false): int {
 		$ret = 0;
 
 		if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".var_export($data,true));

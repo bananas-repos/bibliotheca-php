@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,14 +30,14 @@ class Possessed {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Possessed constructor.
@@ -117,7 +117,7 @@ class Possessed {
 	 * @param bool $active
 	 * @return bool
 	 */
-	public function createUser(string $username, string $login, string $password, string $group, array $groups, $active=false): bool {
+	public function createUser(string $username, string $login, string $password, string $group, array $groups, bool $active=false): bool {
 		$ret = false;
 
 		if($this->_validNewLogin($login) && $this->_validUsergroup($group)) {
@@ -190,7 +190,8 @@ class Possessed {
 	 * @param bool $refreshApiToken
 	 * @return bool
 	 */
-	public function updateUser(string $id, string $username, string $login, string $password, string $group, array $groups, $active=false, $refreshApiToken=false): bool {
+	public function updateUser(string $id, string $username, string $login, string $password, string $group,
+							   array $groups, bool $active=false, bool $refreshApiToken=false): bool {
 		$ret = false;
 
 		if($this->_validUpdateLogin($login,$id) && $this->_validUsergroup($group)) {
@@ -579,7 +580,7 @@ class Possessed {
 	 * @param bool $clean
 	 * @return bool
 	 */
-	private function _setGroupReleation(string $userid, array $group, $clean=false): bool {
+	private function _setGroupReleation(string $userid, array $group, bool $clean=false): bool {
 		$ret = false;
 
 		if(Summoner::validate($userid,'digit')

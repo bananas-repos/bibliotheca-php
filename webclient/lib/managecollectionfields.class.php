@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -251,7 +251,7 @@ class ManageCollectionFields {
 	 * @param bool $sortAZ
 	 * @return array
 	 */
-	public function getExistingFields($refresh=false, $sortAZ=false): array {
+	public function getExistingFields(bool $refresh=false, bool $sortAZ=false): array {
 		if($refresh === false && !empty($this->_cacheExistingSysFields)) {
 			return $this->_cacheExistingSysFields;
 		}

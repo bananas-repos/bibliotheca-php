@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,37 +31,37 @@ class Musicbrainz {
 	/**
 	 * @var bool DEBUG
 	 */
-	private $_DEBUG = false;
+	private bool $_DEBUG = false;
 
 	/**
 	 * @var string The user agent used to make curl calls
 	 */
-	private $_BROWSER_AGENT = '';
+	private mixed $_BROWSER_AGENT = '';
 
 	/**
 	 * @var string The user agent lang used to make curl calls
 	 */
-	private $_BROWSER_LANG = '';
+	private mixed $_BROWSER_LANG = '';
 
 	/**
 	 * @var string The user agent accept used to make curl calls
 	 */
-	private $_BROWSER_ACCEPT = '';
+	private mixed $_BROWSER_ACCEPT = '';
 
 	/**
 	 * @var string The musicbrainz API release endpoint
 	 */
-	private $_RELEASE_ENDPOINT = 'http://musicbrainz.org/ws/2/release/';
+	private string $_RELEASE_ENDPOINT = 'http://musicbrainz.org/ws/2/release/';
 
 	/**
 	 * @var string The endpoint for images
 	 */
-	private $_IMAGE_ENDPOINT = 'http://coverartarchive.org/release/';
+	private string $_IMAGE_ENDPOINT = 'http://coverartarchive.org/release/';
 
 	/**
 	 * @var int The amount of entries returned for release search
 	 */
-	private $_resultLimit = 10;
+	private int $_resultLimit = 10;
 
 	/**
 	 * Musicbrainz constructor.
@@ -284,7 +284,7 @@ class Musicbrainz {
 	 * @param integer $port
 	 * @return string
 	 */
-	private function _curlCall(string $url, $port=80): string {
+	private function _curlCall(string $url, int $port=80): string {
 		$ret = '';
 
 		$ch = curl_init();
@@ -303,6 +303,7 @@ class Musicbrainz {
 		);
 
 		if($this->_DEBUG) {
+			$_headers = array();
 			curl_setopt($ch, CURLOPT_VERBOSE, true);
 			curl_setopt($ch, CURLOPT_HEADERFUNCTION,
 				function($curl, $header) use (&$_headers) {
