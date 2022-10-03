@@ -7,7 +7,7 @@ Self hosted collection management for movies, music or games.
 Install it on your own webserver (see requirements) and store the information
 about your collected stuff.
 Accessible and usable with a browser. Runs also off a Rapsberry Pi.
-Tag and category support. Fulltext search an individual fields per collection.
+Tag and category support. Fulltext search and individual fields per collection.
 
 See first-steps.txt for first usage steps.
 
