@@ -18,7 +18,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.x - Rrajigar Mine ()';
+const BIB_VERSION = '1.3 - Rrajigar Mine ()';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
