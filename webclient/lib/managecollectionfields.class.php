@@ -26,28 +26,28 @@ class ManageCollectionFields {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * The collection we are working with
 	 *
-	 * @var integer
+	 * @var string
 	 */
-	private $_collectionId;
+	private string $_collectionId;
 
 	/**
 	 * Which db cols should not be removed
 	 *
 	 * @var array
 	 */
-	private $_protectedDBCols = array(
+	private array $_protectedDBCols = array(
 		'id','created','modified','modificationuser','owner','group','rights'
 	);
 
@@ -56,14 +56,14 @@ class ManageCollectionFields {
 	 *
 	 * @var array
 	 */
-	private $_cacheExistingSysFields = array();
+	private array $_cacheExistingSysFields = array();
 
 	/**
 	 * Store available fields info for runtime
 	 *
 	 * @var array
 	 */
-	private $_cacheAvailableFields = array();
+	private array $_cacheAvailableFields = array();
 
 	/**
 	 * ManageCollections constructor
@@ -79,9 +79,9 @@ class ManageCollectionFields {
 	/**
 	 * The id from the collection we are working with
 	 *
-	 * @param integer $id
+	 * @param string $id
 	 */
-	public function setCollection($id) {
+	public function setCollection(string $id): void {
 		if(!empty($id)) {
 			$this->_collectionId = $id;
 		}
@@ -94,7 +94,7 @@ class ManageCollectionFields {
 	 * @return array
 	 * @todo No rights implemented yet. Maybe not needed. Management done by hand directly on DB
 	 */
-	public function getAvailableFields($refresh=false): array {
+	public function getAvailableFields(bool $refresh=false): array {
 
 		if($refresh === false && !empty($this->_cacheAvailableFields)) {
 			return $this->_cacheAvailableFields;

@@ -1,12 +1,13 @@
+* option for sorting direction
 * Automatic upgrades of DB
+* drop in updates
 * Definition of fields in "card view"
 * User and groupmanagement: Check where a user or group is used!
 * Better error handling and display while adding / update and delete
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
-* drop in updates
+
 
 * responsive and breakpoints
 * Field management: Web interface
 * minimal theme
-* Automatic upgrade from DB changes

@@ -25,14 +25,14 @@ class ManageCollections {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * ManageCollections constructor.
@@ -534,11 +534,11 @@ class ManageCollections {
 	 * Update the rights from the group to the entries in this collection
 	 *
 	 * @param string $collectionId
-	 * @param string|bool $owner
-	 * @param string|bool $group
-	 * @param string|bool $rights
+	 * @param string $owner
+	 * @param string $group
+	 * @param string $rights
 	 */
-	private function _updateEntryRights(string $collectionId, $owner=false, $group=false, $rights=false) {
+	private function _updateEntryRights(string $collectionId, string $owner='', string $group='', string $rights=''): void {
 		if(!empty($collectionId)) {
 			$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."` SET";
 
@@ -566,10 +566,10 @@ class ManageCollections {
 	/**
 	 * Make a key=>value array of a comma seperated string and use the value as key
 	 *
-	 * @param array $data
+	 * @param string $data
 	 * @return array
 	 */
-	private function _loadAdvancedSearchTableFields(array $data): array {
+	private function _loadAdvancedSearchTableFields(string $data): array {
 		$ret = array();
 
 		$_t = explode(',',$data);
