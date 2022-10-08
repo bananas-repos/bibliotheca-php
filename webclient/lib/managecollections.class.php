@@ -389,6 +389,7 @@ class ManageCollections {
 				$this->_DB->query($queryStre2l);
 				$this->_DB->query($queryStrEntry);
 				$this->_DB->query($queryStrFields);
+				$this->_DB->commit();
 
 				Summoner::recursive_remove_directory(PATH_STORAGE.'/'.$id);
 
