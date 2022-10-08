@@ -245,7 +245,7 @@ header('Content-type: text/html; charset=UTF-8');
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	<meta name="author" content="https://www.bananas-playground.net/projekt/bibliotheca" />
+	<meta name="author" content="https://www.bananas-playground.net/projekt/bibliotheca/" />
 	<title>Setup - Bibliotheca</title>
 </head>
 <body>
