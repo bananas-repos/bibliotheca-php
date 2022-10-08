@@ -24,27 +24,27 @@ class IMDB
 	/**
 	 * Set this to true if you run into problems.
 	 */
-	private $IMDB_DEBUG = false;
+	private bool $IMDB_DEBUG = false;
 
 	/**
-	 * Set the preferred language for the User Agent.
+	 * @var string Set the preferred language for the User Agent.
 	 */
-	private $IMDB_BROWSER_LANG;
+	private string $IMDB_BROWSER_LANG;
 
 	/**
 	 * @var string The accept string for curl call
 	 */
-	private $IMDB_BROWSER_ACCEPT;
+	private string $IMDB_BROWSER_ACCEPT;
 
 	/**
 	 * @var string The user-agent string fpr curl call
 	 */
-	private $IMDB_BROWSER_AGENT;
+	private string $IMDB_BROWSER_AGENT;
 
 	/**
 	 * Define the timeout for cURL requests.
 	 */
-	private $IMDB_TIMEOUT = 15;
+	private int $IMDB_TIMEOUT = 15;
 
 	/**
 	 * These are the regular expressions used to extract the data.
@@ -96,57 +96,57 @@ class IMDB
 	/**
 	 * @var string The string returned, if nothing is found.
 	 */
-	public $sNotFound = 'n/A';
+	public string $sNotFound = 'n/A';
 
 	/**
-	 * @var null|int The ID of the movie.
+	 * @var string The ID of the movie.
 	 */
-	public $iId = null;
+	public string $iId = '';
 
 	/**
 	 * @var bool Is the content ready?
 	 */
-	public $isReady = false;
+	public bool $isReady = false;
 
 	/**
 	 * @var string Char that separates multiple entries.
 	 */
-	public $sSeparator = ' / ';
+	public string $sSeparator = ' / ';
 
 	/**
-	 * @var null|string The URL to the movie.
+	 * @var string The URL to the movie.
 	 */
-	public $sUrl = null;
+	public string $sUrl = '';
 
 	/**
 	 * @var bool Return responses enclosed in array
 	 */
-	public $bArrayOutput = false;
+	public bool $bArrayOutput = false;
 
 	/**
 	 * @var int Maximum cache time.
 	 */
-	private $iCache = 1440;
+	private int $iCache = 1440;
 
 	/**
-	 * @var null|string The root of the script.
+	 * @var string The root of the script.
 	 */
-	private $sRoot = null;
+	private string $sRoot = '';
 
 	/**
-	 * @var null|string Holds the source.
+	 * @var string Holds the source.
 	 */
-	private $sSource = null;
+	private string $sSource = '';
 
 	/**
 	 * @var string What to search for?
 	 */
-	private $sSearchFor = 'all';
+	private mixed $sSearchFor = 'all';
 
 	/**
 	 * @var array The fields to return at getAll
 	 */
-	private $_showFields;
+	private array $_showFields;
 
 	/**
 	 * IMDB constructor. Can now set some options
@@ -157,7 +157,7 @@ class IMDB
 	 *      string storage Where to store data. Absolute path
 	 *      boolean debug Show debug messages or not
 	 */
-	public function __construct($options) {
+	public function __construct(array $options) {
 
 		if(isset($options['debug']) && !empty($options['debug'])) {
 			$this->IMDB_DEBUG = true;
@@ -197,10 +197,10 @@ class IMDB
 
 
 	/**
-	 * @param $sSearch
+	 * @param string $sSearch
 	 * @throws Exception
 	 */
-	public function search($sSearch) {
+	public function search(string $sSearch): void {
 
 		$sSearch = trim($sSearch);
 		if(empty($sSearch)) {
@@ -229,16 +229,14 @@ class IMDB
 	 *
 	 * @return bool True on success, false on failure.
 	 */
-	private function fetchUrl($sSearch)
-	{
-
+	private function fetchUrl(string $sSearch): bool {
 
 		if ($this->IMDB_DEBUG) {
 			echo '<pre><b>Running:</b> fetchUrl("' . $sSearch . '")</pre>';
 		}
 
 		// Try to find a valid URL.
-		$sId = $this->matchRegex($sSearch, self::IMDB_ID, 1);
+		$sId = $this->matchRegex($sSearch, self::IMDB_ID, "1");
 		if (false !== $sId) {
 			$this->iId  = preg_replace('~[\D]~', '', $sId);
 			$this->sUrl = 'https://www.imdb.com/title/tt' . $this->iId . '/reference';
@@ -272,23 +270,25 @@ class IMDB
 				}
 				$sRedirect  = file_get_contents($sRedirectFile);
 				$this->sUrl = trim($sRedirect);
-				$this->iId  = preg_replace('~[\D]~', '', $this->matchRegex($sRedirect, self::IMDB_ID, 1));
+				$this->iId  = preg_replace('~[\D]~', '', $this->matchRegex($sRedirect, self::IMDB_ID, "1"));
 				$bSearch    = false;
 			}
 		}
 
 		// Does a cache of this movie exist?
-		$sCacheFile = $this->sRoot . '/cache/' . sha1($this->iId) . '.cache';
-		if (is_readable($sCacheFile)) {
-			$iDiff = round(abs(time() - filemtime($sCacheFile)) / 60);
-			if ($iDiff < $this->iCache) {
-				if ($this->IMDB_DEBUG) {
-					echo '<pre><b>Using cache:</b> ' . basename($sCacheFile) . '</pre>';
-				}
-				$this->sSource = file_get_contents($sCacheFile);
-				$this->isReady = true;
+		if(!empty($this->iId)) {
+			$sCacheFile = $this->sRoot . '/cache/' . sha1($this->iId) . '.cache';
+			if (is_readable($sCacheFile)) {
+				$iDiff = round(abs(time() - filemtime($sCacheFile)) / 60);
+				if ($iDiff < $this->iCache) {
+					if ($this->IMDB_DEBUG) {
+						echo '<pre><b>Using cache:</b> ' . basename($sCacheFile) . '</pre>';
+					}
+					$this->sSource = file_get_contents($sCacheFile);
+					$this->isReady = true;
 
-				return true;
+					return true;
+				}
 			}
 		}
 
@@ -309,19 +309,19 @@ class IMDB
 		}
 
 		// Was the movie found?
-		$sMatch = $this->matchRegex($sSource, self::IMDB_SEARCH, 1);
+		$sMatch = $this->matchRegex($sSource, self::IMDB_SEARCH, "1");
 		if (false !== $sMatch) {
 			$sUrl = 'https://www.imdb.com/title/' . $sMatch . '/reference';
 			if ($this->IMDB_DEBUG) {
 				echo '<pre><b>New redirect saved:</b> ' . basename($sRedirectFile) . ' => ' . $sUrl . '</pre>';
 			}
 			file_put_contents($sRedirectFile, $sUrl);
-			$this->sSource = null;
+			$this->sSource = '';
 			$this->fetchUrl($sUrl);
 
 			return true;
 		}
-		$sMatch = $this->matchRegex($sSource, self::IMDB_NOT_FOUND, 0);
+		$sMatch = $this->matchRegex($sSource, self::IMDB_NOT_FOUND, "0");
 		if (false !== $sMatch) {
 			if ($this->IMDB_DEBUG) {
 				echo '<pre><b>Movie not found:</b> ' . $sSearch . '</pre>';
@@ -355,8 +355,7 @@ class IMDB
 	/**
 	 * @return array All data.
 	 */
-	public function getAll()
-	{
+	public function getAll(): array {
 		$aData = [];
 		foreach (get_class_methods(__CLASS__) as $method) {
 			if (substr($method, 0, 3) === 'get' && $method !== 'getAll' && $method !== 'getCastImages') {
@@ -375,10 +374,9 @@ class IMDB
 	/**
 	 * @return string “Also Known As” or $sNotFound.
 	 */
-	public function getAka()
-	{
+	public function getAka(): string {
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_AKA, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_AKA, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -453,7 +451,7 @@ class IMDB
 	public function getAspectRatio()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_ASPECT_RATIO, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_ASPECT_RATIO, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -468,7 +466,7 @@ class IMDB
 	public function getAwards()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_AWARDS, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_AWARDS, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -713,7 +711,7 @@ class IMDB
 	public function getCertification()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_CERTIFICATION, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_CERTIFICATION, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -728,7 +726,7 @@ class IMDB
 	public function getColor()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_COLOR, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_COLOR, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -837,7 +835,7 @@ class IMDB
 	public function getCreatorAsUrl($sTarget = '')
 	{
 		if (true === $this->isReady) {
-			$sMatch  = $this->matchRegex($this->sSource, self::IMDB_CREATOR, 1);
+			$sMatch  = $this->matchRegex($this->sSource, self::IMDB_CREATOR, "1");
 			$aMatch  = $this->matchRegex($sMatch, self::IMDB_NAME);
 			$aReturn = [];
 			if (count($aMatch[2])) {
@@ -862,7 +860,7 @@ class IMDB
 	public function getDescription()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_DESCRIPTION, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_DESCRIPTION, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -894,7 +892,7 @@ class IMDB
 	public function getDirectorAsUrl($sTarget = '')
 	{
 		if (true === $this->isReady) {
-			$sMatch  = $this->matchRegex($this->sSource, self::IMDB_DIRECTOR, 1);
+			$sMatch  = $this->matchRegex($this->sSource, self::IMDB_DIRECTOR, "1");
 			$aMatch  = $this->matchRegex($sMatch, self::IMDB_NAME);
 			$aReturn = [];
 			if (count($aMatch[2])) {
@@ -960,7 +958,7 @@ class IMDB
 	public function getGross()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_GROSS, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_GROSS, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1122,7 +1120,7 @@ class IMDB
 	public function getMpaa()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_MPAA, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_MPAA, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1137,7 +1135,7 @@ class IMDB
 	public function getPlotKeywords()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_PLOT_KEYWORDS, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_PLOT_KEYWORDS, "1");
 			if (false !== $sMatch) {
 				$aReturn = explode('|', $this->cleanString($sMatch));
 
@@ -1156,7 +1154,7 @@ class IMDB
 	public function getPlot($iLimit = 0)
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_PLOT, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_PLOT, "1");
 			if (false !== $sMatch) {
 				if ($iLimit !== 0) {
 					return $this->shortText($this->cleanString($sMatch), $iLimit);
@@ -1178,7 +1176,7 @@ class IMDB
 	public function getPoster($sSize = 'small', $bDownload = false)
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_POSTER, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_POSTER, "1");
 			if (false !== $sMatch) {
 				if ('big' === strtolower($sSize) && false !== strstr($sMatch, '@._')) {
 					$sMatch = substr($sMatch, 0, strpos($sMatch, '@._')) . '@.jpg';
@@ -1214,7 +1212,7 @@ class IMDB
 	public function getRating()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RATING, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RATING, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1229,7 +1227,7 @@ class IMDB
 	public function getRatingCount()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RATING_COUNT, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RATING_COUNT, "1");
 			if (false !== $sMatch) {
 				return str_replace(',', '', $this->cleanString($sMatch));
 			}
@@ -1260,7 +1258,7 @@ class IMDB
 	public function getReleaseDate()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RELEASE_DATE, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RELEASE_DATE, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1339,7 +1337,7 @@ class IMDB
 	public function getRuntime()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RUNTIME, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_RUNTIME, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1391,7 +1389,7 @@ class IMDB
 	public function getSoundMix()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_SOUND_MIX, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_SOUND_MIX, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1406,7 +1404,7 @@ class IMDB
 	public function getTagline()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_TAGLINE, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_TAGLINE, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1424,13 +1422,13 @@ class IMDB
 	{
 		if (true === $this->isReady) {
 			if (true === $bForceLocal) {
-				$sMatch = $this->matchRegex($this->sSource, self::IMDB_TITLE_ORIG, 1);
+				$sMatch = $this->matchRegex($this->sSource, self::IMDB_TITLE_ORIG, "1");
 				if (false !== $sMatch && "" !== $sMatch) {
 					return $this->cleanString($sMatch);
 				}
 			}
 
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_TITLE, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_TITLE, "1");
 			$sMatch = preg_replace('~\(\d{4}\)$~Ui', '', $sMatch);
 			if (false !== $sMatch && "" !== $sMatch) {
 				return $this->cleanString($sMatch);
@@ -1448,7 +1446,7 @@ class IMDB
 	public function getTrailerAsUrl($bEmbed = false)
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_TRAILER, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_TRAILER, "1");
 			if (false !== $sMatch) {
 				$sUrl = 'https://www.imdb.com/video/imdb/' . $sMatch . '/' . ($bEmbed ? 'player' : '');
 
@@ -1477,7 +1475,7 @@ class IMDB
 	public function getUserReview()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_USER_REVIEW, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_USER_REVIEW, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1492,7 +1490,7 @@ class IMDB
 	public function getVotes()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_VOTES, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_VOTES, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1524,7 +1522,7 @@ class IMDB
 	public function getWriterAsUrl($sTarget = '')
 	{
 		if (true === $this->isReady) {
-			$sMatch  = $this->matchRegex($this->sSource, self::IMDB_WRITER, 1);
+			$sMatch  = $this->matchRegex($this->sSource, self::IMDB_WRITER, "1");
 			$aMatch  = $this->matchRegex($sMatch, self::IMDB_NAME);
 			$aReturn = [];
 			if (count($aMatch[2])) {
@@ -1549,7 +1547,7 @@ class IMDB
 	public function getYear()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_YEAR, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_YEAR, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1564,7 +1562,7 @@ class IMDB
 	public function getBudget()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_BUDGET, 1);
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_BUDGET, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}
@@ -1579,23 +1577,22 @@ class IMDB
 	 *
 	 * @param string $sContent The content to search in.
 	 * @param string $sPattern The regular expression.
-	 * @param null   $iIndex   The index to return.
+	 * @param string $iIndex   The index to return.
 	 *
 	 * @return bool   If no match was found.
 	 * @return string If one match was found.
 	 * @return array  If more than one match was found.
 	 */
-	private function matchRegex($sContent, $sPattern, $iIndex = null)
+	private function matchRegex(string $sContent, string $sPattern, string $iIndex = '')
 	{
 		preg_match_all($sPattern, $sContent, $aMatches);
 		if ($aMatches === false) {
 			return false;
 		}
-		if ($iIndex !== null && is_int($iIndex)) {
+		if (is_numeric($iIndex)) {
 			if (isset($aMatches[$iIndex][0])) {
 				return $aMatches[$iIndex][0];
 			}
-
 			return false;
 		}
 
@@ -1613,10 +1610,10 @@ class IMDB
 	 *
 	 * @return string|array Multiple results separated by selected separator string, or enclosed into native array.
 	 */
-	private function arrayOutput($bArrayOutput, $sSeparator, $sNotFound, $aReturn = null, $bHaveMore = false)
+	private function arrayOutput($bArrayOutput, $sSeparator, $sNotFound, $aReturn = '', $bHaveMore = false)
 	{
 		if ($bArrayOutput) {
-			if ($aReturn == null || ! is_array($aReturn)) {
+			if (empty($aReturn) || ! is_array($aReturn)) {
 				return [];
 			}
 
@@ -1626,7 +1623,7 @@ class IMDB
 
 			return $aReturn;
 		} else {
-			if ($aReturn == null || ! is_array($aReturn)) {
+			if (empty($aReturn) || ! is_array($aReturn)) {
 				return $sNotFound;
 			}
 

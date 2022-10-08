@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,14 @@ class ManageCollections {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * ManageCollections constructor.
@@ -40,39 +40,9 @@ class ManageCollections {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
-	}
-
-	/**
-	 * Load collection info from table. Checks user rights
-	 *
-	 * @param string $id
-	 * @param string $rightsMode
-	 * @return array
-	 */
-	public function getCollection($id,$rightsMode="read") {
-		$ret = array();
-
-		if (Summoner::validate($id, 'digit')) {
-			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`
-					FROM `".DB_PREFIX."_collection` AS c
-					WHERE ".$this->_User->getSQLRightsString($rightsMode, "c")."
-					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-			try {
-				$query = $this->_DB->query($queryStr);
-				if ($query !== false && $query->num_rows > 0) {
-					$ret = $query->fetch_assoc();
-				}
-			}
-			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			}
-		}
-
-		return $ret;
 	}
 
 	/**
@@ -80,7 +50,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getCollections() {
+	public function getCollections(): array{
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
@@ -94,7 +64,6 @@ class ManageCollections {
 		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 		try {
 			$query = $this->_DB->query($queryStr);
-
 			if ($query !== false && $query->num_rows > 0) {
 				while (($result = $query->fetch_assoc()) != false) {
 					$ret[$result['id']] = $result;
@@ -113,7 +82,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getGroupsForSelection() {
+	public function getGroupsForSelection(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description` 
@@ -141,7 +110,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getUsersForSelection() {
+	public function getUsersForSelection(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `login`
@@ -168,7 +137,7 @@ class ManageCollections {
 	 *
 	 * @return array
 	 */
-	public function getToolsForSelection() {
+	public function getToolsForSelection(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `id`, `name`, `description`
@@ -386,7 +355,7 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	public function deleteCollection($id) {
+	public function deleteCollection(string $id): bool {
 		$ret = false;
 
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
@@ -398,18 +367,19 @@ class ManageCollections {
 							WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrTool,true));
 
-			$queryStre2l = "DROP TABLE `bibliotheca`.`bib_collection_entry2lookup_".$this->_DB->real_escape_string($id)."`";
+			$queryStre2l = "DROP TABLE `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($id)."`";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStre2l,true));
 
-			$queryStrEntry = "DROP TABLE `bibliotheca`.`bib_collection_entry_".$this->_DB->real_escape_string($id)."`";
+			$queryStrEntry = "DROP TABLE `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($id)."`";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrEntry,true));
 
-			$queryStrFields = "DROP TABLE `bibliotheca`.`bib_collection_fields_".$this->_DB->real_escape_string($id)."`";
+			$queryStrFields = "DROP TABLE `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($id)."`";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrFields,true));
 
 
 			// mysql implicit commit with drop command
 			// transaction does not really help here.
+			// https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -440,7 +410,7 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return array
 	 */
-	public function getAvailableTools($id) {
+	public function getAvailableTools(string $id): array {
 		$ret = array();
 
 		$queryStr = "SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`action`, `t`.`target`
@@ -469,7 +439,7 @@ class ManageCollections {
 	 * @param string $name
 	 * @return bool
 	 */
-	private function _validNewCollectionName($name) {
+	private function _validNewCollectionName(string $name): bool {
 		$ret = false;
 		if (Summoner::validate($name, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
@@ -496,7 +466,7 @@ class ManageCollections {
 	 * @param string $id Number
 	 * @return bool
 	 */
-	private function _validUpdateCollectionName($name, $id) {
+	private function _validUpdateCollectionName(string $name, string $id): bool {
 		$ret = false;
 
 		if (Summoner::validate($name, 'nospace')
@@ -527,7 +497,7 @@ class ManageCollections {
 	 * @param array $tool
 	 * @return bool
 	 */
-	private function _updateToolRelation($id,$tool) {
+	private function _updateToolRelation(string $id, array $tool): bool {
 		$ret = false;
 
 
@@ -565,11 +535,11 @@ class ManageCollections {
 	 * Update the rights from the group to the entries in this collection
 	 *
 	 * @param string $collectionId
-	 * @param string|bool $owner
-	 * @param string|bool $group
-	 * @param string|bool $rights
+	 * @param string $owner
+	 * @param string $group
+	 * @param string $rights
 	 */
-	private function _updateEntryRights($collectionId, $owner=false, $group=false, $rights=false) {
+	private function _updateEntryRights(string $collectionId, string $owner='', string $group='', string $rights=''): void {
 		if(!empty($collectionId)) {
 			$queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."` SET";
 
@@ -597,10 +567,10 @@ class ManageCollections {
 	/**
 	 * Make a key=>value array of a comma seperated string and use the value as key
 	 *
-	 * @param array $data
+	 * @param string $data
 	 * @return array
 	 */
-	private function _loadAdvancedSearchTableFields($data) {
+	private function _loadAdvancedSearchTableFields(string $data): array {
 		$ret = array();
 
 		$_t = explode(',',$data);

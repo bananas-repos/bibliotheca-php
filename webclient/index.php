@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,14 +18,15 @@
 
 require_once './config/config.php';
 
+const BIB_VERSION = '1.3 - Rrajigar Mine (2022-10-08)';
+
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
 ini_set('error_reporting',-1); // E_ALL & E_STRICT
 
 # check request
-$_urlToParse = filter_var($_SERVER['QUERY_STRING'],FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW);
+$_urlToParse = filter_var($_SERVER['QUERY_STRING'],FILTER_UNSAFE_RAW, FILTER_FLAG_STRIP_LOW);
 if(!empty($_urlToParse)) {
-	# see http://de2.php.net/manual/en/regexp.reference.unicode.php
 	if(preg_match('/[\p{C}\p{M}\p{Sc}\p{Sk}\p{So}\p{Zl}\p{Zp}]/u',$_urlToParse) === 1) {
 		die('Malformed request. Make sure you know what you are doing.');
 	}

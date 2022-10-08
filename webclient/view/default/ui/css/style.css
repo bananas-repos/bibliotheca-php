@@ -11,3 +11,7 @@
 .input-multiple-template {
 	margin: 1px;
 }
+
+.uk-navbar-dropdown {
+	width: auto;
+}

@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,39 +17,39 @@
  */
 
 # set to true if you need debug messages in error log file
-define('DEBUG',true);
+const DEBUG = false;
 # set to ture if you need query log messages in error log file.
-define('QUERY_DEBUG',true);
+const QUERY_DEBUG = false;
 
 # timezone settings
-define('TIMEZONE','Europe/Berlin');
+const TIMEZONE = '~timezone~';
 
 # path settings
-define('PATH_ABSOLUTE','/home/some/path/bibliotheca/webclient');
-define('PATH_SYSTEMOUT',PATH_ABSOLUTE.'/systemout');
-define('PATH_STORAGE',PATH_ABSOLUTE.'/storage');
-define('PATH_WEB_STORAGE','storage');
+const PATH_ABSOLUTE = '~pathabsolute~';
+const PATH_SYSTEMOUT = PATH_ABSOLUTE.'/systemout';
+const PATH_STORAGE = PATH_ABSOLUTE.'/storage';
+const PATH_WEB_STORAGE = 'storage';
 
 # database config
-define('DB_HOST','127.0.0.1');
-define('DB_USERNAME','user');
-define('DB_PASSWORD','test');
-define('DB_NAME','bibliotheca');
-define('DB_PREFIX','bib'); # a _ is added automatically as separation
+const DB_HOST = '~dbhost~';
+const DB_USERNAME = '~dbuser~';
+const DB_PASSWORD = '~dbpassword~';
+const DB_NAME = '~dbname~';
+const DB_PREFIX = '~dbprefix~'; # a _ is added automatically as separation
 
 ## theme support
 # fallback is default theme
-define('UI_THEME', 'default');
+const UI_THEME =  'default';
 
 # session
-define('SESSION_LIFETIME', 43200); // 8 hours
-define('SESSION_NAME', "bibliotheca-session");
-define('SESSION_SAVE_PATH', PATH_SYSTEMOUT.'/session');
+const SESSION_LIFETIME =  43200; // 8 hours
+const SESSION_NAME =  "bibliotheca-session";
+const SESSION_SAVE_PATH =  PATH_SYSTEMOUT.'/session';
 
 # usersettings
-define('ADMIN_GROUP_ID','1');
-define('ANON_USER_ID','2');
-define('ANON_GROUP_ID','3');
+const ADMIN_GROUP_ID = '1';
+const ANON_USER_ID = '2';
+const ANON_GROUP_ID = '3';
 
 # view options
-define('RESULTS_PER_PAGE',24);
+const RESULTS_PER_PAGE = 24;

@@ -19,7 +19,7 @@
 /**
  * Options for the imdb grabber
  *
- * TOOL_IMDBWEB_SEARCH can be 'movie','tv','episode','game','all'. Default is movie
+ * TOOL_IMDBWEB_SEARCH can be 'movie = 'tv = 'episode = 'game = 'all'. Default is movie
  * TOOL_IMDBWEB_FIELDS is an array to define which fields from IMDB are displayed for selection
  * 		an empty array() shows all.
  * 		getAka, getAkas, getAspectRatio, getAwards, getBudget, getCast, getCastAndCharacter, CastAndCharacterAsUrl,
@@ -35,23 +35,23 @@
  * TOOL_IMDBWEB_BROWSERSTRING a current browser agent string. Should be updated from time to time. See default config file.
  * TOOL_IMDBWEB_BROWSER_ACCEPT_LANG should define in which language the content returns
 */
-define('TOOL_IMDBWEB_SEARCH','movie');
-define('TOOL_IMDBWEB_FIELDS',
+const = TOOL_IMDBWEB_SEARCH = 'movie';
+const = TOOL_IMDBWEB_FIELDS =
 	array(
-		'getCast','getDescription', 'getDirector', 'getGenre', 'getPlot', 'getRating', 'getRuntime','getTitle',
-		'getWriter', 'getYear'
+		'getCast = 'getDescription =  'getDirector =  'getGenre =  'getPlot =  'getRating =  'getRuntime = 'getTitle =
+		'getWriter =  'getYear'
 	)
-);
+;
 /*
-define('TOOL_IMDBWEB_FIELDS_TO',
+const = TOOL_IMDBWEB_FIELDS_TO =
 	array(
-		'getCast' => 'actors','getDescription' => 'description', 'getDirector' => 'directors', 'getGenre' => 'genres',
-		'getPlot' => 'content', 'getRating' => 'imdbrating', 'getRuntime' => 'runtime','getTitle' => 'title',
-		'getWriter' => 'writers', 'getYear' => 'year'
+		'getCast' => 'actors = 'getDescription' => 'description =  'getDirector' => 'directors =  'getGenre' => 'genres =
+		'getPlot' => 'content =  'getRating' => 'imdbrating =  'getRuntime' => 'runtime = 'getTitle' => 'title =
+		'getWriter' => 'writers =  'getYear' => 'year'
 	)
-);
+;
 */
 
-define('TOOL_IMDBWEB_BROWSER_AGENT','Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0');
-define('TOOL_IMDBWEB_BROWSER_ACCEPT','text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8');
-define('TOOL_IMDBWEB_BROWSER_ACCEPT_LANG','en-US,en;q=0.5');
+const = TOOL_IMDBWEB_BROWSER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0';
+const = TOOL_IMDBWEB_BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
+const = TOOL_IMDBWEB_BROWSER_ACCEPT_LANG = 'en-US,en;q=0.5';

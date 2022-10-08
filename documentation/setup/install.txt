@@ -4,27 +4,21 @@ unpacked files
 
 2. DB Setup
 Create a DB and choose a prefix (A _ is added automatically as separation) for your tables.
-Open the provided sql file. Search for #REPLACEME# and replace it with your table prefix.
-Save. Import this file into you newly created DB.
+Write down those values. You need them later.
 
-3. Config
-Copy webclient/config/config.php.default to webclient/config/config.php
-Edit and fill in the DB details.
+3. Move files
+Move the content of webclient folder to your webspace.
 
-Change PATH_ABSOLUTE to you installation path and PATH_WEB_STORAGE relative to your webroot.
+4. File rights
+Make sure that systemout folder is read/write accessible for your webserver user. Recursive.
+Make sure that storage folder is read/write accessible for your webserver user. Recursive.
 
-Copy config-imdb.php.default to config-imdb.php.
-Read the tools.txt and tool-imdbweb.txt and make wanted changes to that file
+5. Setup
+Open your browser and visit your newly created bibliotheca installation setup with /setup
+Follow the instructions and remember your settings from step 2.
+After completion the setup will delete itself. Remove the /setup from the url and you are done.
 
-4. Move files
-Move the content of webclient folder to your webspace. Make sure the location matches
-the PATH_ABSOLUTE config in config.php file
-
-5. File rights
-Make sure that systemout folder is read/write accessible with your webserver user. Recursive.
-Make sure that storage folder is read/write accessible with your webserver user. Recursive.
-
-6. Access
+5. Access
 Open your browser and visit your newly created bibliotheca installation.
 Default admin user pw: test
 
@@ -32,3 +26,6 @@ Default admin user pw: test
 Login with default admin account and change the password!
 Create your own user.
 Create your first collection.
+
+To re run the setup:
+Upload the setup folder again. It deletes itself after a successfull setup.

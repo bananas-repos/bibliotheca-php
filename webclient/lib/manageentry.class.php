@@ -22,35 +22,35 @@ class Manageentry {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Currently loaded collection to manage entries from
 	 *
 	 * @var string Number
 	 */
-	private $_collectionId;
+	private string $_collectionId;
 
 	/**
 	 * Placeholder in query strings for inserted DB id
 	 *
 	 * @var string
 	 */
-	private $_replaceEntryString = 'REPLACE_ENTERY';
+	private string $_replaceEntryString = 'REPLACE_ENTERY';
 
 	/**
 	 * Store edit fields info for runtime
 	 *
 	 * @var array
 	 */
-	private $_cacheEditFields = array();
+	private array $_cacheEditFields = array();
 
 	/**
 	 * ManageCollections constructor.
@@ -58,7 +58,7 @@ class Manageentry {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 	}
@@ -68,7 +68,7 @@ class Manageentry {
 	 *
 	 * @param string $collectionId Number
 	 */
-	public function setCollection($collectionId) {
+	public function setCollection(string $collectionId) {
 		if(!empty($collectionId)) {
 			$this->_collectionId = $collectionId;
 		}
@@ -81,7 +81,7 @@ class Manageentry {
 	 * @param bool $refresh
 	 * @return array
 	 */
-	public function getEditFields($refresh=false) {
+	public function getEditFields(bool $refresh=false): array {
 
 		if($refresh === false && !empty($this->_cacheEditFields)) {
 			return $this->_cacheEditFields;
@@ -160,10 +160,10 @@ class Manageentry {
 	 * @param string $owner Number
 	 * @param string $group Number
 	 * @param string $rights
-	 * @param mixed $update Either false for no update or the ID to update
+	 * @param mixed|false $update Either false for no update or the ID to update
 	 * @return int
 	 */
-	public function create(array $data, string $owner, string $group, string $rights, $update=false): int {
+	public function create(array $data, string $owner, string $group, string $rights, mixed $update=false): int {
 		$ret = 0;
 
 		if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".var_export($data,true));
@@ -260,7 +260,7 @@ class Manageentry {
 	 * @param string $entryId Number
 	 * @return bool
 	 */
-	public function delete($entryId) {
+	public function delete(string $entryId): bool {
 		$ret = false;
 
 		if(!empty($entryId) && !empty($this->_collectionId)) {
@@ -347,7 +347,7 @@ class Manageentry {
 	 * @param string $entryId Number
 	 * @return bool
 	 */
-	private function _canDelete($entryId) {
+	private function _canDelete(string $entryId): bool {
 		$ret = false;
 
 		if(!empty($entryId) && !empty($this->_collectionId)) {
@@ -382,7 +382,7 @@ class Manageentry {
 	 * @param array $entryFields
 	 * @return array
 	 */
-	private function _mergeEntryWithFields($entryData, $entryFields) {
+	private function _mergeEntryWithFields(array $entryData, array $entryFields): array {
 		if(!empty($entryFields)) {
 			foreach($entryFields as $f) {
 				$_mnValue = '_loadFieldValue_'.$f['type'];
@@ -399,12 +399,12 @@ class Manageentry {
 	 * Load the values for given $entryId for $fieldData
 	 * lookup function for field type lookupmultiple
 	 *
-	 * @see Mancubus
 	 * @param string $entryId Number
 	 * @param array $fieldData
 	 * @return array
+	 * @see Mancubus
 	 */
-	private function _loadFieldValue_lookupmultiple($entryId, $fieldData) {
+	private function _loadFieldValue_lookupmultiple(string $entryId, array $fieldData): array {
 		$ret = array();
 
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
@@ -433,12 +433,12 @@ class Manageentry {
 	 * Get the single upload file from storage location
 	 * lookup function for field type upload
 	 *
-	 * @see Mancubus
 	 * @param string $entryId Number
 	 * @param array $fieldData
 	 * @return string
+	 * @see Mancubus
 	 */
-	private function _loadFieldValue_upload($entryId, $fieldData) {
+	private function _loadFieldValue_upload(string $entryId, array $fieldData): string {
 		$ret = "";
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
 
@@ -457,12 +457,12 @@ class Manageentry {
 	 * Get the multiple upload files from storage location
 	 * lookup function for field type upload_multiple
 	 *
-	 * @see Mancubus
 	 * @param string $entryId Number
 	 * @param array $fieldData
 	 * @return array
+	 * @see Mancubus
 	 */
-	private function _loadFieldValue_upload_multiple($entryId, $fieldData) {
+	private function _loadFieldValue_upload_multiple(string $entryId, array $fieldData): array {
 		$ret = array();
 		if(!empty($entryId) && !empty($fieldData) && !empty($this->_collectionId)) {
 
@@ -483,7 +483,7 @@ class Manageentry {
 	 * @param array $data
 	 * @return array
 	 */
-	private function _loadField_selection($data) {
+	private function _loadField_selection(array $data): array {
 		if(!empty($data) && isset($data['value']) && !empty($data['value'])) {
 			if(strstr($data['value'], ",")) {
 				$data['options'] = explode(",", $data['value']);
@@ -495,10 +495,10 @@ class Manageentry {
 	/**
 	 * Load suggestions based on the existing data for this field
 	 *
-	 * @param array $data  Field data
+	 * @param array $data Field data
 	 * @return array
 	 */
-	private function _loadField_lookupmultiple($data) {
+	private function _loadField_lookupmultiple(array $data): array {
 		if(!empty($data) && isset($data['id']) && !empty($data['id'])) {
 			$queryStr = "SELECT DISTINCT(`value`) 
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
@@ -522,11 +522,11 @@ class Manageentry {
 	/**
 	 * Create part of the insert statement for field type text
 	 *
-	 * @param array $data  Field data
-	 * @param array $queryData  Query data array
+	 * @param array $data Field data
+	 * @param array $queryData Query data array
 	 * @return array
 	 */
-	private function _saveField_text($data, $queryData) {
+	private function _saveField_text(array $data, array $queryData): array {
 		$queryData['init'][] = "`".$data['identifier']."` = '".$this->_DB->real_escape_string($data['valueToSave'])."'";
 		return $queryData;
 	}
@@ -538,7 +538,7 @@ class Manageentry {
 	 * @param array $queryData Query data array
 	 * @return array
 	 */
-	private function _saveField_text3($data, $queryData) {
+	private function _saveField_text3(array $data, array $queryData): array {
 		return $this->_saveField_text($data, $queryData);
 	}
 
@@ -549,7 +549,7 @@ class Manageentry {
 	 * @param array $queryData Query data array
 	 * @return array
 	 */
-	private function _saveField_textarea($data, $queryData) {
+	private function _saveField_textarea(array $data, array $queryData): array {
 		return $this->_saveField_text($data, $queryData);
 	}
 
@@ -560,7 +560,7 @@ class Manageentry {
 	 * @param array $queryData Query data array
 	 * @return array
 	 */
-	private function _saveField_selection($data, $queryData) {
+	private function _saveField_selection(array $data, array $queryData): array {
 		return $this->_saveField_text($data, $queryData);
 	}
 
@@ -573,7 +573,7 @@ class Manageentry {
 	 * @param array $queryData Query data array
 	 * @return array
 	 */
-	private function _saveField_year($data, $queryData) {
+	private function _saveField_year(array $data, array $queryData): array {
 		preg_match('/[0-9]{4}/', $data['valueToSave'], $matches);
 		if(isset($matches[0]) && !empty($matches[0])) {
 			$data['valueToSave'] = $matches[0];
@@ -589,7 +589,7 @@ class Manageentry {
 	 * @param array $queryData
 	 * @return mixed
 	 */
-	private function _saveField_number($data, $queryData) {
+	private function _saveField_number(array $data, array $queryData): array {
 		// make sure there is something (int) to save
 		if(empty($data['valueToSave'])) {
 			$data['valueToSave'] = 0;
@@ -606,7 +606,7 @@ class Manageentry {
 	 * @param array $queryData Query data array
 	 * @return array
 	 */
-	private function _saveField_lookupmultiple($data, $queryData) {
+	private function _saveField_lookupmultiple(array $data, array $queryData): array {
 		$_d = trim($data['valueToSave']);
 		$_d = trim($_d, ",");
 

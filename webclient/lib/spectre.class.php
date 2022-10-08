@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2020 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,21 +26,21 @@ class Spectre {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Allowed request params
 	 *
 	 * @var array
 	 */
-	private $_allowedRequests = array('default','list','add','addInfo');
+	private array $_allowedRequests = array('default','list','add','addInfo');
 
 	/**
 	 * Spectre constructor.
@@ -48,7 +48,7 @@ class Spectre {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 	}
@@ -59,7 +59,7 @@ class Spectre {
 	 * @param string $request
 	 * @return bool
 	 */
-	public function allowedRequests($request) {
+	public function allowedRequests(string $request): bool {
 		$ret = false;
 
 		if(in_array($request, $this->_allowedRequests)) {
@@ -76,7 +76,7 @@ class Spectre {
 	 * @param array $data
 	 * @return array
 	 */
-	public function buildAddStructure($data) {
+	public function buildAddStructure(array $data): array {
 		$ret = array();
 
 		if(!empty($data) && is_array($data)) {
@@ -96,7 +96,7 @@ class Spectre {
 	 * @param array $data
 	 * @return array
 	 */
-	public function prepareFilesArray($data) {
+	public function prepareFilesArray(array $data): array {
 		$ret = array();
 
 		if(!empty($data)) {

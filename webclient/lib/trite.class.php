@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,28 +29,28 @@ class Trite {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Currently loaded collection to work with
 	 *
 	 * @var string
 	 */
-	private $_id;
+	private string $_id;
 
 	/**
 	 * Current loaded collection data as an array
 	 *
 	 * @var array
 	 */
-	private $_collectionData;
+	private array $_collectionData;
 
 	/**
 	 * Options for db queries
@@ -61,22 +61,22 @@ class Trite {
 	 *
 	 * @var array
 	 */
-	private $_queryOptions;
+	private array $_queryOptions;
 
 	/**
 	 * Cache for already loaded collection fields
 	 *
 	 * @var array
 	 */
-	private $_cacheExistingCollectionFields = array();
+	private array $_cacheExistingCollectionFields = array();
 
 	/**
 	 * Trite constructor.
 	 *
-	 * @param $databaseConnectionObject
-	 * @param $userObj
+	 * @param mysqli $databaseConnectionObject
+	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 
@@ -91,9 +91,10 @@ class Trite {
 	 *  'orderby' => $_sort,
 	 *  'sortDirection' => $_sortDirection
 	 * );
+	 *
 	 * @param array $options
 	 */
-	public function setQueryOptions($options) {
+	public function setQueryOptions(array $options): void {
 
 		if(!isset($options['limit'])) $options['limit'] = 5;
 		if(!isset($options['offset'])) $options['offset'] = false;
@@ -104,14 +105,14 @@ class Trite {
 	}
 
 	/**
-	 * Get information to display for current collection
+	 * Get information to display for given collection
 	 * based on current user and given rights
 	 *
 	 * @param string $id The collection ID to load
 	 * @param string $right The rights mode. read, write or delete
 	 * @return array
 	 */
-	public function load(string $id,$right="read"): array {
+	public function load(string $id, string $right="read"): array {
 		$this->_collectionData = array();
 
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
@@ -145,10 +146,10 @@ class Trite {
 	 * get the value of the specified param from the collection data array
 	 *
 	 * @param string $param
-	 * @return bool|mixed
+	 * @return string
 	 */
-	public function param($param) {
-		$ret = false;
+	public function param(string $param): string {
+		$ret = '';
 
 		$param = trim($param);
 
@@ -163,9 +164,10 @@ class Trite {
 	 * Get all available collections for display based on current user
 	 * and read mode
 	 *
+	 * @param string $rightsMode
 	 * @return array
 	 */
-	public function getCollections($rightsMode="read") {
+	public function getCollections(string $rightsMode="read"): array {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`
@@ -264,7 +266,7 @@ class Trite {
 	 * @param string $search String value to search value against
 	 * @return array
 	 */
-	public function getTags($search='') {
+	public function getTags(string $search=''): array {
 		$ret = array();
 
 		$queryStr = "SELECT `cf`.`fk_field_id` AS id,
@@ -311,7 +313,7 @@ class Trite {
 	 *
 	 * @return array
 	 */
-	public function getAvailableTools() {
+	public function getAvailableTools(): array {
 		$ret = array();
 
 		$queryStr = "SELECT `t`.`id`, `t`.`name`, `t`.`description`, `t`.`action`, `t`.`target`
@@ -335,11 +337,69 @@ class Trite {
 	}
 
 	/**
+	 * Some statistics about the current collection.
+	 * Entries, tags, storage
+	 * Adds a stats array to _collectionData
+	 *
+	 * @return array
+	 */
+	public function getStats(): array {
+		if(empty($this->_id)) return array();
+
+		$this->_collectionData['stats'] = array();
+
+		$queryStr = "SELECT COUNT(*) AS entries FROM `".DB_PREFIX."_collection_entry_".$this->_id."`";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				$result = $query->fetch_assoc();
+				$this->_collectionData['stats']['entriesCount'] = $result['entries'];
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
+
+		$tags = $this->getTags();
+		$tagsCount = 0;
+		foreach ($tags as $k=>$v) {
+			$tagsCount += count($v['entries']);
+		}
+		$this->_collectionData['stats']['tagsCount'] = $tagsCount;
+
+		$tableSize = 0; // in MB
+		$queryStr = "SELECT (DATA_LENGTH + INDEX_LENGTH) AS `size`
+						FROM information_schema.TABLES
+						WHERE TABLE_SCHEMA = 'bibliotheca'
+  						AND TABLE_NAME LIKE 'bib_collection_%_".$this->_id."'
+						ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$tableSize += $result['size'];
+				}
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
+		$this->_collectionData['stats']['tableSize'] = Summoner::bytesToHuman($tableSize);
+
+		$this->_collectionData['stats']['storageSize'] = Summoner::bytesToHuman(Summoner::folderSize(PATH_STORAGE.'/'.$this->_id));
+
+
+		return $this->_collectionData;
+	}
+
+	/**
 	 * set some defaults by init of the class
 	 *
 	 * @return void
 	 */
-	private function _setDefaults() {
+	private function _setDefaults(): void {
 		// default query options
 		$options['limit'] = 5;
 		$options['offset'] = false;
@@ -351,15 +411,20 @@ class Trite {
 	/**
 	 * Make a key=>value array of a comma seperated string and use the value as key
 	 *
-	 * @param array $data
+	 * @param string $data
 	 * @return array
 	 */
-	private function _loadAdvancedSearchTableFields($data) {
+	private function _loadAdvancedSearchTableFields(string $data): array {
 		$ret = array();
 
-		$_t = explode(',',$data);
-		foreach($_t as $e) {
-			$ret[$e] = $e;
+		if(!strstr($data, ',')) {
+			$ret[$data] = $data;
+		}
+		else {
+			$_t = explode(',',$data);
+			foreach($_t as $e) {
+				$ret[$e] = $e;
+			}
 		}
 
 		return $ret;

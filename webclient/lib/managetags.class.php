@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,21 +25,21 @@ class ManageTags {
 	 *
 	 * @var mysqli
 	 */
-	private $_DB;
+	private mysqli $_DB;
 
 	/**
 	 * The user object to query with
 	 *
 	 * @var Doomguy
 	 */
-	private $_User;
+	private Doomguy $_User;
 
 	/**
 	 * Currently loaded collection to work with
 	 *
 	 * @var string Number
 	 */
-	private $_collectionId;
+	private string $_collectionId;
 
 	/**
 	 * ManageTags constructor.
@@ -47,7 +47,7 @@ class ManageTags {
 	 * @param mysqli $databaseConnectionObject
 	 * @param Doomguy $userObj
 	 */
-	public function __construct($databaseConnectionObject, $userObj) {
+	public function __construct(mysqli $databaseConnectionObject, Doomguy $userObj) {
 		$this->_DB = $databaseConnectionObject;
 		$this->_User = $userObj;
 	}
@@ -57,7 +57,7 @@ class ManageTags {
 	 *
 	 * @param string $collectionId Number
 	 */
-	public function setCollection($collectionId) {
+	public function setCollection(string $collectionId): void {
 		if(!empty($collectionId)) {
 			$this->_collectionId = $collectionId;
 		}
@@ -73,7 +73,7 @@ class ManageTags {
 	 * @param array $data Needs use=fromString, move=toString, doDelete=true
 	 * @return string
 	 */
-	public function doWithTag($ident, $data) {
+	public function doWithTag(string $ident, array $data): string {
 		$ret = '';
 
 		if(!empty($this->_collectionId) && !empty($ident) && !empty($data) && isset($data['use']) && !empty($data['use'])) {
@@ -100,7 +100,7 @@ class ManageTags {
 	 * @param string $to Value string to set to in lookup table
 	 * @return string
 	 */
-	private function _move($field, $from, $to) {
+	private function _move(string $field, string $from, string $to): string {
 		$ret = '';
 
 		if(!Summoner::validate($field,'digit')) return 'Invalid field id for move/rename';
@@ -131,7 +131,7 @@ class ManageTags {
 	 * @param string $what Value to search for and delete from lookup table
 	 * @return string
 	 */
-	private function _delete($field, $what) {
+	private function _delete(string $field, string $what): string {
 		$ret = '';
 
 		if(!Summoner::validate($field,'digit')) return 'Invalid field id for delete';

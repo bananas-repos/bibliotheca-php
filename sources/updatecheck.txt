@@ -1,0 +1,14 @@
+setup
+- sql file mit mysqldump
+- config files in setup.php
+- options in setup.php
+- sql file in setup
+
+documentation
+version, readme and changelog
+
+upgrade file with correct placeholders
+
+correct placeholders in sql file for manual setup
+
+correct version info in VERSION and index.php

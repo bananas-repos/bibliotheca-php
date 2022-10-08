@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2022 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ class Summoner {
 	 * @param string $file relative path from THEME/
 	 * @param string $theme Theme name
 	 * @param string $defaultTheme Default theme name can be overwritten
-	 * @return bool|string False of nothing is found
+	 * @return string False of nothing is found
 	 */
-	static function themefile($file, $theme, $defaultTheme='default') {
-		$ret = false;
+	static function themefile(string $file, string $theme, string $defaultTheme = 'default'): string {
+		$ret = '';
 
 		if(file_exists('view/'.$theme.'/'.$file)) {
 			$ret = 'view/'.$theme.'/'.$file;
@@ -48,8 +48,9 @@ class Summoner {
 	 *
 	 * @param string $input The string to check
 	 * @param string $mode How the string should be checked
-	 * @param mixed $limit If int given the string is checked for length
+	 * @param integer $limit If int given the string is checked for length
 	 *
+	 * @return bool
 	 * @see http://de.php.net/manual/en/regexp.reference.unicode.php
 	 * http://www.sql-und-xml.de/unicode-database/#pc
 	 *
@@ -57,9 +58,8 @@ class Summoner {
 	 * the replace should be empty, otherwise are there chars which are not
 	 * allowed
 	 *
-	 * @return bool
 	 */
-	static function validate($input,$mode='text',$limit=false) {
+	static function validate(string $input, string $mode = 'text', int $limit = 0): bool {
 		// check if we have input
 		$input = trim($input);
 
@@ -126,7 +126,6 @@ class Summoner {
 
 		$value = preg_replace($pattern, '', $input);
 
-		#if($input === $value) {
 		if($value === "") {
 			$ret = true;
 		}
@@ -143,32 +142,12 @@ class Summoner {
 	}
 
 	/**
-	 * return if the given string is utf8
-	 * http://php.net/manual/en/function.mb-detect-encoding.php
-	 *
-	 * @param string $string
-	 * @return number
-	 */
-	static function is_utf8 ( $string ) {
-	   // From http://w3.org/International/questions/qa-forms-utf-8.html
-	   return preg_match('%^(?:
-			 [\x09\x0A\x0D\x20-\x7E]            # ASCII
-		   | [\xC2-\xDF][\x80-\xBF]             # non-overlong 2-byte
-		   |  \xE0[\xA0-\xBF][\x80-\xBF]        # excluding overlongs
-		   | [\xE1-\xEC\xEE\xEF][\x80-\xBF]{2}  # straight 3-byte
-		   |  \xED[\x80-\x9F][\x80-\xBF]        # excluding surrogates
-		   |  \xF0[\x90-\xBF][\x80-\xBF]{2}     # planes 1-3
-		   | [\xF1-\xF3][\x80-\xBF]{3}          # planes 4-15
-		   |  \xF4[\x80-\x8F][\x80-\xBF]{2}     # plane 16
-	   )*$%xs', $string);
-	}
-
-	/**
 	 * check if the given string is a rights string.
+	 *
 	 * @param string $string
 	 * @return boolean
 	 */
-	static function isRightsString($string) {
+	static function isRightsString(string $string): bool {
 		$ret = false;
 
 		$string = trim($string);
@@ -195,11 +174,11 @@ class Summoner {
 	 * IMPORTANT: keep the order otherwise the rights will be messed up
 	 *
 	 * @param array $rightsArr
-	 * @return mixed
+	 * @return string
 	 */
-	static function prepareRightsString($rightsArr) {
+	static function prepareRightsString(array $rightsArr): string {
 		$rsArr = array();
-		$ret = false;
+		$ret = '';
 
 		if(!empty($rightsArr)) {
 			// we need a complete type list
@@ -244,7 +223,7 @@ class Summoner {
 			$rString .= $rsArr['other']['read'].$rsArr['other']['write'].$rsArr['other']['delete'];
 
 			if(strlen($rString) != 9) {
-				$ret = false;
+				$ret = '';
 				// invalid rights string !!
 			}
 			else {
@@ -257,10 +236,11 @@ class Summoner {
 
 	/**
 	 * Creates from given rights string the rights array
+	 *
 	 * @param string $rightsString
 	 * @return array
 	 */
-	static function prepareRightsArray($rightsString) {
+	static function prepareRightsArray(string $rightsString): array {
 		$ret = array();
 
 		if(self::isRightsString($rightsString) === true) {
@@ -290,65 +270,15 @@ class Summoner {
 	}
 
 	/**
-	 * get the mime type for given file
-	 * uses either mime_content_type or finfo
-	 * @param string $file The absolute path to the file
-	 * @return mixed|string
-	 */
-	static function getMimeType($file) {
-		$mime = 'application/octet-stream'; # default
-
-		if(function_exists('mime_content_type') !== true) {
-			$mime = mime_content_type($file);
-		}
-		elseif(function_exists('finfo_open') === true) {
-			# provide empty magic file, system default file will be used
-			$finfo = finfo_open(FILEINFO_MIME_TYPE,null);
-			if($finfo) {
-				$mime = finfo_file($finfo, $file);
-				finfo_close($finfo);
-			}
-
-			# the mime info returns sometimes "application/x-gzip; charset=binary"
-			# but wee need the part before the ;
-			if(strstr($mime,';')) {
-				$tmp = explode(";",$mime);
-				$mime = $tmp[0];
-			}
-		}
-
-		return $mime;
-	}
-
-	/**
-	 * use the mimeType string to return the string to be used as an icon identifier
-	 * eg. application/pdf => pdf
-	 * @param string $mime
-	 * @return string $ret
-	 */
-	static function mimeToIcon($mime) {
-		$ret = 'unknown';
-
-		if(!empty($mime) && strstr($mime,'/') !== false) {
-			$tmp = explode('/', $mime);
-			$ret = $tmp[1];
-		}
-		elseif($mime === "directory") {
-			$ret = "dir";
-		}
-
-		return $ret;
-	}
-
-	/**
 	 * read a dir and return the entries as an array
 	 * with full path to the files
+	 *
 	 * @param string $directory The absolute path to the directory
 	 * @param array $ignore An Array with strings to ignored
 	 * @param bool $recursive If we run a recursive scan or not
 	 * @return array
 	 */
-	static function readDir($directory,$ignore=array(),$recursive=false) {
+	static function readDir(string $directory, array $ignore = array(), bool $recursive = false): array {
 		$files = array();
 
 		$dh = opendir($directory);
@@ -383,10 +313,10 @@ class Summoner {
 	 *
 	 * @param string $directory
 	 * @param bool $empty
-	 * @param mixed $fTime If not false remove files older then this value in sec.
+	 * @param int $fTime If not false remove files older then this value in sec.
 	 * @return bool
 	 */
-	static function recursive_remove_directory($directory, $empty=false,$fTime=false) {
+	static function recursive_remove_directory(string $directory, bool $empty = false, int $fTime = 0): bool {
 		// if the path has a slash at the end we remove it here
 		if(substr($directory,-1) == '/') {
 			$directory = substr($directory,0,-1);
@@ -463,7 +393,7 @@ class Summoner {
 	 * @param string $needle
 	 * @return bool
 	 */
-	static function startsWith($haystack, $needle) {
+	static function startsWith(string $haystack, string $needle): bool {
 		$length = strlen($needle);
 		return (substr($haystack, 0, $length) === $needle);
 	}
@@ -475,7 +405,7 @@ class Summoner {
 	 * @param string $needle
 	 * @return bool
 	 */
-	static function endsWith($haystack, $needle) {
+	static function endsWith(string $haystack, string $needle): bool {
 		$length = strlen($needle);
 		if ($length == 0) {
 			return true;
@@ -485,81 +415,12 @@ class Summoner {
 	}
 
 	/**
-	 * http://de1.php.net/manual/en/function.getimagesize.php
-	 * http://php.net/manual/en/function.imagecreatefromjpeg.php
-	 *
-	 * @param string $file The absolute path to the image file
-	 * @param number $width
-	 * @param number $height
-	 * @return bool
-	 */
-	static function createThumbnail($file,$width=ADMIN_THUMBNAIL_DEFAULT_WIDTH,$height=ADMIN_THUMBNAIL_DEFAULT_HEIGHT) {
-		$ret = false;
-
-		if(!is_file($file)) return false;
-		# check if this is a support file type to create a thumbnail
-		$mimeType = self::getMimeType($file);
-		if(!strstr(ADMIN_THUMBNAIL_SUPPORTED_FILE_TYPES, $mimeType)) return false;
-
-		// Get new dimensions
-		$imageinfo = getimagesize($file);
-
-		if(empty($imageinfo)) return false;
-
-		$thumbnailName = $file.ADMIN_THUMBNAIL_IDENTIFIER.".".$height."x".$width;
-
-		$width_orig = $imageinfo[0];
-		$height_orig = $imageinfo[1];
-		$ratio_orig = $width_orig/$height_orig;
-
-		if ($width/$height > $ratio_orig) {
-			$width = $height*$ratio_orig;
-		} else {
-			$height = $width/$ratio_orig;
-		}
-
-		$im = false;
-
-		// Resample
-		$image_p = imagecreatetruecolor($width, $height);
-
-		switch ($imageinfo[2]) {
-			case IMAGETYPE_GIF:
-				$im = imageCreateFromGif($file);
-				imagecopyresampled($image_p, $im, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-				imagegif($image_p, $thumbnailName);
-			break;
-
-			case IMAGETYPE_JPEG:
-				$im = imageCreateFromJpeg($file);
-				imagecopyresampled($image_p, $im, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-				// save
-				$do = imagejpeg($image_p, $thumbnailName, 70);
-			break;
-
-			case IMAGETYPE_PNG:
-				$im = imageCreateFromPng($file);
-				imagecopyresampled($image_p, $im, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-				imagepng($image_p, $thumbnailName, 5);
-			break;
-		}
-
-		imagedestroy($im);
-		imagedestroy($image_p);
-
-		if(file_exists($thumbnailName)) {
-			$ret = true;
-		}
-
-		return $ret;
-	}
-
-	/**
 	 * fix the filesystem filenames. Remove whitespace and ...
+	 *
 	 * @param array $filenames File or folder list
 	 * @return array
 	 */
-	static function fixAssetFilenames($filenames) {
+	static function fixAssetFilenames(array $filenames): array {
 		$ret = $filenames;
 
 		foreach($filenames as $k=>$file) {
@@ -587,7 +448,7 @@ class Summoner {
 	 * @param array|string $key
 	 * @return bool|mixed
 	 */
-	static function ifset($array,$key) {
+	static function ifset(array $array, array|string $key): mixed {
 		if(is_array($key)) {
 			$_t = $array;
 			$_c = 0;
@@ -613,7 +474,7 @@ class Summoner {
 	 * @param string $value The value to compare
 	 * @return bool
 	 */
-	static function ifsetValue($array,$key,$value) {
+	static function ifsetValue(array $array, string $key, string $value): bool {
 		if(self::ifset($array,$key) !== false) {
 			return $array[$key] == $value;
 		}
@@ -628,7 +489,7 @@ class Summoner {
 	 * @param string $replace
 	 * @return string
 	 */
-	static function replaceOnce($haystack, $needle, $replace) {
+	static function replaceOnce(string $haystack, string $needle, string $replace): string {
 		$newstring = $haystack;
 		$pos = strpos($haystack, $needle);
 		if ($pos !== false) {
@@ -675,7 +536,7 @@ class Summoner {
 	 * @param string $endChar
 	 * @return string
 	 */
-	static function limitWithDots($string, $length, $endChar) {
+	static function limitWithDots(string $string, int $length, string $endChar): string {
 		$ret = $string;
 
 		if(strlen($string.$endChar) > $length) {
@@ -683,5 +544,35 @@ class Summoner {
 		}
 
 		return $ret;
+	}
+
+	/**
+	 * Size of the folder and the data within in bytes
+	 *
+	 * @param string $dir
+	 * @return int
+	 */
+	static function folderSize(string $dir): int {
+		$size = 0;
+
+		foreach (glob(rtrim($dir, '/').'/*', GLOB_NOSORT) as $each) {
+			$size += is_file($each) ? filesize($each) : self::folderSize($each);
+		}
+
+		return $size;
+	}
+
+	/**
+	 * Given bytes to human format with unit
+	 *
+	 * @param int $bytes
+	 * @return string
+	 */
+	static function bytesToHuman(int $bytes): string {
+		$units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+		for ($i = 0; $bytes > 1024; $i++) {
+			$bytes /= 1024;
+		}
+		return round($bytes, 2) . ' ' . $units[$i];
 	}
 }

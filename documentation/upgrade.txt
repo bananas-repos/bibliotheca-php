@@ -1,6 +1,6 @@
-Each release has its own file in the upgrade folder.
+Each release has it own files in the upgrade folder.
 In this file there are the steps needed to make an upgrade.
 
 If you upgrade multiple versions make sure to read all the files in the correct order.
 
-Within the upgrade note files there is an order. Make sure to follow.
+Within the upgrade files itself there is an order. Make sure to follow.
