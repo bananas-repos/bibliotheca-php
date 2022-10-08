@@ -367,18 +367,19 @@ class ManageCollections {
 							WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrTool,true));
 
-			$queryStre2l = "DROP TABLE `bibliotheca`.`bib_collection_entry2lookup_".$this->_DB->real_escape_string($id)."`";
+			$queryStre2l = "DROP TABLE `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($id)."`";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStre2l,true));
 
-			$queryStrEntry = "DROP TABLE `bibliotheca`.`bib_collection_entry_".$this->_DB->real_escape_string($id)."`";
+			$queryStrEntry = "DROP TABLE `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($id)."`";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrEntry,true));
 
-			$queryStrFields = "DROP TABLE `bibliotheca`.`bib_collection_fields_".$this->_DB->real_escape_string($id)."`";
+			$queryStrFields = "DROP TABLE `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($id)."`";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrFields,true));
 
 
 			// mysql implicit commit with drop command
 			// transaction does not really help here.
+			// https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -389,7 +390,6 @@ class ManageCollections {
 				$this->_DB->query($queryStre2l);
 				$this->_DB->query($queryStrEntry);
 				$this->_DB->query($queryStrFields);
-				$this->_DB->commit();
 
 				Summoner::recursive_remove_directory(PATH_STORAGE.'/'.$id);
 
