@@ -1,7 +1,8 @@
 1.4 - Depths Of Rrajigar
 	* Added new default sort direction field in collection edit view. See upgrade file for more needed details
 	* Fixed #13
-	* Fixed Some layout alignements
+	* Fixed some layout alignements
+	* Fixed showing the pagination where there is a fulltext default search
 
 1.3 - Rrajigar Mine 2022-10-08
 	* Fixed install sql file.
