@@ -49,6 +49,15 @@
 				</div>
 			</div>
 			<div class="uk-margin">
+				<label class="uk-form-label" for="defaultSortField">Default sort order</label>
+				<div class="uk-form-controls">
+					<select class="uk-select" id="defaultSortOrder" name="fdata[defaultSortOrder]">
+						<option value="ASC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'ASC')) echo 'selected'; ?>>ASCENDING</option>
+						<option value="DESC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'DESC')) echo 'selected'; ?>>DESCENDING</option>
+					</select>
+				</div>
+			</div>
+			<div class="uk-margin">
 				<label class="uk-form-label" for="advancedSearchTableFields">Table advanced search view</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">

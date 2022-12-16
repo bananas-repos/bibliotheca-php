@@ -62,7 +62,7 @@ if(isset($_GET['s']) && !empty($_GET['s'])) {
 	$_sort = Summoner::validate($_sort,'nospace') ? $_sort : false;
 }
 
-$_sortDirection = false;
+$_sortDirection = '';
 if(isset($_GET['sd']) && !empty($_GET['sd'])) {
 	$_sortDirection = trim($_GET['sd']);
 	$_sortDirection = Summoner::validate($_sortDirection,'nospace') ? $_sortDirection : false;
@@ -91,7 +91,8 @@ if(!empty($_collection)) {
 	if(!empty($TemplateData['loadedCollection'])) {
 		$Mancubus->setCollection($Trite->param('id'));
 
-		$TemplateData['defaultSortField'] = $defaultSortField = $Trite->param('defaultSortField');
+		$TemplateData['defaultSortField'] = $Trite->param('defaultSortField');
+		$TemplateData['defaultSortOrder'] = $Trite->param('defaultSortOrder');
 		$TemplateData['simpleSearchFields'] = $Trite->getSimpleSearchFields();
 		if(!empty($_queryOptions['sort'])) {
 			$TemplateData['simpleSearchFields'][$_queryOptions['sort']]['selected'] = true;
@@ -100,6 +101,11 @@ if(!empty($_collection)) {
 			unset($TemplateData['simpleSearchFields'][$TemplateData['defaultSortField']]);
 			if(empty($_queryOptions['sort'])) {
 				$_queryOptions['sort'] = $TemplateData['defaultSortField'];
+			}
+		}
+		if(!empty($TemplateData['defaultSortOrder'])) {
+			if(empty($_queryOptions['sortDirection'])) {
+				$_queryOptions['sortDirection'] = $TemplateData['defaultSortOrder'];
 			}
 		}
 

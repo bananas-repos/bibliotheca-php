@@ -120,6 +120,7 @@ class Trite {
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
 					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
 					`c`.`defaultSortField`,`c`.`advancedSearchTableFields`,
+					`c`.`defaultSortOrder`,
 					`u`.`name` AS username, `g`.`name` AS groupname
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`

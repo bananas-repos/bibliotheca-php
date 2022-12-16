@@ -69,6 +69,7 @@ if(isset($_POST['submitForm'])) {
 		$_saveData['rights'] = Summoner::prepareRightsString($fdata['rights']);
 		$_saveData['defaultSearchField'] = $fdata['defaultSearchField'];
 		$_saveData['defaultSortField'] = $fdata['defaultSortField'];
+		$_saveData['defaultSortOrder'] = $fdata['defaultSortOrder'];
 		$_saveData['id'] = $_id;
 
 		$_saveData['tool'] = array();

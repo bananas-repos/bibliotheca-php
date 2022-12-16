@@ -184,6 +184,7 @@ class ManageCollections {
 								`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
 								`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."',
 								`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."',
+								`defaultSortOrder` = '".$this->_DB->real_escape_string($data['defaultSortOrder'])."',
 								`advancedSearchTableFields` = '".$this->_DB->real_escape_string($data['advancedSearchTableFields'])."'";
 				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
 				$this->_DB->query($queryStr);
@@ -252,6 +253,7 @@ class ManageCollections {
 			$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
 					`c`.`owner`, `c`.`group`, `c`.`rights`, `c`.`defaultSearchField`,
 					`c`.`defaultSortField`, `c`.`advancedSearchTableFields`,
+					`c`.`defaultSortOrder`,
 					`u`.`name` AS username, `g`.`name` AS groupname
 					FROM `".DB_PREFIX."_collection` AS c
 					LEFT JOIN `".DB_PREFIX."_user` AS u ON `c`.`owner` = `u`.`id`
@@ -300,6 +302,7 @@ class ManageCollections {
 							`rights` = '".$this->_DB->real_escape_string($data['rights'])."',
 							`defaultSearchField` = '".$this->_DB->real_escape_string($data['defaultSearchField'])."',
 							`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."',
+							`defaultSortOrder` = '".$this->_DB->real_escape_string($data['defaultSortOrder'])."',
 							`advancedSearchTableFields` = '".$this->_DB->real_escape_string($data['advancedSearchTableFields'])."'
 						WHERE `id` = '".$this->_DB->real_escape_string($data['id'])."'";
 			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
