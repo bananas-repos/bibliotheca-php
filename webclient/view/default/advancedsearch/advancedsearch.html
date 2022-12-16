@@ -3,7 +3,9 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div uk-alert id="searchNotice">
 	<button class="uk-alert-close" type="button" uk-close></button>
-	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b> (Max. result of 60)</p>
+	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b><br />
+		<small>(Max. result of 60)</small>
+	</p>
 </div>
 <div class="uk-padding-small uk-padding-remove-left">
 	<script type="text/javascript">
