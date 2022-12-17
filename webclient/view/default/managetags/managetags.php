@@ -21,16 +21,16 @@ $Trite = new Trite($DB,$Doomguy);
 require_once 'lib/managetags.class.php';
 $ManageTags = new ManageTags($DB,$Doomguy);
 
-$_collection = false;
+$_collection = '';
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
 	$_collection = trim($_GET['collection']);
-	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+	$_collection = Summoner::validate($_collection,'digit') ? $_collection : '';
 }
 
-$_id = false;
+$_id = '';
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);
-	$_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = Summoner::validate($_id,'digit') ? $_id : '';
 }
 
 $TemplateData['loadedCollection'] = array();

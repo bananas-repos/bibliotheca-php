@@ -21,10 +21,10 @@ $Trite = new Trite($DB,$Doomguy);
 require_once 'lib/mancubus.class.php';
 $Mancubus = new Mancubus($DB,$Doomguy);
 
-$_collection = false;
+$_collection = '';
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
 	$_collection = trim($_GET['collection']);
-	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+	$_collection = Summoner::validate($_collection,'digit') ? $_collection : '';
 }
 
 $TemplateData['pageTitle'] = 'Advanced search';

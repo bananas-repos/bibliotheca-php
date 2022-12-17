@@ -53,11 +53,6 @@ require_once 'lib/mancubus.class.php';
 require_once 'lib/manageentry.class.php';
 require_once 'lib/trite.class.php';
 
-## main vars
-# database object
-$DB = false;
-$Spectre = false;
-
 ## DB connection
 $DB = new mysqli(DB_HOST, DB_USERNAME,DB_PASSWORD, DB_NAME);
 $driver = new mysqli_driver();
@@ -78,10 +73,10 @@ if(isset($_GET['p']) && !empty($_GET['p'])) {
 
 	if(!$Spectre->allowedRequests($_requestMode)) $_requestMode = "default";
 }
-$_authKey = false;
+$_authKey = '';
 if(isset($_GET['authKey']) && !empty($_GET['authKey'])) {
 	$_authKey = trim($_GET['authKey']);
-	$_authKey = Summoner::validate($_authKey,'nospace') ? $_authKey : false;
+	$_authKey = Summoner::validate($_authKey,'nospace') ? $_authKey : '';
 }
 
 $_apiResult = array(

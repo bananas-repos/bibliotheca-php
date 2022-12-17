@@ -42,10 +42,10 @@ if(isset($_GET['m']) && !empty($_GET['m'])) {
 	}
 }
 
-$_id = false;
+$_id ='';
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);
-	$_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = Summoner::validate($_id,'digit') ? $_id : '';
 }
 
 if($_editMode === true && !empty($_id)) {

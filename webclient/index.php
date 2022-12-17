@@ -53,8 +53,6 @@ require_once 'lib/gorenest.class.php';
 
 
 ## main vars
-# database object
-$DB = false;
 # the template data as an array
 # and some defaults
 $TemplateData = array();
