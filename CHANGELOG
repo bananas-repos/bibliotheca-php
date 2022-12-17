@@ -7,6 +7,7 @@
 	* Added a note about some options in collections manage view.
 	* Improved breakpoint behavior
 	* After already selected a collection the add and tags manage action has this collection already set.
+	* Added some missing headlines with a lunk for better navigation
 
 1.3 - Rrajigar Mine 2022-10-08
 	* Fixed install sql file.
