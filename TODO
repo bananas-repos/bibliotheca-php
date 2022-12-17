@@ -1,3 +1,4 @@
+* i18n support
 * Automatic upgrades of DB
 * drop in updates
 * Definition of fields in "card view"
@@ -7,6 +8,5 @@
 * Import of the export
 
 
-* responsive and breakpoints
 * Field management: Web interface to configure or even create new ones.
 * minimal theme
