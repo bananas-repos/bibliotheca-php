@@ -507,7 +507,7 @@ class Summoner {
 	 * @param array $modify
 	 * @return string
 	 */
-	static function createFromParameterLinkQuery(array $array, $modify=array()): string {
+	static function createFromParameterLinkQuery(array $array, array $modify = array()): string {
 		$ret = '';
 
 		if(!empty($modify)) {

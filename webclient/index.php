@@ -80,7 +80,6 @@ $DB->query("SET collation_connection = 'utf8mb4_unicode_ci'");
 $Doomguy = new Doomguy($DB);
 # menu Object
 $Gorenest = new GoreNest($DB,$Doomguy);
-$Gorenest->loadMenu();
 
 $_requestMode = false;
 if(isset($_GET['p']) && !empty($_GET['p'])) {

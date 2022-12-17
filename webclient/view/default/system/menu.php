@@ -16,8 +16,16 @@
  * limitations under the License.
  */
 
+## optional context action
+# the key has to match the column contextaction of the menuentry
+# $_collection comes from the $Viewscript
+$_contextActions = array();
+if(!empty($_collection)) {
+	$_contextActions['collection'] = $_collection;
+}
+
 $_menuShow = $Gorenest->get('show');
-$_menuManage = $Gorenest->get('manage');
+$_menuManage = $Gorenest->get('manage', false, $_contextActions);
 ?>
 <nav class="uk-navbar-container" uk-navbar>
 	<div class="uk-navbar-left">

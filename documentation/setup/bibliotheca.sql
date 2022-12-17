@@ -75,6 +75,7 @@ CREATE TABLE `#REPLACEME#_menu` (
   `id` int UNSIGNED NOT NULL,
   `text` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `action` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `contextaction` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `icon` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `owner` int NOT NULL DEFAULT '0',
   `group` int NOT NULL DEFAULT '0',
@@ -87,24 +88,25 @@ CREATE TABLE `#REPLACEME#_menu` (
 -- Dumping data for table `#REPLACEME#_menu`
 --
 
-INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES
-(1, 'Dashboard', '', 'home', 1, 1, 'rw-r--r--', 0, 'show'),
-(2, 'Collections', 'collections', 'database', 1, 1, 'rw-r--r--', 1, 'show'),
-(3, 'Tags', 'tags', 'tag', 1, 1, 'rw-r--r--', 2, 'show'),
-(4, 'Add', 'manageentry', 'plus-circle', 1, 2, 'rw-rw----', 0, 'manage'),
-(6, 'Tags', 'managetags', 'tag', 1, 2, 'rw-rw----', 2, 'manage'),
-(7, 'Collections', 'managecolletions', 'database', 1, 2, 'rw-rw----', 3, 'manage'),
-(8, 'Users', 'manageusers', 'users', 1, 1, 'rw-------', 4, 'manage'),
-(9, 'Login', 'auth', '', 1, 1, 'rw-r--r--', 0, ''),
-(10, 'Collection fields', 'managecollectionfields', '', 1, 2, 'rw-rw----', 0, ''),
-(11, 'Entry', 'entry', '', 1, 1, 'rw-r--r--', 0, ''),
-(12, 'Search', 'search', '', 1, 1, 'rw-r--r--', 0, ''),
-(14, 'Tool', 'tool', '', 1, 2, 'rw-rw----', 0, ''),
-(15, 'Advanced search', 'advancedsearch', '', 1, 1, 'rw-r--r--', 0, ''),
-(16, 'Profile', 'profile', 'user', 1, 2, 'rw-rw----', 6, 'manage'),
-(17, 'Groups', 'managegroups', 'users', 1, 1, 'rw-------', 5, 'manage'),
-(18, 'Bulkedit', 'bulkedit', '', 1, 2, 'rw-rw----', 0, ''),
-(19, 'System Information', 'sysinfo', 'info', 1, 1, 'rw-------', 3, 'show');
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `contextaction`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES
+(1, 'Dashboard', '', 'home', '', 1, 1, 'rw-r--r--', 0, 'show'),
+(2, 'Collections', 'collections', '', 'database', 1, 1, 'rw-r--r--', 1, 'show'),
+(3, 'Tags', 'tags', '', 'tag', 1, 1, 'rw-r--r--', 2, 'show'),
+(4, 'Add', 'manageentry', 'collection', 'plus-circle', 1, 2, 'rw-rw----', 0, 'manage'),
+(6, 'Tags', 'managetags', 'collection', 'tag', 1, 2, 'rw-rw----', 2, 'manage'),
+(7, 'Collections', 'managecolletions', '', 'database', 1, 2, 'rw-rw----', 3, 'manage'),
+(8, 'Users', 'manageusers', '', 'users', 1, 1, 'rw-------', 4, 'manage'),
+(9, 'Login', 'auth', '', '', 1, 1, 'rw-r--r--', 0, ''),
+(10, 'Collection fields', 'managecollectionfields', '', '', 1, 2, 'rw-rw----', 0, ''),
+(11, 'Entry', 'entry', '', '', 1, 1, 'rw-r--r--', 0, ''),
+(12, 'Search', 'search', '', '', 1, 1, 'rw-r--r--', 0, ''),
+(14, 'Tool', 'tool', '', '', 1, 2, 'rw-rw----', 0, ''),
+(15, 'Advanced search', 'advancedsearch', '', '', 1, 1, 'rw-r--r--', 0, ''),
+(16, 'Profile', 'profile', '', 'user', 1, 2, 'rw-rw----', 6, 'manage'),
+(17, 'Groups', 'managegroups', '', 'users', 1, 1, 'rw-------', 5, 'manage'),
+(18, 'Bulkedit', 'bulkedit', '', '', 1, 2, 'rw-rw----', 0, ''),
+(19, 'System Information', 'sysinfo', '', 'info', 1, 1, 'rw-------', 3, 'show');
+
 
 -- --------------------------------------------------------
 
