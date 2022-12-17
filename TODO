@@ -1,4 +1,3 @@
-* option for sorting direction
 * Automatic upgrades of DB
 * drop in updates
 * Definition of fields in "card view"
@@ -9,5 +8,5 @@
 
 
 * responsive and breakpoints
-* Field management: Web interface
+* Field management: Web interface to configure or even create new ones.
 * minimal theme

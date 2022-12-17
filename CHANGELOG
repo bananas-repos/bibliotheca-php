@@ -5,6 +5,7 @@
 	* Fixed showing the pagination where there is a fulltext default search
 	* Made it more visible where to drop the fields in manage fields view for a collection.
 	* Added a note about some options in collections manage view.
+	* Improved breakpoint behavior
 
 1.3 - Rrajigar Mine 2022-10-08
 	* Fixed install sql file.
