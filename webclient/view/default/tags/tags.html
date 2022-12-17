@@ -1,7 +1,7 @@
 <div class="uk-grid-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2@l">
 	<?php if(!empty($TemplateData['tags'])) { ?>
-		<h3 class="uk-h3">Selectable tags for: <?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></h3>
+		<h3 class="uk-h3">Selectable tags for: <a href="index.php?p=collections&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>"><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></a></h3>
 
 		<?php if(!empty($TemplateData['search'])) { ?>
 		<div uk-alert id="searchNotice">
