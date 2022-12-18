@@ -18,14 +18,14 @@
 require_once 'lib/possessed.class.php';
 $Possessed = new Possessed($DB, $Doomguy);
 $TemplateData['existingGroups'] = $Possessed->getGroups();
-$TemplateData['editData'] = false;
+$TemplateData['editData'] = array();
 
 $TemplateData['pageTitle'] = 'Manage groups';
 
-$_id = false;
+$_id = '';
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);
-	$_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = Summoner::validate($_id,'digit') ? $_id : '';
 }
 
 if(!empty($_id)) {

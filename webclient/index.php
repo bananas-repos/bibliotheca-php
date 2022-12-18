@@ -18,7 +18,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.3 - Rrajigar Mine (2022-10-08)';
+const BIB_VERSION = '1.4 - Depths Of Rrajigar';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
@@ -53,8 +53,6 @@ require_once 'lib/gorenest.class.php';
 
 
 ## main vars
-# database object
-$DB = false;
 # the template data as an array
 # and some defaults
 $TemplateData = array();
@@ -82,7 +80,6 @@ $DB->query("SET collation_connection = 'utf8mb4_unicode_ci'");
 $Doomguy = new Doomguy($DB);
 # menu Object
 $Gorenest = new GoreNest($DB,$Doomguy);
-$Gorenest->loadMenu();
 
 $_requestMode = false;
 if(isset($_GET['p']) && !empty($_GET['p'])) {

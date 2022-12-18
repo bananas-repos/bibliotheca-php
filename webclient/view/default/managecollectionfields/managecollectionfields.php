@@ -29,10 +29,10 @@ $TemplateData['existingFields'] = array();
 
 $TemplateData['pageTitle'] = 'Manage collection fields';
 
-$_id = false;
+$_id = '';
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);
-	$_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = Summoner::validate($_id,'digit') ? $_id : '';
 }
 
 if(!empty($_id)) {

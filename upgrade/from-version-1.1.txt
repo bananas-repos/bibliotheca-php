@@ -1,3 +1,11 @@
+# Copy the following directories and files to your installation folder, overriding the existing ones:
+webclient/config/
+webclient/lib/
+webclient/view/
+webclient/.htaccess
+webclient/api.php
+webclient/index.php
+
 # DB changes. Run each line against your bibliotheca DB.
 # Replace #REPLACEME# with your table prefix. Default is bib
 INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES (NULL, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', '1', '1', 'rw-r--r--');

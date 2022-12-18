@@ -21,27 +21,27 @@ $Mancubus = new Mancubus($DB,$Doomguy);
 require_once 'lib/trite.class.php';
 $Trite = new Trite($DB,$Doomguy);
 
-$_collection = false;
+$_collection = '';
 if(isset($_GET['collection']) && !empty($_GET['collection'])) {
 	$_collection = trim($_GET['collection']);
-	$_collection = Summoner::validate($_collection,'digit') ? $_collection : false;
+	$_collection = Summoner::validate($_collection,'digit') ? $_collection : '';
 }
 
-$_id = false;
+$_id = '';
 if(isset($_GET['id']) && !empty($_GET['id'])) {
 	$_id = trim($_GET['id']);
-	$_id = Summoner::validate($_id,'digit') ? $_id : false;
+	$_id = Summoner::validate($_id,'digit') ? $_id : '';
 }
 
 $TemplateData['pageTitle'] = 'Tags - ';
 $TemplateData['loadedCollection'] = array();
 $TemplateData['tags'] = array();
-$TemplateData['search'] = false;
+$TemplateData['search'] = array();
 
-$_search = false;
+$_search = '';
 if(isset($_POST['navSearch'])) {
 	$_search = trim($_POST['navSearch']);
-	$_search = Summoner::validate($_search) ? $_search :  false;
+	$_search = Summoner::validate($_search) ? $_search : '';
 }
 
 

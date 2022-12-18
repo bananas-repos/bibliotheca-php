@@ -11,7 +11,7 @@
 			<div uk-dropdown>
 				<ul class="uk-nav uk-dropdown-nav">
 					<?php if(!empty($TemplateData['defaultSortField'])) { ?>
-					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>$TemplateData['defaultSortField'],'sd'=>'ASC')); ?>">Default</a></li>
+					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>$TemplateData['defaultSortField'],'sd'=>$TemplateData['defaultSortOrder'])); ?>">Default</a></li>
 					<?php } else { ?>
 					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>'','sd'=>'ASC')); ?>">Latest</a></li>
 					<?php } ?>
@@ -36,8 +36,6 @@
 </div>
 <?php } ?>
 
-<h3 class="uk-h3"><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></h3>
-
 <?php if(!empty($TemplateData['search'])) { ?>
 <div uk-alert id="searchNotice">
 	<button class="uk-alert-close" type="button" uk-close></button>
@@ -51,6 +49,7 @@
 <?php } ?>
 
 <?php if(!empty($TemplateData['entries'])) { ?>
+<h3 class="uk-h3"><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></h3>
 <div class="uk-grid-small uk-grid-match" uk-grid>
 	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
 	<div class="uk-width-1-4@s uk-width-1-6@l">

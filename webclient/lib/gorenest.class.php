@@ -59,34 +59,7 @@ class GoreNest {
 	public function __construct(mysqli $db, Doomguy $user) {
 		$this->_DB = $db;
 		$this->_User = $user;
-	}
-
-	/**
-	 * Load the complete menu
-	 *
-	 * @return void
-	 */
-	public function loadMenu(): void {
-		# reset the menu
-		$this->_menuData = array();
-
-		$queryStr = "SELECT id, text, action, icon, category
-					FROM `".DB_PREFIX."_menu`
-					WHERE ".$this->_User->getSQLRightsString()."				
-						ORDER BY position";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
-		try {
-			$query  = $this->_DB->query($queryStr);
-			if($query !== false && $query->num_rows > 0) {
-				while(($result = $query->fetch_assoc()) != false) {
-					$this->_menuData[$result['category']][$result['id']] = $result;
-					$this->_allowedPageRequests[$result['action']] = $result['action'];
-				}
-			}
-		}
-		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-		}
+		$this->_loadMenu();
 	}
 
 	/**
@@ -96,23 +69,52 @@ class GoreNest {
 	 *
 	 * @param string $category
 	 * @param bool $reload
+	 * @param array $_contextActions
 	 * @return array
 	 */
-	public function get(string $category, bool $reload = false): array {
+	public function get(string $category, bool $reload = false, array $_contextActions = array()): array {
 		$ret = array();
 
 		if(empty($category)) return $ret;
 
 		if($reload === false && isset($this->_menuData[$category])) {
-			return $this->_menuData[$category];
+			return $this->_updateContextActions($this->_menuData[$category], $_contextActions);
 		}
 
-		$this->loadMenu();
+		$this->_loadMenu();
 		if(isset($this->_menuData[$category])) {
 			$ret = $this->_menuData[$category];
 		}
 
-		return $ret;
+		return $this->_updateContextActions($ret, $_contextActions);
+	}
+
+	/**
+	 * Load the complete menu
+	 *
+	 * @return void
+	 */
+	private function _loadMenu(): void {
+		# reset the menu
+		$this->_menuData = array();
+
+		$queryStr = "SELECT id, text, action, icon, category, contextaction
+					FROM `".DB_PREFIX."_menu`
+					WHERE ".$this->_User->getSQLRightsString()."				
+						ORDER BY position";
+		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		try {
+			$query  = $this->_DB->query($queryStr);
+			if($query !== false && $query->num_rows > 0) {
+				while(($result = $query->fetch_assoc()) != false) {
+					$this->_allowedPageRequests[$result['action']] = $result['action'];
+					$this->_menuData[$result['category']][$result['id']] = $result;
+				}
+			}
+		}
+		catch (Exception $e) {
+			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+		}
 	}
 
 	/**
@@ -122,5 +124,24 @@ class GoreNest {
 	 */
 	public function allowedPageRequests(): array {
 		return $this->_allowedPageRequests;
+	}
+
+	/**
+	 * Check if there is the need to modify the action value based on contextaction column
+	 * and $_contextActions array
+	 *
+	 * @param array $_menuData
+	 * @param array $_contextActions
+	 * @return array
+	 */
+	private function _updateContextActions(array $_menuData, array $_contextActions): array {
+		if(!empty($_contextActions)) {
+			foreach($_menuData as $id=>$data) {
+				if(isset($_contextActions[$data['contextaction']])) {
+					$_menuData[$id]['action'] = $data['action'].'&'.$data['contextaction'].'='.$_contextActions[$data['contextaction']];
+				}
+			}
+		}
+		return $_menuData;
 	}
 }

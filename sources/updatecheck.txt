@@ -12,3 +12,11 @@ upgrade file with correct placeholders
 correct placeholders in sql file for manual setup
 
 correct version info in VERSION and index.php
+
+
+$ git checkout-index -a -f --prefix=/absolute/path/to/new/dir/
+# remove some unwanted files if needed from the export
+$ cd /absolute/path/to/new/
+$ tar -cvJf archive.xz /absolute/path/to/new/dir/
+$ md5sum archive.xz > archive.xz.md5sum
+$ sha1sum archive.xz > archive.xz.sha1sum

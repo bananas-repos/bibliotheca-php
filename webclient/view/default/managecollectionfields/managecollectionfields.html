@@ -10,7 +10,7 @@
 			<span class="" uk-icon="icon: warning"></span> Make sure at least the <b>title</b>, <b>cover image</b>
 			and <b>description</b> fields are available.
 		</p>
-		<div id="collectionFields" uk-sortable="group: sortable-group">
+		<div id="collectionFields" uk-sortable="group: sortable-group" class="uk-padding-small uk-padding-remove-left uk-padding-remove-right uk-background-muted">
 			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 			<div data-field-id="<?php echo $k; ?>">
 				<span class="uk-sortable-handle uk-margin-small-right" uk-icon="icon: table"></span>

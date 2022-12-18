@@ -146,18 +146,25 @@ class Mancubus {
 						$_colObj = new Trite($this->_DB,$this->_User);
 						$_colObj->load($result['id']);
 						$_fd = $_colObj->getCollectionFields();
+						$_defSearchField = $_colObj->param('defaultSearchField');
 
-						$result['entries'] = $_mObj->getEntries(
-							array(
-								0 => array(
-									'colName' => $_colObj->param('defaultSearchField'),
-									'colValue' => $search,
-									'fieldData' => $_fd[$_colObj->param('defaultSearchField')]
+						if(!empty($_defSearchField)) {
+							$result['entries'] = $_mObj->getEntries(
+								array(
+									0 => array(
+										'colName' => $_defSearchField,
+										'colValue' => $search,
+										'fieldData' => $_fd[$_defSearchField]
+									)
 								)
-							)
-						);
+							);
+						}
+						else {
+							error_log("[WARN] ".__METHOD__." missing default search field for collectionid: ".$result['id']);
+						}
 					}
 					else {
+
 						$result['entries'] = $_mObj->getEntries();
 					}
 					$ret[$result['id']] = $result;
