@@ -2,5 +2,5 @@
 # Replace #REPLACEME# with your table prefix. Default is bib
 ALTER TABLE `#REPLACEME#_collection` ADD `defaultSortOrder` VARCHAR(4) NOT NULL AFTER `defaultSortField`;
 ALTER TABLE `#REPLACEME#_menu` ADD `contextaction` VARCHAR(64) NOT NULL AFTER `action`;
-UPDATE `#REPLACEME#_menu` SET `contextaction` = 'collection' WHERE `bib_menu`.`id` = 4;
-UPDATE `#REPLACEME#_menu` SET `contextaction` = 'collection' WHERE `bib_menu`.`id` = 6;
+UPDATE `#REPLACEME#_menu` SET `contextaction` = 'collection' WHERE `#REPLACEME#_menu`.`id` = 4;
+UPDATE `#REPLACEME#_menu` SET `contextaction` = 'collection' WHERE `#REPLACEME#_menu`.`id` = 6;
