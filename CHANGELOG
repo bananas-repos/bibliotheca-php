@@ -1,13 +1,13 @@
 1.4 - Depths Of Rrajigar
 	* Added new default sort direction field in collection edit view. See upgrade file for more needed details
 	* Fixed #13
-	* Fixed some layout alignements
+	* Fixed some layout alignments
 	* Fixed showing the pagination where there is a fulltext default search
 	* Made it more visible where to drop the fields in manage fields view for a collection.
 	* Added a note about some options in collections manage view.
 	* Improved breakpoint behavior
 	* After already selected a collection the add and tags manage action has this collection already set.
-	* Added some missing headlines with a lunk for better navigation
+	* Added some missing headlines with a link for better navigation
 
 1.3 - Rrajigar Mine 2022-10-08
 	* Fixed install sql file.
@@ -50,15 +50,15 @@
 		Sort fields are the simple fields. See fields documentation.
 	* Fields do have a new inputValidation option. See fields documentation for more info.
 		Currently used to allow whitespace in a tag
-	* Mass edit of entries. Entries found with advanced search can now be editied.
+	* Mass edit of entries. Entries found with advanced search can now be edited.
 		Upload fields are not supported yet.
 	* Fixed bug #5
 	* Added feature #1. Collections overview has pagination at the bottom too.
 	* Advanced search has a table view option
 		Displayed fields are configured in collection management. See notes there.
-	* Updated installtion files
+	* Updated installation files
 	* Added first-steps.txt. Updated README
-	* Indication wich inputs are required
+	* Indication which inputs are required
 	* Added a new field: Localized title
 	* After adding an entry the option to view or edit the entry is now available
 	* Added game info tool.
