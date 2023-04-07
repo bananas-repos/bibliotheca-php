@@ -20,12 +20,13 @@ require_once 'lib/mancubus.class.php';
 $Mancubus = new Mancubus($DB,$Doomguy);
 
 $TemplateData['search'] = false;
-$TemplateData['searchAction'] = 'index.php';
 
 $_search = '';
-if(isset($_POST['navSearch'])) {
-	$_search = trim($_POST['navSearch']);
+if(isset($_GET['navSearch'])) {
+	$_search = trim($_GET['navSearch']);
+	$_search = urldecode($_search);
 	$_search = Summoner::validate($_search,'text') ? $_search : '';
+	$TemplateData['navSearched'] = '&navSearch='.urlencode($_search);
 }
 
 $TemplateData['latest'] = $Mancubus->getLatest(5,5,$_search);

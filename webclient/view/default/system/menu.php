@@ -73,7 +73,14 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 		<div>
 			<a class="uk-navbar-toggle" uk-search-icon href="#"></a>
 			<div class="uk-drop" uk-drop="mode: click; pos: left-center; offset: 0">
-				<form class="uk-search uk-search-navbar uk-width-1-1" method="post" action="<?php echo $TemplateData['searchAction']; ?>">
+				<form class="uk-search uk-search-navbar uk-width-1-1" method="get" action="index.php">
+					<?php
+						if(isset($TemplateData['navSearchAction'])) {
+							foreach($TemplateData['navSearchAction'] as $param=>$pValue) {
+								echo '<input type="hidden" name="'.$param.'" value="'.$pValue.'" />';
+							}
+						}
+					?>
 					<input class="uk-search-input" type="search" placeholder="Search..." name="navSearch" autofocus>
 					<small><a href="index.php?p=advancedsearch">Advanced</a></small>
 				</form>

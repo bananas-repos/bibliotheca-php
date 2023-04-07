@@ -47,8 +47,8 @@ if(!empty($_collection) && !empty($_id)) {
 	if(!empty($TemplateData['loadedCollection'])) {
 		$Mancubus->setCollection($Trite->param('id'));
 		$TemplateData['entry'] = $Mancubus->getEntry($_id);
-		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id') . '/' . $_id;
-		$TemplateData['searchAction'] = 'index.php?p=collections&collection=' . $Trite->param('id');
+		$TemplateData['storagePath'] = PATH_WEB_STORAGE.'/'.$Trite->param('id').'/'.$_id;
+		$TemplateData['navSearchAction'] = array('p' => 'collections', 'collection' => $Trite->param('id'));
 
 		$ManageEntry->setCollection($Trite->param('id'));
 		$TemplateData['showEdit'] = $ManageEntry->canEditEntry($_id);
