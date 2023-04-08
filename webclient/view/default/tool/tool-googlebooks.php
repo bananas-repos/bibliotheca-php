@@ -19,28 +19,23 @@
 /**
  * this is the special file for a tool.
  * Requirements and more information come from the main tool.php file
- *
- * https://musicbrainz.org/doc/Development
- * http://musicbrainz.org/ws/2/release/?query=artist:broilers%20AND%20release:muerte%20AND%20format:CD&fmt=json
- * http://musicbrainz.org/ws/2/release/5eb27466-fe5e-4683-aa9c-1ca396741c7c?&fmt=json
  */
 
-require_once 'lib/musicbrainz.class.php';
-if(file_exists(PATH_ABSOLUTE.'/config/config-musicbrainz.php')) {
-	require_once 'config/config-musicbrainz.php';
+require_once 'lib/googlebookparser.class.php';
+if(file_exists(PATH_ABSOLUTE.'/config/config-googlebooks.php')) {
+	require_once 'config/config-googlebooks.php';
 }
 
-$Brainz = new Musicbrainz(array(
-	'resultLimit' => TOOL_BRAINZ_RESULT_LIMIT,
-	'browserAgent' => TOOL_BRAINZ_BROWSER_AGENT,
-	'browserLang' => TOOL_BRAINZ_BROWSER_ACCEPT_LANG,
-	'browserAccept' => TOOL_BRAINZ_BROWSER_ACCEPT,
-	'debug' => false
+$GOOGLEBOOKS = new GoogleBooks(array(
+	'browserAgent' => TOOL_GOOGLEBOOKS_BROWSER_AGENT,
+	'browserLang' => TOOL_GOOGLEBOOKS_BROWSER_ACCEPT_LANG,
+	'browserAccept' => TOOL_GOOGLEBOOKS_BROWSER_ACCEPT,
+	'debug' => true
 ));
 
-$TemplateData['releases'] = array();
-$TemplateData['release'] = array();
+$TemplateData['bookData'] = array();
 $TemplateData['saveToSelection'] = '';
+$TemplateData['showMatchingForm'] = false;
 
 // prepare fields to save into selection
 // create one time and then reuse it
@@ -54,16 +49,15 @@ if(!empty($collectionFields)) {
 if(isset($_POST['submitFormSearch'])) {
 	$fdata = $_POST['fdata'];
 	if (!empty($fdata)) {
-		$artist = trim($fdata['artist']);
-		$artist = Summoner::validate($artist) ? $artist : false;
-		$album = trim($fdata['album']);
-		$album = Summoner::validate($album) ? $album : false;
+		$search = trim($fdata['search']);
+		$search = Summoner::validate($search) ? $search : false;
 
-		if(!empty($artist) && !empty($album)) {
-			$releaseSearch = $Brainz->searchForRelease($artist, $album);
+		if(!empty($search)) {
+			$booksearch = $GOOGLEBOOKS->searchForISBN($search);
 
-			if(!empty($releaseSearch)) {
-				$TemplateData['releases'] = $releaseSearch;
+			if(!empty($booksearch)) {
+				$TemplateData['bookData'] = $booksearch;
+				$TemplateData['showMatchingForm'] = true;
 			} else {
 				$TemplateData['message']['content'] = "Nothing found.";
 				$TemplateData['message']['status'] = "error";
@@ -73,28 +67,6 @@ if(isset($_POST['submitFormSearch'])) {
 			$TemplateData['message']['content'] = "Invalid search term";
 			$TemplateData['message']['status'] = "error";
 		}
-	}
-}
-
-if(isset($_POST['submitFormReleaseSelect'])) {
-	if (isset($_POST['fdata'])) {
-		$fdata = $_POST['fdata'];
-		if (!empty($fdata)) {
-			$releaseId = $fdata['rselect'];
-			if(!empty($releaseId)) {
-				$releaseInfo = $Brainz->getReleaseInfo($releaseId);
-				if(!empty($releaseInfo)) {
-					$TemplateData['release'] = $releaseInfo;
-				} else {
-					$TemplateData['message']['content'] = "Nothing found.";
-					$TemplateData['message']['status'] = "error";
-				}
-			}
-		}
-	}
-	else {
-		$TemplateData['message']['content'] = "Invalid selection";
-		$TemplateData['message']['status'] = "error";
 	}
 }
 
@@ -113,11 +85,11 @@ if(isset($_POST['submitFormSave'])) {
 					$_data[$v]['valueToSave'] = $fdata['from'][$k];
 
 					// special case for image
-					if($k == "image") {
+					if($k == "cover") {
 
 						$fieldData = array();
 
-						$_f = $Brainz->downloadCover($fdata['from'][$k]);
+						$_f = $GOOGLEBOOKS->downloadCover($fdata['from'][$k]);
 						if($_f && is_file($_f)) {
 							$_e = UPLOAD_ERR_OK;
 							// build _FILES based on regular add form
@@ -128,7 +100,6 @@ if(isset($_POST['submitFormSave'])) {
 							$fieldData['error'][$_data[$v]['identifier']] = UPLOAD_ERR_OK;
 							$fieldData['rebuildUpload'][$_data[$v]['identifier']] = true;
 						}
-
 
 						$_data[$v]['uploadData'] = $fieldData;
 					}
@@ -173,20 +144,21 @@ if(isset($_POST['submitFormSave'])) {
 	}
 }
 
+
 /**
  * Helper function. Takes the prebuild options for the target selection field and search for a matching key.
  * Since the optionString is prebuild, avoiding looping over and over again, the selection needs to be done
  * by search and replace.
- * Checks if TOOL_BRAINZ_FIELDS_TO is defined and a matching key=>value pair is available
+ * Checks if TOOL_GOOGLEBOOKS_FIELDS_TO is defined and a matching key=>value pair is available
  *
  * @param string $optionString
- * @param string $key
+ * @param string $googleKey
  * @return string
  */
-function toolMethod_GetTargetSelection(string $optionString, string $key): string {
-	if(defined('TOOL_BRAINZ_FIELDS_TO') & !empty($key)) {
-		if(isset(TOOL_BRAINZ_FIELDS_TO[$key])) {
-			$_k = "sel_".TOOL_BRAINZ_FIELDS_TO[$key];
+function toolMethod_GetTargetSelection(string $optionString, string $googleKey): string {
+	if(defined('TOOL_GOOGLEBOOKS_FIELDS_TO') & !empty($googleKey)) {
+		if(isset(TOOL_GOOGLEBOOKS_FIELDS_TO[$googleKey])) {
+			$_k = "sel_".TOOL_GOOGLEBOOKS_FIELDS_TO[$googleKey];
 			$optionString = str_replace($_k,'selected="selected"',$optionString);
 		}
 	}

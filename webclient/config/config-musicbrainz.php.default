@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,29 +18,30 @@
 
 /**
  * Options for the musicbrainz class
-
- * Currently available fields are:
- * 		album,date,artist,tracks,image,runtime
+ *
  * TOOL_BRAINZ_FIELDS_TO is a array to define which fields should be saved into
  *		a bibliotheca field. Those or the fields a collection can have. Use the identifier of a field.
  *		Depends on your settings so make sure everything is setup first. Leave it commented if not needed.
+ *      nameFromService => bibFieldName
  * TOOL_BRAINZ_BROWSER_AGENT a current browser agent string. Should be updated from time to time. See default config file.
  * TOOL_BRAINZ_BROWSER_ACCEPT A string what the browser does accept. Should be updated from time to time. See default config file.
  * TOOL_BRAINZ_BROWSER_ACCEPT_LANG should define in which language the content returns
  * TOOL_BRAINZ_RESULT_LIMIT How many entries the search will display
  */
 
-const = TOOL_BRAINZ_BROWSER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0';
-const = TOOL_BRAINZ_BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
-const = TOOL_BRAINZ_BROWSER_ACCEPT_LANG = 'en-US,en;q=0.5';
+const TOOL_BRAINZ_BROWSER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0';
+const TOOL_BRAINZ_BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
+const TOOL_BRAINZ_BROWSER_ACCEPT_LANG = 'en-US,en;q=0.5';
 
-const = TOOL_BRAINZ_RESULT_LIMIT = 10;
+const TOOL_BRAINZ_RESULT_LIMIT = 10;
 
 /*
-const = TOOL_BRAINZ_FIELDS_TO =
-	array(
-		'album' => 'title = 'date' => 'year =  'artist' => 'artist =  'image' => 'coverimage =  'tracks' => 'content =
-		'runtime' => 'runtime'
-	)
-;
+const TOOL_BRAINZ_FIELDS_TO = array(
+	'album' => 'title',
+	'date' => 'year',
+	'artist' => 'artist',
+	'image' => 'coverimage',
+	'tracks' => 'content',
+	'runtime' => 'runtime'
+);
 */

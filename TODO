@@ -1,3 +1,4 @@
+* central user-agent and browser info in config. Remove from tools
 * i18n support
 * Automatic upgrades of DB
 * drop in updates

@@ -166,7 +166,7 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (30, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', '2021-04-25 21:21:54', '2021-04-25 21:21:54', 0, 1, 1, 'rw-r--r--'),
 (31, 'artist', 'Artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2021-07-09 08:38:33', NULL, 1, 1, 'rw-r--r--'),
 (32, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:19:03', '2021-07-18 11:19:03', NULL, 1, 1, 'rw-r--r--'),
-(33, 'isbn', 'ISBN', 'number', 'entrySingleNum', '`isbn` int(10) NULL, ADD INDEX (`isbn`)', '', NULL, 'int 10', '2022-10-03 09:26:53', '2022-10-03 09:26:53', NULL, 1, 1, 'rw-r--r--');
+(33, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-03 09:26:53', '2022-10-03 09:26:53', NULL, 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -194,6 +194,7 @@ INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`,
 (1, 'IMDB web', 'Web parser', 'imdbweb', '_self', 1, 1, 'rw-r--r--'),
 (2, 'Game infos', 'Game infos', 'gameinfo', '_self', 1, 1, 'rw-r--r--'),
 (3, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', 1, 1, 'rw-r--r--');
+(4, 'Google Books', 'Book infos from Google', 'googlebooks', '_self', 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
