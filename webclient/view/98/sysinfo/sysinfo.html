@@ -1,0 +1,66 @@
+<h3>System information</h3>
+<div class="sunken-panel">
+	<table width="100%">
+		<thead>
+		<tr>
+			<th>Collection</th>
+			<th>Description</th>
+			<th>Created</th>
+			<th>Entries</th>
+			<th>Tags</th>
+			<th>DB Usage</th>
+			<th>Disk Usage</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
+			<tr>
+				<td><?php echo $v['name']; ?></td>
+				<td><?php echo $v['description']; ?></td>
+				<td><?php echo $v['created']; ?></td>
+				<td><?php echo $v['stats']['entriesCount']; ?></td>
+				<td><?php echo $v['stats']['tagsCount']; ?></td>
+				<td><?php echo $v['stats']['tableSize']; ?></td>
+				<td><?php echo $v['stats']['storageSize']; ?></td>
+			</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+</div>
+<p>&nbsp;</p>
+<div class="sunken-panel">
+	<table width="100%">
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Bibliotheca</td>
+				<td><?php echo $TemplateData['bibVersion']; ?></td>
+			</tr>
+			<tr>
+				<td>Apache (depends on ServerTokens setting)</td>
+				<td><?php echo $TemplateData['apacheVersion']; ?></td>
+			</tr>
+			<tr>
+				<td>PHP</td>
+				<td><?php echo $TemplateData['phpVersion']; ?></td>
+			</tr>
+			<tr>
+				<td>MySQL server</td>
+				<td><?php echo $TemplateData['mysqlVersion']; ?></td>
+			</tr>
+			<tr>
+				<td>MySQL data usage</td>
+				<td><?php echo $TemplateData['overallTableSize']; ?></td>
+			</tr>
+			<tr>
+				<td>Storage usage</td>
+				<td><?php echo $TemplateData['overallStorageSize']; ?></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
