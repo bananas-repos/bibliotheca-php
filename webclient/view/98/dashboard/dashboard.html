@@ -1,0 +1,68 @@
+<?php if(!empty($TemplateData['search'])) { ?>
+<div class="window">
+	<div class="title-bar">
+		<div class="title-bar-text">Search</div>
+		<div class="title-bar-controls">
+			<button aria-label="Close" id="searchNoteWindowCloseButton"></button>
+		</div>
+	</div>
+	<div class="window-body">
+		<p>Display result for: <b><?php echo $TemplateData['search']; ?></b></p>
+	</div>
+</div>
+<script>
+	const searchNoteWindowCloseButton = document.getElementById('searchNoteWindowCloseButton');
+	searchNoteWindowCloseButton.addEventListener('click', () => {
+		window.location.href="index.php";
+	});
+</script>
+<?php } ?>
+
+<?php foreach($TemplateData['latest'] as $k=>$v) { ?>
+	<h4>
+		<a href="index.php?p=collections&collection=<?php echo $k; echo Summoner::ifset($TemplateData, 'navSearched'); ?>"><?php echo $v['name']; ?></a>
+		<?php echo $v['description']; ?>
+	</h4>
+	<?php if(isset($v['entries']['results'])) { ?>
+	<div class="sunken-panel">
+		<table width="100%">
+			<thead>
+				<tr>
+					<th>Image</th>
+					<th>Title</th>
+					<th>Description</th>
+					<th>View</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach($v['entries']['results'] as $entryK=>$entry) { ?>
+				<tr>
+					<td>
+						<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+						<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>">
+							<img src="<?php echo PATH_WEB_STORAGE.'/'.$k.'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
+							     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>"
+							width="50px">
+						</a>
+						<?php } ?>
+					</td>
+					<td>
+						<?php if(Summoner::ifset($entry['fields'], 'title')) {
+							echo $entry['fields']['title']['value'];
+						} ?>
+					</td>
+					<td>
+						<?php if(Summoner::ifset($entry['fields'], array('description','value'))) {
+							echo $entry['fields']['description']['value'];
+						} ?>
+					</td>
+					<td>
+						<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>">View</a>
+					</td>
+				</tr>
+			<?php } ?>
+			</tbody>
+		</table>
+	</div>
+	<?php } ?>
+<?php } ?>

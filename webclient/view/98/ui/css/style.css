@@ -1,0 +1,50 @@
+body {
+    background: #c0c0c0;
+}
+
+.window {
+    font-family: Arial;
+}
+
+#navSearchWindow {
+    width: 400px;
+}
+
+.title-bar.danger {
+    background: linear-gradient(90deg,red,lightcoral);
+}
+.title-bar.warning {
+    background: linear-gradient(90deg,yellow,lightyellow);
+}
+.title-bar.warning .title-bar-text {
+    color: black;
+}
+.title-bar.success {
+    background: linear-gradient(90deg,green,lightgreen);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+h2 {
+    font-size: 1.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+h3 {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+h4 {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+h5 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
