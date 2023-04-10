@@ -1,0 +1,34 @@
+<h3>Manage your profile</h3>
+
+<form method="post">
+	<div class="field-row">
+		<label for="username">Username</label>
+		<input id="username" type="text" autocomplete="off" name="fdata[username]"
+		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+	</div>
+	<div class="field-row">
+		<label for="password">Password</label>
+		<input id="password" type="password" autocomplete="off" name="fdata[password]">
+	</div>
+	<div class="field-row">
+		<label for="group">Main group</label>
+		<input class="uk-input" id="group" type="text" name="fdata[group]" disabled
+			value="<?php echo Summoner::ifset($TemplateData['editData'], 'baseGroupName'); ?>">
+	</div>
+	<div class="field-row">
+		<label for="additionalGroups">Additional groups</label>
+		<input class="uk-input" id="additionalGroups" type="text" name="fdata[additionalGroups]" disabled
+			value="To be done">
+	</div>
+	<div class="field-row">
+		<input id="refreshApiToken" type="checkbox" name="fdata[refreshApiToken]" value="1">
+		<label for="refreshApiToken">Create API Token</label>
+	</div>
+	<div class="field-row">
+		Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
+		Key: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+	</div>
+	<div class="field-row">
+		<input type="submit" name="submitForm" value="Save">
+	</div>
+</form>
