@@ -1,3 +1,4 @@
+* change multiple-attachment to a field which tells it is used for a image gallery
 * minimal theme
 ** https://watercss.kognise.dev/
 * create a real fallback theme, which does not depend on any styling/css
