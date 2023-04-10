@@ -23,6 +23,7 @@
 		<footer class="status-bar">
 			<p class="status-bar-field"><a href="https://www.bananas-playground.net/projekt/bibliotheca/" target=_blank>Bibliotheca</a></p>
 			<p class="status-bar-field">&copy; 2018 - <?php echo date('Y'); ?></p>
+			<p class="status-bar-field">Theme <a href="https://jdan.github.io/98.css/" target="_blank">98.css</a></p>
 		</footer>
 	</div>
 

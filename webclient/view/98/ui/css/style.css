@@ -48,3 +48,14 @@ h5 {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+.pagination {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.pagination a, .pagination span {
+    margin-right: 5px;
+}
+.paginationActive {
+    font-weight: bold
+}
