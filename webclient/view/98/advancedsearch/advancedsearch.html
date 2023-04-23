@@ -1,0 +1,158 @@
+<?php if(!empty($TemplateData['loadedCollection'])) { ?>
+
+	<form method="post">
+		<div class="field-row">
+			<label for="search">Search for</label>
+			<input id="search" type="text" autocomplete="off" name="fdata[search]"
+			       placeholder="See search syntax for options" size="50" />
+		</div>
+		<div class="field-row">
+			<p>This uses the table view as default. Remember to select the fields to show in collection config</p>
+		</div>
+		<div class="field-row">
+			<input type="submit" name="submitForm" value="Search" />
+		</div>
+	</form>
+
+	<h4>Syntax</h4>
+	<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
+	<p>
+		To search within the possible fields of a collection type the field <b>identifier</b> followed by <b>:</b> and then a space. Not every search operator does make sense with tag search fields.
+		If the search is within a field witch is not configured to be displayed in the table view, it will be added.
+	</p>
+	<pre>title: bourne</pre>
+	<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
+	<pre style="white-space: normal">
+	<?php foreach($TemplateData['collectionFields'] as $k=>$v) {
+		echo $v['identifier']." ";
+	} ?>
+	</pre>
+	<p>Possible search operators:</p>
+	<dl>
+		<dt>&ast;</dt>
+		<dd>
+			The asterisk serves as the truncation (or wildcard) operator. Unlike the other operators,
+			it is appended to the word to be affected. Words match if they begin with the word preceding the * operator.
+		</dd>
+
+		<dt>&plus;</dt>
+		<dd>A leading plus sign indicates that this word must be present in each row that is returned.</dd>
+
+		<dt>&minus;</dt>
+		<dd>A leading minus sign indicates that this word must not be present in any of the rows that are returned.</dd>
+
+		<dt>&quot;</dt>
+		<dd>A phrase that is enclosed within double quote (") characters matches only rows that contain the phrase literally, as it was typed.</dd>
+
+		<dt>&gt;</dt>
+		<dd>A leading greater than sign indicates that rows greater than the number will be returned.</dd>
+
+		<dt>&lt;</dt>
+		<dd>A leading less than sign indicates that rows smaller than the number will be returned.</dd>
+	</dl>
+
+	<?php if(!empty($TemplateData['search'])) { ?>
+		<div class="window">
+			<div class="title-bar">
+				<div class="title-bar-text">Search</div>
+				<div class="title-bar-controls">
+					<button aria-label="Close" id="searchNoteWindowCloseButton"></button>
+				</div>
+			</div>
+			<div class="window-body">
+				<p>
+					Display result for: <b><?php echo $TemplateData['search']; ?></b><br>
+					<small>(Max. result of 60)</small>
+				</p>
+			</div>
+		</div>
+		<script>
+			const searchNoteWindowCloseButton = document.getElementById('searchNoteWindowCloseButton');
+			searchNoteWindowCloseButton.addEventListener('click', () => {
+				window.location.href="index.php?p=advancedsearch&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>";
+			});
+		</script>
+	<?php } ?>
+
+	<?php if(!empty($TemplateData['entries'])) { ?>
+		<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>">
+			<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
+			<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
+			<?php } ?>
+			<div class="field-row">
+				<input type="submit" value="Bulkedit these results">
+			</div>
+		</form>
+
+		<div class="sunken-panel">
+			<table width="100">
+				<thead>
+				<tr>
+					<th>#</th>
+					<?php
+					foreach($TemplateData['collectionFields'] as $f) {
+						if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
+							echo '<th>'.$f['displayname'].'</th>';
+						}
+					}
+					?>
+				</tr>
+				</thead>
+				<tbody>
+
+				<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
+				<tr>
+					<td>
+						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank>#</a>
+					</td>
+
+					<?php
+						foreach($entry['fields'] as $f) {
+							if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
+						?>
+					<td>
+						<?php
+								if(Summoner::ifset($f, 'value')) {
+									if(is_array($f['value'])) {
+										echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
+									}
+									else {
+										echo Summoner::limitWithDots($f['value'],100,'...');
+									}
+								}
+								?>
+					</td>
+					<?php
+						    }
+						}
+						?>
+				</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+		</div>
+
+<?php }
+	} else { ?>
+
+	<h3>Please select a collection first</h3>
+	<div class="sunken-panel">
+		<table width="100%">
+			<thead>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+			</tr>
+			</thead>
+			<tbody>
+			<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+				<tr>
+					<td><a href="index.php?p=advancedsearch&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></td>
+					<td><?php echo $v['description']; ?></td>
+				<tr>
+			<?php } ?>
+			</tbody>
+		</table>
+	</div>
+
+<?php } ?>
