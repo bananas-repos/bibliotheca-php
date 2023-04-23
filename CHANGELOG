@@ -3,6 +3,7 @@
 	* Added google books parser. See upgrade file for more infos.
 	* Fix: #18
 	* Fix: #19
+	* Fix: #15
 
 1.4 - Depths Of Rrajigar 2022-12-18
 	* Added new default sort direction field in collection edit view. See upgrade file for more needed details
