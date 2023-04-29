@@ -11,40 +11,53 @@
 
 	<?php if(!empty($TemplateData['tags'])) { ?>
 		<form method="post">
-			<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
-			<div class="field-row">
-				<h4 class="uk-heading-line"><?php echo $v['displayname']; ?></h4>
+			<div  class="sunken-panel">
+				<table width="100%">
+					<thead>
+						<tr>
+							<th width="100px">Tagfield</th>
+							<th>Use</th>
+							<th>Move to (rename to existig)</th>
+							<th>Rename</th>
+							<th width="100px">Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+				<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
+						<tr>
+							<td><?php echo $v['displayname']; ?></td>
+							<td>
+								<select name="fdata[<?php echo $v['id']; ?>][use]">
+									<option value="">Please select</option>
+									<?php foreach($v['entries'] as $ek=>$ev) { ?>
+									<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+									<?php } ?>
+								</select>
+							</td>
+
+							<td>
+								<select name="fdata[<?php echo $v['id']; ?>][move]">
+									<option value="">Please select</option>
+									<?php foreach($v['entries'] as $ek=>$ev) { ?>
+									<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+									<?php } ?>
+								</select>
+							</td>
+							<td>
+								<input type="text" autocomplete="off"
+								       name="fdata[<?php echo $v['id']; ?>][rename]">
+							</td>
+							<td>
+								<input type="checkbox" name="fdata[<?php echo $v['id']; ?>][doDelete]" value="1"
+									id="<?php echo $v['id']; ?>_doDelete">
+								<label for="<?php echo $v['id']; ?>_doDelete">&nbsp;</label>
+							</td>
+						</tr>
+				<?php } ?>
+					</tbody>
+				</table>
 			</div>
-			<div class="field-row">
-				<label for="<?php echo $v['id']; ?>_use">Use</label>
-				<select name="fdata[<?php echo $v['id']; ?>][use]" id="<?php echo $v['id']; ?>_use">
-					<option value="">Please select</option>
-					<?php foreach($v['entries'] as $ek=>$ev) { ?>
-					<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
-					<?php } ?>
-				</select>
-
-				<label for="<?php echo $v['id']; ?>_move">Move to (rename to existing)</label>
-				<select name="fdata[<?php echo $v['id']; ?>][move]" id="<?php echo $v['id']; ?>_move">
-					<option value="">Please select</option>
-					<?php foreach($v['entries'] as $ek=>$ev) { ?>
-					<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
-					<?php } ?>
-				</select>
-
-				<label for="<?php echo $v['id']; ?>_rename" >Rename</label>
-				<input type="text" autocomplete="off"
-				       name="fdata[<?php echo $v['id']; ?>][rename]" id="<?php echo $v['id']; ?>_rename">
-
-				<input type="checkbox" name="fdata[<?php echo $v['id']; ?>][doDelete]" value="1"
-				       id="<?php echo $v['id']; ?>_doDelete">
-				<label for="<?php echo $v['id']; ?>_doDelete">Delete</label>
-			</div>
-			<?php } ?>
-
-			<div class="field-row">
-				<input type="submit" name="submitForm" value="Save" />
-			</div>
+			<input type="submit" name="submitForm" value="Do it" />
 		</form>
 	<?php } ?>
 
