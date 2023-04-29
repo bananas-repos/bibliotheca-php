@@ -223,6 +223,7 @@
 		<thead>
 			<tr>
 				<th width="200px">Name</th>
+				<th>Created</th>
 				<th>Description</th>
 				<th>Owner</th>
 				<th>Group</th>
@@ -234,10 +235,8 @@
 		<tbody>
 			<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
 			<tr>
-				<td>
-					<?php echo $v['name']; ?><br/>
-					<small><?php echo $v['created']; ?></small>
-				</td>
+				<td><?php echo $v['name']; ?></td>
+				<td><?php echo $v['created']; ?></td>
 				<td><?php echo $v['description']; ?></td>
 				<td><?php echo $v['username']; ?></td>
 				<td><?php echo $v['groupname']; ?></td>

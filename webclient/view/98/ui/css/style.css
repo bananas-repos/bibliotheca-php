@@ -13,27 +13,6 @@ select[multiple="multiple"] {
     background-image: initial;
 }
 
-.window {
-    font-family: Arial;
-}
-
-#navSearchWindow {
-    width: 400px;
-}
-
-.title-bar.danger {
-    background: linear-gradient(90deg,red,lightcoral);
-}
-.title-bar.warning {
-    background: linear-gradient(90deg,yellow,lightyellow);
-}
-.title-bar.warning .title-bar-text {
-    color: black;
-}
-.title-bar.success {
-    background: linear-gradient(90deg,green,lightgreen);
-}
-
 h1 {
     font-size: 2rem;
     margin-top: 0.5rem;
@@ -60,6 +39,27 @@ h5 {
     margin-bottom: 0.5rem;
 }
 
+.window {
+    font-family: Arial;
+}
+
+#navSearchWindow {
+    width: 400px;
+}
+
+.title-bar.danger {
+    background: linear-gradient(90deg,red,lightcoral);
+}
+.title-bar.warning {
+    background: linear-gradient(90deg,yellow,lightyellow);
+}
+.title-bar.warning .title-bar-text {
+    color: black;
+}
+.title-bar.success {
+    background: linear-gradient(90deg,green,lightgreen);
+}
+
 .pagination {
     padding-bottom: 5px;
     padding-top: 5px;
@@ -69,4 +69,14 @@ h5 {
 }
 .paginationActive {
     font-weight: bold
+}
+
+#sortableContainer {
+    display: flex;
+    gap: 10px;
+}
+
+#sortableContainer .sortitem {
+    cursor: grab;
+    padding: 5px;
 }

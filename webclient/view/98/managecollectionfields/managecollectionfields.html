@@ -1,0 +1,77 @@
+<h3 class="uk-h3">Manage your fields for: <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
+
+<h4 class="uk-h4">Add or remove a field</h4>
+<p>
+	Just use drag and drop below to add, remove or order your fields.<br />
+	Removing a field will <b>remove</b> the stored data from the collection.<br />
+	Make sure at least the <b>title</b>, <b>cover image</b> and <b>description</b> fields are available.
+</p>
+
+<div id="sortableContainer">
+	<div class="window">
+		<div class="title-bar">
+			<div class="title-bar-text">Configured fields</div>
+		</div>
+		<div class="window-body">
+			<div id="collectionFields">
+				<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
+				<div class="sortitem" data-field-id="<?php echo $k; ?>">
+					<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<div class="window">
+		<div class="title-bar">
+			<div class="title-bar-text">Available fields</div>
+		</div>
+		<div class="window-body">
+			<div id="availableFields">
+				<?php foreach($TemplateData['availableFields'] as $k=>$v) { ?>
+				<div class="sortitem" data-field-id="<?php echo $k; ?>">
+					<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
+				</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<form method="post" onsubmit="return saveOrderAndSubmit()">
+	<input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
+	   value="<?php echo Summoner::ifset($TemplateData['editData'], 'fieldSortString'); ?>">
+	<input class="uk-button uk-button-primary" type="submit" name="submitForm" value="Save">
+</form>
+
+
+
+<script src="view/98/ui/js/sortable.js"></script>
+<script>
+	new Sortable(collectionFields, {
+		group: 'shared',
+		animation: 150
+	});
+
+	new Sortable(availableFields, {
+		group: 'shared',
+		animation: 150
+	});
+</script>
+
+<script type="text/javascript">
+	function saveOrderAndSubmit() {
+		let list = document.getElementById("collectionFields");
+		let fieldSort = document.getElementById("fieldSort");
+		let sortString = '';
+		if(list && list.children.length > 0 && fieldSort) {
+			let fields = Array.from(list.children);
+			fields.forEach(function(item, index) {
+				sortString += item.getAttribute("data-field-id")+",";
+			});
+			fieldSort.value = sortString;
+			return true;
+		}
+		return false;
+	}
+</script>

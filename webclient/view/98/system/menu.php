@@ -48,7 +48,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 <?php if(!empty($_menuManage)) { ?>
 	<li role="tab"><a href="">Manage:</a></li>
 	<?php foreach($_menuManage as $entry) { ?>
-		<li role="tab" <?php if(str_contains($entry['action'], $_requestMode)) echo 'aria-selected="true"'; ?>>
+		<li role="tab" <?php if(!empty($_requestMode) && str_starts_with($entry['action'], $_requestMode)) echo 'aria-selected="true"'; ?>>
 			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
 		</li>
 	<?php } ?>
