@@ -88,7 +88,7 @@
 			<table width="100">
 				<thead>
 				<tr>
-					<th>#</th>
+					<th>View</th>
 					<?php
 					foreach($TemplateData['collectionFields'] as $f) {
 						if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
@@ -103,7 +103,7 @@
 				<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
 				<tr>
 					<td>
-						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank>#</a>
+						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">View</a>
 					</td>
 
 					<?php
@@ -140,7 +140,7 @@
 		<table width="100%">
 			<thead>
 			<tr>
-				<th>Name</th>
+				<th width="100px">Name</th>
 				<th>Description</th>
 			</tr>
 			</thead>

@@ -29,19 +29,11 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 ?>
 
 <menu role="tablist">
-
 	<?php foreach($_menuShow as $entry) { ?>
 		<li role="tab" <?php if($_requestMode == $entry['action']) echo 'aria-selected="true"'; ?>>
 			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
 		</li>
-	<?php }
-	if(!empty($_menuManage)) {
-		foreach($_menuManage as $entry) { ?>
-			<li role="tab" <?php if($_requestMode == $entry['action']) echo 'aria-selected="true"'; ?>>
-				<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
-			</li>
-		<?php }
-	} ?>
+	<?php } ?>
 	<li role="tab">
 		<a href="index.php?p=auth">
 			<?php if($Doomguy->isSignedIn() === true) { echo "Logout"; } else { echo "Login"; } ?>
@@ -50,10 +42,19 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 	<li role="tab">
 		<a id="showNavSearch" href="#" onclick="showNavSearch();">Search</a>
 	</li>
-	<li role="tag" <?php if($_requestMode == 'advancedsearch') echo 'aria-selected="true"'; ?>>
+	<li role="tab" <?php if($_requestMode == 'advancedsearch') echo 'aria-selected="true"'; ?>>
 		<a href="index.php?p=advancedsearch">Advanced search</a>
 	</li>
+<?php if(!empty($_menuManage)) { ?>
+	<li role="tab"><a href="">Manage:</a></li>
+	<?php foreach($_menuManage as $entry) { ?>
+		<li role="tab" <?php if($_requestMode == $entry['action']) echo 'aria-selected="true"'; ?>>
+			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
+		</li>
+	<?php } ?>
+<?php } ?>
 </menu>
+
 
 <dialog id="navSearchDialog" class="window">
 	<div class="title-bar">

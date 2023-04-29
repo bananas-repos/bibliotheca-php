@@ -1,3 +1,4 @@
+* fix bulkedit
 * change multiple-attachment to a field which tells it is used for a image gallery
 * complete profile view. Groups still missing.
 * minimal theme
