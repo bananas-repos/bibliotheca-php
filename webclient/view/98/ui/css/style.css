@@ -2,6 +2,17 @@ body {
     background: #c0c0c0;
 }
 
+blockquote {
+    background-color: #dfdfdf;
+    margin: 0 0 20px;
+    padding: 20px;
+}
+
+select[multiple="multiple"] {
+    height: initial;
+    background-image: initial;
+}
+
 .window {
     font-family: Arial;
 }
