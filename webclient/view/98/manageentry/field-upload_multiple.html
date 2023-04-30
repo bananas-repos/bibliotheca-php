@@ -1,0 +1,23 @@
+<div class="field-row-stacked">
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<input type="file" id="<?php echo $field['identifier']; ?>" multiple="true"
+		name="fdata[<?php echo $field['identifier']; ?>][]"
+	/>
+
+	<?php
+	if(isset($TemplateData['editData']) && !empty($TemplateData['editData'][$field['identifier']])) {
+		foreach($TemplateData['editData'][$field['identifier']] as $e) {
+	?>
+		<a target="_blank" href="<?php echo $TemplateData['storagePath'].'/'.$e; ?>"><?php echo $e; ?></a>
+		<input type="checkbox" value="<?php echo $e; ?>"
+				name="fdata[<?php echo $field['identifier']; ?>_delete][]"
+				title="Delete"
+				id="<?php echo $field['identifier']; ?>_delete"
+		/>
+		<label for="<?php echo $field['identifier']; ?>_delete">Delete</label>
+		<br>
+	<?php
+		}
+	}
+	?>
+</div>

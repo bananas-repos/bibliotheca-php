@@ -1,6 +1,6 @@
-<h3 class="uk-h3">Manage your fields for: <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
+<h3 >Manage your fields for: <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
 
-<h4 class="uk-h4">Add or remove a field</h4>
+<h4 >Add or remove a field</h4>
 <p>
 	Just use drag and drop below to add, remove or order your fields.<br />
 	Removing a field will <b>remove</b> the stored data from the collection.<br />
@@ -41,7 +41,7 @@
 <form method="post" onsubmit="return saveOrderAndSubmit()">
 	<input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
 	   value="<?php echo Summoner::ifset($TemplateData['editData'], 'fieldSortString'); ?>">
-	<input class="uk-button uk-button-primary" type="submit" name="submitForm" value="Save">
+	<input type="submit" name="submitForm" value="Save">
 </form>
 
 

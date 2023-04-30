@@ -127,7 +127,7 @@ if(!empty($_collection)) {
 				}
 				else { // ADD
 					// special case. Title field should be always available.
-					if (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
+					if (!empty($_fieldsToSave) && !empty($_fieldsToSave['title']['valueToSave'])) {
 						$do = $ManageEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
 						if (!empty($do)) {
 							$TemplateData['message']['content'] = "<a href='index.php?p=entry&collection=".$_collection."&id=".$do."'>View your new entry</a> | <a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>Edit your new entry</a>";

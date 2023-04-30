@@ -1,5 +1,6 @@
 * fix bulkedit
 * change multiple-attachment to a field which tells it is used for a image gallery
+* update JS and remove deprecations
 * complete profile view. Groups still missing.
 * minimal theme
 ** https://watercss.kognise.dev/
