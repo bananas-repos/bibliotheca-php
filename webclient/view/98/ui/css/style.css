@@ -2,6 +2,7 @@ body {
     background: #c0c0c0;
 }
 
+/** 98.css overwrites */
 blockquote {
     background-color: #dfdfdf;
     margin: 0 0 20px;
@@ -11,6 +12,7 @@ blockquote {
 select[multiple="multiple"] {
     height: initial;
     background-image: initial;
+    padding-right: inherit;
 }
 
 h1 {
@@ -43,6 +45,19 @@ h5 {
     font-family: Arial;
 }
 
+.field-row-stacked *+* {
+    margin-top: 0;
+}
+
+.field-row-stacked input[type="submit"] {
+    width: max-content;
+}
+
+.field-row-stacked label {
+    margin-top: 6px;
+}
+
+/** custom */
 #navSearchWindow {
     width: 400px;
 }
@@ -79,4 +94,8 @@ h5 {
 #sortableContainer .sortitem {
     cursor: grab;
     padding: 5px;
+}
+
+.maxSizeForm {
+    width: 500px;
 }

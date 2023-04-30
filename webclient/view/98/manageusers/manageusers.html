@@ -1,22 +1,22 @@
 <h3 class="uk-h3">User management</h3>
 <h4 class="uk-h4">Add or modify a user</h4>
 
-<form method="post">
-	<div class="field-row">
+<form method="post" class="maxSizeForm">
+	<div class="field-row-stacked">
 		<label for="username">Username *</label>
 		<input id="username" type="text" autocomplete="off" name="fdata[username]"
 			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
 	</div>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<label for="login">Login *</label>
 		<input id="login" type="text" autocomplete="off" name="fdata[login]"
 			value="<?php echo Summoner::ifset($TemplateData['editData'], 'login'); ?>">
 	</div>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<label for="password">Password *</label>
 		<input id="password" type="password" autocomplete="off" name="fdata[password]">
 	</div>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<label for="group">Main group *</label>
 		<select id="group" name="fdata[group]">
 			<option value="">Please select</option>
@@ -27,7 +27,7 @@
 			<?php } ?>
 		</select>
 	</div>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<label for="groups">Additional groups</label>
 		<select id="groups" name="fdata[groups][]" multiple="multiple"
 			size="5">
@@ -39,28 +39,31 @@
 			<?php } ?>
 		</select>
 	</div>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<input id="active" type="checkbox" name="fdata[active]" value="1"
 			<?php if(Summoner::ifset($TemplateData['editData'], 'active')) echo "checked"; ?>>
 		<label for="active">Can login</label>
 	</div>
 	<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<input id="delete" type="checkbox" name="fdata[doDelete]" value="1">
 		<label for="delete">Delete. Warning: Content owned by this user will not be deleted and thus only manageable by admin! Better disable the user if there is content.</label>
 	</div>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<input id="refreshApiToken" type="checkbox" name="fdata[refreshApiToken]" value="1">
-		<label for="refreshApiToken">Create API Token Valid until:
-			<?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?>
-			<?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?></label>
+		<label for="refreshApiToken">Create API Token</label>
+	</div>
+	<div class="field-row-stacked">
+		<label>
+			Current Token: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?><br />
+			Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?>
+		</label>
 	</div>
 	<?php } ?>
-	<div class="field-row">
+	<div class="field-row-stacked">
 		<input type="submit" name="submitForm" value="Save">
 	</div>
 </form>
-
 
 <h4 class="uk-h4">Available users</h4>
 <div class="sunken-panel">

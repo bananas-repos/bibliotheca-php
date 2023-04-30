@@ -4,215 +4,174 @@
 	Any default field or any option which needs a field get its content after the fields are configured.
 </blockquote>
 
-<form method="post">
-	<div class="sunken-panel">
-		<table width="100%">
+<form method="post" class="maxSizeForm">
+	<div class="field-row-stacked">
+		<label for="name">Name *</label>
+		<input id="name" type="text" autocomplete="off" name="fdata[name]"
+            placeholder="Unique name. No special chars." size="30"
+			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+    </div>
+	<div class="field-row-stacked">
+		<label for="description">Description</label>
+		<input id="description" type="text" autocomplete="off" size="30" name="fdata[description]"
+		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+   </div>
+	<div class="field-row-stacked">
+		<label for="defaultSearchField">Default global search field</label>
+		<select id="defaultSearchField" name="fdata[defaultSearchField]">
+			<option value="">Please select</option>
+			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
+			<option value="<?php echo $v['identifier']; ?>"
+			<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSearchField', $v['identifier'])) echo 'selected'; ?>
+			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="field-row-stacked">
+		<label>
+			The field is used in the global search. Altering the default search field results in
+			a DB reindex. This could take some time, depending on the amount of data.
+		</label>
+	</div>
+	<div class="field-row-stacked">
+		<label for="defaultSortField">Default sort field</label>
+		<select id="defaultSortField" name="fdata[defaultSortField]">
+			<option value="">Please select</option>
+			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
+			<option value="<?php echo $v['identifier']; ?>"
+			<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortField', $v['identifier'])) echo 'selected'; ?>
+			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="field-row-stacked">
+		<label for="defaultSortOrder">Default sort order</label>
+		<select id="defaultSortOrder" name="fdata[defaultSortOrder]">
+			<option value="ASC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'ASC')) echo 'selected'; ?>>ASCENDING</option>
+			<option value="DESC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'DESC')) echo 'selected'; ?>>DESCENDING</option>
+		</select>
+	</div>
+	<div class="field-row-stacked">
+		<label for="advancedSearchTableFields">Table advanced search view</label>
+		<select id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
+			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
+			<option value="<?php echo $v['id']; ?>"
+			<?php if(Summoner::ifset($TemplateData['editData']['advancedSearchTableFields'], $v['id'])) echo 'selected'; ?>
+			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="field-row-stacked">
+		<label>Make sure that the default global search field is in this list. This does not limit the fields to search in.</label>
+	</div>
+	<div class="field-row-stacked">
+			<label for="tool">Tools</label>
+			<select id="tool" name="fdata[tool][]" multiple="multiple" size="5">
+				<option value="">None</option>
+				<?php foreach($TemplateData['toolSelection'] as $k=>$v) { ?>
+				<option value="<?php echo $k; ?>"
+				<?php if(Summoner::ifset($TemplateData['editData']['tool'],$k)) echo 'selected'; ?>
+				><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
+				<?php } ?>
+			</select>
+	</div>
+	<div class="field-row-stacked">
+		<label for="owner">Owner *</label>
+		<select id="owner" name="fdata[owner]">
+			<option value="">Please select</option>
+			<?php foreach($TemplateData['ownerSelection'] as $k=>$v) { ?>
+			<option value="<?php echo $k; ?>"
+			<?php if(Summoner::ifsetValue($TemplateData['editData'], 'owner',$k)) echo 'selected'; ?>
+			><?php echo $v['login']; ?> (<?php echo $v['name']; ?>)</option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="field-row-stacked">
+		<label for="group">Group *</label>
+		<select id="group" name="fdata[group]">
+			<option value="">Please select</option>
+			<?php foreach($TemplateData['groupSelection'] as $k=>$v) { ?>
+			<option value="<?php echo $k; ?>"
+			<?php if(Summoner::ifsetValue($TemplateData['editData'], 'group',$k)) echo 'selected'; ?>
+			><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
+			<?php } ?>
+		</select>
+	</div>
+	<div class="field-row-stacked">
+		<label>Rights *</label></td>
+
+		<table>
 			<thead>
 				<tr>
-					<th width="200px"></th>
-					<th></th>
-					<th>Note</th>
+					<th>User</th>
+					<th>Group</th>
+					<th>Other</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td><label for="name">Name *</label>
 					<td>
-						<input id="name" type="text" autocomplete="off" name="fdata[name]"
-		                    placeholder="Unique name. No special chars." size="30"
-			                value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><label for="description">Description</label></td>
-					<td>
-						<input id="description" type="text" autocomplete="off" size="30" name="fdata[description]"
-					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
-			       </td>
-			       <td></td>
-				</tr>
-				<tr >
-					<td><label for="defaultSearchField">Default global search field</label></td>
-					<td>
-						<select id="defaultSearchField" name="fdata[defaultSearchField]">
-							<option value="">Please select</option>
-							<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
-							<option value="<?php echo $v['identifier']; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSearchField', $v['identifier'])) echo 'selected'; ?>
-							><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
-							<?php } ?>
-						</select>
-					</td>
-					<td>
-						The field is used in the global search. Altering the default search field results in
-						a DB reindex. This could take some time, depending on the amount of data.
-					</td>
-				</tr>
-				<tr>
-					<td><label for="defaultSortField">Default sort field</label></td>
-					<td>
-						<select id="defaultSortField" name="fdata[defaultSortField]">
-							<option value="">Please select</option>
-							<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
-							<option value="<?php echo $v['identifier']; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortField', $v['identifier'])) echo 'selected'; ?>
-							><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
-							<?php } ?>
-						</select>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><label for="defaultSortOrder">Default sort order</label></td>
-					<td>
-						<select id="defaultSortOrder" name="fdata[defaultSortOrder]">
-							<option value="ASC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'ASC')) echo 'selected'; ?>>ASCENDING</option>
-							<option value="DESC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'DESC')) echo 'selected'; ?>>DESCENDING</option>
-						</select>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><label for="advancedSearchTableFields">Table advanced search view</label></td>
-					<td>
-						<select id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
-							<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
-							<option value="<?php echo $v['id']; ?>"
-							<?php if(Summoner::ifset($TemplateData['editData']['advancedSearchTableFields'], $v['id'])) echo 'selected'; ?>
-							><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
-							<?php } ?>
-						</select>
-					</td>
-					<td>Make sure that the default global search field is in this list. This does not limit the fields to search in.</td>
-				</tr>
-				<tr>
-					<td><label for="tool">Tools</label></td>
-					<td>
-						<select id="tool" name="fdata[tool][]" multiple="multiple" size="5">
-							<option value="">None</option>
-							<?php foreach($TemplateData['toolSelection'] as $k=>$v) { ?>
-							<option value="<?php echo $k; ?>"
-							<?php if(Summoner::ifset($TemplateData['editData']['tool'],$k)) echo 'selected'; ?>
-							><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
-							<?php } ?>
-						</select>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><label for="owner">Owner *</label></td>
-					<td>
-						<select id="owner" name="fdata[owner]">
-							<option value="">Please select</option>
-							<?php foreach($TemplateData['ownerSelection'] as $k=>$v) { ?>
-							<option value="<?php echo $k; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'owner',$k)) echo 'selected'; ?>
-							><?php echo $v['login']; ?> (<?php echo $v['name']; ?>)</option>
-							<?php } ?>
-						</select>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><label for="group">Group *</label></td>
-					<td>
-						<select id="group" name="fdata[group]">
-							<option value="">Please select</option>
-							<?php foreach($TemplateData['groupSelection'] as $k=>$v) { ?>
-							<option value="<?php echo $k; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'group',$k)) echo 'selected'; ?>
-							><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
-							<?php } ?>
-						</select>
-					</td>
-					<td></td>
-				</tr>
-				<tr>
-					<td><label>Rights *</label></td>
-					<td>
-						<div class="sunken-panel">
-							<table>
-								<thead>
-									<tr>
-										<th>User</th>
-										<th>Group</th>
-										<th>Other</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td>
-											<input id="user_read" type="checkbox" name="fdata[rights][user][read]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>>
-											<label for="user_read">r &nbsp; &nbsp; &nbsp;</label>
+						<input id="user_read" type="checkbox" name="fdata[rights][user][read]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>>
+						<label for="user_read">r &nbsp; &nbsp; &nbsp;</label>
 
-											<input id="user_write" type="checkbox" name="fdata[rights][user][write]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>>
-											<label for="user_write">w &nbsp; &nbsp; &nbsp;</label>
+						<input id="user_write" type="checkbox" name="fdata[rights][user][write]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>>
+						<label for="user_write">w &nbsp; &nbsp; &nbsp;</label>
 
-											<input id="user_delete" type="checkbox" name="fdata[rights][user][delete]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>>
-											<label for="user_delete">x &nbsp; &nbsp; &nbsp;</label>
-										</td>
-										<td>
-											<input id="group_read" type="checkbox" name="fdata[rights][group][read]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>>
-											<label for="group_read">r &nbsp; &nbsp; &nbsp;</label>
-
-											<input id="group_write" type="checkbox" name="fdata[rights][group][write]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>>
-											<label for="group_write">w &nbsp; &nbsp; &nbsp;</label>
-
-											<input id="group_delete" type="checkbox" name="fdata[rights][group][delete]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>>
-											<label for="group_delete">x &nbsp; &nbsp; &nbsp;</label>
-										</td>
-										<td>
-											<input id="other_read" type="checkbox" name="fdata[rights][other][read]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>>
-											<label for="other_read">r &nbsp; &nbsp; &nbsp;</label>
-
-											<input id="other_write" type="checkbox" name="fdata[rights][other][write]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>>
-											<label for="other_write">w &nbsp; &nbsp; &nbsp;</label>
-
-											<input id="other_delete" type="checkbox" name="fdata[rights][other][delete]" value="1"
-											<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>>
-											<label for="other_delete">x &nbsp; &nbsp; &nbsp;</label>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</td>
-					<td></td>
-				</tr>
-				<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
-				<tr>
-					<td>Update entry with collection rights</td>
-					<td>
-						<input id="doRightsForEntries" type="checkbox" name="fdata[doRightsForEntries]" value="1">
-						<label for="doRightsForEntries">&nbsp;</label>
+						<input id="user_delete" type="checkbox" name="fdata[rights][user][delete]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>>
+						<label for="user_delete">x &nbsp; &nbsp; &nbsp;</label>
 					</td>
 					<td>
-						Warning: This will overwrite existing entry rights (user, group, rights) with the ones from the collection!
+						<input id="group_read" type="checkbox" name="fdata[rights][group][read]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>>
+						<label for="group_read">r &nbsp; &nbsp; &nbsp;</label>
+
+						<input id="group_write" type="checkbox" name="fdata[rights][group][write]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>>
+						<label for="group_write">w &nbsp; &nbsp; &nbsp;</label>
+
+						<input id="group_delete" type="checkbox" name="fdata[rights][group][delete]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>>
+						<label for="group_delete">x &nbsp; &nbsp; &nbsp;</label>
 					</td>
-				</tr>
-				<tr>
-					<td>Delete</td>
 					<td>
-						<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
-						<label for="doDelete">&nbsp;</label>
+						<input id="other_read" type="checkbox" name="fdata[rights][other][read]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>>
+						<label for="other_read">r &nbsp; &nbsp; &nbsp;</label>
+
+						<input id="other_write" type="checkbox" name="fdata[rights][other][write]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>>
+						<label for="other_write">w &nbsp; &nbsp; &nbsp;</label>
+
+						<input id="other_delete" type="checkbox" name="fdata[rights][other][delete]" value="1"
+						<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>>
+						<label for="other_delete">x &nbsp; &nbsp; &nbsp;</label>
 					</td>
-					<td>Warning: This will delete ALL the data in this collection!</td>
 				</tr>
-				<?php } ?>
 			</tbody>
 		</table>
 	</div>
+	<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
+	<div class="field-row-stacked">
+		<input id="doRightsForEntries" type="checkbox" name="fdata[doRightsForEntries]" value="1">
+		<label for="doRightsForEntries">
+			Overwrite existing rights<br />
+			Warning: This will overwrite existing entry rights (user, group, rights) with the ones from the collection!
+		</label>
+	</div>
+	<div class="field-row-stacked">
+		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
+		<label for="doDelete">
+			Delete<br />
+			Warning: This will delete ALL the data in this collection!
+		</label>
+	</div>
+	<?php } ?>
 
-	<div class="field-row">
+
+	<div class="field-row-stacked">
 		<input type="submit" name="submitForm" value="Save" />
 	</div>
 </form>
