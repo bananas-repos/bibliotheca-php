@@ -53,23 +53,23 @@ class IMDB
 	const IMDB_AKA           = '~<td[^>]*>\s*Also\s*Known\s*As\s*</td>\s*<td>(.+)</td>~Uis';
 	const IMDB_ASPECT_RATIO  = '~<td[^>]*>Aspect\s*Ratio</td>\s*<td>(.+)</td>~Uis';
 	const IMDB_AWARDS        = '~<div\s*class="titlereference-overview-section">\s*Awards:(.+)</div>~Uis';
-	const IMDB_BUDGET        = '~<td[^>]*>Budget<\/td>\s*<td>\s*(.*)(?:\(estimated\))\s*<\/td>~Ui';
+	const IMDB_BUDGET        = '~<td[^>]*>Budget</td>\s*<td>\s*(.*)(?:\(estimated\))\s*</td>~Ui';
 	const IMDB_CAST          = '~<td[^>]*itemprop="actor"[^>]*>\s*<a\s*href="/name/([^/]*)/\?[^"]*"[^>]*>\s*<span.+>(.+)</span~Ui';
-	const IMDB_CAST_IMAGE    = '~(loadlate="(.*)"[^>]*><\/a>\s+<\/td>\s+)?<td[^>]*itemprop="actor"[^>]*>\s*<a\s*href="\/name\/([^/]*)\/\?[^"]*"[^>]*>\s*<span.+>(.+)<\/span+~Uis';
+	const IMDB_CAST_IMAGE    = '~(loadlate="(.*)"[^>]*></a>\s+</td>\s+)?<td[^>]*itemprop="actor"[^>]*>\s*<a\s*href="/name/([^/]*)/\?[^"]*"[^>]*>\s*<span.+>(.+)</span+~Uis';
 	const IMDB_CERTIFICATION = '~<td[^>]*>\s*Certification\s*</td>\s*<td>(.+)</td>~Ui';
-	const IMDB_CHAR          = '~<td class="character">(?:\s+)<div>(.*)(?:\s+)(?: /| \(.*\)|<\/div>)~Ui';
-	const IMDB_COLOR         = '~<a href="\/search\/title\?colors=(?:.*)">(.*)<\/a>~Ui';
-	const IMDB_COMPANY       = '~href="[^"]*update=[t0-9]+:production_companies[^"]*">Edit</a>\s*</header>\s*<ul\s*class="simpleList">.+<a href="\/company\/(.*)\/">(.*)</a>~Ui';
+	const IMDB_CHAR          = '~<td class="character">(?:\s+)<div>(.*)(?:\s+)(?: /| \(.*\)|</div>)~Ui';
+	const IMDB_COLOR         = '~<a href="/search/title\?colors=(?:.*)">(.*)</a>~Ui';
+	const IMDB_COMPANY       = '~href="[^"]*update=[t0-9]+:production_companies[^"]*">Edit</a>\s*</header>\s*<ul\s*class="simpleList">.+<a href="/company/(.*)/">(.*)</a>~Ui';
 	const IMDB_COUNTRY       = '~<a href="/country/(\w+)">(.*)</a>~Ui';
 	const IMDB_CREATOR       = '~<div[^>]*>\s*(?:Creator|Creators)\s*:\s*<ul[^>]*>(.+)</ul>~Uxsi';
 	const IMDB_DIRECTOR      = '~<div[^>]*>\s*(?:Director|Directors)\s*:\s*<ul[^>]*>(.+)</ul>~Uxsi';
 	const IMDB_GENRE         = '~href="/genre/([a-zA-Z_-]*)/?">([a-zA-Z_ -]*)</a>~Ui';
-	const IMDB_GROSS         = '~pl-zebra-list__label">Cumulative Worldwide Gross<\/td>\s+<td>\s+(.*)\s+<~Uxsi';
+	const IMDB_GROSS         = '~pl-zebra-list__label">Cumulative Worldwide Gross</td>\s+<td>\s+(.*)\s+<~Uxsi';
 	const IMDB_ID            = '~((?:tt\d{6,})|(?:itle\?\d{6,}))~';
-	const IMDB_LANGUAGE      = '~<a href="\/language\/(\w+)">(.*)<\/a>~Ui';
-	const IMDB_LOCATION      = '~href="\/search\/title\?locations=(.*)">(.*)<\/a>~Ui';
-	const IMDB_LOCATIONS     = '~href="\/search\/title\?locations=[^>]*>\s?(.*)\s?<\/a>[^"]*<dd>\s?(.*)\s<\/dd>~Ui';
-	const IMDB_MPAA          = '~<li class="ipl-inline-list__item">(?:\s+)(TV-Y|TV-Y7|TV-G|TV-PG|TV-14|TV-MA|G|PG|PG-13|R|NC-17|NR|UR)(?:\s+)<\/li>~Ui';
+	const IMDB_LANGUAGE      = '~<a href="/language/(\w+)">(.*)</a>~Ui';
+	const IMDB_LOCATION      = '~href="/search/title\?locations=(.*)">(.*)</a>~Ui';
+	const IMDB_LOCATIONS     = '~href="/search/title\?locations=[^>]*>\s?(.*)\s?</a>[^"]*<dd>\s?(.*)\s</dd>~Ui';
+	const IMDB_MPAA          = '~<li class="ipl-inline-list__item">(?:\s+)(TV-Y|TV-Y7|TV-G|TV-PG|TV-14|TV-MA|G|PG|PG-13|R|NC-17|NR|UR)(?:\s+)</li>~Ui';
 	const IMDB_NAME          = '~href="/name/(.+)/?(?:\?[^"]*)?"[^>]*>(.+)</a>~Ui';
 	const IMDB_DESCRIPTION   = '~<section class="titlereference-section-overview">\s+<div>(.*)</div>\s+<hr>~Ui';
 	const IMDB_NOT_FOUND     = '~<h1 class="findHeader">No results found for ~Ui';
@@ -80,14 +80,13 @@ class IMDB
 	const IMDB_RATING_COUNT  = '~class="ipl-rating-star__total-votes">\((.*)\)<~Ui';
 	const IMDB_RELEASE_DATE  = '~href="/title/[t0-9]*/releaseinfo">(.*)<~Ui';
 	const IMDB_RUNTIME       = '~<td[^>]*>\s*Runtime\s*</td>\s*<td>(.+)</td>~Ui';
-	const IMDB_SEARCH        = '~<td class="result_text"> <a href="\/title\/(tt\d{6,})\/(?:.*)"(?:\s*)>(?:.*)<\/a>~Ui';
+	const IMDB_SEARCH        = '~<div class="ipc-metadata-list-summary-item__tc"><a.*href="/title/(tt\d{6,})/(?:.*)"(?:\s*)>(?:.*)</a>~Ui';
 	const IMDB_SEASONS       = '~episodes\?season=(?:\d+)">(\d+)<~Ui';
 	const IMDB_SOUND_MIX     = '~<td[^>]*>\s*Sound\s*Mix\s*</td>\s*<td>(.+)</td>~Ui';
 	const IMDB_TAGLINE       = '~<td[^>]*>\s*Taglines\s*</td>\s*<td>(.+)</td>~Ui';
 	const IMDB_TITLE         = '~itemprop="name">(.*)(<\/h3>|<span)~Ui';
 	const IMDB_TITLE_ORIG    = '~</h3>(?:\s+)(.*)(?:\s+)<span class=\"titlereference-original-title-label~Ui';
 	const IMDB_TRAILER       = '~href="videoplayer/(vi[0-9]*)"~Ui';
-	const IMDB_URL           = '~https?://(?:.*\.|.*)imdb.com/(?:t|T)itle(?:\?|/)(..\d+)~i';
 	const IMDB_USER_REVIEW   = '~href="/title/[t0-9]*/reviews"[^>]*>([^<]*)\s*User~Ui';
 	const IMDB_VOTES         = '~"ipl-rating-star__total-votes">\s*\((.*)\)\s*<~Ui';
 	const IMDB_WRITER        = '~<div[^>]*>\s*(?:Writer|Writers)\s*:\s*<ul[^>]*>(.+)</ul>~Ui';
@@ -259,7 +258,7 @@ class IMDB
 					$sParameters = '&s=tt';
 			}
 
-			$this->sUrl = 'https://www.imdb.com/find?q=' . rawurlencode(str_replace(' ', '+', $sSearch)) . $sParameters;
+			$this->sUrl = 'https://www.imdb.com/find/?q=' . rawurlencode(str_replace(' ', '+', $sSearch)) . $sParameters;
 			$bSearch    = true;
 
 			// Was this search already performed and cached?
@@ -298,7 +297,7 @@ class IMDB
 		}
 
 		$aCurlInfo = $this->runCurl($this->sUrl);
-		$sSource   = $aCurlInfo['contents'];
+		$sSource = is_bool($aCurlInfo) ?  $aCurlInfo : $aCurlInfo['contents'] ;
 
 		if (false === $sSource) {
 			if ($this->IMDB_DEBUG) {
@@ -1741,7 +1740,7 @@ class IMDB
 			[
 				CURLOPT_CONNECTTIMEOUT => $this->IMDB_TIMEOUT,
 				CURLOPT_ENCODING       => '',
-				CURLOPT_FOLLOWLOCATION => 0,
+				CURLOPT_FOLLOWLOCATION => true,
 				CURLOPT_FRESH_CONNECT  => 0,
 				CURLOPT_HEADER         => ($bDownload ? false : true),
 				CURLOPT_HTTPHEADER     => [
@@ -1754,7 +1753,7 @@ class IMDB
 				CURLOPT_SSL_VERIFYPEER => 0,
 				CURLOPT_TIMEOUT        => $this->IMDB_TIMEOUT,
 				CURLOPT_USERAGENT      => $this->IMDB_BROWSER_AGENT,
-				CURLOPT_VERBOSE        => 0,
+				CURLOPT_VERBOSE        => 0
 			]
 		);
 		$sOutput   = curl_exec($oCurl);
@@ -1762,7 +1761,7 @@ class IMDB
 		curl_close($oCurl);
 		$aCurlInfo['contents'] = $sOutput;
 
-		if (200 !== $aCurlInfo['http_code'] && 302 !== $aCurlInfo['http_code']) {
+		if (200 !== $aCurlInfo['http_code']) {
 			if ($this->IMDB_DEBUG) {
 				echo '<pre><b>cURL returned wrong HTTP code “' . $aCurlInfo['http_code'] . '”, aborting.</b></pre>';
 			}

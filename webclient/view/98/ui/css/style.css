@@ -1,0 +1,109 @@
+body {
+    background: #c0c0c0;
+}
+
+/** 98.css overwrites */
+blockquote {
+    background-color: #dfdfdf;
+    margin: 0 0 20px;
+    padding: 20px;
+}
+
+select[multiple="multiple"] {
+    height: initial;
+    background-image: initial;
+    padding-right: inherit;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-family: Arial, serif;
+}
+h2 {
+    font-size: 1.75rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-family: Arial, serif;
+}
+h3 {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-family: Arial, serif;
+}
+h4 {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-family: Arial, serif;
+}
+h5 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-family: Arial, serif;
+}
+
+
+
+.field-row-stacked *+* {
+    margin-top: 0;
+}
+
+.field-row-stacked input[type="submit"] {
+    width: max-content;
+}
+
+.field-row-stacked label {
+    margin-top: 6px;
+}
+
+/** custom */
+#navSearchWindow {
+    width: 400px;
+}
+
+.title-bar.danger {
+    background: linear-gradient(90deg,red,lightcoral);
+}
+.title-bar.warning {
+    background: linear-gradient(90deg,yellow,lightyellow);
+}
+.title-bar.warning .title-bar-text {
+    color: black;
+}
+.title-bar.success {
+    background: linear-gradient(90deg,green,lightgreen);
+}
+
+.pagination {
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.pagination a, .pagination span {
+    margin-right: 5px;
+}
+.paginationActive {
+    font-weight: bold
+}
+
+#sortableContainer {
+    display: flex;
+    gap: 10px;
+}
+
+#sortableContainer .sortitem {
+    cursor: grab;
+    padding: 5px;
+}
+
+.maxSizeForm {
+    width: 500px;
+}
+
+.input-multiple-template {
+    display: inline-block;
+    margin-right: 5px;
+}

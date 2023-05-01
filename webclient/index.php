@@ -18,7 +18,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.4 - Depths Of Rrajigar';
+const BIB_VERSION = '1.5 - Sacred Passage';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
@@ -57,7 +57,7 @@ require_once 'lib/gorenest.class.php';
 # and some defaults
 $TemplateData = array();
 $TemplateData['pagination'] = array();
-$TemplateData['searchAction'] = 'index.php';
+$TemplateData['navSearchAction'] = array();
 $TemplateData['pageTitle'] = 'Dashboard';
 # the view
 $View = Summoner::themefile('dashboard/dashboard.html', UI_THEME);

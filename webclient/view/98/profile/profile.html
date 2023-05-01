@@ -1,0 +1,36 @@
+<h3>Manage your profile</h3>
+
+<form method="post" class="maxSizeForm">
+	<div class="field-row-stacked">
+		<label for="username">Username</label>
+		<input id="username" type="text" autocomplete="off" name="fdata[username]"
+		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+	</div>
+	<div class="field-row-stacked">
+		<label for="password">Password</label>
+		<input id="password" type="password" autocomplete="off" name="fdata[password]">
+	</div>
+	<div class="field-row-stacked">
+		<label for="group">Main group</label>
+		<input  id="group" type="text" name="fdata[group]" disabled
+			value="<?php echo Summoner::ifset($TemplateData['editData'], 'baseGroupName'); ?>">
+	</div>
+	<div class="field-row-stacked">
+		<label for="additionalGroups">Additional groups</label>
+		<input id="additionalGroups" type="text" name="fdata[additionalGroups]" disabled
+			value="To be done">
+	</div>
+	<div class="field-row-stacked">
+		<input id="refreshApiToken" type="checkbox" name="fdata[refreshApiToken]" value="1">
+		<label for="refreshApiToken">Create API Token</label>
+	</div>
+	<div class="field-row-stacked">
+		<label>
+			Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
+			Token: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+		</label>
+	</div>
+	<div class="field-row-stacked">
+		<input type="submit" name="submitForm" value="Save">
+	</div>
+</form>

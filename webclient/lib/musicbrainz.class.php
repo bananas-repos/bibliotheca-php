@@ -199,7 +199,7 @@ class Musicbrainz {
 				foreach($data['media'] as $media) {
 					foreach($media['tracks'] as $track) {
 						$ret['runtime'] += $track['length'];
-						$l = $track['length'] / 1000;
+						$l = (int) round($track['length'] / 1000);
 						$l = date("i:s",$l);
 						$ret['tracks'] .= $track['number'].' - '.$track['title'].' - '.$l."\n";
 					}
@@ -281,10 +281,9 @@ class Musicbrainz {
 	 * execute a curl call to the given $url
 	 *
 	 * @param string $url The request url
-	 * @param integer $port
 	 * @return string
 	 */
-	private function _curlCall(string $url, int $port=80): string {
+	private function _curlCall(string $url): string {
 		$ret = '';
 
 		$ch = curl_init();
@@ -293,7 +292,6 @@ class Musicbrainz {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-		curl_setopt($ch, CURLOPT_PORT, $port);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($ch, CURLOPT_MAXREDIRS, 2);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->_BROWSER_AGENT);

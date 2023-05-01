@@ -491,9 +491,8 @@ class Doomguy {
 	}
 
 	/**
-	 * create the usertoken based on the HEADER information:
-	 * HTTP_USER_AGENT, REMOTE_ADDR, HTTP_ACCEPT, HTTP_ACCEPT_LANGUAGE
-	 * HTTP_ACCEPT_ENCODING, HTTP_VIA
+	 * create the usertoken based on the $_SERVER information:
+	 * HTTP_USER_AGENT, REMOTE_ADDR, HTTP_DNT, HTTP_VIA, PATH, SHELL, SESSION_MANAGER, USER
 	 * and a salt
 	 *
 	 * @param string $salt
@@ -502,19 +501,22 @@ class Doomguy {
 	protected function _createToken(string $salt = ''): array {
 		$ret = array();
 
-		$defaultStr = "unknown";
+		if(empty($salt)) {
+			# 8 chars
+			$salt = bin2hex(openssl_random_pseudo_bytes(4));
+		}
 
-		if(!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = $defaultStr;
-		if(!isset($_SERVER['REMOTE_ADDR'])) $_SERVER['REMOTE_ADDR'] = $defaultStr;
-		if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) $_SERVER['HTTP_ACCEPT_LANGUAGE'] = $defaultStr;
-		if(!isset($_SERVER['HTTP_VIA'])) $_SERVER['HTTP_VIA'] = $defaultStr;
-		if(!isset($_SERVER['HTTP_DNT'])) $_SERVER['HTTP_DNT'] = $defaultStr;
+		if(!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = $salt;
+		if(!isset($_SERVER['REMOTE_ADDR'])) $_SERVER['REMOTE_ADDR'] = $salt;
+		if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) $_SERVER['HTTP_ACCEPT_LANGUAGE'] = $salt;
+		if(!isset($_SERVER['HTTP_VIA'])) $_SERVER['HTTP_VIA'] = $salt;
+		if(!isset($_SERVER['HTTP_DNT'])) $_SERVER['HTTP_DNT'] = $salt;
 
 		// cli info
-		if(!isset($_SERVER['PATH'])) $_SERVER['PATH'] = $defaultStr;
-		if(!isset($_SERVER['SHELL'])) $_SERVER['SHELL'] = $defaultStr;
-		if(!isset($_SERVER['SESSION_MANAGER'])) $_SERVER['SESSION_MANAGER'] = $defaultStr;
-		if(!isset($_SERVER['USER'])) $_SERVER['USER'] = $defaultStr;
+		if(!isset($_SERVER['PATH'])) $_SERVER['PATH'] = $salt;
+		if(!isset($_SERVER['SHELL'])) $_SERVER['SHELL'] = $salt;
+		if(!isset($_SERVER['SESSION_MANAGER'])) $_SERVER['SESSION_MANAGER'] = $salt;
+		if(!isset($_SERVER['USER'])) $_SERVER['USER'] = $salt;
 
 		$finalString = $_SERVER['HTTP_USER_AGENT']
 			.$_SERVER['REMOTE_ADDR']
@@ -526,17 +528,8 @@ class Doomguy {
 			.$_SERVER['SESSION_MANAGER']
 			.$_SERVER['USER'];
 
-		# check how often we have unknown in it
-		# the more the less secure...
-		$_count = substr_count($finalString, $defaultStr);
-		if($_count < 5) {
-			if(empty($salt)) {
-				# 8 chars
-				$salt = bin2hex(openssl_random_pseudo_bytes(4));
-			}
-			$ret['token'] = sha1($finalString.$salt);
-			$ret['salt'] = $salt;
-		}
+		$ret['token'] = sha1($finalString.$salt);
+		$ret['salt'] = $salt;
 
 		return $ret;
 	}

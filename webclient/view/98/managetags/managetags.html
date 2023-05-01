@@ -1,0 +1,84 @@
+<?php if(!empty($TemplateData['loadedCollection'])) { ?>
+
+	<h3 >Manage Tags in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+	<p>
+		The actions are top down. If you choose to move and rename, only move will be executed.<br />
+		Deletion will remove without recover!<br />
+		If you rename and input an existing one a move will be done instead.<br />
+		Tag values are stored how they come and treated that way here (case sensitive).
+		In search they are case insensitive.
+	</p>
+
+	<?php if(!empty($TemplateData['tags'])) { ?>
+		<form method="post">
+			<div class="sunken-panel">
+				<table width="100%">
+					<thead>
+						<tr>
+							<th width="100px">Tagfield</th>
+							<th>Use</th>
+							<th>Move to (rename to existig)</th>
+							<th>Rename</th>
+							<th width="100px">Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+				<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
+						<tr>
+							<td><?php echo $v['displayname']; ?></td>
+							<td>
+								<select name="fdata[<?php echo $v['id']; ?>][use]">
+									<option value="">Please select</option>
+									<?php foreach($v['entries'] as $ek=>$ev) { ?>
+									<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+									<?php } ?>
+								</select>
+							</td>
+
+							<td>
+								<select name="fdata[<?php echo $v['id']; ?>][move]">
+									<option value="">Please select</option>
+									<?php foreach($v['entries'] as $ek=>$ev) { ?>
+									<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+									<?php } ?>
+								</select>
+							</td>
+							<td>
+								<input type="text" autocomplete="off"
+								       name="fdata[<?php echo $v['id']; ?>][rename]">
+							</td>
+							<td>
+								<input type="checkbox" name="fdata[<?php echo $v['id']; ?>][doDelete]" value="1"
+									id="<?php echo $v['id']; ?>_doDelete">
+								<label for="<?php echo $v['id']; ?>_doDelete">&nbsp;</label>
+							</td>
+						</tr>
+				<?php } ?>
+					</tbody>
+				</table>
+			</div>
+			<input type="submit" name="submitForm" value="Do it" />
+		</form>
+	<?php } ?>
+
+<?php } else { ?>
+<h3>Please select a collection first</h3>
+<div class="sunken-panel">
+	<table width="100%">
+		<thead>
+		<tr>
+			<th width="100px">Name</th>
+			<th>Description</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+		<tr>
+			<td><a href="index.php?p=managetags&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></td>
+			<td><?php echo $v['description']; ?></td>
+		<tr>
+			<?php } ?>
+		</tbody>
+	</table>
+</div>
+<?php } ?>

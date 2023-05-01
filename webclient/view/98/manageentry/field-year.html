@@ -1,0 +1,16 @@
+<div class="field-row-stacked">
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<input id="<?php echo $field['identifier']; ?>" type="number" autocomplete="off"
+		placeholder="YYYY" min="0000" max="9999"
+		name="fdata[<?php echo $field['identifier']; ?>]"
+		value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+	/>
+
+	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
+		<option value="">Select bulk edit option</option>
+		<option value="replace">Replace</option>
+		<option value="empty">Clear</option>
+	</select>
+	<?php } ?>
+</div>

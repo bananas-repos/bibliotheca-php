@@ -89,7 +89,7 @@ CREATE TABLE `#REPLACEME#_menu` (
 --
 
 INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `contextaction`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES
-(1, 'Dashboard', '', 'home', '', 1, 1, 'rw-r--r--', 0, 'show'),
+(1, 'Dashboard', '', '', 'home', 1, 1, 'rw-r--r--', 0, 'show'),
 (2, 'Collections', 'collections', '', 'database', 1, 1, 'rw-r--r--', 1, 'show'),
 (3, 'Tags', 'tags', '', 'tag', 1, 1, 'rw-r--r--', 2, 'show'),
 (4, 'Add', 'manageentry', 'collection', 'plus-circle', 1, 2, 'rw-rw----', 0, 'manage'),
@@ -150,7 +150,7 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (14, 'year', 'Year', 'year', 'entrySingleNum', '`year` int(10) NULL, ADD INDEX (`year`)', '', NULL, 'int 10', '2019-09-01 19:30:11', '2021-07-09 08:30:23', 0, 1, 1, 'rw-r--r--'),
 (15, 'coverimage', 'Cover image', 'upload', NULL, NULL, '', NULL, 'One file in $_FILES[uploads] of post', '2019-09-01 19:48:44', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
 (16, 'attachment', 'Attachments', 'upload_multiple', NULL, NULL, '', NULL, 'Multiple in $_FILES[uploads] of post', '2019-09-01 19:48:44', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(17, 'os', 'Operating system and version', 'selection', 'entrySingleNum', '`os` varchar(32) NULL DEFAULT NULL', '', 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 99,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 99,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', '2019-09-01 19:55:13', '2022-10-03 09:19:23', 0, 1, 1, 'rw-r--r--'),
+(17, 'os', 'Operating system and version', 'selection', 'entrySingleNum', '`os` varchar(32) NULL DEFAULT NULL', '', 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 99,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 99,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', '2019-09-01 19:55:13', '2022-10-08 10:46:55', 0, 1, 1, 'rw-r--r--'),
 (18, 'actors', 'Actors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:12:48', '2021-04-03 14:41:48', NULL, 1, 1, 'rw-r--r--'),
 (19, 'countries', 'Countries', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:16:08', '2021-04-03 14:41:48', NULL, 1, 1, 'rw-r--r--'),
 (20, 'directors', 'Directors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:17:59', '2021-04-03 14:41:48', NULL, 1, 1, 'rw-r--r--'),
@@ -165,8 +165,8 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (29, 'view', 'View', 'selection', 'entrySingleNum', '`view` varchar(32) NULL DEFAULT NULL', '', 'First person,Third person,Top-down', 'First person,Third person,Top-down', '2021-04-25 21:21:45', '2021-04-25 21:21:45', 0, 1, 1, 'rw-r--r--'),
 (30, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', '2021-04-25 21:21:54', '2021-04-25 21:21:54', 0, 1, 1, 'rw-r--r--'),
 (31, 'artist', 'Artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2021-07-09 08:38:33', NULL, 1, 1, 'rw-r--r--'),
-(32, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:19:03', '2021-07-18 11:19:03', NULL, 1, 1, 'rw-r--r--'),
-(33, 'isbn', 'ISBN', 'number', 'entrySingleNum', '`isbn` int(10) NULL, ADD INDEX (`isbn`)', '', NULL, 'int 10', '2022-10-03 09:26:53', '2022-10-03 09:26:53', NULL, 1, 1, 'rw-r--r--');
+(32, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:42:16', '2021-07-18 11:42:16', NULL, 1, 1, 'rw-r--r--'),
+(34, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2023-04-08 08:53:55', NULL, 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -193,7 +193,8 @@ CREATE TABLE `#REPLACEME#_tool` (
 INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES
 (1, 'IMDB web', 'Web parser', 'imdbweb', '_self', 1, 1, 'rw-r--r--'),
 (2, 'Game infos', 'Game infos', 'gameinfo', '_self', 1, 1, 'rw-r--r--'),
-(3, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', 1, 1, 'rw-r--r--');
+(3, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', 1, 1, 'rw-r--r--'),
+(4, 'Google Books', 'Book infos from Google', 'googlebooks', '_self', 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -251,6 +252,14 @@ CREATE TABLE `#REPLACEME#_user2group` (
   `fk_user_id` int NOT NULL DEFAULT '0',
   `fk_group_id` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `bib_user2group`
+--
+
+INSERT INTO `bib_user2group` (`fk_user_id`, `fk_group_id`) VALUES
+(1, 1),
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -354,13 +363,13 @@ ALTER TABLE `#REPLACEME#_menu`
 -- AUTO_INCREMENT for table `#REPLACEME#_sys_fields`
 --
 ALTER TABLE `#REPLACEME#_sys_fields`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_tool`
 --
 ALTER TABLE `#REPLACEME#_tool`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_user`

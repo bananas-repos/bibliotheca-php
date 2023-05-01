@@ -39,8 +39,9 @@ $TemplateData['tags'] = array();
 $TemplateData['search'] = array();
 
 $_search = '';
-if(isset($_POST['navSearch'])) {
-	$_search = trim($_POST['navSearch']);
+if(isset($_GET['navSearch'])) {
+	$_search = trim($_GET['navSearch']);
+	$_search = urldecode($_search);
 	$_search = Summoner::validate($_search) ? $_search : '';
 }
 
@@ -48,7 +49,7 @@ if(isset($_POST['navSearch'])) {
 if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
 	if(!empty($TemplateData['loadedCollection'])) {
-		$TemplateData['searchAction'] = 'index.php?p=tags&collection='.$Trite->param('id');
+		$TemplateData['navSearchAction'] = array('p'  => 'tags', 'collection'  => $Trite->param('id'));
 		$Mancubus->setCollection($Trite->param('id'));
 		//$TemplateData['tags'] = $Mancubus->getTags($_search);
 		$TemplateData['tags'] = $Trite->getTags($_search);

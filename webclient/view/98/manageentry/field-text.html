@@ -1,0 +1,34 @@
+<div class="field-row-stacked">
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?>
+		(<span id="<?php echo $field['identifier']; ?>_counter"><?php echo 128-strlen(Summoner::ifset($TemplateData['editData'], $field['identifier'])); ?></span>)
+	</label>
+	<input id="<?php echo $field['identifier']; ?>" type="text" autocomplete="off"
+	   name="fdata[<?php echo $field['identifier']; ?>]"
+	   value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+       maxlength="128"
+	/>
+
+	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
+		<option value="">Select bulk edit option</option>
+		<option value="add">Add</option>
+		<option value="replace">Replace</option>
+		<option value="empty">Clear</option>
+	</select>
+	<?php } ?>
+</div>
+
+<script type="text/javascript">
+{
+	const inputElement = document.getElementById("<?php echo $field['identifier']; ?>");
+	const inputCounter = document.getElementById("<?php echo $field['identifier']; ?>_counter");
+
+	inputElement.addEventListener("input", event => {
+		const target = event.currentTarget;
+		const maxLength = target.getAttribute("maxlength");
+		const currentLength = target.value.length;
+
+		inputCounter.innerHTML = `${maxLength - currentLength}`;
+	});
+}
+</script>

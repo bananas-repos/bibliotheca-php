@@ -1,0 +1,19 @@
+<div class="field-row-stacked">
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<select id="<?php echo $field['identifier']; ?>" name="fdata[<?php echo $field['identifier']; ?>]">
+		<option value="">Please select</option>
+		<?php foreach($field['options'] as $k=>$v) { ?>
+		<option value="<?php echo $v; ?>"
+			<?php if(Summoner::ifsetValue($TemplateData['editData'], $field['identifier'],$v)) echo 'selected'; ?>
+		><?php echo $v; ?></option>
+		<?php } ?>
+	</select>
+
+	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
+		<option value="">Select bulk edit option</option>
+		<option value="replace">Replace</option>
+		<option value="empty">Clear</option>
+	</select>
+	<?php } ?>
+</div>

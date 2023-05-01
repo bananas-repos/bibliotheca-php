@@ -41,9 +41,11 @@ if(isset($_GET['fv']) && !empty($_GET['fv'])) {
 	$_fv = Summoner::validate($_fv) ? $_fv : false;
 }
 
+// nav search
 $_search = '';
-if(isset($_POST['navSearch'])) {
-	$_search = trim($_POST['navSearch']);
+if(isset($_GET['navSearch'])) {
+	$_search = trim($_GET['navSearch']);
+	$_search = urldecode($_search);
 	$_search = Summoner::validate($_search) ? $_search : '';
 }
 
@@ -85,7 +87,6 @@ $TemplateData['search'] = '';
 // needed for pagination link building
 $TemplateData['pagination']['currentGetParameters']['p'] = 'collections';
 $TemplateData['pagination']['currentGetParameters']['collection'] = $_collection;
-$_doNotShowPagination = false;
 
 if(!empty($_collection)) {
 	$TemplateData['loadedCollection'] = $Trite->load($_collection);
@@ -114,7 +115,7 @@ if(!empty($_collection)) {
 
 		$TemplateData['storagePath'] = PATH_WEB_STORAGE . '/' . $Trite->param('id');
 		$TemplateData['entryLinkPrefix'] = "index.php?p=entry&collection=".$Trite->param('id');
-		$TemplateData['searchAction'] = 'index.php?p=collections&collection='.$Trite->param('id');
+		$TemplateData['navSearchAction'] = array('p' => 'collections', 'collection' => $Trite->param('id'));
 
 		$_fd = $Trite->getCollectionFields();
 
@@ -136,12 +137,15 @@ if(!empty($_collection)) {
 				'colValue' => $_search,
 				'fieldData' =>$_fd[$Trite->param('defaultSearchField')]
 			);
-			$_doNotShowPagination = true; // fulltextsearch does not support order
+			if (!empty($_search)) {
+				$TemplateData['pagination']['hideSort'] = true;
+			}
 		}
 
 		$TemplateData['entries'] = $Mancubus->getEntries($_sdata);
 		if (!empty($_search)) {
 			$TemplateData['search'] = $_search;
+			$TemplateData['pagination']['currentGetParameters']['navSearch'] = urlencode($_search);
 		}
 
 		$TemplateData['pageTitle'] = $Trite->param('name');
@@ -157,33 +161,31 @@ else {
 }
 
 # pagination
-if(!$_doNotShowPagination) {
-	if(!empty($TemplateData['entries']['amount'])) {
-		$TemplateData['pagination']['pages'] = ceil($TemplateData['entries']['amount'] / RESULTS_PER_PAGE);
-		$TemplateData['pagination']['curPage'] = $_curPage;
+if(!empty($TemplateData['entries']['amount'])) {
+	$TemplateData['pagination']['pages'] = (int)ceil($TemplateData['entries']['amount'] / RESULTS_PER_PAGE);
+	$TemplateData['pagination']['curPage'] = $_curPage;
 
-		$TemplateData['pagination']['currentGetParameters']['page'] = $_curPage;
-		$TemplateData['pagination']['currentGetParameters']['s'] = $_sort;
-		$TemplateData['pagination']['currentGetParameters']['sd'] = $_sortDirection;
-	}
+	$TemplateData['pagination']['currentGetParameters']['page'] = $_curPage;
+	$TemplateData['pagination']['currentGetParameters']['s'] = $_sort;
+	$TemplateData['pagination']['currentGetParameters']['sd'] = $_sortDirection;
+}
 
-	if($TemplateData['pagination']['pages'] > 11) {
-		# first pages
-		$TemplateData['pagination']['visibleRange'] = array(range(1,3));
-		# last pages
-		foreach(range($TemplateData['pagination']['pages']-2, $TemplateData['pagination']['pages']) as $e) {
-			$TemplateData['pagination']['visibleRange'][] = $e;
-		}
-		# pages before and after current page
-		$cRange = range($TemplateData['pagination']['curPage']-1, $TemplateData['pagination']['curPage']+1);
-		foreach($cRange as $e) {
-			$TemplateData['pagination']['visibleRange'][] = $e;
-		}
-		$TemplateData['pagination']['currentRangeStart'] = array_shift($cRange);
-		$TemplateData['pagination']['currentRangeEnd'] = array_pop($cRange);
+if($TemplateData['pagination']['pages'] > 11) {
+	# first pages
+	$TemplateData['pagination']['visibleRange'] = range(1,3);
+	# last pages
+	foreach(range($TemplateData['pagination']['pages']-2, $TemplateData['pagination']['pages']) as $e) {
+		$TemplateData['pagination']['visibleRange'][] = $e;
 	}
-	else {
-		$TemplateData['pagination']['visibleRange'] = range(1,$TemplateData['pagination']['pages']);
+	# pages before and after current page
+	$cRange = range($TemplateData['pagination']['curPage']-1, $TemplateData['pagination']['curPage']+1);
+	foreach($cRange as $e) {
+		$TemplateData['pagination']['visibleRange'][] = $e;
 	}
+	$TemplateData['pagination']['currentRangeStart'] = array_shift($cRange);
+	$TemplateData['pagination']['currentRangeEnd'] = array_pop($cRange);
+}
+else {
+	$TemplateData['pagination']['visibleRange'] = range(1,$TemplateData['pagination']['pages']);
 }
 # pagination end

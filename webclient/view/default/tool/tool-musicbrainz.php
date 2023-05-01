@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ $Brainz = new Musicbrainz(array(
 	'browserAgent' => TOOL_BRAINZ_BROWSER_AGENT,
 	'browserLang' => TOOL_BRAINZ_BROWSER_ACCEPT_LANG,
 	'browserAccept' => TOOL_BRAINZ_BROWSER_ACCEPT,
-	'debug' => true
+	'debug' => false
 ));
 
 $TemplateData['releases'] = array();
@@ -164,6 +164,11 @@ if(isset($_POST['submitFormSave'])) {
 		else {
 			$TemplateData['message']['content'] = "Data could not be saved. See logs for more.";
 			$TemplateData['message']['status'] = "error";
+		}
+
+		// remove tmp file
+		if(isset($_f) && is_file($_f) && file_exists($_f)) {
+			unlink($_f);
 		}
 	}
 }

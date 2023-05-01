@@ -1,0 +1,137 @@
+<?php
+if(!empty($TemplateData['editFields'])) {
+	$_entry = '';
+	if(!empty($TemplateData['editData']) && isset($TemplateData['editData']['id'])) {
+		$_entry = $TemplateData['editData']['id'];
+?>
+		<h3>Update an entry in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+		<p>
+			<a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>">View entry</a>
+		</p>
+<?php } else { ?>
+		<h3>Add an entry to: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+<?php } ?>
+
+<?php if(!empty($TemplateData['availableTools'])) { ?>
+<h4>Available tools</h4>
+<ul>
+	<?php foreach($TemplateData['availableTools'] as $tool) { ?>
+	<li><a href="index.php?p=tool&t=<?php echo $tool['action']; ?>&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $_entry; ?>"
+	       target="<?php echo $tool['target']; ?>"><?php echo $tool['name']; ?> (<?php echo $tool['description']; ?>)</a></li>
+	<?php } ?>
+</ul>
+<?php } ?>
+
+<script type="text/javascript" src="view/98/ui/js/suggest-tag.js"></script>
+
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+
+	<?php
+	foreach($TemplateData['editFields'] as $field) {
+		$_editFieldView = Summoner::themefile('manageentry/field-'.$field['type'].'.html', UI_THEME);
+		if(file_exists($_editFieldView)) {
+			require $_editFieldView;
+		}
+		else {
+			require $TemplateData['_editFieldViewDefault'];
+		}
+	}
+
+	if(!empty($TemplateData['editData']['_isOwner'])) {
+	?>
+
+	<div class="field-row-stacked">
+		<label>Rights *</label></td>
+
+		<table>
+			<thead>
+			<tr>
+				<th>User</th>
+				<th>Group</th>
+				<th>Other</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>
+					<input id="user_read" type="checkbox" name="fdata[rights][user][read]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>>
+					<label for="user_read">r &nbsp; &nbsp; &nbsp;</label>
+
+					<input id="user_write" type="checkbox" name="fdata[rights][user][write]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>>
+					<label for="user_write">w &nbsp; &nbsp; &nbsp;</label>
+
+					<input id="user_delete" type="checkbox" name="fdata[rights][user][delete]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>>
+					<label for="user_delete">x &nbsp; &nbsp; &nbsp;</label>
+				</td>
+				<td>
+					<input id="group_read" type="checkbox" name="fdata[rights][group][read]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>>
+					<label for="group_read">r &nbsp; &nbsp; &nbsp;</label>
+
+					<input id="group_write" type="checkbox" name="fdata[rights][group][write]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>>
+					<label for="group_write">w &nbsp; &nbsp; &nbsp;</label>
+
+					<input id="group_delete" type="checkbox" name="fdata[rights][group][delete]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>>
+					<label for="group_delete">x &nbsp; &nbsp; &nbsp;</label>
+				</td>
+				<td>
+					<input id="other_read" type="checkbox" name="fdata[rights][other][read]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>>
+					<label for="other_read">r &nbsp; &nbsp; &nbsp;</label>
+
+					<input id="other_write" type="checkbox" name="fdata[rights][other][write]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>>
+					<label for="other_write">w &nbsp; &nbsp; &nbsp;</label>
+
+					<input id="other_delete" type="checkbox" name="fdata[rights][other][delete]" value="1"
+					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>>
+					<label for="other_delete">x &nbsp; &nbsp; &nbsp;</label>
+				</td>
+			</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<?php } ?>
+
+	<?php if(!empty($TemplateData['editData']['_canDelete'])) { ?>
+
+	<div class="field-row-stacked">
+		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
+		<label for="doDelete">Delete</label>
+	</div>
+
+	<?php } ?>
+
+	<div class="field-row-stacked">
+		<input type="submit" name="submitForm" value="Save">
+	</div>
+</form>
+
+<?php } else { ?>
+<h3>Please select a collection first</h3>
+<div class="sunken-panel">
+	<table width="100%">
+		<thead>
+		<tr>
+			<th width="100px">Name</th>
+			<th>Description</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
+		<tr>
+			<td><a href="index.php?p=manageentry&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></td>
+			<td><?php echo $v['description']; ?></td>
+		<tr>
+			<?php } ?>
+		</tbody>
+	</table>
+</div>
+
+<?php } ?>

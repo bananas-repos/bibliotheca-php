@@ -1,0 +1,57 @@
+<h3>Group management</h3>
+<h4>Add or modify a group</h4>
+
+<form class="maxSizeForm" method="post">
+	<div class="field-row-stacked">
+		<label for="name">Name *</label>
+		<input id="name" type="text" autocomplete="off" name="fdata[name]"
+			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+	</div>
+	<div class="field-row-stacked">
+		<label for="description">Description *</label>
+		<input id="description" type="text" autocomplete="off" name="fdata[description]"
+		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+	</div>
+
+	<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+	<div class="field-row-stacked">
+		<p>
+			Warning: Content owned by this group will not be deleted and thus only manageable by admin!<br />
+			Right now don't do this. Only if you are sure there is no usage of this group.
+		</p>
+	</div>
+	<div class="field-row-stacked">
+		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
+		<label for="doDelete">Delete</label>
+	</div>
+	<?php } ?>
+	<div class="field-row-stacked">
+		<input type="submit" name="submitForm" value="Save" />
+	</div>
+</form>
+
+<h4>Available groups</h4>
+<div class="sunken-panel">
+	<table width="100%">
+		<thead>
+			<tr>
+				<th width="200px">Name</th>
+				<th>Created</th>
+				<th>Description</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
+			<tr>
+				<td><?php echo $v['name']; ?></td>
+				<td><?php echo $v['created']; ?></td>
+				<td><?php echo $v['description']; ?></td>
+				<td>
+					<a href="index.php?p=managegroups&m=edit&id=<?php echo $k; ?>">Edit</a>
+				</td>
+			</tr>
+			<?php } ?>
+		</tbody>
+	</table>
+</div>

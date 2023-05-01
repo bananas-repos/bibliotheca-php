@@ -1,0 +1,15 @@
+<div class="field-row-stacked">
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<textarea autocomplete="off"
+		id="<?php echo $field['identifier']; ?>"
+        rows="10"
+		name="fdata[<?php echo $field['identifier']; ?>]"><?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?></textarea>
+	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
+		<option value="">Select bulk edit option</option>
+		<option value="add">Add</option>
+		<option value="replace">Replace</option>
+		<option value="empty">Clear</option>
+	</select>
+	<?php } ?>
+</div>

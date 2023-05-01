@@ -13,7 +13,7 @@
 <div class="uk-grid-divider uk-child-width-expand@s" uk-grid>
 <?php foreach($TemplateData['latest'] as $k=>$v) { ?>
 	<div class="uk-width-1@s uk-width-1-2@m uk-width-1-3@l">
-		<a href="index.php?p=collections&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a><br  />
+		<a href="index.php?p=collections&collection=<?php echo $k; echo Summoner::ifset($TemplateData, 'navSearched'); ?>"><?php echo $v['name']; ?></a><br  />
 		<?php echo $v['description']; ?>
 
 		<?php
