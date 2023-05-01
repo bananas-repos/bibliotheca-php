@@ -12,3 +12,7 @@ UPDATE `#REPLACEME#_sys_fields` SET `type` = 'text', `searchtype` = 'entrySingle
 
 # if you use the field ISBN already run this and change the collection id
 ALTER TABLE `#REPLACEME#_collection_entry_#CHANGE_ID#` CHANGE `isbn` `isbn` VARCHAR(32) NULL DEFAULT NULL;
+
+# New Theme: 98.
+Theme based on https://jdan.github.io/98.css/
+To use it, change UI_THEME in config.php to 98
