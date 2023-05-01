@@ -13,7 +13,7 @@ if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
 		foreach($existingFieldValue as $ev) { ?>
 
 		<div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-<?php echo $ev; ?>">
-			<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="click to remove"><span><?php echo $ev; ?></span>></a>
+			<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="click to remove"><span><?php echo $ev; ?></span></a>
 		</div>
 
 	<?php

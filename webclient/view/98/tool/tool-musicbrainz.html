@@ -1,0 +1,66 @@
+<p>
+	<b>Limitations</b><br />
+	Data will be overwritten; No wildcardsearch or partial words.
+</p>
+
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+	<div class="field-row-stacked">
+		<label for="artist">Artist</label>
+		<input id="artist" type="text" autocomplete="off"
+			name="fdata[artist]"
+			value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'artist'); ?>"
+		>
+	</div>
+	<div class="field-row-stacked">
+		<label for="album">Album/Title</label>
+		<input class="uk-input" id="album" type="text" autocomplete="off"
+		       name="fdata[album]"
+		       value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+		>
+	</div>
+	<div class="field-row-stacked">
+		<input value="Search" type="submit" name="submitFormSearch" />
+	</div>
+</form>
+
+<?php if(!empty($TemplateData['releases'])) { ?>
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+	<div class="field-row-stacked">
+		<?php foreach($TemplateData['releases'] as $k=>$v) { ?>
+
+		<input id="<?php echo $k; ?>" class="uk-radio" type="radio" name="fdata[rselect]" value="<?php echo $k; ?>">
+		<label for="<?php echo $k; ?>"><?php echo $v; ?></label>
+
+		<?php } ?>
+	</div>
+
+	<div class="field-row-stacked">
+		<input value="Select" type="submit" name="submitFormReleaseSelect">
+	</div>
+</form>
+<?php } ?>
+
+<?php if(!empty($TemplateData['release'])) { ?>
+<a href="https://musicbrainz.org/release/<?php echo $TemplateData['release']['id']; ?>" target=_blank>Musicbrainz release page</a>
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+
+	<?php foreach($TemplateData['release'] as $k=>$v) { ?>
+	<input name="fdata[from][<?php echo $k; ?>]" type="hidden" value="<?php echo $v; ?>"  />
+	<div class="field-row-stacked">
+		<p>
+			<b><?php echo $k; ?></b><br />
+			<?php echo nl2br($v); ?>
+		</p>
+		<select name="fdata[into][<?php echo $k; ?>]">
+			<option value="">None</option>
+			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
+		</select>
+	</div>
+
+	<?php } ?>
+
+	<div class="field-row-stacked">
+		<input value="Save" type="submit" name="submitFormSave">
+	</div>
+</form>
+<?php } ?>

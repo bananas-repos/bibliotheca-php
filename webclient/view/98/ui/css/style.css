@@ -102,3 +102,8 @@ h5 {
 .maxSizeForm {
     width: 500px;
 }
+
+.input-multiple-template {
+    display: inline-block;
+    margin-right: 5px;
+}

@@ -1,0 +1,48 @@
+<p>
+	<b>Limitations</b><br />
+	Data will be overwritten
+</p>
+
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+	<div class="field-row-stacked">
+		<label for="search">Search</label>
+		<input id="search" type="text" autocomplete="off"
+			   name="fdata[search]"
+			   value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+		/>
+	</div>
+	<div class="field-row-stacked">
+		<input value="Search" type="submit" name="submitFormSearch">
+	</div>
+</form>
+
+<?php if($TemplateData['showMatchingForm']) { ?>
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="fdata[imdbId]" value="<?php echo $TemplateData['movieImdbId']; ?>">
+	<?php
+	if(!empty($TemplateData['movieData'])) {
+		foreach($TemplateData['movieData'] as $k=>$v) {
+	?>
+
+	<div class="field-row-stacked">
+		<p>
+			<b><?php echo $v['name']; ?></b><br />
+			<?php echo $v['value']; ?>
+		</p>
+		<select name="fdata[into][<?php echo $k; ?>]">
+			<option value="">None</option>
+			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
+		</select>
+	</div>
+
+	<?php
+		}
+	}
+	?>
+
+	<div class="field-row-stacked">
+		<input value="Save" type="submit" name="submitFormSave" />
+	</div>
+
+</form>
+<?php } ?>
