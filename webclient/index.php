@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2022 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.5 - Sacred Passage';
+const BIB_VERSION = '1.x - Chizra';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
