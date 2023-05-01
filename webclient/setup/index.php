@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2022 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -359,7 +359,7 @@ function stepDBCreateTables(): string {
 RET;
 }
 
-function clearSetup() {
+function clearSetup(): void {
 	array_map('unlink', glob("../setup/*"));
 	rmdir('../setup');
 }
