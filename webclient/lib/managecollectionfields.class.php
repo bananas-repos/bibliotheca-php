@@ -239,7 +239,7 @@ class ManageCollectionFields {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-                Summoner::sysLog("[ERROR] asd ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] update fields ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
