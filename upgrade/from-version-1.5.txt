@@ -1,0 +1,3 @@
+# Added new const to config.php file.
+Use config.php.default as a help. The new line is:
+const LOGFILE = PATH_SYSTEMOUT.'/bibliotheca.log';

@@ -108,17 +108,17 @@ class Musicbrainz {
 			$url .= '?&fmt=json&limit='.$this->_resultLimit.'&query=';
 			$url .= 'artist:'.$artist.'%20AND%20release:'.$album.'%20AND%20format:CD';
 
-			if(DEBUG) error_log("[DEBUG] musicbrainz release url: $url");
+			if(DEBUG) Summoner::sysLog("[DEBUG] musicbrainz release url: $url");
 
 			$do = $this->_curlCall($url);
 			$data = '';
 			if(!empty($do)) {
 				$data = json_decode($do, true);
 				if(!empty($data)) {
-					if(DEBUG) error_log("[DEBUG] musicbrainz releases json data:".var_export($data,true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] musicbrainz releases json data:".Summoner::cleanForLog($data));
 				}
 				else {
-					error_log("[ERROR] musicbrainz invalid releases json data:".var_export($do,true));
+                    Summoner::sysLog("[ERROR] musicbrainz invalid releases json data:".Summoner::cleanForLog($do));
 				}
 			}
 
@@ -182,10 +182,10 @@ class Musicbrainz {
 			if(!empty($do)) {
 				$data = json_decode($do, true);
 				if(!empty($data)) {
-					if(DEBUG) error_log("[DEBUG] musicbrainz release json data:".var_export($data,true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] musicbrainz release json data:".Summoner::cleanForLog($data));
 				}
 				else {
-					error_log("[ERROR] musicbrainz invalid release json data:".var_export($do,true));
+                    Summoner::sysLog("[ERROR] musicbrainz invalid release json data:".Summoner::cleanForLog($do));
 				}
 			}
 
@@ -214,11 +214,11 @@ class Musicbrainz {
 				if(!empty($do)) {
 					$imageData = json_decode($do, true);
 					if(!empty($imageData)) {
-						if(DEBUG) error_log("[DEBUG] image release json data:".var_export($imageData,true));
+						if(DEBUG) Summoner::sysLog("[DEBUG] image release json data:".Summoner::cleanForLog($imageData));
 						$ret['image'] = isset($imageData['images'][0]['image']) ? $imageData['images'][0]['image'] : '';
 					}
 					else {
-						error_log("[ERROR] image invalid release json data:".var_export($do,true));
+                        Summoner::sysLog("[ERROR] image invalid release json data:".Summoner::cleanForLog($do));
 					}
 				}
 			}
@@ -269,7 +269,7 @@ class Musicbrainz {
 			curl_close($ch);
 
 			if($this->_DEBUG) {
-				error_log('[DEBUG] '.__METHOD__.' headers '.var_export($_headers,true));
+                Summoner::sysLog('[DEBUG] '.__METHOD__.' headers '.Summoner::cleanForLog($_headers));
 			}
 
 			$ret = $_tmpFile;
@@ -325,7 +325,7 @@ class Musicbrainz {
 		curl_close($ch);
 
 		if($this->_DEBUG) {
-			error_log('[DEBUG] '.__METHOD__.' headers '.var_export($_headers,true));
+            Summoner::sysLog('[DEBUG] '.__METHOD__.' headers '.Summoner::cleanForLog($_headers));
 		}
 
 		return $ret;

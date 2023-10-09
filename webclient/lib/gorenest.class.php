@@ -104,7 +104,7 @@ class GoreNest {
 					FROM `".DB_PREFIX."_menu`
 					WHERE ".$this->_User->getSQLRightsString()."				
 						ORDER BY position";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query  = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -115,7 +115,7 @@ class GoreNest {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 	}
 

@@ -129,7 +129,7 @@ class Trite {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString($right, "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -138,7 +138,7 @@ class Trite {
 					$this->_id = $this->_collectionData['id'];
 				}
 			} catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -179,7 +179,7 @@ class Trite {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString($rightsMode, "c")."
 					ORDER BY `c`.`name`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -190,7 +190,7 @@ class Trite {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -216,7 +216,7 @@ class Trite {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_id."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		$query = $this->_DB->query($queryStr);
 		try {
 			if($query !== false && $query->num_rows > 0) {
@@ -225,7 +225,7 @@ class Trite {
 				}
 			}
 		} catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_cacheExistingCollectionFields;
@@ -287,7 +287,7 @@ class Trite {
 		else {
 			$queryStr .= " ORDER BY `sf`.`displayname`, `e2l`.`value`";
 		}
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		$query = $this->_DB->query($queryStr);
 		try {
 			if($query !== false && $query->num_rows > 0) {
@@ -305,7 +305,7 @@ class Trite {
 				}
 			}
 		} catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -323,7 +323,7 @@ class Trite {
 					FROM `".DB_PREFIX."_tool2collection` AS t2c
 					LEFT JOIN `".DB_PREFIX."_tool` AS t ON t.id = t2c.fk_tool_id
 					WHERE t2c.fk_collection_id = '".$this->_DB->real_escape_string($this->_id)."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -333,7 +333,7 @@ class Trite {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return  $ret;
@@ -352,7 +352,7 @@ class Trite {
 		$this->_collectionData['stats'] = array();
 
 		$queryStr = "SELECT COUNT(*) AS entries FROM `".DB_PREFIX."_collection_entry_".$this->_id."`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -361,7 +361,7 @@ class Trite {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		$tags = $this->getTags();
@@ -377,7 +377,7 @@ class Trite {
 						WHERE TABLE_SCHEMA = 'bibliotheca'
   						AND TABLE_NAME LIKE 'bib_collection_%_".$this->_id."'
 						ORDER BY (DATA_LENGTH + INDEX_LENGTH) DESC";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -387,7 +387,7 @@ class Trite {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 		$this->_collectionData['stats']['tableSize'] = Summoner::bytesToHuman($tableSize);
 

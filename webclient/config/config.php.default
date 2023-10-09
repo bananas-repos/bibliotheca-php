@@ -31,6 +31,7 @@ const PATH_ABSOLUTE = '~pathabsolute~';
 const PATH_SYSTEMOUT = PATH_ABSOLUTE.'/systemout';
 const PATH_STORAGE = PATH_ABSOLUTE.'/storage';
 const PATH_WEB_STORAGE = 'storage';
+const LOGFILE = PATH_SYSTEMOUT.'/bibliotheca.log';
 
 # database config
 const DB_HOST = '~dbhost~';

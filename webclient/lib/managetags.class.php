@@ -113,12 +113,12 @@ class ManageTags {
 					SET `value` = '".$this->_DB->real_escape_string($to)."'
 					WHERE `fk_field` = '".$this->_DB->real_escape_string($field)."'
 						AND `value` = BINARY '".$this->_DB->real_escape_string($from)."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$this->_DB->query($queryStr);
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			$ret = 'Error in move/rename query. See logs.';
 		}
 
@@ -142,12 +142,12 @@ class ManageTags {
 		$queryStr = "DELETE FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 					WHERE `fk_field` = '".$this->_DB->real_escape_string($field)."'
 						AND `value` = BINARY '".$this->_DB->real_escape_string($what)."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$this->_DB->query($queryStr);
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			$ret = 'Error in delete query. See logs.';
 		}
 

@@ -200,7 +200,7 @@ class Doomguy {
 								   `token` = '".$this->_DB->real_escape_string($tokenInfo['token'])."',
 								   `salt` = '".$this->_DB->real_escape_string($tokenInfo['salt'])."',
 								   `loginTime` = NOW()";
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+					if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 					try {
 						$this->_DB->query($queryStr);
 
@@ -208,7 +208,7 @@ class Doomguy {
 						$this->_loginActions();
 					}
 					catch (Exception $e) {
-						error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                        Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 					}
 
 					$ret = true;
@@ -231,7 +231,7 @@ class Doomguy {
 						FROM `".DB_PREFIX."_user`
 						WHERE `apiToken` = '".$this->_DB->real_escape_string($token)."'
 						AND `apiTokenValidDate` > NOW()";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -243,7 +243,7 @@ class Doomguy {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 	}
@@ -278,7 +278,7 @@ class Doomguy {
 			}
 		}
 		else {
-			error_log("[ERROR] ".__METHOD__."  invalid rights string: ".var_export($this->_rightsArray, true));
+            Summoner::sysLog("[ERROR] ".__METHOD__."  invalid rights string: ".Summoner::cleanForLog($this->_rightsArray));
 		}
 
 		return $str;
@@ -336,7 +336,7 @@ class Doomguy {
 			WHERE s.token = '".$this->_DB->real_escape_string($_SESSION[SESSION_NAME]['bibliothecatoken'])."'
 			AND s.salt <> ''
 			AND s.loginTime >= '".$timeframe."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -351,7 +351,7 @@ class Doomguy {
 					$ret = true;
 				}
 				else {
-					error_log("[ERROR] ".__METHOD__." mismatched token.");
+                    Summoner::sysLog("[ERROR] ".__METHOD__." mismatched token.");
 					if(isset($result['fk_user_id']) && !empty($result['fk_user_id'])) {
 						$this->userID = $result['fk_user_id'];
 					}
@@ -360,7 +360,7 @@ class Doomguy {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -381,7 +381,7 @@ class Doomguy {
 					FROM `".DB_PREFIX."_user`
 					WHERE `login` = '". $this->_DB->real_escape_string($u)."'
 					AND `active` = '1'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -391,7 +391,7 @@ class Doomguy {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -408,12 +408,12 @@ class Doomguy {
 		$timeframe = date("Y-m-d H:i:s",time()-SESSION_LIFETIME);
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `loginTime` <= '".$timeframe."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$this->_DB->query($queryStr);
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 	}
 
@@ -431,7 +431,7 @@ class Doomguy {
 						LEFT JOIN `".DB_PREFIX."_user2group` AS u2g ON u2g.fk_user_id = u.id
 						LEFT JOIN `".DB_PREFIX."_group` AS g ON g.id= u2g.fk_group_id
 						WHERE u.`id` = '".$this->_DB->real_escape_string($this->userID)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -462,7 +462,7 @@ class Doomguy {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 	}
@@ -477,12 +477,12 @@ class Doomguy {
 		$queryStr = "DELETE FROM `".DB_PREFIX."_userSession`
 				WHERE `fk_user_id` = '".$this->_DB->real_escape_string($this->userID)."'
 				OR `loginTime` <= '".$timeframe."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$this->_DB->query($queryStr);
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		unset($_SESSION);

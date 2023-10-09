@@ -77,17 +77,17 @@ class GoogleBooks {
 			$url = $this->_VOLUMES_ENDPOINT;
 			$url .= '?q=isbn:'.$isbn;
 
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." isbn query url: $url");
+			if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." isbn query url: $url");
 
 			$do = $this->_curlCall($url);
 			if(!empty($do)) {
 				$data = json_decode($do, true);
 				if(!empty($data)) {
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__." isbn json data:".var_export($data,true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." isbn json data:".Summoner::cleanForLog($data));
 					$data = $this->_buildDataFromISBNsearch($data);
 				}
 				else {
-					error_log("[ERROR] ".__METHOD__." invalid isbn json data:".var_export($do,true));
+                    Summoner::sysLog("[ERROR] ".__METHOD__." invalid isbn json data:".Summoner::cleanForLog($do));
 				}
 			}
 
@@ -114,7 +114,7 @@ class GoogleBooks {
 		$_tmpFile = tempnam(sys_get_temp_dir(), "bibliotheca-");
 		$fh = fopen($_tmpFile,"w+");
 		if($this->_DEBUG) {
-			error_log('[DEBUG] '.__METHOD__.' url '.var_export($url,true));
+            Summoner::sysLog('[DEBUG] '.__METHOD__.' url '.Summoner::cleanForLog($url));
 		}
 
 		if($fh !== false) {
@@ -221,7 +221,7 @@ class GoogleBooks {
 		curl_close($ch);
 
 		if($this->_DEBUG) {
-			error_log('[DEBUG] '.__METHOD__.' headers '.var_export($_headers,true));
+            Summoner::sysLog('[DEBUG] '.__METHOD__.' headers '.Summoner::cleanForLog($_headers));
 		}
 
 		return $ret;

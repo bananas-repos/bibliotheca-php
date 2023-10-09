@@ -106,7 +106,7 @@ class ManageCollectionFields {
 						`createstring`, `value`
 					FROM `".DB_PREFIX."_sys_fields`
 					ORDER BY `displayname`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -116,7 +116,7 @@ class ManageCollectionFields {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_cacheAvailableFields;
@@ -184,11 +184,11 @@ class ManageCollectionFields {
 
 			$queryStrDeleteFields = "DELETE FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."`
 						WHERE `fk_field_id` NOT IN (".implode(",",$ids).")";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDeleteFields,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrDeleteFields));
 
 			$queryStrDeletee2l = "DELETE FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_collectionId."`
 						WHERE `fk_field` NOT IN (".implode(",",$ids).")";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDeletee2l,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrDeletee2l));
 
 			$queryStrInsertFields = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
 			foreach ($ids as $k => $v) {
@@ -196,7 +196,7 @@ class ManageCollectionFields {
 			}
 			$queryStrInsertFields = trim($queryStrInsertFields, ",");
 			$queryStrInsertFields .= " ON DUPLICATE KEY UPDATE `sort` = VALUES(`sort`)";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrInsertFields,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrInsertFields));
 
 			if(!empty($_newColumns)) {
 				$queryStrAlterEntry = array();
@@ -218,7 +218,7 @@ class ManageCollectionFields {
 				// mysql implicit commit
 				if(!empty($queriesDeleteEntryTable)) {
 					foreach($queriesDeleteEntryTable as $q) {
-						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q,true));
+						if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::sysLog($q));
 						$this->_DB->query($q);
 					}
 				}
@@ -230,7 +230,7 @@ class ManageCollectionFields {
 				// mysql implicit commit
 				if(!empty($_newColumns)) {
 					foreach ($queryStrAlterEntry as $q1) {
-						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q1,true));
+						if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($q1));
 						$this->_DB->query($q1);
 					}
 				}
@@ -239,7 +239,7 @@ class ManageCollectionFields {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] asd ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] asd ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -270,7 +270,7 @@ class ManageCollectionFields {
 		else {
 			$queryStr .= " ORDER BY `cf`.`sort`";
 		}
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -280,7 +280,7 @@ class ManageCollectionFields {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_cacheExistingSysFields;
@@ -323,7 +323,7 @@ class ManageCollectionFields {
 		$ret = array();
 
 		$queryStr = "SHOW COLUMNS FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -335,7 +335,7 @@ class ManageCollectionFields {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;

@@ -1,4 +1,5 @@
 1.x - Chizra
+    * Config change. Added new entry. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Licence change to GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 
 1.5 - Sacred Passage 2023-05-01
