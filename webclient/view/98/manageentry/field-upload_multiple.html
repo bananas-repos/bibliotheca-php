@@ -6,17 +6,19 @@
 
 	<?php
 	if(isset($TemplateData['editData']) && !empty($TemplateData['editData'][$field['identifier']])) {
+		$_i = 1;
 		foreach($TemplateData['editData'][$field['identifier']] as $e) {
 	?>
 		<a target="_blank" href="<?php echo $TemplateData['storagePath'].'/'.$e; ?>"><?php echo $e; ?></a>
 		<input type="checkbox" value="<?php echo $e; ?>"
 				name="fdata[<?php echo $field['identifier']; ?>_delete][]"
 				title="Delete"
-				id="<?php echo $field['identifier']; ?>_delete"
+				id="<?php echo $field['identifier'].$_i; ?>_delete"
 		/>
-		<label for="<?php echo $field['identifier']; ?>_delete">Delete</label>
+		<label for="<?php echo $field['identifier'].$_i; ?>_delete">Delete</label>
 		<br>
 	<?php
+		$_i++;
 		}
 	}
 	?>
