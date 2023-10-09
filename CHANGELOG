@@ -1,84 +1,85 @@
 1.x - Chizra
+    * Licence change to GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 
 1.5 - Sacred Passage 2023-05-01
-	* Added google books parser. See upgrade file for more infos.
-	* Added a new theme based on Windows 98.
-	* Fixed global search in navigation.
-	* Fix: #18
-	* Fix: #19
-	* Fix: #15
+    * Added google books parser. See upgrade file for more infos.
+    * Added a new theme based on Windows 98.
+    * Fixed global search in navigation.
+    * Fix: #18
+    * Fix: #19
+    * Fix: #15
 
 1.4 - Depths Of Rrajigar 2022-12-18
-	* Added new default sort direction field in collection edit view. See upgrade file for more needed details
-	* Fixed #13
-	* Fixed some layout alignments
-	* Fixed showing the pagination where there is a fulltext default search
-	* Made it more visible where to drop the fields in manage fields view for a collection.
-	* Added a note about some options in collections manage view.
-	* Improved breakpoint behavior
-	* After already selected a collection the add and tags manage action has this collection already set.
-	* Added some missing headlines with a link for better navigation
+    * Added new default sort direction field in collection edit view. See upgrade file for more needed details
+    * Fixed #13
+    * Fixed some layout alignments
+    * Fixed showing the pagination where there is a fulltext default search
+    * Made it more visible where to drop the fields in manage fields view for a collection.
+    * Added a note about some options in collections manage view.
+    * Improved breakpoint behavior
+    * After already selected a collection the add and tags manage action has this collection already set.
+    * Added some missing headlines with a link for better navigation
 
 1.3 - Rrajigar Mine 2022-10-08
-	* Fixed install sql file.
-	* New field: artists - lookupmultiple field
-	* Added setup process. See setup/install.txt for more details
-	* Stats info page
-	* Some more PHP 8 syntax and support
-	* Needs PHP 8 as of this version
-	* Two new fields to choose from. ISBN and Artists
+    * Fixed install sql file.
+    * New field: artists - lookupmultiple field
+    * Added setup process. See setup/install.txt for more details
+    * Stats info page
+    * Some more PHP 8 syntax and support
+    * Needs PHP 8 as of this version
+    * Two new fields to choose from. ISBN and Artists
 
 1.2 - NyLeve's Falls 2021-07-17
-	* Updated requirements information
-	* Added Musicbrainz grabber
-	* Added new field: artist
-	* Fixed: #11 Undefined index while adding new entry
-	* Fixed: #10, #09, #08
+    * Updated requirements information
+    * Added Musicbrainz grabber
+    * Added new field: artist
+    * Fixed: #11 Undefined index while adding new entry
+    * Fixed: #10, #09, #08
 
 1.1 - Vortex Rikers 2021-05-30
-	* Cleanup and merge to one config file. Read upgrade
-	* Missing changelog file
-	* api has its own log file now.
-	* User profile for editing own settings.
-	* Collection management has the option to update entry rights with the
-		collection ones.
-	* Entry rights can now be managed. More info about user and rights can
-		be found in documentation.
-	* User management: Honor rights from current logged in user
-	* Group management now available. But no relation check yet.
-	* User management: Additional groups
-	* Page title available
-	* Deletion of a collection removes the storage too
-	* IMDB Tool. Order of save to field now A-Z
-	* Documentation for tools
-	* Documentation for tool imdbweb grabber. Default config added.
-	* Fixed bug #3
-	* Added feature #2. There is now a new definition which defines the default
-		targets of the imdb grabber values. See the config-imdbweb.php.default
-		for more details
-	* Added sort filter. Collection has a default sort field config now.
-		Sort fields are the simple fields. See fields documentation.
-	* Fields do have a new inputValidation option. See fields documentation for more info.
-		Currently used to allow whitespace in a tag
-	* Mass edit of entries. Entries found with advanced search can now be edited.
-		Upload fields are not supported yet.
-	* Fixed bug #5
-	* Added feature #1. Collections overview has pagination at the bottom too.
-	* Advanced search has a table view option
-		Displayed fields are configured in collection management. See notes there.
-	* Updated installation files
-	* Added first-steps.txt. Updated README
-	* Indication which inputs are required
-	* Added a new field: Localized title
-	* After adding an entry the option to view or edit the entry is now available
-	* Added game info tool.
-	* Added new fields for a game collection
-	* input and textarea do have a maxlength now. JS used to display the remaining chars
+    * Cleanup and merge to one config file. Read upgrade
+    * Missing changelog file
+    * api has its own log file now.
+    * User profile for editing own settings.
+    * Collection management has the option to update entry rights with the
+        collection ones.
+    * Entry rights can now be managed. More info about user and rights can
+        be found in documentation.
+    * User management: Honor rights from current logged in user
+    * Group management now available. But no relation check yet.
+    * User management: Additional groups
+    * Page title available
+    * Deletion of a collection removes the storage too
+    * IMDB Tool. Order of save to field now A-Z
+    * Documentation for tools
+    * Documentation for tool imdbweb grabber. Default config added.
+    * Fixed bug #3
+    * Added feature #2. There is now a new definition which defines the default
+        targets of the imdb grabber values. See the config-imdbweb.php.default
+        for more details
+    * Added sort filter. Collection has a default sort field config now.
+        Sort fields are the simple fields. See fields documentation.
+    * Fields do have a new inputValidation option. See fields documentation for more info.
+        Currently used to allow whitespace in a tag
+    * Mass edit of entries. Entries found with advanced search can now be edited.
+        Upload fields are not supported yet.
+    * Fixed bug #5
+    * Added feature #1. Collections overview has pagination at the bottom too.
+    * Advanced search has a table view option
+        Displayed fields are configured in collection management. See notes there.
+    * Updated installation files
+    * Added first-steps.txt. Updated README
+    * Indication which inputs are required
+    * Added a new field: Localized title
+    * After adding an entry the option to view or edit the entry is now available
+    * Added game info tool.
+    * Added new fields for a game collection
+    * input and textarea do have a maxlength now. JS used to display the remaining chars
 
 1.0 - Castle 2021-01-06
-	* First usable version
-	* Using as a collection management software will work
-	* Rights management needs tweaking, so use the admin account for a start
-	* Documentation covers the basics
-	* Use it and give feedback.
-	* Also, make backups.
+    * First usable version
+    * Using as a collection management software will work
+    * Rights management needs tweaking, so use the admin account for a start
+    * Documentation covers the basics
+    * Use it and give feedback.
+    * Also, make backups.
