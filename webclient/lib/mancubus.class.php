@@ -141,13 +141,19 @@ class Mancubus {
 				while(($result = $query->fetch_assoc()) != false) {
 					$_mObj = new Mancubus($this->_DB,$this->_User);
 					$_mObj->setCollection($result['id']);
-					$_mObj->setQueryOptions(array('limit' => $entries));
 
 					if(!empty($search)) {
 						require_once 'lib/trite.class.php';
 						$_colObj = new Trite($this->_DB,$this->_User);
 						$_colObj->load($result['id']);
 						$_fd = $_colObj->getCollectionFields();
+						$_defSearchField = $_colObj->param('defaultSearchField');
+
+                        $_mObj->setQueryOptions(array(
+                            'limit' => $entries,
+                            'sortDirection' => $_colObj->param('defaultSortOrder'),
+                            'sort' => $_colObj->param('defaultSortField')
+                        ));
 						$_defSearchField = $_colObj->param('defaultSearchField');
 
 						if(!empty($_defSearchField)) {
