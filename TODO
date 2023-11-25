@@ -15,6 +15,7 @@
 * Better error handling and display while adding / update and delete
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
+* remove ifset and maybe ifsetvalue from summoner
 
 
 * Field management: Web interface to configure or even create new ones.

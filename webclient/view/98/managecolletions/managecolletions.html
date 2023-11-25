@@ -47,8 +47,8 @@
 	<div class="field-row-stacked">
 		<label for="defaultSortOrder">Default sort order</label>
 		<select id="defaultSortOrder" name="fdata[defaultSortOrder]">
-			<option value="ASC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'ASC')) echo 'selected'; ?>>ASCENDING</option>
-			<option value="DESC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'DESC')) echo 'selected'; ?>>DESCENDING</option>
+			<option value="ASC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'ASC' ? 'selected' : '' ?>>ASCENDING</option>
+			<option value="DESC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'DESC' ? 'selected' : '' ?>>DESCENDING</option>
 		</select>
 	</div>
 	<div class="field-row-stacked">

@@ -2,9 +2,10 @@
     * Config change. Added new entry. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Licence change to GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
     * Cleanups
-    * Fixed: #21
-    * Fixed: #22
-    * Fixed: #26
+    * Fixed: #21 Debug? string in error log
+    * Fixed: #22 98 theme. Attachment selection checkbox are not all selectable
+    * Fixed: #26 98 theme. max column with
+    * Fixed: #25 98 design. Sort direction select does not show the correct selected option
 
 1.5 - Sacred Passage 2023-05-01
     * Added google books parser. See upgrade file for more infos.
