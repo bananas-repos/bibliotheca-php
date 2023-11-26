@@ -56,7 +56,7 @@ if(!empty($_collection)) {
 				}
 
 				if (!empty($_search) && Summoner::validate($_search)) {
-					if (strstr($_search, ':')) { // field search
+					if (str_contains($_search, ':')) { // field search
 						$_matches = array();
 						if(preg_match_all("/(\p{L}+:)(?(?!\p{L}+:).)*/u",$_search, $_matches) !== false && !empty($_matches[0])) {
 							// $matches[0] has the identifier: and text

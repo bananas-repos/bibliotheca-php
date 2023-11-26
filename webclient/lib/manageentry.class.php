@@ -188,7 +188,7 @@ class Manageentry {
 				}
 			}
 
-			if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." queryData: ".Summoner::sysLog($queryData));
+			if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." queryData: ".Summoner::cleanForLog($queryData));
 
 			if(!empty($queryData['init']) || ($update !== false && is_numeric($update))) {
 

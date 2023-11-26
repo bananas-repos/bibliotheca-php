@@ -89,10 +89,10 @@ if(!empty($_collection)) {
 							switch ($data['bulkeditMethod']) {
 								case 'add':
 									if(is_array($entry[$ident])) { // lookup multiple
-										$data['valueToSave'] = implode(",", $entry[$ident]) . $data['valueToSave'];
-									}
+										$data['valueToSave'] = implode(",", $entry[$ident]).",".$data['valueToSave'];
+                                    }
 									else {
-										$data['valueToSave'] = $entry[$ident] . $data['valueToSave'];
+										$data['valueToSave'] = $entry[$ident].' '.$data['valueToSave'] ;
 									}
 								break;
 
@@ -114,6 +114,8 @@ if(!empty($_collection)) {
 						} else {
 							$_messages[] = "Entry could not be updated. See log for more details: ".$entry['id'];
 						}
+
+						unset($data);
 					}
 
 					$TemplateData['message']['content'] = implode("<br />",$_messages);
