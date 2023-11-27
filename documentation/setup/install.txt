@@ -1,6 +1,6 @@
 1. Unpack
-Unpack the archive in a temp folder. Follow the steps. After you can delete the
-unpacked files
+Unpack the archive in a temp folder. Follow the following steps.
+After that you can delete the unpacked files
 
 2. DB Setup
 Create a DB and choose a prefix (A _ is added automatically as separation) for your tables.
@@ -12,6 +12,8 @@ Move the content of webclient folder to your webspace.
 4. File rights
 Make sure that systemout folder is read/write accessible for your webserver user. Recursive.
 Make sure that storage folder is read/write accessible for your webserver user. Recursive.
+Make sure that config folder is read/write accessible for your webserver user.
+Make sure that setup folder is read/write accessible for your webserver user. Recursive.
 
 5. Setup
 Open your browser and visit your newly created bibliotheca installation setup with /setup
@@ -28,4 +30,4 @@ Create your own user.
 Create your first collection.
 
 To re run the setup:
-Upload the setup folder again. It deletes itself after a successfull setup.
+Upload the setup folder again. It deletes itself after a successful setup.

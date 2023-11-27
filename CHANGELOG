@@ -7,7 +7,7 @@
     * Fixed: #26 98 theme. max column with
     * Fixed: #25 98 design. Sort direction select does not show the correct selected option
     * Fixed: #23 basic search result order
-    * Fixed: Buledit in 98 theme and default
+    * Fixed: Bulkedit in 98 theme and default
 
 1.5 - Sacred Passage 2023-05-01
     * Added google books parser. See upgrade file for more infos.
