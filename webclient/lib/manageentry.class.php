@@ -348,6 +348,38 @@ class Manageentry {
 		return $ret;
 	}
 
+    /**
+     * Check for duplicates based on the given entryData.
+     * Could be extended to use more attributes from the entry
+     * Currently uses the title field, which is a hard dependency
+     *
+     * @param array $entryData
+     * @return array
+     */
+    public function checkForDuplicates(array $entryData): array {
+        $ret = array();
+
+        $queryStr = "SELECT `id`, `title`
+						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
+						WHERE `title` LIKE '".$this->_DB->real_escape_string($entryData['title'])."%'
+						    AND `id` != '".$this->_DB->real_escape_string($entryData['id'])."'
+							AND ".$this->_User->getSQLRightsString()."";
+        if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+        try {
+            $query = $this->_DB->query($queryStr);
+            if ($query !== false && $query->num_rows > 0) {
+                if (($row = $query->fetch_assoc()) != false) {
+                    $ret[] = $row;
+                }
+            }
+        }
+        catch (Exception $e) {
+            Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+        }
+
+        return $ret;
+    }
+
 	/**
 	 * Check if given entryid can be deleted from current collection
 	 * and user
@@ -728,6 +760,10 @@ class Manageentry {
      */
     private function _saveField_upload__coverimage(array $data, array $queryData): array {
         $queryData = $this->_saveField_upload($data, $queryData);
+
+        if(!isset($queryData['after']['upload'])) {
+            return $queryData;
+        }
 
         $workWith = $queryData['after']['upload'][0]['tmp_name'];
         if(file_exists($workWith)) {
