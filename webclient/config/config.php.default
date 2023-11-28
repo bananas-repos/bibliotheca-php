@@ -44,6 +44,13 @@ const DB_PREFIX = '~dbprefix~'; # a _ is added automatically as separation
 # available values are: default, 98
 # fallback is default theme
 const UI_THEME = 'default';
+# additional config for each theme with fallback
+const UI_THEME_CONFIG = array(
+    'default' => array(
+        'coverImageMaxWidth' => 260 // in pixel. Supports image/jpeg, image/png, image/webp
+    ),
+    '98' => array()
+);
 
 # session
 const SESSION_LIFETIME =  43200; // 8 hours

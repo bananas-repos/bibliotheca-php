@@ -1,5 +1,6 @@
 1.x - Chizra
-    * Config change. Added new entry. See upgrade/from-version-1.5.txt. It won't work if it is missing.
+    * Config change: Added new entry. See upgrade/from-version-1.5.txt. It won't work if it is missing.
+    * Config change: Added new theme config. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Licence change to GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
     * Cleanups
     * Fixed: #21 Debug? string in error log
@@ -8,6 +9,7 @@
     * Fixed: #25 98 design. Sort direction select does not show the correct selected option
     * Fixed: #23 basic search result order
     * Fixed: Bulkedit in 98 theme and default
+    * Fixed: #24 Image upload. Automatic resize?
 
 1.5 - Sacred Passage 2023-05-01
     * Added google books parser. See upgrade file for more infos.

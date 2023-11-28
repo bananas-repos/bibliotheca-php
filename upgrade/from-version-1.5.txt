@@ -1,3 +1,13 @@
 # Added new const to config.php file.
 Use config.php.default as a help. The new line is:
 const LOGFILE = PATH_SYSTEMOUT.'/bibliotheca.log';
+
+# Added new theme config to config.php file
+Use config.php.default as a help. The new setting is:
+# additional config for each theme with fallback
+const UI_THEME_CONFIG = array(
+    'default' => array(
+        'coverImageMaxWidth' => 260 // in pixel. Supports image/jpeg, image/png, image/webp
+    ),
+    '98' => array()
+);
