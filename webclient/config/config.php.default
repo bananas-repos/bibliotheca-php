@@ -49,7 +49,9 @@ const UI_THEME_CONFIG = array(
     'default' => array(
         'coverImageMaxWidth' => 260 // in pixel. Supports image/jpeg, image/png, image/webp
     ),
-    '98' => array()
+    '98' => array(
+        'coverImageMaxWidth' => 500 // in pixel. Supports image/jpeg, image/png, image/webp
+    )
 );
 
 # session
