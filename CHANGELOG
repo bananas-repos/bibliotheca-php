@@ -1,15 +1,19 @@
 1.x - Chizra
     * Config change. Added new entries. See upgrade/from-version-1.5.txt. It won't work if it is missing.
+    * Config change: Added new theme config. See upgrade/from-version-1.5.txt. It won't work if it is missing.
+    * Added: #6 Feature: Duplicate search
+      This is a very limited like search based on the title field. Needs improvement and better search data.
     * Licence change to GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
-    * Cleanups
     * Fixed: #21 Debug? string in error log
     * Fixed: #22 98 theme. Attachment selection checkbox are not all selectable
     * Fixed: #26 98 theme. max column with
     * Fixed: #25 98 design. Sort direction select does not show the correct selected option
     * Fixed: #23 basic search result order
     * Fixed: Bulkedit in 98 theme and default
+    * Fixed: #24 Image upload. Automatic resize?
     * Updated: PHP-IMDB-Grabber to https://github.com/FabianBeiner/PHP-IMDB-Grabber/releases/tag/v6.2.1
       with some heavy modifications.
+    * Cleanups
 
 1.5 - Sacred Passage 2023-05-01
     * Added google books parser. See upgrade file for more infos.

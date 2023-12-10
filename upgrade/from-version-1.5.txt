@@ -7,7 +7,18 @@ const BROWSER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 
 const BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
 const BROWSER_ACCEPT_LANG = 'en-US,en;q=0.5';
 
-
 ## Updated tools configs
 Please compare the default config files for googlebooks, imdbweb and musicbrainz and make the required
 changes.
+
+# Added new theme config to config.php file
+Use config.php.default as a help. The new setting is:
+# additional config for each theme with fallback
+const UI_THEME_CONFIG = array(
+    'default' => array(
+        'coverImageMaxWidth' => 260 // in pixel. Supports image/jpeg, image/png, image/webp
+    ),
+    '98' => array(
+        'coverImageMaxWidth' => 500 // in pixel. Supports image/jpeg, image/png, image/webp
+    )
+);

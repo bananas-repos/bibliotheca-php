@@ -100,9 +100,9 @@ class Manageentry {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
 					while(($result = $query->fetch_assoc()) != false) {
-						$_mn = '_loadField_'.$result['type'];
-						if(method_exists($this, $_mn)) {
-							$result = $this->$_mn($result);
+						$_methodName = '_loadField_'.$result['type'];
+						if(method_exists($this, $_methodName)) {
+							$result = $this->$_methodName($result);
 						}
 						$this->_cacheEditFields[$result['id']] = $result;
 					}
@@ -179,12 +179,18 @@ class Manageentry {
 			$queryData['init'] = array();
 			$queryData['after'] = array();
 			foreach ($data as $i=>$d) {
-				$_mn = '_saveField_'.$d['type'];
-				if(method_exists($this, $_mn)) {
-					$queryData = $this->$_mn($d, $queryData);
+				$_methodName = '_saveField_'.$d['type'];
+                $_methodNameSpecial = $_methodName.'__'.$d['identifier'];
+                if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." methodname: ".Summoner::cleanForLog($_methodName));
+                if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." methodnamespecial: ".Summoner::cleanForLog($_methodNameSpecial));
+                if(method_exists($this, $_methodNameSpecial)) {
+                    $queryData = $this->$_methodNameSpecial($d, $queryData);
+                }
+				elseif(method_exists($this, $_methodName)) {
+					$queryData = $this->$_methodName($d, $queryData);
 				}
 				else {
-					if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." Missing query function for: ".Summoner::cleanForLog($d));
+					if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." Missing query function for: ".Summoner::cleanForLog($d));
 				}
 			}
 
@@ -341,6 +347,38 @@ class Manageentry {
 
 		return $ret;
 	}
+
+    /**
+     * Check for duplicates based on the given entryData.
+     * Could be extended to use more attributes from the entry
+     * Currently uses the title field, which is a hard dependency
+     *
+     * @param array $entryData
+     * @return array
+     */
+    public function checkForDuplicates(array $entryData): array {
+        $ret = array();
+
+        $queryStr = "SELECT `id`, `title`
+						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
+						WHERE `title` LIKE '".$this->_DB->real_escape_string($entryData['title'])."%'
+						    AND `id` != '".$this->_DB->real_escape_string($entryData['id'])."'
+							AND ".$this->_User->getSQLRightsString()."";
+        if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+        try {
+            $query = $this->_DB->query($queryStr);
+            if ($query !== false && $query->num_rows > 0) {
+                if (($row = $query->fetch_assoc()) != false) {
+                    $ret[] = $row;
+                }
+            }
+        }
+        catch (Exception $e) {
+            Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+        }
+
+        return $ret;
+    }
 
 	/**
 	 * Check if given entryid can be deleted from current collection
@@ -712,13 +750,74 @@ class Manageentry {
 		return $queryData;
 	}
 
+    /**
+     * Special for single upload and subtype coverimage.
+     * Uses the theme settings for image resize. Modifies the result from _saveField_upload if it is an image
+     *
+     * @param array $data
+     * @param array $queryData
+     * @return array
+     */
+    private function _saveField_upload__coverimage(array $data, array $queryData): array {
+        $queryData = $this->_saveField_upload($data, $queryData);
+
+        if(!isset($queryData['after']['upload'])) {
+            return $queryData;
+        }
+
+        $workWith = $queryData['after']['upload'][0]['tmp_name'];
+        if(file_exists($workWith)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $workWith);
+            finfo_close($finfo);
+            if(str_contains('image/jpeg, image/png, image/webp', $mime)) {
+                list($width, $height) = getimagesize($workWith);
+                $_maxThemeWidth = Summoner::themeConfig('coverImageMaxWidth', UI_THEME);
+                if(!empty($_maxThemeWidth) && ($width > $_maxThemeWidth)) {
+                    $_ratio = $_maxThemeWidth/$width;
+                    $newWidth = (int) $_maxThemeWidth;
+                    $newHeight = (int) $height * $_ratio;
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image ratio: ".$_ratio);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image width: ".$width);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image height: ".$height);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image new width: ".$newWidth);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image new height: ".$newHeight);
+                    $_tmp_image = imagecreatetruecolor($newWidth, $newHeight);
+                    switch($mime) {
+                        case 'image/jpeg':
+                            $src = imagecreatefromjpeg($workWith);
+                            imagecopyresampled($_tmp_image, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                            imagejpeg($_tmp_image, $workWith, 100);
+                            break;
+
+                        case 'image/png':
+                            $src = imagecreatefrompng($workWith);
+                            imagecopyresampled($_tmp_image, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                            imagepng($_tmp_image, $workWith, 0);
+                            break;
+
+                        case 'image/webp':
+                            $src = imagecreatefromwebp($workWith);
+                            imagecopyresampled($_tmp_image, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                            imagewebp($_tmp_image, $workWith,100);
+                            break;
+                    }
+                    imagedestroy($_tmp_image);
+                    imagedestroy($src);
+                }
+            }
+        }
+
+        return $queryData;
+    }
+
 	/**
-	 * runs the query and throws query execption if false
+	 * runs the query and throws query exception if false
 	 *
 	 * @param string $queryString
 	 * @param string $insertId Number
 	 */
-	private function _runAfter_query(string $queryString, string $insertId) {
+	private function _runAfter_query(string $queryString, string $insertId): void {
 		if(!empty($queryString) && !empty($insertId)) {
 			// replace only once to avoid replacing actual data
 			$queryStr = Summoner::replaceOnce($queryString,$this->_replaceEntryString, $insertId);
@@ -743,7 +842,7 @@ class Manageentry {
 	 * @param string $insertId Number
 	 * @throws Exception
 	 */
-	private function _runAfter_upload(array $uploadData, string $insertId) {
+	private function _runAfter_upload(array $uploadData, string $insertId): void {
 		if(!empty($uploadData) && !empty($insertId)) {
 			if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." uploadata: ".Summoner::cleanForLog($uploadData));
 			$_path = PATH_STORAGE.'/'.$this->_collectionId.'/'.$insertId;

@@ -29,6 +29,7 @@ $TemplateData['editData'] = array();
 $TemplateData['loadedCollection'] = '';
 $TemplateData['storagePath'] = '';
 $TemplateData['existingCollections'] = array();
+$TemplateData['possibleDuplicates'] = array();
 
 $TemplateData['_editFieldViewDefault'] = Summoner::themefile('manageentry/field-unknown.html', UI_THEME);
 
@@ -67,6 +68,7 @@ if(!empty($_collection)) {
 			}
 			else {
 				$TemplateData['pageTitle'] = 'Edit - '.$TemplateData['editData']['title'].' - '.$Trite->param('name');
+                $TemplateData['possibleDuplicates'] = $ManageEntry->checkForDuplicates($TemplateData['editData']);
 			}
 		}
 

@@ -1,3 +1,5 @@
+* change the search data. Maybe an extra search field in which all the searchable information of an entry will be
+  saved.
 * change multiple-attachment to a field which tells it is used for a image gallery
 * update JS and remove deprecations
 * complete profile view. Groups still missing.

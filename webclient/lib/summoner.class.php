@@ -45,6 +45,24 @@ class Summoner {
     }
 
     /**
+     * Return the current config for a theme based on UI_THEME
+     *
+     * @param string $configProperty The property to fetch
+     * @param String $theme Theme name
+     * @param string $defaultTheme Default theme name can be overwritten
+     * @return string
+     */
+    static function themeConfig(string $configProperty, string $theme, string $defaultTheme = 'default'): string {
+        $ret = '';
+
+        if(defined('UI_THEME_CONFIG')) {
+            $ret = UI_THEME_CONFIG[$theme][$configProperty] ?? UI_THEME_CONFIG[$defaultTheme][$configProperty];
+        }
+
+        return $ret;
+    }
+
+    /**
      * validate the given string with the given type. Optional check the string
      * length
      *
