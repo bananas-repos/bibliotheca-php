@@ -5,7 +5,6 @@
 ** https://watercss.kognise.dev/
 * create a real fallback theme, which does not depend on any styling/css
 ** change the css and js lookup too in main file
-* central user-agent and browser info in config. Remove from tools
 * i18n support
 * Automatic upgrades of DB
 * drop in updates
