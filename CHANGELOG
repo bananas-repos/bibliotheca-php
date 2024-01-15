@@ -14,6 +14,7 @@
     * Updated: PHP-IMDB-Grabber to https://github.com/FabianBeiner/PHP-IMDB-Grabber/releases/tag/v6.2.1
       with some heavy modifications.
     * Cleanups
+    * Cleaned upgrade files
 
 1.5 - Sacred Passage 2023-05-01
     * Added google books parser. See upgrade file for more infos.

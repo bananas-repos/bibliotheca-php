@@ -10,12 +10,15 @@ Copy config/config-imdbweb.php.default to config/config-imdbweb.php
 See too-imdbweb.txt documentation for more information.
 
 #4 following files can be removed
+```
 view/default/system/pagination.html
 view/default/system/pagination_after.php
 view/default/system/pagination_before.php
+```
 
 #5 DB changes. Run each line against your bibliotheca DB.
-# Replace #REPLACEME# with your table prefix. Default is bib
+Replace #REPLACEME# with your table prefix. Default is bib
+```
 UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 10;
 UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `#REPLACEME#_menu`.`id` = 10;
 INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Profile', 'profile', 'user', '1', '2', 'rw-rw----', '5', 'manage');
@@ -39,6 +42,7 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'view', 'View', 'selection', 'entrySingleNum', '`view` varchar(32) NULL DEFAULT NULL', '', 'First person,Third person,Top-down', 'First person,Third person,Top-down', NOW(), '0', '1', '1', 'rw-r--r--')
 INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', NOW(), '0', '1', '1', 'rw-r--r--');
 INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES (NULL, 'Game infos', 'Game infos', 'gameinfo', '_self', '1', '1', 'rw-r--r--');
+```
 
 # 6
 Update your collection settings. There are new options which should be set.

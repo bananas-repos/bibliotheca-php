@@ -1,5 +1,15 @@
 Each release has its own file in the upgrade folder.
-In this file there are the steps needed to make an upgrade.
+Basic flow would be to extract the new release and copy over the following files and directories:
+```
+webclient/config/
+webclient/lib/
+webclient/view/
+webclient/.htaccess
+webclient/api.php
+webclient/index.php
+```
+
+In those files there are the steps needed to make an upgrade.
 
 If you upgrade multiple versions make sure to read all the files in the correct order.
 

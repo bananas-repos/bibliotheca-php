@@ -1,17 +1,23 @@
 # Copy the following directories and files to your installation folder matching the correct path.
+```
 webclient/view/default/tool/tool-googlebooks.html
 webclient/view/default/tool/tool-googlebooks.php
 webclient/lib/googlebookparser.class.php
 webclient/config/config-googlebooks.php.default -> also copy and rename to config-googlebooks.php
+```
 
 # DB changes. Run each line against your bibliotheca DB.
-# Replace #REPLACEME# with your table prefix. Default is bib
+Replace #REPLACEME# with your table prefix. Default is bib
+```
 INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES (NULL, 'Google Books', 'Book infos from Google', 'googlebooks', '_self', '1', '1', 'rw-r--r--');
 UPDATE `#REPLACEME#_sys_fields` SET `createstring` = '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', `apiinfo` = 'varchar 32' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'isbn';
 UPDATE `#REPLACEME#_sys_fields` SET `type` = 'text', `searchtype` = 'entrySingleText' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'isbn';
+```
 
 # if you use the field ISBN already run this and change the collection id
+```
 ALTER TABLE `#REPLACEME#_collection_entry_#CHANGE_ID#` CHANGE `isbn` `isbn` VARCHAR(32) NULL DEFAULT NULL;
+```
 
 # New Theme: 98.
 Theme based on https://jdan.github.io/98.css/
