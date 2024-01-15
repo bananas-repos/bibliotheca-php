@@ -1,5 +1,5 @@
 1.x - Chizra
-    * Config change: Added new entry. See upgrade/from-version-1.5.txt. It won't work if it is missing.
+    * Config change. Added new entries. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Config change: Added new theme config. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Added: #6 Feature: Duplicate search
       This is a very limited like search based on the title field. Needs improvement and better search data.
@@ -11,6 +11,8 @@
     * Fixed: #23 basic search result order
     * Fixed: Bulkedit in 98 theme and default
     * Fixed: #24 Image upload. Automatic resize?
+    * Updated: PHP-IMDB-Grabber to https://github.com/FabianBeiner/PHP-IMDB-Grabber/releases/tag/v6.2.1
+      with some heavy modifications.
     * Cleanups
 
 1.5 - Sacred Passage 2023-05-01
@@ -54,9 +56,9 @@
     * api has its own log file now.
     * User profile for editing own settings.
     * Collection management has the option to update entry rights with the
-        collection ones.
+      collection ones.
     * Entry rights can now be managed. More info about user and rights can
-        be found in documentation.
+      be found in documentation.
     * User management: Honor rights from current logged in user
     * Group management now available. But no relation check yet.
     * User management: Additional groups
@@ -67,18 +69,18 @@
     * Documentation for tool imdbweb grabber. Default config added.
     * Fixed bug #3
     * Added feature #2. There is now a new definition which defines the default
-        targets of the imdb grabber values. See the config-imdbweb.php.default
-        for more details
+      targets of the imdb grabber values. See the config-imdbweb.php.default
+      for more details
     * Added sort filter. Collection has a default sort field config now.
-        Sort fields are the simple fields. See fields documentation.
+      Sort fields are the simple fields. See fields documentation.
     * Fields do have a new inputValidation option. See fields documentation for more info.
-        Currently used to allow whitespace in a tag
+      Currently used to allow whitespace in a tag
     * Mass edit of entries. Entries found with advanced search can now be edited.
-        Upload fields are not supported yet.
+      Upload fields are not supported yet.
     * Fixed bug #5
     * Added feature #1. Collections overview has pagination at the bottom too.
     * Advanced search has a table view option
-        Displayed fields are configured in collection management. See notes there.
+      Displayed fields are configured in collection management. See notes there.
     * Updated installation files
     * Added first-steps.txt. Updated README
     * Indication which inputs are required

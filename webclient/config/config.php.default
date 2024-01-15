@@ -66,3 +66,8 @@ const ANON_GROUP_ID = '3';
 
 # view options
 const RESULTS_PER_PAGE = 24;
+
+# CURL browser settings
+const BROWSER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0';
+const BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
+const BROWSER_ACCEPT_LANG = 'en-US,en;q=0.5';

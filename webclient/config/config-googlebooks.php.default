@@ -30,9 +30,9 @@
  * TOOL_GOOGLEBOOKS_BROWSER_ACCEPT_LANG should define in which language the content returns
  */
 
-const TOOL_GOOGLEBOOKS_BROWSER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0';
-const TOOL_GOOGLEBOOKS_BROWSER_ACCEPT = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8';
-const TOOL_GOOGLEBOOKS_BROWSER_ACCEPT_LANG = 'en-US,en;q=0.5';
+const TOOL_GOOGLEBOOKS_BROWSER_AGENT = BROWSER_AGENT;
+const TOOL_GOOGLEBOOKS_BROWSER_ACCEPT = BROWSER_ACCEPT;
+const TOOL_GOOGLEBOOKS_BROWSER_ACCEPT_LANG = BROWSER_ACCEPT_LANG;
 
 const TOOL_GOOGLEBOOKS_FIELDS_TO = array(
 	'title' => 'title',
