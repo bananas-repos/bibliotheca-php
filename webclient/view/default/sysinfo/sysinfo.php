@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2023 Johannes Keßler
+ * Copyright 2018-2024 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,7 +19,10 @@
  */
 
 $TemplateData['bibVersion'] = BIB_VERSION;
-$TemplateData['apacheVersion'] = apache_get_version();
+$TemplateData['apacheVersion'] = $_SERVER['SERVER_SOFTWARE'];
+if(function_exists("apache_get_version")) {
+    $TemplateData['apacheVersion'] = apache_get_version();
+}
 $TemplateData['phpVersion'] = phpversion();
 $TemplateData['mysqlVersion'] = mysqli_get_server_info($DB);
 
