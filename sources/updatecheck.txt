@@ -11,7 +11,7 @@ upgrade file with correct placeholders
 
 correct placeholders in sql file for manual setup
 
-correct version info in VERSION and index.php
+correct version info in VERSION and index.php and cyberdemon, if needed
 
 correct tag
 

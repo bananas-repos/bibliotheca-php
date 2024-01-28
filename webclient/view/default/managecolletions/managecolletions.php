@@ -19,14 +19,14 @@
  */
 
 require_once 'lib/managecollections.class.php';
-$ManangeCollections = new ManageCollections($DB,$Doomguy);
+$ManageCollections = new ManageCollections($DB,$Doomguy);
 require_once 'lib/managecollectionfields.class.php';
-$ManangeCollectionFields = new ManageCollectionFields($DB,$Doomguy);
+$ManageCollectionFields = new ManageCollectionFields($DB,$Doomguy);
 
-$TemplateData['existingCollections'] = $ManangeCollections->getCollections();
-$TemplateData['ownerSelection'] = $ManangeCollections->getUsersForSelection();
-$TemplateData['groupSelection'] = $ManangeCollections->getGroupsForSelection();
-$TemplateData['toolSelection'] = $ManangeCollections->getToolsForSelection();
+$TemplateData['existingCollections'] = $ManageCollections->getCollections();
+$TemplateData['ownerSelection'] = $ManageCollections->getUsersForSelection();
+$TemplateData['groupSelection'] = $ManageCollections->getGroupsForSelection();
+$TemplateData['toolSelection'] = $ManageCollections->getToolsForSelection();
 // default rights
 $TemplateData['editData']['rights'] = Summoner::prepareRightsArray('rwxr--r--');
 // tool needs to be preset
@@ -51,10 +51,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])) {
 }
 
 if($_editMode === true && !empty($_id)) {
-	$TemplateData['editData'] = $ManangeCollections->getEditData($_id);
-	$ManangeCollectionFields->setCollection($_id);
-	$TemplateData['existingFields'] = $ManangeCollectionFields->getExistingFields();
-	$TemplateData['simpleSearchFields'] = $ManangeCollectionFields->getSimpleSearchFields();
+	$TemplateData['editData'] = $ManageCollections->getEditData($_id);
+	$ManageCollectionFields->setCollection($_id);
+	$TemplateData['existingFields'] = $ManageCollectionFields->getExistingFields();
+	$TemplateData['simpleSearchFields'] = $ManageCollectionFields->getSimpleSearchFields();
 	if(!isset($TemplateData['editData']['name'])) {
 		$TemplateData['refresh'] = 'index.php?p=managecolletions';
 	}
@@ -89,9 +89,14 @@ if(isset($_POST['submitForm'])) {
 			$_saveData['advancedSearchTableFields'] = implode(',',$fdata['advancedSearchTableFields']);
 		}
 
+        $_updateSearchData = false;
+        if(isset($fdata['updateSearchData'])) {
+            $_updateSearchData = true;
+        }
+
 		if(!empty($TemplateData['editData']['name'])) { // EDIT
 			if(isset($fdata['doDelete'])) {
-				$do = $ManangeCollections->deleteCollection($_id);
+				$do = $ManageCollections->deleteCollection($_id);
 				if ($do === true) {
 					$TemplateData['refresh'] = 'index.php?p=managecolletions';
 				} else {
@@ -104,8 +109,11 @@ if(isset($_POST['submitForm'])) {
 					&& isset($TemplateData['groupSelection'][$_saveData['group']])
 					&& isset($TemplateData['ownerSelection'][$_saveData['owner']])
 				) {
-					$do = $ManangeCollections->updateCollection($_saveData);
+					$do = $ManageCollections->updateCollection($_saveData);
 					if ($do === true) {
+                        if($_updateSearchData) {
+                            $ManageCollections->updateSearchData($_id, $ManageCollectionFields->getSimpleSearchFields());
+                        }
 						$TemplateData['refresh'] = 'index.php?p=managecolletions';
 					} else {
 						$TemplateData['message']['content'] = "Collection could not be updated.";
@@ -123,7 +131,7 @@ if(isset($_POST['submitForm'])) {
 					&& isset($TemplateData['groupSelection'][$_saveData['group']])
 					&& isset($TemplateData['ownerSelection'][$_saveData['owner']])
 				) {
-					$do = $ManangeCollections->createCollection($_saveData);
+					$do = $ManageCollections->createCollection($_saveData);
 					if ($do === true) {
 						$TemplateData['refresh'] = 'index.php?p=managecolletions';
 					} else {

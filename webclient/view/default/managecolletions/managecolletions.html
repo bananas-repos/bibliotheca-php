@@ -34,9 +34,30 @@
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
-					<small>The field is used in the global search.
+					<small>
+						The field is used in the global search.<br />
 						<span class="" uk-icon="icon: warning"></span> Altering the default search field results in
-						a DB reindex. This could take some time, depending on the amount of data.</small>
+						a DB reindex. This could take some time to complete, depending on the amount of data.
+					</small><br />
+					<small>
+						<span class="" uk-icon="icon: warning"></span> As of version 1.6, the field 'Combined Search'
+						provides a much better default search base.<br />
+						If you want to use it make sure you update its contents (following option) for all the existing entries in
+						your collection. After that and for all new entries the data will be created automatically.
+					</small>
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label">Update combined search field data</div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[updateSearchData]" value="1">
+						<small>
+							<span class="" uk-icon="icon: warning"></span> This could take some time to complete,
+							depending on the amount of data.
+						</small><br />
+						<small>Plase do this after you remove fields(text) from your collection.</small>
+					</label>
 				</div>
 			</div>
 			<div class="uk-margin">
@@ -62,7 +83,7 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="advancedSearchTableFields">Table advanced search view</label>
+				<label class="uk-form-label" for="advancedSearchTableFields">Advanced search table fields</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
 						<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>

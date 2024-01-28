@@ -1,5 +1,7 @@
 * change the search data. Maybe an extra search field in which all the searchable information of an entry will be
   saved.
+* query optimization and default indexes on columns
+* make documentation markdown to be nicer
 * change multiple-attachment to a field which tells it is used for a image gallery
 * update JS and remove deprecations
 * complete profile view. Groups still missing.
@@ -8,8 +10,6 @@
 * create a real fallback theme, which does not depend on any styling/css
 ** change the css and js lookup too in main file
 * i18n support
-* Automatic upgrades of DB
-* drop in updates
 * Definition of fields in "card view"
 * User and groupmanagement: Check where a user or group is used!
 * Better error handling and display while adding / update and delete

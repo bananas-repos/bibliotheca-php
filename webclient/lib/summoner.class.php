@@ -19,6 +19,7 @@
  */
 
 /**
+ * Class Summoner
  * a static helper class
  */
 class Summoner {
@@ -566,5 +567,17 @@ class Summoner {
      */
     static function sysLog(string $msg): void {
         error_log(date("c")." ".$msg."\n", 3, LOGFILE);
+    }
+
+    /**
+     * Create unique words from the given data
+     *
+     * @param $data string
+     * @return array
+     *
+     */
+    static function words(string $data): array {
+        preg_match_all('/\w{3,}+/u',$data,$matches);
+        return array_unique($matches[0]);
     }
 }

@@ -260,8 +260,12 @@ class ManageCollectionFields {
 
 		$this->_cacheExistingSysFields = array();
 
-		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-							`sf`.`createstring`, `sf`.`searchtype`
+		$queryStr = "SELECT `cf`.`fk_field_id` AS id, 
+                        `sf`.`type`, 
+                        `sf`.`displayname`, 
+                        `sf`.`identifier`,
+						`sf`.`createstring`, 
+						`sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`";
 		if($sortAZ === true) {
@@ -307,11 +311,12 @@ class ManageCollectionFields {
 			}
 		}
 
+        // add systemfields
 		$def['created'] = array('identifier' => 'created', 'displayname' => 'Created', 'type' => 'systemfield');
 		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'Modified', 'type' => 'systemfield');
-		$ret = $def + $ret;
+		$def['search'] = array('identifier' => 'search', 'displayname' => 'Combined Search', 'type' => 'systemfield');
 
-		return $ret;
+		return $def + $ret;
 	}
 
 	/**

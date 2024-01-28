@@ -24,7 +24,6 @@
  * Some groups are protected and should not be removed.
  *
  * passwords used here: password_hash("somePassword", PASSWORD_DEFAULT);
- *
  */
 class Possessed {
 	/**
