@@ -226,9 +226,7 @@ class ManageCollections {
 										 `owner` int NOT NULL,
 										 `group` int NOT NULL,
 										 `rights` char(9) COLLATE utf8mb4_bin NOT NULL,
-										 `search` text COLLATE utf8mb4_unicode_ci NOT NULL,
-										 PRIMARY KEY (`id`),
-										 FULLTEXT KEY `search` (`search`)
+										 PRIMARY KEY (`id`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
 				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryCollectionEntry));
 				$this->_DB->query($queryCollectionEntry);
@@ -340,17 +338,7 @@ class ManageCollections {
 					// optimize does a recreation and the column collation
 					// is considered
 					$this->_DB->query("OPTIMIZE TABLE `".DB_PREFIX."_collection_entry_".$data['id']."`");
-				} elseif($data['defaultSearchField'] === "search") {
-                    // Special case. 1.6 adds the search field. Needs to be checked if there
-                    // It is a new default column which is added at creation of a collection
-                    // but needs to be added manually for existing ones.
-                    // could be removed in future version...
-                    $queryStr = "ALTER TABLE `".DB_PREFIX."_collection_entry_".$data['id']."` 
-                                    ADD `search` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci 
-                                    NOT NULL AFTER `rights`, ADD FULLTEXT (`search`)";
-                    if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
-                    $this->_DB->query($queryStr);
-                }
+				}
 			} catch (Exception $e) {
 				if($e->getCode() == "1061") {
 					// duplicate key message if the index is already there.
@@ -466,13 +454,21 @@ class ManageCollections {
         // Name starts with entry. Here we want only the text fields
         // Those fields are the data for the combined search field
         $dataFields = array();
+        $_fieldAvailable = false;
         if(!empty($searchFields)) {
             foreach($searchFields as $k=>$v) {
+                if($v['identifier'] == "combSearch") {
+                    $_fieldAvailable = true;
+                    continue;
+                }
                 if(isset($v['searchtype']) && strpos($v['searchtype'],'Text') !== false) {
                     $dataFields[$k] = $v['identifier'];
                 }
             }
         }
+
+        // only if the combSearch field is available in the collection
+        if(!$_fieldAvailable) return $ret;
 
         // get the search data for every entry in the collection
         $entryData = array();
@@ -500,7 +496,7 @@ class ManageCollections {
                 $searchData = implode(" ", Summoner::words($searchData));
 
                 $queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."`
-                            SET `search` = '".$this->_DB->real_escape_string($searchData)."'
+                            SET `combSearch` = '".$this->_DB->real_escape_string($searchData)."'
                             WHERE `id` = '".$entryid."'";
                 if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
                 try {

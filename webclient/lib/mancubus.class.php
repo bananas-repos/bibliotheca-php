@@ -351,6 +351,8 @@ class Mancubus {
 
 	/**
 	 * Get entries for loaded collection by looking for the given value in given field
+     *
+     * @TODO: unused?
 	 *
 	 * @param string $fieldId Number ID of the field to search in
 	 * @param string $fieldValue Value of the field

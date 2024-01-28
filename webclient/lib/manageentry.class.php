@@ -91,7 +91,7 @@ class Manageentry {
 
 		if(!empty($this->_collectionId)) {
 			$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-							`sf`.`value`, `sf`.`inputValidation`
+							`sf`.`value`, `sf`.`inputValidation`, `sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
@@ -184,7 +184,7 @@ class Manageentry {
                 if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." methodname: ".Summoner::cleanForLog($_methodName));
                 if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." methodnamespecial: ".Summoner::cleanForLog($_methodNameSpecial));
                 if(method_exists($this, $_methodNameSpecial)) {
-                    $queryData = $this->$_methodNameSpecial($d, $queryData);
+                    $queryData = $this->$_methodNameSpecial($d, $queryData, $data);
                 }
 				elseif(method_exists($this, $_methodName)) {
 					$queryData = $this->$_methodName($d, $queryData);
@@ -604,6 +604,40 @@ class Manageentry {
 		return $this->_saveField_text($data, $queryData);
 	}
 
+    /**
+     * Create part of the insert statement for field type hidden
+     *
+     * @param array $data
+     * @param array $queryData
+     * @return array
+     */
+    private function _saveField_hidden(array $data, array $queryData): array {
+        return $this->_saveField_text($data, $queryData);
+	}
+
+    /**
+     * Create part of the insert statement for field type hidden and identifier combSearch
+     * Creates it contents of the other fields as a combined search field. Ignores any input
+     *
+     * @see ManageCollections->updateSearchData()
+     *
+     * @param array $data
+     * @param array $queryData
+     * @param array $allInputData All the POST data if needed
+     * @return array
+     */
+	private function _saveField_hidden__combSearch(array $data, array $queryData, array $allInputData): array {
+        $searchData = '';
+	    foreach($allInputData as $f=>$_d) {
+            if(isset($_d['searchtype']) && strpos($_d['searchtype'],'Text') !== false) {
+                $searchData .= " ".$_d['valueToSave'];
+            }
+	    }
+        $data['valueToSave'] = implode(" ", Summoner::words($searchData));
+        $queryData['init'][] = "`".$data['identifier']."` = '".$this->_DB->real_escape_string($data['valueToSave'])."'";
+        return $queryData;
+	}
+
 	/**
 	 * Create part of the insert statement for field type year
 	 * Uses some simple 4 digit patter to extract the year if the input is
@@ -756,9 +790,10 @@ class Manageentry {
      *
      * @param array $data
      * @param array $queryData
+     * @param array $allInputData All the POST data if needed
      * @return array
      */
-    private function _saveField_upload__coverimage(array $data, array $queryData): array {
+    private function _saveField_upload__coverimage(array $data, array $queryData, array $allInputData): array {
         $queryData = $this->_saveField_upload($data, $queryData);
 
         if(!isset($queryData['after']['upload'])) {

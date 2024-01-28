@@ -166,7 +166,8 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (30, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', '2021-04-25 21:21:54', '2021-04-25 21:21:54', 0, 1, 1, 'rw-r--r--'),
 (31, 'artist', 'Artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2021-07-09 08:38:33', NULL, 1, 1, 'rw-r--r--'),
 (32, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:42:16', '2021-07-18 11:42:16', NULL, 1, 1, 'rw-r--r--'),
-(34, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2023-04-08 08:53:55', NULL, 1, 1, 'rw-r--r--');
+(34, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2023-04-08 08:53:55', NULL, 1, 1, 'rw-r--r--'),
+(35, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '1', '1', 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -363,7 +364,7 @@ ALTER TABLE `#REPLACEME#_menu`
 -- AUTO_INCREMENT for table `#REPLACEME#_sys_fields`
 --
 ALTER TABLE `#REPLACEME#_sys_fields`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_tool`

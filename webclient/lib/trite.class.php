@@ -255,10 +255,7 @@ class Trite {
         // add systemfields
 		$def['created'] = array('identifier' => 'created', 'displayname' => 'Created', 'type' => 'systemfield');
 		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'Modified', 'type' => 'systemfield');
-        $def['search'] = array('identifier' => 'search', 'displayname' => 'Combined Search', 'type' => 'systemfield');
-		$ret = $def + $ret;
-
-		return $ret;
+		return $def + $ret;
 	}
 
 	/**

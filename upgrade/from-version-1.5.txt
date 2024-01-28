@@ -1,9 +1,14 @@
 # Added a new global search field
-As of version 1.6, the field 'Combined Search' provides a much better default search base.
-If you want to use it make sure you update its contents for all the existing entries in
-your collection. After that and for all new entries the data will be created automatically.
-The update and creation of the field is done by using the new option "Update combined search field data"
-in collection management. It needs to be done for each if your collections but only once.
+As of version 1.6, the field 'Combined Search' provides a much better search base.
+How to change and use new field: Run the following sql query. Replace #REPLACEME# with the used DB prefix.
+```
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '1', '1', 'rw-r--r--');
+```
+Add the new field 'Combined Search' to a collection.
+Change the 'Default gloabal seach field' to 'Combined search' and save.
+After that check the 'Update combined search field data' option to create the search data
+for the selected collection. Do this for every collection.
+For all new entries the data will be created automatically.
 
 # Added new constants to config.php file.
 Use config.php.default as a help. The new lines are:

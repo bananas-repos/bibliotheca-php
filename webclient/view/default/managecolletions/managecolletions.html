@@ -4,8 +4,8 @@
 	<div class="uk-width-1-2">
 		<h4 class="uk-h4">Add or modify a collection</h4>
 		<p>
-			<span uk-icon="icon: warning"></span> Any default field or any option which needs a field
-			get its content after the fields are configured.
+			<span uk-icon="icon: warning"></span> Any default field or any option which needs a field,
+			get its values after the fields are configured.
 		</p>
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
@@ -42,13 +42,13 @@
 					<small>
 						<span class="" uk-icon="icon: warning"></span> As of version 1.6, the field 'Combined Search'
 						provides a much better default search base.<br />
-						If you want to use it make sure you update its contents (following option) for all the existing entries in
-						your collection. After that and for all new entries the data will be created automatically.
+						Select the field and save. Use the option below to created or update the search data
+						for every entry in this collection.
 					</small>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Update combined search field data</div>
+				<div class="uk-form-label">Update Combined Search field data</div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[updateSearchData]" value="1">
@@ -92,8 +92,10 @@
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
-					<small>Make sure that the default global search field is in this list.<br />
-						This does not limit the fields to search in.</small>
+					<small>
+						Make sure that the default global search field is in this list.<br />
+						This does not limit the fields to search in.
+					</small>
 				</div>
 			</div>
 			<div class="uk-margin">

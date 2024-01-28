@@ -1,5 +1,5 @@
-* change the search data. Maybe an extra search field in which all the searchable information of an entry will be
-  saved.
+* Better error handling and display while adding / update and delete
+** Maybe some message "store"
 * query optimization and default indexes on columns
 * make documentation markdown to be nicer
 * change multiple-attachment to a field which tells it is used for a image gallery
@@ -12,10 +12,8 @@
 * i18n support
 * Definition of fields in "card view"
 * User and groupmanagement: Check where a user or group is used!
-* Better error handling and display while adding / update and delete
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
 * remove ifset and maybe ifsetvalue from summoner
-
 
 * Field management: Web interface to configure or even create new ones.
