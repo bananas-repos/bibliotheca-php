@@ -1,4 +1,4 @@
-1.x - Chizra
+1.6 - Chizra 2024-02-03
     * Config change. Added new entries. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Config change: Added new theme config. See upgrade/from-version-1.5.txt. It won't work if it is missing.
     * Added: A new entry field for better global search. Read upgrade/from-version-1.5.txt for more details.
