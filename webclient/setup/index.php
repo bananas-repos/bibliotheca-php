@@ -22,7 +22,7 @@
  * A plain and simple setup for bibliotheca
  * It creates the config file based on the .default file.
  * It creates the default database tables.
- * It self deletes after a setup is complete to reduce some sercuirty risks
+ * It self deletes after a setup is complete to reduce some security risks
  */
 
 mb_http_output('UTF-8');
