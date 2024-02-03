@@ -461,7 +461,7 @@ class ManageCollections {
                     $_fieldAvailable = true;
                     continue;
                 }
-                if(isset($v['searchtype']) && strpos($v['searchtype'],'Text') !== false) {
+                if(isset($v['searchtype']) && str_contains($v['searchtype'], 'Text')) {
                     $dataFields[$k] = $v['identifier'];
                 }
             }

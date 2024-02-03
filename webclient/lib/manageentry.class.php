@@ -629,7 +629,7 @@ class Manageentry {
 	private function _saveField_hidden__combSearch(array $data, array $queryData, array $allInputData): array {
         $searchData = '';
 	    foreach($allInputData as $f=>$_d) {
-            if(isset($_d['searchtype']) && strpos($_d['searchtype'],'Text') !== false) {
+            if(isset($_d['searchtype']) && str_contains($_d['searchtype'], 'Text')) {
                 $searchData .= " ".$_d['valueToSave'];
             }
 	    }
