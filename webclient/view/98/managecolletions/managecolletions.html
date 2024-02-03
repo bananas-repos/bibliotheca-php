@@ -1,7 +1,7 @@
 <h3>Manage your collections</h3>
 <h4>Add or modify a collection</h4>
 <blockquote>
-	Any default field or any option which needs a field get its content after the fields are configured.
+	Any default field or any option which needs a field, get its values after the fields are configured.
 </blockquote>
 
 <form method="post" class="maxSizeForm">
@@ -30,8 +30,18 @@
 	<div class="field-row-stacked">
 		<label>
 			The field is used in the global search. Altering the default search field results in
-			a DB reindex. This could take some time, depending on the amount of data.
+			a DB reindex.<br />
+			This could take some time, depending on the amount of data.<br />
+			As of version 1.6, the field 'Combined Search' provides a much better default search base.<br />
+			Select the field and save. Use the option below to created or update the search data
+			for every entry in this collection.
 		</label>
+	</div>
+	<div class="field-row-stacked">
+		<input id="updateSearchData" type="checkbox" name="fdata[updateSearchData]" value="1">
+		<label for="updateSearchData">Update Combined Search field data</label>
+		This could take some time to complete, depending on the amount of data.<br />
+		Plase do this after you remove fields(text) from your collection.
 	</div>
 	<div class="field-row-stacked">
 		<label for="defaultSortField">Default sort field</label>
@@ -47,12 +57,12 @@
 	<div class="field-row-stacked">
 		<label for="defaultSortOrder">Default sort order</label>
 		<select id="defaultSortOrder" name="fdata[defaultSortOrder]">
-			<option value="ASC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'ASC')) echo 'selected'; ?>>ASCENDING</option>
-			<option value="DESC" <?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortOrder', 'DESC')) echo 'selected'; ?>>DESCENDING</option>
+			<option value="ASC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'ASC' ? 'selected' : '' ?>>ASCENDING</option>
+			<option value="DESC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'DESC' ? 'selected' : '' ?>>DESCENDING</option>
 		</select>
 	</div>
 	<div class="field-row-stacked">
-		<label for="advancedSearchTableFields">Table advanced search view</label>
+		<label for="advancedSearchTableFields">Advanced search table fields</label>
 		<select id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
 			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['id']; ?>"
@@ -62,7 +72,10 @@
 		</select>
 	</div>
 	<div class="field-row-stacked">
-		<label>Make sure that the default global search field is in this list. This does not limit the fields to search in.</label>
+		<label>
+			Make sure that the default global search field is in this list.
+			This does not limit the fields to search in.
+		</label>
 	</div>
 	<div class="field-row-stacked">
 			<label for="tool">Tools</label>
@@ -156,17 +169,14 @@
 	<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
 	<div class="field-row-stacked">
 		<input id="doRightsForEntries" type="checkbox" name="fdata[doRightsForEntries]" value="1">
-		<label for="doRightsForEntries">
-			Overwrite existing rights<br />
+		<label for="doRightsForEntries">Overwrite existing rights</label>
 			Warning: This will overwrite existing entry rights (user, group, rights) with the ones from the collection!
 		</label>
 	</div>
 	<div class="field-row-stacked">
 		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
-		<label for="doDelete">
-			Delete<br />
-			Warning: This will delete ALL the data in this collection!
-		</label>
+		<label for="doDelete">Delete</label>
+		Warning: This will delete ALL the data in this collection!
 	</div>
 	<?php } ?>
 

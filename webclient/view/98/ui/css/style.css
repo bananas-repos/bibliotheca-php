@@ -46,8 +46,6 @@ h5 {
     font-family: Arial, serif;
 }
 
-
-
 .field-row-stacked *+* {
     margin-top: 0;
 }
@@ -58,6 +56,10 @@ h5 {
 
 .field-row-stacked label {
     margin-top: 6px;
+}
+
+table {
+    white-space: normal;
 }
 
 /** custom */

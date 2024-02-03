@@ -1,0 +1,34 @@
+<h3 class="uk-h3">Bulkedit these entries in: <a href="index.php?p=colletions&collection<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+
+<?php if(!empty($TemplateData['itemsToWorkWith'])) { ?>
+
+<ul>
+	<?php foreach($TemplateData['itemsToWorkWith'] as $entry) { ?>
+	<li><a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $entry['id']; ?>"><?php echo $entry['title']; ?></a></li>
+	<?php } ?>
+</ul>
+
+<form class="maxSizeForm" method="post" enctype="multipart/form-data">
+	<?php foreach($TemplateData['itemsToWorkWith'] as $entry) { ?>
+	<input type="hidden" name="bulkedit[]" value="<?php echo $entry['id']; ?>" />
+	<?php } ?>
+
+<?php
+	foreach($TemplateData['editFields'] as $field) {
+		$field['bulkedit'] = true;
+		$_editFieldView = Summoner::themefile('manageentry/field-'.$field['type'].'.html', UI_THEME);
+		if(file_exists($_editFieldView)) {
+			require $_editFieldView;
+		}
+		else {
+			require $TemplateData['_editFieldViewDefault'];
+		}
+	}
+?>
+	<div class="field-row-stacked">
+		<input type="submit" name="submitForm" value="Save">
+	</div>
+
+</form>
+<script type="text/javascript" src="view/default/ui/js/suggest-tag.js"></script>
+<?php } ?>

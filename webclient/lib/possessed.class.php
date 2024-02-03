@@ -2,18 +2,20 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2022 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
  */
 
 /**
@@ -22,7 +24,6 @@
  * Some groups are protected and should not be removed.
  *
  * passwords used here: password_hash("somePassword", PASSWORD_DEFAULT);
- *
  */
 class Possessed {
 	/**
@@ -62,7 +63,7 @@ class Possessed {
 		 				FROM `".DB_PREFIX."_group`
 		 				WHERE ".$this->_User->getSQLRightsString("delete")." 
 		 				ORDER BY `name`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -72,7 +73,7 @@ class Possessed {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -89,7 +90,7 @@ class Possessed {
 		$queryStr = "SELECT `id`, `login`, `name`, `active`, `baseGroupId`, `protected`, `created`
 						FROM `".DB_PREFIX."_user`
 						WHERE ".$this->_User->getSQLRightsString("delete")."";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -100,7 +101,7 @@ class Possessed {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -138,7 +139,7 @@ class Possessed {
 							`rights` = 'rwxr--r--',
 							`owner` = 0,
 							`group` = '".$this->_DB->real_escape_string($group)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -149,7 +150,7 @@ class Possessed {
 					$queryStrOwner = "UPDATE `".DB_PREFIX . "_user`
 										SET `owner` = '".$this->_DB->real_escape_string($_userid)."'
 										WHERE `id` = '".$this->_DB->real_escape_string($_userid)."'";
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrOwner,true));
+					if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrOwner));
 					$this->_DB->query($queryStrOwner);
 					if(!empty($groups)) {
 						$groups[] = $group;
@@ -170,7 +171,7 @@ class Possessed {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -216,7 +217,7 @@ class Possessed {
 			}
 			$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($id)."'
 						AND ".$this->_User->getSQLRightsString("delete")."";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -241,7 +242,7 @@ class Possessed {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -263,7 +264,7 @@ class Possessed {
 						FROM `".DB_PREFIX."_user`
 						WHERE ".$this->_User->getSQLRightsString("delete")."
 						AND `id` = '".$this->_DB->real_escape_string($userId)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows == 1) {
@@ -272,7 +273,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -306,7 +307,7 @@ class Possessed {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -331,13 +332,13 @@ class Possessed {
 						`owner` = '".$this->_DB->real_escape_string($this->_User->param('id'))."',
 						`group` = '".ADMIN_GROUP_ID."',
 						`rights` = 'rwxr--r--'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->query($queryStr);
 				$ret = true;
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -363,13 +364,13 @@ class Possessed {
 						`modificationuser` = '".$this->_DB->real_escape_string($this->_User->param('id'))."'
 						WHERE `id` = '".$this->_DB->real_escape_string($id)."'
 							AND ".$this->_User->getSQLRightsString("delete")."";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->query($queryStr);
 				$ret = true;
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -390,13 +391,13 @@ class Possessed {
 						WHERE ".$this->_User->getSQLRightsString("delete")."
 							AND `protected` = '0'
 							AND `id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->query($queryStr);
 				$ret = true;
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -417,7 +418,7 @@ class Possessed {
 							FROM `".DB_PREFIX."_group`
 							WHERE ".$this->_User->getSQLRightsString("delete")." 
 							AND `id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -425,7 +426,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -444,7 +445,7 @@ class Possessed {
 		if (Summoner::validate($name, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_group`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -452,7 +453,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -473,7 +474,7 @@ class Possessed {
 			$queryStr = "SELECT `id` FROM `" . DB_PREFIX . "_group`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -481,7 +482,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -500,7 +501,7 @@ class Possessed {
 		if (Summoner::validate($login, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -508,7 +509,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -529,7 +530,7 @@ class Possessed {
 			$queryStr = "SELECT `id` FROM `" . DB_PREFIX . "_user`
 								WHERE `login` = '".$this->_DB->real_escape_string($login)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -537,7 +538,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -556,7 +557,7 @@ class Possessed {
 		if(Summoner::validate($groupId,'digit')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_group`
 						WHERE `id` = '".$this->_DB->real_escape_string($groupId)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -564,7 +565,7 @@ class Possessed {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -590,7 +591,7 @@ class Possessed {
 				if($clean === true) {
 					$queryStrDelete = "DELETE FROM `".DB_PREFIX."_user2group`
 						WHERE `fk_user_id` = '".$this->_DB->real_escape_string($userid)."'";
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDelete,true));
+					if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrDelete));
 					$this->_DB->query($queryStrDelete);
 				}
 
@@ -599,11 +600,11 @@ class Possessed {
 					$queryStr .= "('".$this->_DB->real_escape_string($userid)."','".$this->_DB->real_escape_string($g)."'),";
 				}
 				$queryStr = trim($queryStr, ",");
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 				$ret = $this->_DB->query($queryStr);
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -628,7 +629,7 @@ class Possessed {
 						`".DB_PREFIX."_group` AS g
 					WHERE u2g.fk_user_id = '".$this->_DB->real_escape_string($userId)."'
 					AND u2g.fk_group_id = g.id";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -641,7 +642,7 @@ class Possessed {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+			Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;

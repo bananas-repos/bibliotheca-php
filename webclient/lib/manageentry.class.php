@@ -2,18 +2,20 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
  */
 
 class Manageentry {
@@ -89,25 +91,25 @@ class Manageentry {
 
 		if(!empty($this->_collectionId)) {
 			$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-							`sf`.`value`, `sf`.`inputValidation`
+							`sf`.`value`, `sf`.`inputValidation`, `sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
 					while(($result = $query->fetch_assoc()) != false) {
-						$_mn = '_loadField_'.$result['type'];
-						if(method_exists($this, $_mn)) {
-							$result = $this->$_mn($result);
+						$_methodName = '_loadField_'.$result['type'];
+						if(method_exists($this, $_methodName)) {
+							$result = $this->$_methodName($result);
 						}
 						$this->_cacheEditFields[$result['id']] = $result;
 					}
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -129,7 +131,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
 						WHERE ".$this->_User->getSQLRightsString("write")."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 
@@ -146,7 +148,7 @@ class Manageentry {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -166,8 +168,8 @@ class Manageentry {
 	public function create(array $data, string $owner, string $group, string $rights, mixed $update=false): int {
 		$ret = 0;
 
-		if(DEBUG) error_log("[DEBUG] ".__METHOD__." data: ".var_export($data,true));
-		if(DEBUG) error_log("[DEBUG] ".__METHOD__." update: ".var_export($update,true));
+		if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." data: ".Summoner::cleanForLog($data));
+		if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." update: ".Summoner::cleanForLog($update));
 
 		if(!empty($data) && !empty($owner) && !empty($group) && !empty($rights)) {
 
@@ -177,16 +179,22 @@ class Manageentry {
 			$queryData['init'] = array();
 			$queryData['after'] = array();
 			foreach ($data as $i=>$d) {
-				$_mn = '_saveField_'.$d['type'];
-				if(method_exists($this, $_mn)) {
-					$queryData = $this->$_mn($d, $queryData);
+				$_methodName = '_saveField_'.$d['type'];
+                $_methodNameSpecial = $_methodName.'__'.$d['identifier'];
+                if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." methodname: ".Summoner::cleanForLog($_methodName));
+                if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." methodnamespecial: ".Summoner::cleanForLog($_methodNameSpecial));
+                if(method_exists($this, $_methodNameSpecial)) {
+                    $queryData = $this->$_methodNameSpecial($d, $queryData, $data);
+                }
+				elseif(method_exists($this, $_methodName)) {
+					$queryData = $this->$_methodName($d, $queryData);
 				}
 				else {
-					if(DEBUG)error_log("[DEBUG] ".__METHOD__." Missing query function for: ".var_export($d, true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." Missing query function for: ".Summoner::cleanForLog($d));
 				}
 			}
 
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." queryData: ".var_export($queryData,true));
+			if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." queryData: ".Summoner::cleanForLog($queryData));
 
 			if(!empty($queryData['init']) || ($update !== false && is_numeric($update))) {
 
@@ -206,7 +214,7 @@ class Manageentry {
 					$queryStr .= " WHERE `id` = '".$this->_DB->real_escape_string($update)."'";
 				}
 
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 
 				try {
 					$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
@@ -242,11 +250,11 @@ class Manageentry {
 				}
 				catch (Exception $e) {
 					$this->_DB->rollback();
-					error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                    Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 				}
 			}
 			else {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." empty init in: ".var_export($queryData,true));
+				if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." empty init in: ".Summoner::cleanForLog($queryData));
 			}
 		}
 
@@ -272,7 +280,7 @@ class Manageentry {
 					// remove assets
 					$_path = PATH_STORAGE.'/'.$this->_collectionId.'/'.$entryId;
 					if(is_dir($_path) && is_readable($_path)) {
-						if(DEBUG) error_log("[DEBUG] ".__METHOD__."  remove assets :".$_path);
+						if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__."  remove assets :".$_path);
 						$rmDir = Summoner::recursive_remove_directory($_path);
 						if($rmDir === false) {
 							throw new Exception("Failed to delete path: ".$_path);
@@ -283,8 +291,8 @@ class Manageentry {
 					$queryStr = "DELETE 
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
-					if(DEBUG) error_log("[DEBUG] ".__METHOD__." remove lookup queryStr: ".var_export($queryStr,true));
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." remove lookup queryStr: ".Summoner::cleanForLog($queryStr));
+					if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 					$this->_DB->query($queryStr);
 
 					// delete entry
@@ -292,7 +300,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND " . $this->_User->getSQLRightsString("delete") . "";
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+					if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 					$this->_DB->query($queryStr);
 
 					$this->_DB->commit();
@@ -300,7 +308,7 @@ class Manageentry {
 				}
 				catch (Exception $e) {
 					$this->_DB->rollback();
-					error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                    Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 				}
 			}
 		}
@@ -323,7 +331,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND ".$this->_User->getSQLRightsString("write")."";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -333,12 +341,44 @@ class Manageentry {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
 		return $ret;
 	}
+
+    /**
+     * Check for duplicates based on the given entryData.
+     * Could be extended to use more attributes from the entry
+     * Currently uses the title field, which is a hard dependency
+     *
+     * @param array $entryData
+     * @return array
+     */
+    public function checkForDuplicates(array $entryData): array {
+        $ret = array();
+
+        $queryStr = "SELECT `id`, `title`
+						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
+						WHERE `title` LIKE '".$this->_DB->real_escape_string($entryData['title'])."%'
+						    AND `id` != '".$this->_DB->real_escape_string($entryData['id'])."'
+							AND ".$this->_User->getSQLRightsString()."";
+        if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+        try {
+            $query = $this->_DB->query($queryStr);
+            if ($query !== false && $query->num_rows > 0) {
+                if (($row = $query->fetch_assoc()) != false) {
+                    $ret[] = $row;
+                }
+            }
+        }
+        catch (Exception $e) {
+            Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+        }
+
+        return $ret;
+    }
 
 	/**
 	 * Check if given entryid can be deleted from current collection
@@ -356,7 +396,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`
 						WHERE `id` = '".$this->_DB->real_escape_string($entryId)."'
 							AND ".$this->_User->getSQLRightsString("delete")."";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -366,7 +406,7 @@ class Manageentry {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -412,7 +452,7 @@ class Manageentry {
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($fieldData['id'])."'
 							AND `fk_entry` = '".$this->_DB->real_escape_string($entryId)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -422,7 +462,7 @@ class Manageentry {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -503,7 +543,7 @@ class Manageentry {
 			$queryStr = "SELECT DISTINCT(`value`) 
 						FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`
 						WHERE `fk_field` = '".$this->_DB->real_escape_string($data['id'])."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows > 0) {
@@ -513,7 +553,7 @@ class Manageentry {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 		return $data;
@@ -562,6 +602,40 @@ class Manageentry {
 	 */
 	private function _saveField_selection(array $data, array $queryData): array {
 		return $this->_saveField_text($data, $queryData);
+	}
+
+    /**
+     * Create part of the insert statement for field type hidden
+     *
+     * @param array $data
+     * @param array $queryData
+     * @return array
+     */
+    private function _saveField_hidden(array $data, array $queryData): array {
+        return $this->_saveField_text($data, $queryData);
+	}
+
+    /**
+     * Create part of the insert statement for field type hidden and identifier combSearch
+     * Creates it contents of the other fields as a combined search field. Ignores any input
+     *
+     * @see ManageCollections->updateSearchData()
+     *
+     * @param array $data
+     * @param array $queryData
+     * @param array $allInputData All the POST data if needed
+     * @return array
+     */
+	private function _saveField_hidden__combSearch(array $data, array $queryData, array $allInputData): array {
+        $searchData = '';
+	    foreach($allInputData as $f=>$_d) {
+            if(isset($_d['searchtype']) && str_contains($_d['searchtype'], 'Text')) {
+                $searchData .= " ".$_d['valueToSave'];
+            }
+	    }
+        $data['valueToSave'] = implode(" ", Summoner::words($searchData));
+        $queryData['init'][] = "`".$data['identifier']."` = '".$this->_DB->real_escape_string($data['valueToSave'])."'";
+        return $queryData;
 	}
 
 	/**
@@ -710,22 +784,84 @@ class Manageentry {
 		return $queryData;
 	}
 
+    /**
+     * Special for single upload and subtype coverimage.
+     * Uses the theme settings for image resize. Modifies the result from _saveField_upload if it is an image
+     *
+     * @param array $data
+     * @param array $queryData
+     * @param array $allInputData All the POST data if needed
+     * @return array
+     */
+    private function _saveField_upload__coverimage(array $data, array $queryData, array $allInputData): array {
+        $queryData = $this->_saveField_upload($data, $queryData);
+
+        if(!isset($queryData['after']['upload'])) {
+            return $queryData;
+        }
+
+        $workWith = $queryData['after']['upload'][0]['tmp_name'];
+        if(file_exists($workWith)) {
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $workWith);
+            finfo_close($finfo);
+            if(str_contains('image/jpeg, image/png, image/webp', $mime)) {
+                list($width, $height) = getimagesize($workWith);
+                $_maxThemeWidth = Summoner::themeConfig('coverImageMaxWidth', UI_THEME);
+                if(!empty($_maxThemeWidth) && ($width > $_maxThemeWidth)) {
+                    $_ratio = $_maxThemeWidth/$width;
+                    $newWidth = (int) $_maxThemeWidth;
+                    $newHeight = (int) $height * $_ratio;
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image ratio: ".$_ratio);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image width: ".$width);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image height: ".$height);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image new width: ".$newWidth);
+                    if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image new height: ".$newHeight);
+                    $_tmp_image = imagecreatetruecolor($newWidth, $newHeight);
+                    switch($mime) {
+                        case 'image/jpeg':
+                            $src = imagecreatefromjpeg($workWith);
+                            imagecopyresampled($_tmp_image, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                            imagejpeg($_tmp_image, $workWith, 100);
+                            break;
+
+                        case 'image/png':
+                            $src = imagecreatefrompng($workWith);
+                            imagecopyresampled($_tmp_image, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                            imagepng($_tmp_image, $workWith, 0);
+                            break;
+
+                        case 'image/webp':
+                            $src = imagecreatefromwebp($workWith);
+                            imagecopyresampled($_tmp_image, $src, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
+                            imagewebp($_tmp_image, $workWith,100);
+                            break;
+                    }
+                    imagedestroy($_tmp_image);
+                    imagedestroy($src);
+                }
+            }
+        }
+
+        return $queryData;
+    }
+
 	/**
-	 * runs the query and throws query execption if false
+	 * runs the query and throws query exception if false
 	 *
 	 * @param string $queryString
 	 * @param string $insertId Number
 	 */
-	private function _runAfter_query(string $queryString, string $insertId) {
+	private function _runAfter_query(string $queryString, string $insertId): void {
 		if(!empty($queryString) && !empty($insertId)) {
 			// replace only once to avoid replacing actual data
 			$queryStr = Summoner::replaceOnce($queryString,$this->_replaceEntryString, $insertId);
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->query($queryStr);
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 	}
@@ -741,9 +877,9 @@ class Manageentry {
 	 * @param string $insertId Number
 	 * @throws Exception
 	 */
-	private function _runAfter_upload(array $uploadData, string $insertId) {
+	private function _runAfter_upload(array $uploadData, string $insertId): void {
 		if(!empty($uploadData) && !empty($insertId)) {
-			if(DEBUG) error_log("[DEBUG] ".__METHOD__." uploadata: ".var_export($uploadData,true));
+			if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." uploadata: ".Summoner::cleanForLog($uploadData));
 			$_path = PATH_STORAGE.'/'.$this->_collectionId.'/'.$insertId;
 			if(!is_dir($_path)) {
 				if(!mkdir($_path, 0777, true)) {
@@ -755,7 +891,7 @@ class Manageentry {
 				// single upload. Delete existing first.
 				// also triggered if the single needs to be deleted
 				$_existingFiles = glob($_path.'/'.$uploadData['identifier'].'-*');
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." remove single existing: ".var_export($_existingFiles,true));
+				if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." remove single existing: ".Summoner::cleanForLog($_existingFiles));
 				if(!empty($_existingFiles)) {
 					foreach ($_existingFiles as $f) {
 						unlink($f);
@@ -765,7 +901,7 @@ class Manageentry {
 			}
 
 			if($uploadData['multiple'] === true && isset($uploadData['deleteData'])) {
-				if(DEBUG) error_log("[DEBUG] ".__METHOD__." remove multiple existing: ".var_export($uploadData['deleteData'],true));
+				if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__." remove multiple existing: ".Summoner::cleanForLog($uploadData['deleteData']));
 				foreach ($uploadData['deleteData'] as $k=>$v) {
 					$_file = $_path.'/'.$v;
 					if(file_exists($_file)) {

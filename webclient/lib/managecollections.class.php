@@ -2,18 +2,20 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2022 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
  */
 
 /**
@@ -61,7 +63,7 @@ class ManageCollections {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("write", "c")."
 					ORDER BY `c`.`name`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if ($query !== false && $query->num_rows > 0) {
@@ -71,7 +73,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -89,7 +91,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_group` 
 					WHERE ".$this->_User->getSQLRightsString()."
 					ORDER BY `name`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -99,7 +101,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -116,7 +118,7 @@ class ManageCollections {
 		$queryStr = "SELECT `id`, `name`, `login`
 						FROM `".DB_PREFIX."_user`
 						WHERE ".$this->_User->getSQLRightsString()."";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -126,7 +128,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -143,7 +145,7 @@ class ManageCollections {
 		$queryStr = "SELECT `id`, `name`, `description`
 						FROM `".DB_PREFIX."_tool`
 						WHERE ".$this->_User->getSQLRightsString()."";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -153,7 +155,7 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -186,7 +188,7 @@ class ManageCollections {
 								`defaultSortField` = '".$this->_DB->real_escape_string($data['defaultSortField'])."',
 								`defaultSortOrder` = '".$this->_DB->real_escape_string($data['defaultSortOrder'])."',
 								`advancedSearchTableFields` = '".$this->_DB->real_escape_string($data['advancedSearchTableFields'])."'";
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 				$this->_DB->query($queryStr);
 				$newId = $this->_DB->insert_id;
 
@@ -204,7 +206,7 @@ class ManageCollections {
  										KEY `fk_field` (`fk_field`),
 										FULLTEXT KEY `value` (`value`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryEntry2lookup,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryEntry2lookup));
 				$this->_DB->query($queryEntry2lookup);
 
 				$queryCollectionFields = "CREATE TABLE `".DB_PREFIX."_collection_fields_".$newId."` (
@@ -213,7 +215,7 @@ class ManageCollections {
 										 UNIQUE KEY `fk_field_id` (`fk_field_id`),
 										 KEY `sort` (`sort`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCollectionFields,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryCollectionFields));
 				$this->_DB->query($queryCollectionFields);
 
 				$queryCollectionEntry = "CREATE TABLE `".DB_PREFIX."_collection_entry_".$newId."` (
@@ -226,13 +228,13 @@ class ManageCollections {
 										 `rights` char(9) COLLATE utf8mb4_bin NOT NULL,
 										 PRIMARY KEY (`id`)
 										) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci";
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCollectionEntry,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryCollectionEntry));
 				$this->_DB->query($queryCollectionEntry);
 
 				$ret = true;
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 				$this->_DB->rollback();
 			}
 		}
@@ -260,7 +262,7 @@ class ManageCollections {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("write", "c")."
 					AND `c`.`id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -271,7 +273,7 @@ class ManageCollections {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -288,7 +290,7 @@ class ManageCollections {
 	public function updateCollection(array $data): bool {
 		$ret = false;
 
-		if(DEBUG) error_log("[DEBUG] ".__METHOD__."  data: ".var_export($data,true));
+		if(DEBUG) Summoner::sysLog("[DEBUG] ".__METHOD__."  data: ".Summoner::cleanForLog($data));
 
 		if(!empty($data['name']) === true
 			&& $this->_validUpdateCollectionName($data['name'], $data['id']) === true
@@ -305,7 +307,7 @@ class ManageCollections {
 							`defaultSortOrder` = '".$this->_DB->real_escape_string($data['defaultSortOrder'])."',
 							`advancedSearchTableFields` = '".$this->_DB->real_escape_string($data['advancedSearchTableFields'])."'
 						WHERE `id` = '".$this->_DB->real_escape_string($data['id'])."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->query($queryStr);
 				$this->_updateToolRelation($data['id'],$data['tool']);
@@ -315,7 +317,7 @@ class ManageCollections {
 				$ret = true;
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 
 			// update the search field if it is a field from the collection entry table
@@ -325,8 +327,8 @@ class ManageCollections {
 			$queryStr = "CREATE FULLTEXT INDEX ".$this->_DB->real_escape_string($data['defaultSearchField'])."
 						ON `".DB_PREFIX."_collection_entry_".$data['id']."`
 							(`".$this->_DB->real_escape_string($data['defaultSearchField'])."`)";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCheck,true));
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryCheck));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryCheck);
 				if($query !== false && $query->num_rows > 0) {
@@ -340,10 +342,10 @@ class ManageCollections {
 			} catch (Exception $e) {
 				if($e->getCode() == "1061") {
 					// duplicate key message if the index is already there.
-					error_log("[NOTICE] ".__METHOD__."  mysql query: ".$e->getMessage());
+                    Summoner::sysLog("[NOTICE] ".__METHOD__."  mysql query: ".$e->getMessage());
 				}
 				else {
-					error_log("[ERROR] ".__METHOD__."  mysql query: ".$e->getMessage());
+                    Summoner::sysLog("[ERROR] ".__METHOD__."  mysql query: ".$e->getMessage());
 				}
 			}
 		}
@@ -364,20 +366,20 @@ class ManageCollections {
 		if(!empty($id) && Summoner::validate($id, 'digit')) {
 			$queryStr = "DELETE FROM `".DB_PREFIX."_collection`
 							WHERE `id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 
 			$queryStrTool = "DELETE FROM `".DB_PREFIX."_tool2collection`
 							WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrTool,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrTool));
 
 			$queryStre2l = "DROP TABLE `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($id)."`";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStre2l,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStre2l));
 
 			$queryStrEntry = "DROP TABLE `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($id)."`";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrEntry,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrEntry));
 
 			$queryStrFields = "DROP TABLE `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($id)."`";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrFields,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrFields));
 
 
 			// mysql implicit commit with drop command
@@ -400,7 +402,7 @@ class ManageCollections {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -420,7 +422,7 @@ class ManageCollections {
 					FROM `".DB_PREFIX."_tool2collection` AS t2c
 					LEFT JOIN `".DB_PREFIX."_tool` AS t ON t.id = t2c.fk_tool_id
 					WHERE t2c.fk_collection_id = '".$this->_DB->real_escape_string($id)."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -430,11 +432,85 @@ class ManageCollections {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__."  mysql catch: ".$e->getMessage());
 		}
 
 		return  $ret;
 	}
+
+    /**
+     * Selects the text entry fields, gets their data, combines the words and writes it into the search field
+     * for every entry in the current loaded collection
+     *
+     * @param string $collectionId The id of the collection
+     * @param array $searchFields The available search fields of the given collection
+     * @return bool
+     */
+    public function updateSearchData(string $collectionId, array $searchFields): bool {
+        $ret = false;
+
+        // simple search fields for loaded collection
+        // Every field witch has a column in the entry table is a simple search field.
+        // Name starts with entry. Here we want only the text fields
+        // Those fields are the data for the combined search field
+        $dataFields = array();
+        $_fieldAvailable = false;
+        if(!empty($searchFields)) {
+            foreach($searchFields as $k=>$v) {
+                if($v['identifier'] == "combSearch") {
+                    $_fieldAvailable = true;
+                    continue;
+                }
+                if(isset($v['searchtype']) && str_contains($v['searchtype'], 'Text')) {
+                    $dataFields[$k] = $v['identifier'];
+                }
+            }
+        }
+
+        // only if the combSearch field is available in the collection
+        if(!$_fieldAvailable) return $ret;
+
+        // get the search data for every entry in the collection
+        $entryData = array();
+        if(!empty($dataFields)) {
+            $fieldStr = implode(",",$dataFields);
+            $queryStr = "SELECT id,".$fieldStr." FROM `".DB_PREFIX."_collection_entry_".$collectionId."`";
+            if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+            try {
+                $query = $this->_DB->query($queryStr);
+                if($query !== false && $query->num_rows > 0) {
+                    $entryData = $query->fetch_all(MYSQLI_ASSOC);
+                }
+            }
+            catch (Exception $e) {
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            }
+        }
+
+        // build the search data and update the entries
+        if(!empty($entryData)) {
+            foreach($entryData as $d) {
+                $entryid = $d['id'];
+                unset($d['id']);
+                $searchData = implode(" ",$d);
+                $searchData = implode(" ", Summoner::words($searchData));
+
+                $queryStr = "UPDATE `".DB_PREFIX."_collection_entry_".$collectionId."`
+                            SET `combSearch` = '".$this->_DB->real_escape_string($searchData)."'
+                            WHERE `id` = '".$entryid."'";
+                if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+                try {
+                    $this->_DB->query($queryStr);
+                    $ret = true;
+                }
+                catch (Exception $e) {
+                    Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                }
+            }
+        }
+
+        return $ret;
+    }
 
 	/**
 	 * Check if given name can be used as a new one
@@ -447,7 +523,7 @@ class ManageCollections {
 		if (Summoner::validate($name, 'nospace')) {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -455,7 +531,7 @@ class ManageCollections {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -478,7 +554,7 @@ class ManageCollections {
 			$queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection`
 								WHERE `name` = '".$this->_DB->real_escape_string($name)."'
 								AND `id` != '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if ($query !== false && $query->num_rows < 1) {
@@ -486,7 +562,7 @@ class ManageCollections {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -503,10 +579,9 @@ class ManageCollections {
 	private function _updateToolRelation(string $id, array $tool): bool {
 		$ret = false;
 
-
 		$queryStr = "DELETE FROM `".DB_PREFIX."_tool2collection`
 								WHERE `fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
 
@@ -518,7 +593,7 @@ class ManageCollections {
 						$insertQueryStr = "INSERT IGNORE INTO `".DB_PREFIX."_tool2collection`
 											SET `fk_tool_id` = '".$this->_DB->real_escape_string($v)."',
 												`fk_collection_id` = '".$this->_DB->real_escape_string($id)."'";
-						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($insertQueryStr,true));
+						if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($insertQueryStr));
 						$this->_DB->query($insertQueryStr);
 					}
 				}
@@ -528,7 +603,7 @@ class ManageCollections {
 		}
 		catch (Exception $e) {
 			$this->_DB->rollback();
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -557,12 +632,12 @@ class ManageCollections {
 			}
 			$queryStr = trim($queryStr, ",");
 
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$this->_DB->query($queryStr);
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 	}

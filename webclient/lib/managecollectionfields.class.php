@@ -2,18 +2,20 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2022 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
  */
 
 /**
@@ -104,7 +106,7 @@ class ManageCollectionFields {
 						`createstring`, `value`
 					FROM `".DB_PREFIX."_sys_fields`
 					ORDER BY `displayname`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -114,7 +116,7 @@ class ManageCollectionFields {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_cacheAvailableFields;
@@ -182,11 +184,11 @@ class ManageCollectionFields {
 
 			$queryStrDeleteFields = "DELETE FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."`
 						WHERE `fk_field_id` NOT IN (".implode(",",$ids).")";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDeleteFields,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrDeleteFields));
 
 			$queryStrDeletee2l = "DELETE FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_collectionId."`
 						WHERE `fk_field` NOT IN (".implode(",",$ids).")";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrDeletee2l,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrDeletee2l));
 
 			$queryStrInsertFields = "INSERT INTO `".DB_PREFIX."_collection_fields_".$this->_collectionId."` (`fk_field_id`,`sort`) VALUES ";
 			foreach ($ids as $k => $v) {
@@ -194,7 +196,7 @@ class ManageCollectionFields {
 			}
 			$queryStrInsertFields = trim($queryStrInsertFields, ",");
 			$queryStrInsertFields .= " ON DUPLICATE KEY UPDATE `sort` = VALUES(`sort`)";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrInsertFields,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrInsertFields));
 
 			if(!empty($_newColumns)) {
 				$queryStrAlterEntry = array();
@@ -216,7 +218,7 @@ class ManageCollectionFields {
 				// mysql implicit commit
 				if(!empty($queriesDeleteEntryTable)) {
 					foreach($queriesDeleteEntryTable as $q) {
-						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q,true));
+						if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::sysLog($q));
 						$this->_DB->query($q);
 					}
 				}
@@ -228,7 +230,7 @@ class ManageCollectionFields {
 				// mysql implicit commit
 				if(!empty($_newColumns)) {
 					foreach ($queryStrAlterEntry as $q1) {
-						if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($q1,true));
+						if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($q1));
 						$this->_DB->query($q1);
 					}
 				}
@@ -237,7 +239,7 @@ class ManageCollectionFields {
 			}
 			catch (Exception $e) {
 				$this->_DB->rollback();
-				error_log("[ERROR] asd ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] update fields ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -258,8 +260,12 @@ class ManageCollectionFields {
 
 		$this->_cacheExistingSysFields = array();
 
-		$queryStr = "SELECT `cf`.`fk_field_id` AS id, `sf`.`type`, `sf`.`displayname`, `sf`.`identifier`,
-							`sf`.`createstring`, `sf`.`searchtype`
+		$queryStr = "SELECT `cf`.`fk_field_id` AS id, 
+                        `sf`.`type`, 
+                        `sf`.`displayname`, 
+                        `sf`.`identifier`,
+						`sf`.`createstring`, 
+						`sf`.`searchtype`
 						FROM `".DB_PREFIX."_collection_fields_".$this->_collectionId."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`";
 		if($sortAZ === true) {
@@ -268,7 +274,7 @@ class ManageCollectionFields {
 		else {
 			$queryStr .= " ORDER BY `cf`.`sort`";
 		}
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -278,7 +284,7 @@ class ManageCollectionFields {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $this->_cacheExistingSysFields;
@@ -305,11 +311,11 @@ class ManageCollectionFields {
 			}
 		}
 
+        // add systemfields
 		$def['created'] = array('identifier' => 'created', 'displayname' => 'Created', 'type' => 'systemfield');
 		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'Modified', 'type' => 'systemfield');
-		$ret = $def + $ret;
 
-		return $ret;
+		return $def + $ret;
 	}
 
 	/**
@@ -321,7 +327,7 @@ class ManageCollectionFields {
 		$ret = array();
 
 		$queryStr = "SHOW COLUMNS FROM `".DB_PREFIX."_collection_entry_".$this->_collectionId."`";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 			if($query !== false && $query->num_rows > 0) {
@@ -333,7 +339,7 @@ class ManageCollectionFields {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;

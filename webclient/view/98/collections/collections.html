@@ -26,8 +26,8 @@
 			?>
 		</select>
 		<select name="sd">
-			<option value="ASC">ascending</option>
-			<option value="DESC">descending</option>
+			<option value="ASC" <?php echo ($TemplateData['pagination']['currentGetParameters']['sd'] ?? '') == 'ASC' ? 'selected' : '' ?>>ascending</option>
+			<option value="DESC" <?php echo ($TemplateData['pagination']['currentGetParameters']['sd'] ?? '') == 'DESC' ? 'selected' : '' ?>>descending</option>
 		</select>
 		<input type="submit" value="Sort" />
 	</form>
@@ -62,7 +62,7 @@
 		<thead>
 		<tr>
 			<th width="60px">Image</th>
-			<th>Title</th>
+			<th width="300px">Title</th>
 			<th>Description</th>
 			<th width="60px">View</th>
 		</tr>

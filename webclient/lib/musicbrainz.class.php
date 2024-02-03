@@ -2,18 +2,20 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2022 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
  */
 
 /**
@@ -106,17 +108,17 @@ class Musicbrainz {
 			$url .= '?&fmt=json&limit='.$this->_resultLimit.'&query=';
 			$url .= 'artist:'.$artist.'%20AND%20release:'.$album.'%20AND%20format:CD';
 
-			if(DEBUG) error_log("[DEBUG] musicbrainz release url: $url");
+			if(DEBUG) Summoner::sysLog("[DEBUG] musicbrainz release url: $url");
 
 			$do = $this->_curlCall($url);
 			$data = '';
 			if(!empty($do)) {
 				$data = json_decode($do, true);
 				if(!empty($data)) {
-					if(DEBUG) error_log("[DEBUG] musicbrainz releases json data:".var_export($data,true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] musicbrainz releases json data:".Summoner::cleanForLog($data));
 				}
 				else {
-					error_log("[ERROR] musicbrainz invalid releases json data:".var_export($do,true));
+                    Summoner::sysLog("[ERROR] musicbrainz invalid releases json data:".Summoner::cleanForLog($do));
 				}
 			}
 
@@ -180,10 +182,10 @@ class Musicbrainz {
 			if(!empty($do)) {
 				$data = json_decode($do, true);
 				if(!empty($data)) {
-					if(DEBUG) error_log("[DEBUG] musicbrainz release json data:".var_export($data,true));
+					if(DEBUG) Summoner::sysLog("[DEBUG] musicbrainz release json data:".Summoner::cleanForLog($data));
 				}
 				else {
-					error_log("[ERROR] musicbrainz invalid release json data:".var_export($do,true));
+                    Summoner::sysLog("[ERROR] musicbrainz invalid release json data:".Summoner::cleanForLog($do));
 				}
 			}
 
@@ -212,11 +214,11 @@ class Musicbrainz {
 				if(!empty($do)) {
 					$imageData = json_decode($do, true);
 					if(!empty($imageData)) {
-						if(DEBUG) error_log("[DEBUG] image release json data:".var_export($imageData,true));
+						if(DEBUG) Summoner::sysLog("[DEBUG] image release json data:".Summoner::cleanForLog($imageData));
 						$ret['image'] = isset($imageData['images'][0]['image']) ? $imageData['images'][0]['image'] : '';
 					}
 					else {
-						error_log("[ERROR] image invalid release json data:".var_export($do,true));
+                        Summoner::sysLog("[ERROR] image invalid release json data:".Summoner::cleanForLog($do));
 					}
 				}
 			}
@@ -267,7 +269,7 @@ class Musicbrainz {
 			curl_close($ch);
 
 			if($this->_DEBUG) {
-				error_log('[DEBUG] '.__METHOD__.' headers '.var_export($_headers,true));
+                Summoner::sysLog('[DEBUG] '.__METHOD__.' headers '.Summoner::cleanForLog($_headers));
 			}
 
 			$ret = $_tmpFile;
@@ -323,7 +325,7 @@ class Musicbrainz {
 		curl_close($ch);
 
 		if($this->_DEBUG) {
-			error_log('[DEBUG] '.__METHOD__.' headers '.var_export($_headers,true));
+            Summoner::sysLog('[DEBUG] '.__METHOD__.' headers '.Summoner::cleanForLog($_headers));
 		}
 
 		return $ret;

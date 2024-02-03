@@ -160,13 +160,14 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (24, 'imdbrating', 'IMDB Rating', 'text', 'entrySingleText', '`imdbrating` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2020-12-27 10:00:33', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
 (25, 'viewcount', 'View counter', 'number', 'entrySingleNum', '`viewcount` int(10) NULL, ADD INDEX (`viewcount`)', '', NULL, 'int 10', '2020-12-27 10:41:10', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
 (26, 'writers', 'Writers', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-01-05 09:47:20', '2021-04-03 14:41:49', NULL, 1, 1, 'rw-r--r--'),
-(27, 'localizedTitle', 'localized Title', 'text', 'entryText', '`localizedTitle` varchar(128) NULL DEFAULT NULL, ADD FULLTEXT (`localizedTitle`)', '', NULL, 'string 128', '2021-04-25 19:33:31', '2021-07-09 08:51:17', 0, 1, 1, 'rw-r--r--'),
+(27, 'localizedTitle', 'Localized Title', 'text', 'entryText', '`localizedTitle` varchar(128) NULL DEFAULT NULL, ADD FULLTEXT (`localizedTitle`)', '', NULL, 'string 128', '2021-04-25 19:33:31', '2021-07-09 08:51:17', 0, 1, 1, 'rw-r--r--'),
 (28, 'gameEngine', 'Game Engine', 'text', 'entryText', '`gameEngine` varchar(128) NOT NULL, ADD FULLTEXT (`gameEngine`)', '', NULL, 'string 128', '2021-04-25 21:21:37', '2021-04-25 21:21:37', 0, 1, 1, 'rw-r--r--'),
 (29, 'view', 'View', 'selection', 'entrySingleNum', '`view` varchar(32) NULL DEFAULT NULL', '', 'First person,Third person,Top-down', 'First person,Third person,Top-down', '2021-04-25 21:21:45', '2021-04-25 21:21:45', 0, 1, 1, 'rw-r--r--'),
 (30, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', '2021-04-25 21:21:54', '2021-04-25 21:21:54', 0, 1, 1, 'rw-r--r--'),
 (31, 'artist', 'Artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2021-07-09 08:38:33', NULL, 1, 1, 'rw-r--r--'),
 (32, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:42:16', '2021-07-18 11:42:16', NULL, 1, 1, 'rw-r--r--'),
-(34, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2023-04-08 08:53:55', NULL, 1, 1, 'rw-r--r--');
+(34, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2023-04-08 08:53:55', NULL, 1, 1, 'rw-r--r--'),
+(35, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '1', '1', 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -363,7 +364,7 @@ ALTER TABLE `#REPLACEME#_menu`
 -- AUTO_INCREMENT for table `#REPLACEME#_sys_fields`
 --
 ALTER TABLE `#REPLACEME#_sys_fields`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_tool`

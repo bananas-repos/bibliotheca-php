@@ -2,18 +2,20 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2021 Johannes Keßler
+ * Copyright 2018-2023 Johannes Keßler
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
  */
 
 /**
@@ -131,7 +133,7 @@ class Mancubus {
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`
 					LIMIT $selections";
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -139,13 +141,19 @@ class Mancubus {
 				while(($result = $query->fetch_assoc()) != false) {
 					$_mObj = new Mancubus($this->_DB,$this->_User);
 					$_mObj->setCollection($result['id']);
-					$_mObj->setQueryOptions(array('limit' => $entries));
 
 					if(!empty($search)) {
 						require_once 'lib/trite.class.php';
 						$_colObj = new Trite($this->_DB,$this->_User);
 						$_colObj->load($result['id']);
 						$_fd = $_colObj->getCollectionFields();
+						$_defSearchField = $_colObj->param('defaultSearchField');
+
+                        $_mObj->setQueryOptions(array(
+                            'limit' => $entries,
+                            'sortDirection' => $_colObj->param('defaultSortOrder'),
+                            'sort' => $_colObj->param('defaultSortField')
+                        ));
 						$_defSearchField = $_colObj->param('defaultSearchField');
 
 						if(!empty($_defSearchField)) {
@@ -160,7 +168,7 @@ class Mancubus {
 							);
 						}
 						else {
-							error_log("[WARN] ".__METHOD__." missing default search field for collectionid: ".$result['id']);
+                            Summoner::sysLog("[WARN] ".__METHOD__." missing default search field for collectionid: ".$result['id']);
 						}
 					}
 					else {
@@ -173,7 +181,7 @@ class Mancubus {
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -277,7 +285,7 @@ class Mancubus {
 			}
 
 			$queryStr = $querySelect.$queryFrom.$queryJoin.$queryWhere.$queryOrder.$queryLimit;
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 
 			try {
 				$query = $this->_DB->query($queryStr);
@@ -293,14 +301,14 @@ class Mancubus {
 					}
 
 					$queryStrCount = "SELECT COUNT(t.id) AS amount ".$queryFrom.$queryJoin.$queryWhere;
-					if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStrCount,true));
+					if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStrCount));
 					$query = $this->_DB->query($queryStrCount);
 					$result = $query->fetch_assoc();
 					$ret['amount'] = $result['amount'];
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -321,7 +329,7 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_entry_".$this->_DB->real_escape_string($this->_collectionId)."` 
 						WHERE ".$this->_User->getSQLRightsString()."
 						AND `id` = '".$this->_DB->real_escape_string($entryId)."'";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 
@@ -334,7 +342,7 @@ class Mancubus {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -343,6 +351,8 @@ class Mancubus {
 
 	/**
 	 * Get entries for loaded collection by looking for the given value in given field
+     *
+     * @TODO: unused?
 	 *
 	 * @param string $fieldId Number ID of the field to search in
 	 * @param string $fieldValue Value of the field
@@ -400,7 +410,7 @@ class Mancubus {
 		}
 
 		$queryStr = $querySelect.$queryFrom.$queryWhere.$queryOrder.$queryLimit;
-		if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
 
@@ -411,14 +421,14 @@ class Mancubus {
 				}
 
 				$queryCountStr = "SELECT COUNT(t.value) AS amount ".$queryFrom.$queryWhere;
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryCountStr,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryCountStr));
 				$query = $this->_DB->query($queryCountStr);
 				$result = $query->fetch_assoc();
 				$ret['amount'] = $result['amount'];
 			}
 		}
 		catch (Exception $e) {
-			error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 		}
 
 		return $ret;
@@ -456,7 +466,7 @@ class Mancubus {
 						FROM `".DB_PREFIX."_collection_fields_".$this->_DB->real_escape_string($this->_collectionId)."` AS cf
 						LEFT JOIN `".DB_PREFIX."_sys_fields` AS sf ON `cf`.`fk_field_id` = `sf`.`id`
 						ORDER BY `cf`.`sort`";
-			if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 			try {
 				$query = $this->_DB->query($queryStr);
 				if($query !== false && $query->num_rows > 0) {
@@ -466,7 +476,7 @@ class Mancubus {
 				}
 			}
 			catch (Exception $e) {
-				error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 			}
 		}
 
@@ -526,7 +536,7 @@ class Mancubus {
 			else {
 				$queryStr = "SELECT `fk_field`, `value`, `fk_entry`
 							FROM `".DB_PREFIX."_collection_entry2lookup_".$this->_DB->real_escape_string($this->_collectionId)."`";
-				if(QUERY_DEBUG) error_log("[QUERY] ".__METHOD__." query: ".var_export($queryStr,true));
+				if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 				try {
 					$query = $this->_DB->query($queryStr);
 					if($query !== false && $query->num_rows > 0) {
@@ -536,7 +546,7 @@ class Mancubus {
 					}
 				}
 				catch (Exception $e) {
-					error_log("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+                    Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
 				}
 				if(isset($this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']])) {
 					$ret =  $this->_cacheLookupValuesForEntry[$this->_collectionId][$entryId][$fieldData['id']];
