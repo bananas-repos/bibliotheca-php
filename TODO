@@ -1,10 +1,8 @@
 * Better error handling and display while adding / update and delete
 ** Maybe some message "store"
-* query optimization and default indexes on columns
 * make documentation markdown to be nicer
 * change multiple-attachment to a field which tells it is used for a image gallery
 * update JS and remove deprecations
-* complete profile view. Groups still missing.
 * minimal theme
 ** https://watercss.kognise.dev/
 * create a real fallback theme, which does not depend on any styling/css

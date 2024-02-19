@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2023 Johannes Keßler
+ * Copyright 2018-2024 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ class GoreNest {
 		# reset the menu
 		$this->_menuData = array();
 
-		$queryStr = "SELECT id, text, action, icon, category, contextaction
+		$queryStr = "SELECT `id`, `text`, `action`, `icon`, `category`, `contextaction`
 					FROM `".DB_PREFIX."_menu`
 					WHERE ".$this->_User->getSQLRightsString()."				
 						ORDER BY position";

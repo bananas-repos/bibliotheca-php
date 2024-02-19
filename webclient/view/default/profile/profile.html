@@ -26,9 +26,16 @@
 			<div class="uk-margin">
 				<label class="uk-form-label" for="additionalGroups">Additional groups</label>
 				<div class="uk-form-controls">
-					<input class="uk-input" id="additionalGroups" type="text" name="fdata[additionalGroups]" disabled
-					       value="To be done"
-					>
+					<select class="uk-select" multiple size="5" id="additionalGroups" name="fdata[additionalGroups]" disabled>
+					<?php
+					foreach($TemplateData['editData']['groups'] as $k=>$v) {
+						if($v['groupName'] !== $TemplateData['editData']['baseGroupName']) {
+							echo "<option>".$v['groupName']."</option>";
+						}
+					}
+					?>
+
+					</select>
 				</div>
 			</div>
 			<div class="uk-margin">
