@@ -1,5 +1,6 @@
 1.x - The Ceremonial Chambers
     * Added group infos to profile view.
+    * User- and groupmanagement: Check if in use before deletion.
 
 
 1.6 - Chizra 2024-02-03

@@ -65,7 +65,7 @@ if(isset($_POST['submitForm'])) {
 					$TemplateData['refresh'] = 'index.php?p=manageusers';
 				}
 				else {
-					$TemplateData['message']['content'] = "User could not be deleted.";
+					$TemplateData['message']['content'] = "User could not be deleted. Make sure the user is not used anymore.";
 					$TemplateData['message']['status'] = "error";
 				}
 			}

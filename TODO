@@ -9,7 +9,6 @@
 ** change the css and js lookup too in main file
 * i18n support
 * Definition of fields in "card view"
-* User and groupmanagement: Check where a user or group is used!
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
 * remove ifset and maybe ifsetvalue from summoner
