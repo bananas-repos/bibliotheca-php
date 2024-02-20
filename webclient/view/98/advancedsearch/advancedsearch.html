@@ -21,7 +21,7 @@
 		If the search is within a field witch is not configured to be displayed in the table view, it will be added.
 	</p>
 	<pre>title: bourne</pre>
-	<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
+	<p>Available fields in <b><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></b> are:</p>
 	<pre style="white-space: normal">
 	<?php foreach($TemplateData['collectionFields'] as $k=>$v) {
 		echo $v['identifier']." ";
@@ -112,7 +112,7 @@
 						?>
 					<td>
 						<?php
-								if(Summoner::ifset($f, 'value')) {
+								if(isset($f['value'])) {
 									if(is_array($f['value'])) {
 										echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
 									}

@@ -714,7 +714,7 @@ class Possessed {
         }
 
         if(!$ret) {
-            $queryStr = "SELECT `id` FROM `".DB_PREFIX."_user2group` 
+            $queryStr = "SELECT `fk_group_id` FROM `".DB_PREFIX."_user2group` 
                     WHERE `fk_group_id` = '".$this->_DB->real_escape_string($groupId)."'";
             if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
             try {

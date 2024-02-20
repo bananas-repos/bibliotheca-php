@@ -1,6 +1,6 @@
 <?php
 $existingFieldValue = array();
-if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
+if(isset($TemplateData['editData'][$field['identifier']])) {
 	$existingFieldValue = $TemplateData['editData'][$field['identifier']];
 }
 ?>
@@ -27,7 +27,7 @@ if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
 			onkeypress="addTag(event,'<?php echo $field['identifier']; ?>','<?php echo $field['inputValidation']; ?>')"
 			placeholder="Write and press enter."
 		>
-		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+		<?php if(isset($field['bulkedit'])) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 			<option value="">Select bulk edit option</option>
 			<option value="add">Add</option>

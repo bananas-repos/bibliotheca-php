@@ -21,7 +21,7 @@
 
 		<form class="uk-form-horizontal uk-margin-small" method="post" onsubmit="return saveOrderAndSubmit()">
 			<input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
-			   value="<?php echo Summoner::ifset($TemplateData['editData'], 'fieldSortString'); ?>">
+			   value="<?php echo $TemplateData['editData']['fieldSortString'] ?? ''; ?>">
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
 					Save

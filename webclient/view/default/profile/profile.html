@@ -6,7 +6,7 @@
 				<label class="uk-form-label" for="username">Username</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
-					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+					       value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
@@ -19,14 +19,14 @@
 				<label class="uk-form-label" for="group">Main group</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="group" type="text" name="fdata[group]" disabled
-					       value="<?php echo Summoner::ifset($TemplateData['editData'], 'baseGroupName'); ?>"
+					       value="<?php echo $TemplateData['editData']['baseGroupName'] ?? ''; ?>"
 					>
 				</div>
 			</div>
 			<div class="uk-margin">
 				<label class="uk-form-label" for="additionalGroups">Additional groups</label>
 				<div class="uk-form-controls">
-					<select class="uk-select" multiple size="5" id="additionalGroups" name="fdata[additionalGroups]" disabled>
+					<select class="uk-select" multiple="multiple" size="5" id="additionalGroups" name="fdata[additionalGroups]" disabled>
 					<?php
 					foreach($TemplateData['editData']['groups'] as $k=>$v) {
 						if($v['groupName'] !== $TemplateData['editData']['baseGroupName']) {
@@ -34,7 +34,6 @@
 						}
 					}
 					?>
-
 					</select>
 				</div>
 			</div>
@@ -43,8 +42,8 @@
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[refreshApiToken]" value="1"><br />
-						Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
-						Key: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+						Valid until: <?php echo $TemplateData['editData']['apiTokenValidDate'] ?? ''; ?><br />
+						Key: <?php echo $TemplateData['editData']['apiToken'] ?? ''; ?>
 					</label>
 				</div>
 			</div>

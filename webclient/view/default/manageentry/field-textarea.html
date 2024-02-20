@@ -4,8 +4,8 @@
 		<textarea class="uk-textarea" autocomplete="off"
 			id="<?php echo $field['identifier']; ?>"
 	        rows="10"
-			name="fdata[<?php echo $field['identifier']; ?>]"><?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?></textarea>
-		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+			name="fdata[<?php echo $field['identifier']; ?>]"><?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?></textarea>
+		<?php if(isset($field['bulkedit'])) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 			<option value="">Select bulk edit option</option>
 			<option value="add">Add</option>

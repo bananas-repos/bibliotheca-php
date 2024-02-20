@@ -63,7 +63,7 @@
 			If the search is within a field witch is not configured to be displayed in the table view, it will be added.
 		</p>
 		eg.: <code>title: bourne</code>
-		<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
+		<p>Available fields in <b><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></b> are:</p>
 		<pre style="white-space: normal">
 		<?php
 		foreach($TemplateData['collectionFields'] as $k=>$v) {
@@ -115,7 +115,7 @@
 		?>
 			<td>
 				<?php
-				if(Summoner::ifset($f, 'value')) {
+				if(isset($f['value'])) {
 					if(is_array($f['value'])) {
 						echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
 					}
@@ -142,7 +142,7 @@
 	<div class="uk-width-1-4@s uk-width-1-6@l">
 		<div class="uk-card uk-card-default uk-card-small">
 			<div class="uk-card-media-top">
-				<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+				<?php if(isset($entry['fields']['coverimage'])) { ?>
 				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank>
 				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
 				     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>">
@@ -150,11 +150,11 @@
 				<?php } ?>
 			</div>
 			<div class="uk-card-body uk-visible@l">
-				<?php if(Summoner::ifset($entry['fields'], 'title')) { ?>
+				<?php if(isset($entry['fields']['title'])) { ?>
 				<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
 				<?php } ?>
 
-				<?php if(Summoner::ifset($entry['fields'], 'description')) { ?>
+				<?php if(isset($entry['fields']['description'])) { ?>
 				<p><?php echo $entry['fields']['description']['value']; ?></p>
 				<?php } ?>
 			</div>

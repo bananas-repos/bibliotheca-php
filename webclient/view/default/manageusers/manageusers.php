@@ -23,7 +23,6 @@ $Possessed = new Possessed($DB, $Doomguy);
 $TemplateData['existingGroups'] = $Possessed->getGroups();
 $TemplateData['existingUsers'] = $Possessed->getUsers();
 $TemplateData['editData'] = array();
-$TemplateData['editData']['groups'] = array();
 $TemplateData['pageTitle'] = 'Manage users';
 
 $_id = '';

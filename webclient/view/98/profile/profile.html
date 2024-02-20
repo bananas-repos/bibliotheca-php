@@ -4,7 +4,7 @@
 	<div class="field-row-stacked">
 		<label for="username">Username</label>
 		<input id="username" type="text" autocomplete="off" name="fdata[username]"
-		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+		       value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
 		<label for="password">Password</label>
@@ -13,12 +13,19 @@
 	<div class="field-row-stacked">
 		<label for="group">Main group</label>
 		<input  id="group" type="text" name="fdata[group]" disabled
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'baseGroupName'); ?>">
+			value="<?php echo $TemplateData['editData']['baseGroupName'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
 		<label for="additionalGroups">Additional groups</label>
-		<input id="additionalGroups" type="text" name="fdata[additionalGroups]" disabled
-			value="To be done">
+		<select multiple="multiple" size="5" id="additionalGroups" name="fdata[additionalGroups]" disabled>
+			<?php
+			foreach($TemplateData['editData']['groups'] as $k=>$v) {
+				if($v['groupName'] !== $TemplateData['editData']['baseGroupName']) {
+					echo "<option>".$v['groupName']."</option>";
+				}
+			}
+			?>
+		</select>
 	</div>
 	<div class="field-row-stacked">
 		<input id="refreshApiToken" type="checkbox" name="fdata[refreshApiToken]" value="1">
@@ -26,8 +33,8 @@
 	</div>
 	<div class="field-row-stacked">
 		<label>
-			Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
-			Token: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+			Valid until: <?php echo $TemplateData['editData']['apiTokenValidDate'] ?? ''; ?><br />
+			Token: <?php echo $TemplateData['editData']['apiToken'] ?? ''; ?>
 		</label>
 	</div>
 	<div class="field-row-stacked">

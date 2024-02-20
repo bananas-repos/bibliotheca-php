@@ -1,4 +1,4 @@
 <input type="hidden" id="<?php echo $field['identifier']; ?>" autocomplete="off"
        name="fdata[<?php echo $field['identifier']; ?>]"
-       value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+       value="<?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?>"
 >

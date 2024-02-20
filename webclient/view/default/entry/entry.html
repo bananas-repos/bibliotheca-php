@@ -1,9 +1,9 @@
-<h3 class="uk-h3"><a href="index.php?p=collections&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>"><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></a></h3>
+<h3 class="uk-h3"><a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>"><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></a></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2@l">
 		<article class="uk-article">
 			<?php if($TemplateData['showEdit'] === true) { ?>
-			<p class="uk-article-meta"><a href="index.php?p=manageentry&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>&id=<?php echo $TemplateData['entry']['id']; ?>">EDIT</a></p>
+			<p class="uk-article-meta"><a href="index.php?p=manageentry&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&id=<?php echo $TemplateData['entry']['id']; ?>">EDIT</a></p>
 			<?php
 			}
 
@@ -27,7 +27,6 @@
 				}
 			}
 			?>
-
 		</article>
 	</div>
 	<div class="uk-width-1-2@l">

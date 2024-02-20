@@ -1,4 +1,4 @@
 <p data-field-name="date" data-field-id="<?php echo $field['identifier']; ?>">
 	<?php echo $field['displayname']; ?>:
-	<a href="index.php?p=collections&collection='.$TemplateData['loadedCollection']['id'].'&fid='.$field['identifier'].'&fv='.urlencode(Summoner::ifset($field, 'value')).'"><?php echo Summoner::ifset($field, 'value'); ?></a>
+	<a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&fid=<?php echo $field['identifier'] ?? ''; ?>&fv=<?php echo urlencode($field['value'] ?? ''); ?>"><?php echo $field['value'] ?? ''; ?></a>
 </p>

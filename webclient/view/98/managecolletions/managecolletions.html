@@ -9,12 +9,12 @@
 		<label for="name">Name *</label>
 		<input id="name" type="text" autocomplete="off" name="fdata[name]"
             placeholder="Unique name. No special chars." size="30"
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+			value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
     </div>
 	<div class="field-row-stacked">
 		<label for="description">Description</label>
 		<input id="description" type="text" autocomplete="off" size="30" name="fdata[description]"
-		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+		       value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
    </div>
 	<div class="field-row-stacked">
 		<label for="defaultSearchField">Default global search field</label>
@@ -22,7 +22,7 @@
 			<option value="">Please select</option>
 			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['identifier']; ?>"
-			<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSearchField', $v['identifier'])) echo 'selected'; ?>
+			<?php if(isset($TemplateData['editData']['defaultSearchField'][$v['identifier']])) echo 'selected'; ?>
 			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
@@ -49,7 +49,7 @@
 			<option value="">Please select</option>
 			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['identifier']; ?>"
-			<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortField', $v['identifier'])) echo 'selected'; ?>
+			<?php if(isset($TemplateData['editData']['defaultSortField'][$v['identifier']])) echo 'selected'; ?>
 			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
@@ -66,7 +66,7 @@
 		<select id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
 			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['id']; ?>"
-			<?php if(Summoner::ifset($TemplateData['editData']['advancedSearchTableFields'], $v['id'])) echo 'selected'; ?>
+			<?php if(isset($TemplateData['editData']['advancedSearchTableFields'][$v['id']])) echo 'selected'; ?>
 			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
@@ -83,7 +83,7 @@
 				<option value="">None</option>
 				<?php foreach($TemplateData['toolSelection'] as $k=>$v) { ?>
 				<option value="<?php echo $k; ?>"
-				<?php if(Summoner::ifset($TemplateData['editData']['tool'],$k)) echo 'selected'; ?>
+				<?php if(isset($TemplateData['editData']['tool'][$k])) echo 'selected'; ?>
 				><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 				<?php } ?>
 			</select>
@@ -166,12 +166,11 @@
 			</tbody>
 		</table>
 	</div>
-	<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
+	<?php if(isset($TemplateData['editData']['name'])) { ?>
 	<div class="field-row-stacked">
 		<input id="doRightsForEntries" type="checkbox" name="fdata[doRightsForEntries]" value="1">
 		<label for="doRightsForEntries">Overwrite existing rights</label>
 			Warning: This will overwrite existing entry rights (user, group, rights) with the ones from the collection!
-		</label>
 	</div>
 	<div class="field-row-stacked">
 		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">

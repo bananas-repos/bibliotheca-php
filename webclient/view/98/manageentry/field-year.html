@@ -3,10 +3,10 @@
 	<input id="<?php echo $field['identifier']; ?>" type="number" autocomplete="off"
 		placeholder="YYYY" min="0000" max="9999"
 		name="fdata[<?php echo $field['identifier']; ?>]"
-		value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+		value="<?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?>"
 	/>
 
-	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<?php if(isset($field['bulkedit'])) { ?>
 	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 		<option value="">Select bulk edit option</option>
 		<option value="replace">Replace</option>

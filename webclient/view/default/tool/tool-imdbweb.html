@@ -7,7 +7,7 @@
 		<div class="uk-form-controls">
 			<input class="uk-input" id="search" type="text" autocomplete="off"
 				   name="fdata[search]"
-				   value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+				   value="<?php echo $TemplateData['editEntry']['title'] ? ''; ?>"
 			>
 		</div>
 		<div class="uk-margin">

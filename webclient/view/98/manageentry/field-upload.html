@@ -5,9 +5,9 @@
 		   name="fdata[<?php echo $field['identifier']; ?>]"
 		/>
 
-		<?php if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) { ?>
-		<?php echo '<a href="'.$TemplateData['storagePath'].'/'.Summoner::ifset($TemplateData['editData'], $field['identifier']).'">'.Summoner::ifset($TemplateData['editData'], $field['identifier']).'</a>'; ?>
-		<input type="checkbox" value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+		<?php if(isset($TemplateData['editData'][$field['identifier']])) { ?>
+		<?php echo '<a href="'.$TemplateData['storagePath'].'/'.$TemplateData['editData'][$field['identifier']] ?? ''.'">'.$TemplateData['editData'][$field['identifier']] ?? ''.'</a>'; ?>
+		<input type="checkbox" value="<?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?>"
 			   name="fdata[<?php echo $field['identifier']; ?>_delete]"
 			   title="Delete"
 			   id="fdata[<?php echo $field['identifier']; ?>_delete"

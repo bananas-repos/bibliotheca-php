@@ -7,14 +7,14 @@
 				<label class="uk-form-label" for="username">Username *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
-						value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+						value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
 				<label class="uk-form-label" for="login">Login *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="login" type="text" autocomplete="off" name="fdata[login]"
-						value="<?php echo Summoner::ifset($TemplateData['editData'], 'login'); ?>">
+						value="<?php echo $TemplateData['editData']['login'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
@@ -44,7 +44,7 @@
 						<option value="">None</option>
 						<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-						<?php if(Summoner::ifset($TemplateData['editData']['groups'],$k)) echo 'selected'; ?>
+						<?php if(isset($TemplateData['editData']['groups'][$k])) echo 'selected'; ?>
 						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -55,11 +55,11 @@
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[active]" value="1"
-							<?php if(Summoner::ifset($TemplateData['editData'], 'active')) echo "checked"; ?>>
+							<?php if(isset($TemplateData['editData']['active'])) echo "checked"; ?>>
 					</label>
 				</div>
 			</div>
-			<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+			<?php if(isset($TemplateData['editData']['name']) && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
 			<div class="uk-margin">
 				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">
@@ -75,8 +75,8 @@
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[refreshApiToken]" value="1"><br />
-						Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
-						<?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+						Valid until: <?php echo $TemplateData['editData']['apiTokenValidDate'] ?? ''; ?><br />
+						<?php echo $TemplateData['editData']['apiToken'] ?? ''; ?>
 					</label>
 				</div>
 			</div>

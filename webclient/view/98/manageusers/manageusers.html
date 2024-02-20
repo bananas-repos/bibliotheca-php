@@ -5,12 +5,12 @@
 	<div class="field-row-stacked">
 		<label for="username">Username *</label>
 		<input id="username" type="text" autocomplete="off" name="fdata[username]"
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+			value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
 		<label for="login">Login *</label>
 		<input id="login" type="text" autocomplete="off" name="fdata[login]"
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'login'); ?>">
+			value="<?php echo $TemplateData['editData']['login'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
 		<label for="password">Password *</label>
@@ -34,20 +34,21 @@
 			<option value="">None</option>
 			<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
 			<option value="<?php echo $k; ?>"
-			<?php if(Summoner::ifset($TemplateData['editData']['groups'],$k)) echo 'selected'; ?>
+			<?php if(isset($TemplateData['editData']['groups'][$k])) echo 'selected'; ?>
 			><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 			<?php } ?>
 		</select>
 	</div>
 	<div class="field-row-stacked">
 		<input id="active" type="checkbox" name="fdata[active]" value="1"
-			<?php if(Summoner::ifset($TemplateData['editData'], 'active')) echo "checked"; ?>>
+			<?php if(isset($TemplateData['editData']['active'])) echo "checked"; ?>>
 		<label for="active">Can login</label>
 	</div>
-	<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+	<?php if(isset($TemplateData['editData']['name']) && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
 	<div class="field-row-stacked">
 		<input id="delete" type="checkbox" name="fdata[doDelete]" value="1">
-		<label for="delete">Delete. Warning: Content owned by this user will not be deleted and thus only manageable by admin! Better disable the user if there is content.</label>
+		<label for="delete">Delete.</label>
+		Warning: Content owned by this user will not be deleted and thus only manageable by admin! Better disable the user if there is content.</label>
 	</div>
 	<div class="field-row-stacked">
 		<input id="refreshApiToken" type="checkbox" name="fdata[refreshApiToken]" value="1">
@@ -55,8 +56,8 @@
 	</div>
 	<div class="field-row-stacked">
 		<label>
-			Current Token: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?><br />
-			Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?>
+			Current Token: <?php echo $TemplateData['editData']['apiToken'] ?? ''; ?><br />
+			Valid until: <?php echo $TemplateData['editData']['apiTokenValidDate'] ?? ''; ?>
 		</label>
 	</div>
 	<?php } ?>

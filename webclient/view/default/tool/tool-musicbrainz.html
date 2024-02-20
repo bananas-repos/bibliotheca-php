@@ -7,7 +7,7 @@
 		<div class="uk-form-controls">
 			<input class="uk-input" id="artist" type="text" autocomplete="off"
 			       name="fdata[artist]"
-			       value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'artist'); ?>"
+			       value="<?php echo $TemplateData['editEntry']['artist'] ?? ''; ?>"
 			>
 		</div>
 	</div>
@@ -16,7 +16,7 @@
 		<div class="uk-form-controls">
 			<input class="uk-input" id="album" type="text" autocomplete="off"
 			       name="fdata[album]"
-			       value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+			       value="<?php echo $TemplateData['editEntry']['title'] ?? ''; ?>"
 			>
 		</div>
 	</div>

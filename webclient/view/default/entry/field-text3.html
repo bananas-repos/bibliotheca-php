@@ -1,1 +1,1 @@
-<p data-field-name="text3" data-field-id="<?php echo $field['identifier']; ?>"><span class="uk-text-muted"><?php echo $field['displayname']; ?>:</span> <?php echo nl2br(Summoner::ifset($field, 'value')); ?></p>
+<p data-field-name="text3" data-field-id="<?php echo $field['identifier']; ?>"><span class="uk-text-muted"><?php echo $field['displayname']; ?>:</span> <?php echo nl2br($field['value'] ?? ''); ?></p>

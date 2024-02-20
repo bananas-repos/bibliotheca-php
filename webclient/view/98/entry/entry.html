@@ -1,7 +1,7 @@
-<h3><a href="index.php?p=collections&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>"><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></a></h3>
+<h3><a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>"><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></a></h3>
 <article>
 	<?php if($TemplateData['showEdit'] === true) { ?>
-	<p><a href="index.php?p=manageentry&collection=<?php echo Summoner::ifset($TemplateData['loadedCollection'], 'id'); ?>&id=<?php echo $TemplateData['entry']['id']; ?>">EDIT</a></p>
+	<p><a href="index.php?p=manageentry&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&id=<?php echo $TemplateData['entry']['id'] ?? ''; ?>">EDIT</a></p>
 	<?php
 	}
 

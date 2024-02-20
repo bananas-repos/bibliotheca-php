@@ -13,14 +13,14 @@
 				<div class="uk-form-controls">
 					<input class="uk-input" id="name" type="text" autocomplete="off" name="fdata[name]"
 						placeholder="Unique name. No special chars."
-						value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+						value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
 				<label class="uk-form-label" for="description">Description</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="description" type="text" autocomplete="off" name="fdata[description]"
-						   value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+						   value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
@@ -88,7 +88,7 @@
 					<select class="uk-select" id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
 						<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['id']; ?>"
-						<?php if(Summoner::ifset($TemplateData['editData']['advancedSearchTableFields'], $v['id'])) echo 'selected'; ?>
+						<?php if(isset($TemplateData['editData']['advancedSearchTableFields'][$v['id']])) echo 'selected'; ?>
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -105,7 +105,7 @@
 						<option value="">None</option>
 						<?php foreach($TemplateData['toolSelection'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-						<?php if(Summoner::ifset($TemplateData['editData']['tool'],$k)) echo 'selected'; ?>
+						<?php if(isset($TemplateData['editData']['tool'][$k])) echo 'selected'; ?>
 						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -176,7 +176,7 @@
 					</table>
 				</div>
 			</div>
-			<?php if(Summoner::ifset($TemplateData['editData'], 'name')) { ?>
+			<?php if(isset($TemplateData['editData']['name'])) { ?>
 			<div class="uk-margin">
 				<div class="uk-form-label">Update entry with collection rights</div>
 				<div class="uk-form-controls uk-form-controls-text">

@@ -9,7 +9,7 @@
 		<label  for="search">Search ISBN</label>
 		<input id="search" type="text" autocomplete="off"
 		       name="fdata[search]"
-		       value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'isbn'); ?>"
+		       value="<?php echo $TemplateData['editEntry']['isbn'] ?? ''; ?>"
 		/>
 	</div>
 	<div class="field-row-stacked">

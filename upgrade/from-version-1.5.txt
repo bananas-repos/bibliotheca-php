@@ -2,7 +2,7 @@
 As of version 1.6, the field 'Combined Search' provides a much better search base.
 How to change and use new field: Run the following sql query. Replace #REPLACEME# with the used DB prefix.
 ```
-INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '1', '1', 'rw-r--r--');
+INSERT INTO `bib_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '1', '1', 'rw-r--r--');
 ```
 Add the new field 'Combined Search' to a collection.
 Change the 'Default gloabal seach field' to 'Combined search' and save.

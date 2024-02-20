@@ -40,10 +40,9 @@
 
 <form method="post" onsubmit="return saveOrderAndSubmit()">
 	<input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
-	   value="<?php echo Summoner::ifset($TemplateData['editData'], 'fieldSortString'); ?>">
+	   value="<?php echo $TemplateData['editData']['fieldSortString'] ?? ''; ?>">
 	<input type="submit" name="submitForm" value="Save">
 </form>
-
 
 
 <script src="view/98/ui/js/sortable.js"></script>

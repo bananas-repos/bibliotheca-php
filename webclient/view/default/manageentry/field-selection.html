@@ -9,7 +9,7 @@
 			><?php echo $v; ?></option>
 			<?php } ?>
 		</select>
-		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+		<?php if(isset($field['bulkedit'])) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 			<option value="">Select bulk edit option</option>
 			<option value="replace">Replace</option>

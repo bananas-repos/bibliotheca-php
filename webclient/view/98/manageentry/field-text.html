@@ -1,14 +1,14 @@
 <div class="field-row-stacked">
 	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?>
-		(<span id="<?php echo $field['identifier']; ?>_counter"><?php echo 128-strlen(Summoner::ifset($TemplateData['editData'], $field['identifier'])); ?></span>)
+		(<span id="<?php echo $field['identifier']; ?>_counter"><?php echo 128-strlen($TemplateData['editData'][$field['identifier']] ?? ''); ?></span>)
 	</label>
 	<input id="<?php echo $field['identifier']; ?>" type="text" autocomplete="off"
 	   name="fdata[<?php echo $field['identifier']; ?>]"
-	   value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+	   value="<?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?>"
        maxlength="128"
 	/>
 
-	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<?php if(isset($field['bulkedit'])) { ?>
 	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
 		<option value="">Select bulk edit option</option>
 		<option value="add">Add</option>

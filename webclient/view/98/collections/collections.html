@@ -56,7 +56,7 @@
 <?php } ?>
 
 <?php if(!empty($TemplateData['entries'])) { ?>
-<h3><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></h3>
+<h3><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></h3>
 <div class="sunken-panel">
 	<table width="100%">
 		<thead>
@@ -71,7 +71,7 @@
 		<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
 			<tr>
 				<td>
-					<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+					<?php if(isset($entry['fields']['coverimage'])) { ?>
 					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
 						<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
 						     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>"
@@ -80,12 +80,12 @@
 					<?php } ?>
 				</td>
 				<td>
-					<?php if(Summoner::ifset($entry['fields'], 'title')) {
+					<?php if(isset($entry['fields']['title'])) {
 								echo $entry['fields']['title']['value'];
 							} ?>
 				</td>
 				<td>
-					<?php if(Summoner::ifset($entry['fields'], array('description','value'))) {
+					<?php if(isset($entry['fields']['description']['value'])) {
 								echo $entry['fields']['description']['value'];
 							} ?>
 				</td>

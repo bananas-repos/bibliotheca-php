@@ -5,15 +5,15 @@
 	<div class="field-row-stacked">
 		<label for="name">Name *</label>
 		<input id="name" type="text" autocomplete="off" name="fdata[name]"
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+			value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
 		<label for="description">Description *</label>
 		<input id="description" type="text" autocomplete="off" name="fdata[description]"
-		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+		       value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
 	</div>
 
-	<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+	<?php if(isset($TemplateData['editData']['name']) && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
 	<div class="field-row-stacked">
 		<p>
 			Warning: Content owned by this group will not be deleted and thus only manageable by admin!<br />

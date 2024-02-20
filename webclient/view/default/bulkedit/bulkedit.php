@@ -62,9 +62,7 @@ if(!empty($_collection)) {
 
 				if (!empty($fdata)) {
 					foreach ($TemplateData['editFields'] as $fieldId=>$fieldData) {
-						if(isset($fdata['additionalEditOption'][$fieldData['identifier']])
-							&& !empty($fdata['additionalEditOption'][$fieldData['identifier']])) {
-
+						if(isset($fdata['additionalEditOption'][$fieldData['identifier']])) {
 							$fieldData['bulkeditMethod'] = $fdata['additionalEditOption'][$fieldData['identifier']];
 							if(isset($fdata[$fieldData['identifier']])) {
 								$_value = trim($fdata[$fieldData['identifier']]);
