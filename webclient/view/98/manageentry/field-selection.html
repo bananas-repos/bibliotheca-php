@@ -4,7 +4,7 @@
 		<option value="">Please select</option>
 		<?php foreach($field['options'] as $k=>$v) { ?>
 		<option value="<?php echo $v; ?>"
-			<?php if(Summoner::ifsetValue($TemplateData['editData'], $field['identifier'],$v)) echo 'selected'; ?>
+			<?php echo ($TemplateData['editData'][$field['identifier']] ?? '') == $v ? 'selected' : ''; ?>
 		><?php echo $v; ?></option>
 		<?php } ?>
 	</select>

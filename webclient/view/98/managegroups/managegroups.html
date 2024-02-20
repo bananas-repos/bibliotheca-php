@@ -13,7 +13,7 @@
 		       value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
 	</div>
 
-	<?php if(isset($TemplateData['editData']['name']) && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+	<?php if(isset($TemplateData['editData']['name']) && (($TemplateData['editData']['protected'] ?? '') == '0' ? true : false)) { ?>
 	<div class="field-row-stacked">
 		<p>
 			Warning: Content owned by this group will not be deleted and thus only manageable by admin!<br />

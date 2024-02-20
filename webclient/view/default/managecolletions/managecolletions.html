@@ -30,7 +30,7 @@
 						<option value="">Please select</option>
 						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['identifier']; ?>"
-						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSearchField', $v['identifier'])) echo 'selected'; ?>
+						<?php ($TemplateData['editData']['defaultSearchField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -67,7 +67,7 @@
 						<option value="">Please select</option>
 						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['identifier']; ?>"
-						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'defaultSortField', $v['identifier'])) echo 'selected'; ?>
+						<?php echo ($TemplateData['editData']['defaultSortField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -119,7 +119,7 @@
 						<option value="">Please select</option>
 						<?php foreach($TemplateData['ownerSelection'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-						<?php if(Summoner::ifsetValue($TemplateData['editData'], 'owner',$k)) echo 'selected'; ?>
+						<?php echo ($TemplateData['editData']['owner'] ?? '') == $k ? 'selected' : ''; ?>
 						><?php echo $v['login']; ?> (<?php echo $v['name']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -132,7 +132,7 @@
 						<option value="">Please select</option>
 						<?php foreach($TemplateData['groupSelection'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'group',$k)) echo 'selected'; ?>
+							<?php echo ($TemplateData['editData']['group'] ?? '') == $k ? 'selected' : ''; ?>
 						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -150,27 +150,27 @@
 						<tr>
 							<td>
 								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][read]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['user']['read'] ?? '') == 'r' ? "checked" : ""; ?>></label>
 								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][write]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['user']['write'] ?? '') == 'w' ? "checked" : ""; ?>></label>
 								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][delete]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['user']['delete'] ?? '') == 'x' ? "checked" : ""; ?>></label>
 							</td>
 							<td>
 								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][read]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['group']['read'] ?? '') == 'r' ? "checked" : ""; ?>></label>
 								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][write]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['group']['write'] ?? '') == 'w' ? "checked" : ""; ?>></label>
 								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][delete]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['group']['delete'] ?? '') == 'x' ? "checked" : ""; ?>></label>
 							</td>
 							<td>
 								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][read]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['other']['read'] ?? '') == 'r' ? "checked" : ""; ?>></label>
 								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][write]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['other']['write'] ?? '') == 'w' ? "checked" : ""; ?>></label>
 								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][delete]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['other']['delete'] ?? '') == 'x' ? "checked" : ""; ?>></label>
 							</td>
 						</tr>
 					</table>

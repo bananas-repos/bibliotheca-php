@@ -30,7 +30,7 @@
 						<option value="">Please select</option>
 						<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'baseGroupId',$k)) echo 'selected'; ?>
+							<?php echo ($TemplateData['editData']['baseGroupId'] ?? '') == $k ? 'selected' : ''; ?>
 							><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 						<?php } ?>
 					</select>
@@ -59,7 +59,7 @@
 					</label>
 				</div>
 			</div>
-			<?php if(isset($TemplateData['editData']['name']) && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+			<?php if(isset($TemplateData['editData']['name']) && (($TemplateData['editData']['protected'] ?? '') == '0' ? true : false)) { ?>
 			<div class="uk-margin">
 				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">

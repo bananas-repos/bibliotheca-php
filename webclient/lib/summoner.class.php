@@ -436,22 +436,7 @@ class Summoner {
             return isset($array[$key]) ? $array[$key] : false;
         }
     }
-
-    /**
-     * based on self::ifset check also the value
-     *
-     * @param array $array The array to use
-     * @param string $key The key to check
-     * @param string $value The value to compare
-     * @return bool
-     */
-    static function ifsetValue(array $array, string $key, string $value): bool {
-        if(self::ifset($array,$key) !== false) {
-            return $array[$key] == $value;
-        }
-        return false;
-    }
-
+    
     /**
      * Replace in $haystack the $needle with $replace only once
      *

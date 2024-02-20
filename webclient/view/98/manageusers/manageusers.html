@@ -22,7 +22,7 @@
 			<option value="">Please select</option>
 			<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
 			<option value="<?php echo $k; ?>"
-				<?php if(Summoner::ifsetValue($TemplateData['editData'], 'baseGroupId',$k)) echo 'selected'; ?>
+				<?php ($TemplateData['editData']['baseGroupId'] ?? '') == $k ? 'selected' : ''; ?>
 				><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 			<?php } ?>
 		</select>
@@ -44,7 +44,7 @@
 			<?php if(isset($TemplateData['editData']['active'])) echo "checked"; ?>>
 		<label for="active">Can login</label>
 	</div>
-	<?php if(isset($TemplateData['editData']['name']) && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+	<?php if(isset($TemplateData['editData']['name']) && (($TemplateData['editData']['protected'] ?? '') == '0' ? true : false)) { ?>
 	<div class="field-row-stacked">
 		<input id="delete" type="checkbox" name="fdata[doDelete]" value="1">
 		<label for="delete">Delete.</label>
