@@ -6,7 +6,7 @@
 		/>
 
 		<?php if(isset($TemplateData['editData'][$field['identifier']])) { ?>
-		<?php echo '<a href="'.$TemplateData['storagePath'].'/'.$TemplateData['editData'][$field['identifier']] ?? ''.'">'.$TemplateData['editData'][$field['identifier']] ?? ''.'</a>'; ?>
+		<a target="_blank" href="<?php echo $TemplateData['storagePath'].'/'.$TemplateData['editData'][$field['identifier']]; ?>"><?php echo $TemplateData['editData'][$field['identifier']]; ?></a>
 		<input type="checkbox" value="<?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?>"
 			   name="fdata[<?php echo $field['identifier']; ?>_delete]"
 			   title="Delete"

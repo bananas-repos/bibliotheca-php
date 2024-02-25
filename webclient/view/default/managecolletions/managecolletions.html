@@ -30,8 +30,9 @@
 						<option value="">Please select</option>
 						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['identifier']; ?>"
-						<?php ($TemplateData['editData']['defaultSearchField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
-						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+							<?php echo ($TemplateData['editData']['defaultSearchField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
+						>
+						<?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
 					<small>

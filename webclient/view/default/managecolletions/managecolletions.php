@@ -144,6 +144,5 @@ if(isset($_POST['submitForm'])) {
 				}
 			}
 		}
-
 	}
 }

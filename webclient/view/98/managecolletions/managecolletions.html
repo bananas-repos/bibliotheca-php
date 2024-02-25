@@ -1,5 +1,39 @@
 <h3>Manage your collections</h3>
 <h4>Add or modify a collection</h4>
+
+<h4>Available collections</h4>
+<div class="sunken-panel">
+	<table width="100%">
+		<thead>
+		<tr>
+			<th width="200px">Name</th>
+			<th>Created</th>
+			<th>Description</th>
+			<th>Owner</th>
+			<th>Group</th>
+			<th>Rights</th>
+			<th>Collection</th>
+			<th>Fields</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
+		<tr>
+			<td><?php echo $v['name']; ?></td>
+			<td><?php echo $v['created']; ?></td>
+			<td><?php echo $v['description']; ?></td>
+			<td><?php echo $v['username']; ?></td>
+			<td><?php echo $v['groupname']; ?></td>
+			<td><?php echo $v['rights']; ?></td>
+			<td><a href="index.php?p=managecolletions&m=edit&id=<?php echo $k; ?>">Edit</a></td>
+			<td><a href="index.php?p=managecollectionfields&id=<?php echo $k; ?>">Edit</a></td>
+		</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+</div>
+<p>&nbsp;</p>
+
 <blockquote>
 	Any default field or any option which needs a field, get its values after the fields are configured.
 </blockquote>
@@ -20,9 +54,9 @@
 		<label for="defaultSearchField">Default global search field</label>
 		<select id="defaultSearchField" name="fdata[defaultSearchField]">
 			<option value="">Please select</option>
-			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
+			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { var_dump($v); ?>
 			<option value="<?php echo $v['identifier']; ?>"
-			<?php if(isset($TemplateData['editData']['defaultSearchField'][$v['identifier']])) echo 'selected'; ?>
+				<?php echo ($TemplateData['editData']['defaultSearchField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
 			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
@@ -49,7 +83,7 @@
 			<option value="">Please select</option>
 			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['identifier']; ?>"
-			<?php if(isset($TemplateData['editData']['defaultSortField'][$v['identifier']])) echo 'selected'; ?>
+				<?php echo ($TemplateData['editData']['defaultSortField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
 			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
@@ -184,35 +218,3 @@
 		<input type="submit" name="submitForm" value="Save" />
 	</div>
 </form>
-
-<h4>Available collections</h4>
-<div class="sunken-panel">
-	<table width="100%">
-		<thead>
-			<tr>
-				<th width="200px">Name</th>
-				<th>Created</th>
-				<th>Description</th>
-				<th>Owner</th>
-				<th>Group</th>
-				<th>Rights</th>
-				<th>Collection</th>
-				<th>Fields</th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
-			<tr>
-				<td><?php echo $v['name']; ?></td>
-				<td><?php echo $v['created']; ?></td>
-				<td><?php echo $v['description']; ?></td>
-				<td><?php echo $v['username']; ?></td>
-				<td><?php echo $v['groupname']; ?></td>
-				<td><?php echo $v['rights']; ?></td>
-				<td><a href="index.php?p=managecolletions&m=edit&id=<?php echo $k; ?>">Edit</a></td>
-				<td><a href="index.php?p=managecollectionfields&id=<?php echo $k; ?>">Edit</a></td>
-			</tr>
-			<?php } ?>
-		</tbody>
-	</table>
-</div>
