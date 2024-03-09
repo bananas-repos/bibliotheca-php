@@ -1,24 +1,17 @@
+# User and group management
+
 Groups or default users can not be changed.
 
-Default users are:
+Default users are and should not be changed or removed:
+ 
+`admin` : The admin user.
+`anonymoose` : The guest user.
 
-admin
-Should not be changed or removed.
+Default user groups are and Should not be changed or removed: 
 
-anonymoose
-The guest user. Should not be changed or removed.
-
-
-Default user groups are:
-
-Administration
-Default admin user group. Should not be changed or removed.
-
-Users
-Default user group. Should not be changed or removed.
-
-Anonymous
-Guest user group. Should not be changed or removed.
+`Administration` : Default admin user group. 
+`Users` : Default user group. Should not be changed or removed.
+`Anonymous` : Guest user group. Should not be changed or removed.
 
 
 ## Rights

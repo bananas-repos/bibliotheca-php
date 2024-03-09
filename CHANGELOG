@@ -3,6 +3,7 @@
     * User- and groupmanagement: Check if in use before deletion.
     * Removed legacy ifset method and replace with ??
     * Removed legacy ifsetvalue method.
+    * Made documentation files markdown.
 
 
 1.6 - Chizra 2024-02-03

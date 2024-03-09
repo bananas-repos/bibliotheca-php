@@ -1,6 +1,5 @@
 * Better error handling and display while adding / update and delete
 ** Maybe some message "store"
-* make documentation markdown to be nicer
 * change multiple-attachment to a field which tells it is used for a image gallery
 * i18n support
 * Export of an entry, collection or everything. Stored on disk.
