@@ -1,10 +1,12 @@
 1.x - The Ceremonial Chambers
+    * Added i18n. Please read the upgrade file for more information. English and german are available
     * Added group infos to profile view.
+    * Added compact theme. Based on default, but with less space.
     * User- and groupmanagement: Check if in use before deletion.
     * Removed legacy ifset method and replace with ??
     * Removed legacy ifsetvalue method.
     * Made documentation files markdown.
-
+    * Updated to uikit-3.19.2
 
 1.6 - Chizra 2024-02-03
     * Config change. Added new entries. See upgrade/from-version-1.5.txt. It won't work if it is missing.

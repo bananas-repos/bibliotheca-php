@@ -1,5 +1,16 @@
+# Config changes
+
+Add the following lines to your `config.php`.
+```
+# language setting
+# see i18n.md file for syntax
+const FRONTEND_LANGUAGE = array('iso3' => 'eng', 'iso2' => 'en');
+```
+
 # DB changes. Run each line against your bibliotheca DB.
+
 Replace #REPLACEME# with your table prefix. Default is bib
 ```
 UPDATE `#REPLACEME#_sys_fields` SET `value` = 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', `apiinfo` = 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11' WHERE `#REPLACEME#_sys_fields`.`id` = 17;
+UPDATE `#REPLACEME#_menu` SET `action` = 'dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
 ```

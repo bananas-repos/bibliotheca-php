@@ -29,7 +29,7 @@ if(!empty($_collection)) {
 $_menuShow = $Gorenest->get('show');
 $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 ?>
-<nav class="uk-navbar-container" uk-navbar>
+<nav class="uk-container uk-container-expand uk-navbar-container" uk-navbar>
 	<div class="uk-navbar-left">
 		<ul class="uk-navbar-nav">
 			<li class="uk-parent">

@@ -144,7 +144,6 @@ class Manageentry {
 						$ret['_canDelete'] = $this->_canDelete($entryId);
 						$ret['_isOwner'] = $this->_isOwner($result);
 					}
-
 				}
 			}
 			catch (Exception $e) {
