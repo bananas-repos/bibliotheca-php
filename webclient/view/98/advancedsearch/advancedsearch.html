@@ -48,16 +48,13 @@
 	<?php if(!empty($TemplateData['search'])) { ?>
 		<div class="window">
 			<div class="title-bar">
-				<div class="title-bar-text">Search</div>
+				<div class="title-bar-text"><?php echo $I18n->t('global.search'); ?></div>
 				<div class="title-bar-controls">
 					<button aria-label="Close" id="searchNoteWindowCloseButton"></button>
 				</div>
 			</div>
 			<div class="window-body">
-				<p>
-					Display result for: <b><?php echo $TemplateData['search']; ?></b><br>
-					(Max. result of 60)
-				</p>
+				<p><?php echo $I18n->t('advsearch.result', $TemplateData['search'] ?? ''); ?></p>
 			</div>
 		</div>
 		<script>
@@ -74,7 +71,7 @@
 			<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
 			<?php } ?>
 			<div class="field-row">
-				<input type="submit" value="Bulkedit these results">
+				<input type="submit" value="<?php echo $I18n->t('advsearch.submit.bulkedit'); ?>">
 			</div>
 		</form>
 
@@ -82,7 +79,7 @@
 			<table width="100%">
 				<thead>
 				<tr>
-					<th width="60px">View</th>
+					<th width="60px"><?php echo $I18n->t('global.view'); ?></th>
 					<?php
 					foreach($TemplateData['collectionFields'] as $f) {
 						if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
@@ -97,7 +94,7 @@
 				<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
 				<tr>
 					<td>
-						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">View</a>
+						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>"><?php echo $I18n->t('global.view'); ?></a>
 					</td>
 
 					<?php

@@ -3,9 +3,7 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div uk-alert id="searchNotice">
 	<button class="uk-alert-close" type="button" uk-close></button>
-	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b><br />
-		<small>(Max. result of 60)</small>
-	</p>
+	<p><?php echo $I18n->t('advsearch.result', $TemplateData['search'] ?? ''); ?></p>
 </div>
 <div class="uk-padding-small uk-padding-remove-left">
 	<script type="text/javascript">
@@ -14,13 +12,13 @@
 		});
 	</script>
 	<button class="uk-button uk-button-default uk-button-small"
-	        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden">Toggle search</button>
+	        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden"><?php echo $I18n->t('advsearch.togglesearch'); ?></button>
 	<?php if(!empty($TemplateData['entries']) && $Doomguy->isSignedIn() === true) { ?>
 	<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>" class="uk-display-inline-block">
 		<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
 		<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
 		<?php } ?>
-		<button type="submit" class="uk-button uk-button-default uk-button-small">Bulkedit these results</button>
+		<button type="submit" class="uk-button uk-button-default uk-button-small"><?php echo $I18n->t('advsearch.submit.bulkedit'); ?></button>
 	</form>
 	<?php } ?>
 </div>
@@ -39,11 +37,11 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Table view</div>
+				<div class="uk-form-label"><?php echo $I18n->t('advsearch.input.tableview'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[tableView]" value="1"><br>
-						<small>Make sure to define the fields which will be used in table view in collection config</small>
+						<small><?php echo $I18n->t('advsearch.tableview.description'); ?></small>
 					</label>
 				</div>
 			</div>
@@ -155,7 +153,7 @@
 					<?php } ?>
 				</div>
 				<div class="uk-card-footer">
-					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text" target=_blank>View</a>
+					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text" target=_blank><?php echo $I18n->t('global.view'); ?></a>
 				</div>
 			</div>
 		</div>
