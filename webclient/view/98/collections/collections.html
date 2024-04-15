@@ -10,9 +10,9 @@
 		?>
 		<select name="s">
 			<?php if(!empty($TemplateData['defaultSortField'])) { ?>
-			<option value="<?php echo $TemplateData['defaultSortField']; ?>">Default</option>
+			<option value="<?php echo $TemplateData['defaultSortField']; ?>"><?php echo $I18n->t('pagination.select.sort.default'); ?></option>
 			<?php } else { ?>
-			<option value="">Latest</option>
+			<option value=""><?php echo $I18n->t('pagination.select.sort.latest'); ?></option>
 			<?php } ?>
 
 			<?php
@@ -26,10 +26,10 @@
 			?>
 		</select>
 		<select name="sd">
-			<option value="ASC" <?php echo ($TemplateData['pagination']['currentGetParameters']['sd'] ?? '') == 'ASC' ? 'selected' : '' ?>>ascending</option>
-			<option value="DESC" <?php echo ($TemplateData['pagination']['currentGetParameters']['sd'] ?? '') == 'DESC' ? 'selected' : '' ?>>descending</option>
+			<option value="ASC" <?php echo ($TemplateData['pagination']['currentGetParameters']['sd'] ?? '') == 'ASC' ? 'selected' : '' ?>><?php echo $I18n->t('global.ascending'); ?></option>
+			<option value="DESC" <?php echo ($TemplateData['pagination']['currentGetParameters']['sd'] ?? '') == 'DESC' ? 'selected' : '' ?>><?php echo $I18n->t('global.descending'); ?></option>
 		</select>
-		<input type="submit" value="Sort" />
+		<input type="submit" value="<?php echo $I18n->t('global.sort'); ?>" />
 	</form>
 	<?php } ?>
 
@@ -38,13 +38,13 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div class="window">
 	<div class="title-bar">
-		<div class="title-bar-text">Search</div>
+		<div class="title-bar-text"><?php echo $I18n->t('global.search'); ?></div>
 		<div class="title-bar-controls">
 			<button aria-label="Close" id="searchNoteWindowCloseButton"></button>
 		</div>
 	</div>
 	<div class="window-body">
-		<p>Display result for: <b><?php echo $TemplateData['search']; ?></b></p>
+		<p><?php echo $I18n->t('global.search.resultfor', $TemplateData['search'] ?? ''); ?></p>
 	</div>
 </div>
 <script>
@@ -61,10 +61,10 @@
 	<table width="100%">
 		<thead>
 		<tr>
-			<th width="60px">Image</th>
-			<th width="300px">Title</th>
-			<th>Description</th>
-			<th width="60px">View</th>
+			<th width="60px"><?php echo $I18n->t('global.image'); ?></th>
+			<th width="300px"><?php echo $I18n->t('global.title'); ?></th>
+			<th><?php echo $I18n->t('global.description'); ?></th>
+			<th width="60px"><?php echo $I18n->t('global.sort'); ?></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -90,22 +90,21 @@
 							} ?>
 				</td>
 				<td>
-					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">View</a>
+					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>"><?php echo $I18n->t('global.view'); ?></a>
 				</td>
 			</tr>
 		<?php } ?>
 		</tbody>
-		</tbody>
 	</table>
 </div>
 <?php } elseif(!empty($TemplateData['collections'])) { ?>
-<h3>Please select a collection first</h3>
+<h3><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 <div class="sunken-panel">
 	<table width="100%">
 		<thead>
 		<tr>
-			<th width="100px">Name</th>
-			<th>Description</th>
+			<th width="100px"><?php echo $I18n->t('global.name'); ?></th>
+			<th><?php echo $I18n->t('global.description'); ?></th>
 		</tr>
 		</thead>
 		<tbody>

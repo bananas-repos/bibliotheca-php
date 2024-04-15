@@ -8,13 +8,13 @@
 	<div class="uk-width-2-3">
 		<?php if(!isset($TemplateData['pagination']['hideSort'])) { ?>
 		<div class="uk-inline">
-			<button class="uk-button uk-button-default uk-button-small" type="button">Sort</button>
+			<button class="uk-button uk-button-default uk-button-small" type="button"><?php echo $I18n->t('global.sort'); ?></button>
 			<div uk-dropdown>
 				<ul class="uk-nav uk-dropdown-nav">
 					<?php if(!empty($TemplateData['defaultSortField'])) { ?>
-					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>$TemplateData['defaultSortField'],'sd'=>$TemplateData['defaultSortOrder'])); ?>">Default</a></li>
+					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>$TemplateData['defaultSortField'],'sd'=>$TemplateData['defaultSortOrder'])); ?>"><?php echo $I18n->t('pagination.select.sort.default'); ?></a></li>
 					<?php } else { ?>
-					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>'','sd'=>'ASC')); ?>">Latest</a></li>
+					<li><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>'','sd'=>'ASC')); ?>"><?php echo $I18n->t('pagination.select.sort.latest'); ?></a></li>
 					<?php } ?>
 
 					<?php
@@ -41,7 +41,7 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div uk-alert id="searchNotice">
 	<button class="uk-alert-close" type="button" uk-close></button>
-	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b></p>
+	<p><?php echo $I18n->t('global.search.resultfor', $TemplateData['search'] ?? ''); ?></p>
 </div>
 <script type="text/javascript">
 	UIkit.util.on('#searchNotice', 'hide', function () {
@@ -74,14 +74,14 @@
 				<?php } ?>
 			</div>
 			<div class="uk-card-footer">
-				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text">View</a>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text"><?php echo $I18n->t('global.View'); ?></a>
 			</div>
 		</div>
 	</div>
 	<?php } ?>
 </div>
 <?php } elseif(!empty($TemplateData['collections'])) { ?>
-<h3 class="uk-h3">Please select a collection first</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-2-3@m uk-width-1-2@xl">
 		<dl class="uk-description-list uk-description-list-divider">
