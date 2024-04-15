@@ -436,7 +436,7 @@ class Summoner {
             return isset($array[$key]) ? $array[$key] : false;
         }
     }
-    
+
     /**
      * Replace in $haystack the $needle with $replace only once
      *
