@@ -1,13 +1,13 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div class="window">
 	<div class="title-bar">
-		<div class="title-bar-text">Search</div>
+		<div class="title-bar-text"><?php echo $I18n->t('global.search'); ?></div>
 		<div class="title-bar-controls">
-			<button aria-label="Close" id="searchNoteWindowCloseButton"></button>
+			<button aria-label="<?php echo $I18n->t('global.close'); ?>" id="searchNoteWindowCloseButton"></button>
 		</div>
 	</div>
 	<div class="window-body">
-		<p>Display result for: <b><?php echo $TemplateData['search']; ?></b></p>
+		<p><?php echo $I18n->t('global.search.resultfor', $TemplateData['search'] ?? ''); ?></p>
 	</div>
 </div>
 <script>
@@ -28,10 +28,10 @@
 		<table width="100%">
 			<thead>
 				<tr>
-					<th width="60px">Image</th>
-					<th width="300px">Title</th>
-					<th>Description</th>
-					<th width="60px">View</th>
+					<th width="60px"><?php echo $I18n->t('global.image'); ?></th>
+					<th width="300px"><?php echo $I18n->t('global.title'); ?></th>
+					<th><?php echo $I18n->t('global.description'); ?></th>
+					<th width="60px"><?php echo $I18n->t('global.view'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -57,7 +57,7 @@
 						} ?>
 					</td>
 					<td>
-						<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>">View</a>
+						<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>"><?php echo $I18n->t('global.view'); ?></a>
 					</td>
 				</tr>
 			<?php } ?>

@@ -1,7 +1,7 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div uk-alert id="searchNotice">
 	<button class="uk-alert-close" type="button" uk-close></button>
-	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b></p>
+	<p><?php echo $I18n->t('global.search.resultfor', $TemplateData['search'] ?? ''); ?></p>
 </div>
 <script type="text/javascript">
 	UIkit.util.on('#searchNotice', 'hide', function () {
@@ -41,7 +41,7 @@
 					<?php } ?>
 				</div>
 				<div class="uk-card-footer">
-					<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text">View</a>
+					<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text"><?php echo $I18n->t('global.view'); ?></a>
 				</div>
 			</div>
 		</div>

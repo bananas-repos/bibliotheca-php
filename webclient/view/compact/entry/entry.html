@@ -3,7 +3,7 @@
 	<li><a href="index.php?p=collections" class="uk-icon-link" uk-icon="database"></a></li>
 	<li><a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>"><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></a></li>
 	<?php if($TemplateData['showEdit'] === true) { ?>
-	<li><a href="index.php?p=manageentry&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&id=<?php echo $TemplateData['entry']['id']; ?>">Edit</a></li>
+	<li><a href="index.php?p=manageentry&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&id=<?php echo $TemplateData['entry']['id']; ?>"><?php echo $I18n->t('global.edit'); ?></a></li>
 	<?php } ?>
 </ul>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>

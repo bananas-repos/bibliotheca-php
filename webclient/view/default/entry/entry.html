@@ -3,7 +3,7 @@
 	<div class="uk-width-1-2@l">
 		<article class="uk-article">
 			<?php if($TemplateData['showEdit'] === true) { ?>
-			<p class="uk-article-meta"><a href="index.php?p=manageentry&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&id=<?php echo $TemplateData['entry']['id']; ?>">EDIT</a></p>
+			<p class="uk-article-meta"><a href="index.php?p=manageentry&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>&id=<?php echo $TemplateData['entry']['id']; ?>"><?php echo $I18n->t('global.search'); ?></a></p>
 			<?php
 			}
 
