@@ -32,10 +32,10 @@
 	<div class="uk-width-1-2@l">
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="search">Search for</label>
+				<label class="uk-form-label" for="search"><?php echo $I18n->t('advsearch.input.search.label'); ?></label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="search" type="text" autocomplete="off" name="fdata[search]"
-					       placeholder="See search syntax for options">
+					       placeholder="<?php echo $I18n->t('advsearch.input.search.placeholder'); ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
@@ -50,20 +50,17 @@
 
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Search
+					<?php echo $I18n->t('global.search'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
 	<div class="uk-width-1-2@l">
-		<h4>Syntax</h4>
-		<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
-		<p>
-			To search within the possible fields of a collection type the field identifier followed by : and then a space. Not every search operator does make sense with tag search fields.
-			If the search is within a field witch is not configured to be displayed in the table view, it will be added.
-		</p>
+		<h4><?php echo $I18n->t('advsearch.headline.syntax'); ?></h4>
+		<p><?php echo $I18n->t('advsearch.help.1'); ?></p>
+		<p><?php echo $I18n->t('advsearch.help.2'); ?></p>
 		eg.: <code>title: bourne</code>
-		<p>Available fields in <b><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></b> are:</p>
+		<p><?php echo $I18n->t('advsearch.explain.fields', $TemplateData['loadedCollection']['name'] ?? ''); ?></p>
 		<pre style="white-space: normal">
 		<?php
 		foreach($TemplateData['collectionFields'] as $k=>$v) {
@@ -71,16 +68,13 @@
 		}
 		?>
 		</pre>
-		<p>Possible search operators:</p>
-		<p>
-			* = The asterisk serves as the truncation (or wildcard) operator. Unlike the other operators,
-			it is appended to the word to be affected. Words match if they begin with the word preceding the * operator.
-		</p>
-		<p>+ = A leading plus sign indicates that this word must be present in each row that is returned.</p>
-		<p>- = A leading minus sign indicates that this word must not be present in any of the rows that are returned.</p>
-		<p>" = A phrase that is enclosed within double quote (") characters matches only rows that contain the phrase literally, as it was typed.</p>
-		<p>&gt; = A leading greater than sign indicates that rows greater than the number will be returned.</p>
-		<p>&lt; = A leading less than sign indicates that rows smaller than the number will be returned.</p>
+		<p><?php echo $I18n->t('advsearch.operators'); ?></p>
+		<p>* = <?php echo $I18n->t('advsearch.operators.asterisk'); ?></p>
+		<p>+ = <?php echo $I18n->t('advsearch.operators.plus'); ?></p>
+		<p>- = <?php echo $I18n->t('advsearch.operators.plus'); ?></p>
+		<p>" = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+		<p>&gt; = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+		<p>&lt; = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
 	</div>
 </div>
 
@@ -171,7 +165,7 @@
 <?php } ?>
 
 <?php } else { ?>
-<h3 class="uk-h3">Please select a collection first</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-2-3@m uk-width-1-2@xl">
 		<dl class="uk-description-list uk-description-list-divider">

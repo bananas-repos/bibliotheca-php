@@ -3,17 +3,17 @@
 
 <form method="post" class="maxSizeForm">
 	<div class="field-row-stacked">
-		<label for="username">Username *</label>
+		<label for="username"><?php echo $I18n->t('global.username'); ?> *</label>
 		<input id="username" type="text" autocomplete="off" name="fdata[username]"
 			value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
-		<label for="login">Login *</label>
+		<label for="login"><?php echo $I18n->t('global.login'); ?> *</label>
 		<input id="login" type="text" autocomplete="off" name="fdata[login]"
 			value="<?php echo $TemplateData['editData']['login'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
-		<label for="password">Password *</label>
+		<label for="password"><?php echo $I18n->t('global.password'); ?> *</label>
 		<input id="password" type="password" autocomplete="off" name="fdata[password]">
 	</div>
 	<div class="field-row-stacked">
@@ -71,9 +71,9 @@
 	<table width="100%">
 		<thead>
 			<tr>
-				<th>Login</th>
+				<th><?php echo $I18n->t('global.login'); ?></th>
 				<th>Created</th>
-				<th>Username</th>
+				<th><?php echo $I18n->t('global.username'); ?></th>
 				<th>Group(s)</th>
 				<th>Status</th>
 				<th></th>

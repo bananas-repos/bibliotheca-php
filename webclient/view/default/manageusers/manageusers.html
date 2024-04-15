@@ -4,21 +4,21 @@
 		<h4 class="uk-h4">Add or modify a user</h4>
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="username">Username *</label>
+				<label class="uk-form-label" for="username"><?php echo $I18n->t('global.username'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
 						value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="login">Login *</label>
+				<label class="uk-form-label" for="login"><?php echo $I18n->t('global.login'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="login" type="text" autocomplete="off" name="fdata[login]"
 						value="<?php echo $TemplateData['editData']['login'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="password">Password *</label>
+				<label class="uk-form-label" for="password"><?php echo $I18n->t('global.password'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
 				</div>
@@ -93,8 +93,8 @@
 		<table class="uk-table">
 			<thead>
 				<tr>
-					<th>Login</th>
-					<th>Username</th>
+					<th><?php echo $I18n->t('global.login'); ?></th>
+					<th><?php echo $I18n->t('global.username'); ?></th>
 					<th>Group(s)</th>
 					<th>Status</th>
 					<th></th>

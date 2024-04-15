@@ -1,19 +1,19 @@
 <?php if($Doomguy->isSignedIn() === true) { ?>
-<h3>Logout</h3>
+<h3><?php echo $I18n->t('auth.logout'); ?></h3>
 <form method="get" action="index.php">
 	<input type="hidden" name="p" value="auth" />
 	<input type="hidden" name="m" value="logout" />
 	<input type="submit" value="Logout" />
 </form>
 <?php } else { ?>
-<h3>Login</h3>
+<h3><?php echo $I18n->t('global.login'); ?></h3>
 <form method="post">
 	<div class="field-row">
-		<label for="username">Username</label>
+		<label for="username"><?php echo $I18n->t('global.username'); ?></label>
 		<input id="username" type="text" autocomplete="off" name="fdata[login]">
 	</div>
 	<div class="field-row">
-		<label for="password">Password</label>
+		<label for="password"><?php echo $I18n->t('global.password'); ?></label>
 		<input id="password" type="password" autocomplete="off" name="fdata[password]">
 	</div>
 	<div class="field-row">

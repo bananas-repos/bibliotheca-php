@@ -1,21 +1,21 @@
 <?php if($Doomguy->isSignedIn() === true) { ?>
-<h3 class="uk-h3">Logout</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('auth.logout'); ?></h3>
 <a class="uk-button uk-button-primary" href="index.php?p=auth&m=logout">
 	Logout
 	<span uk-icon="icon: sign-out"></span>
 </a>
 <?php } else { ?>
-<h3 class="uk-h3">Login</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('global.login'); ?></h3>
 <div class="uk-flex uk-flex-wrap uk-flex-wrap-around">
 	<form class="uk-form-horizontal uk-margin-small" method="post">
 		<div class="uk-margin">
-			<label class="uk-form-label" for="username">Username</label>
+			<label class="uk-form-label" for="username"><?php echo $I18n->t('global.username'); ?></label>
 			<div class="uk-form-controls">
 				<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[login]">
 			</div>
 		</div>
 		<div class="uk-margin">
-			<label class="uk-form-label" for="password">Password</label>
+			<label class="uk-form-label" for="password"><?php echo $I18n->t('global.password'); ?></label>
 			<div class="uk-form-controls">
 				<input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
 			</div>
