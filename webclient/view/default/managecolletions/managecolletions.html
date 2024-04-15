@@ -1,33 +1,30 @@
-<h3 class="uk-h3">Manage your collections</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('managecol.managecol'); ?></h3>
 
 <div class="uk-grid-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Add or modify a collection</h4>
-		<p>
-			<span uk-icon="icon: warning"></span> Any default field or any option which needs a field,
-			get its values after the fields are configured.
-		</p>
+		<h4 class="uk-h4"><?php echo $I18n->t('managecol.addmodify'); ?></h4>
+		<p><span uk-icon="icon: warning"></span><?php echo $I18n->t('managecol.defaultfieldvaluenote'); ?></p>
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="name">Name *</label>
+				<label class="uk-form-label" for="name"><?php echo $I18n->t('managecol.input.name'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="name" type="text" autocomplete="off" name="fdata[name]"
-						placeholder="Unique name. No special chars."
+						placeholder="<?php echo $I18n->t('managecol.input.name.placeholder'); ?>"
 						value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="description">Description</label>
+				<label class="uk-form-label" for="description"><?php echo $I18n->t('managecol.input.description'); ?></label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="description" type="text" autocomplete="off" name="fdata[description]"
 						   value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="defaultSearchField">Default global search field</label>
+				<label class="uk-form-label" for="defaultSearchField"><?php echo $I18n->t('managecol.input.defaultsearchfield'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="defaultSearchField" name="fdata[defaultSearchField]">
-						<option value="">Please select</option>
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['identifier']; ?>"
 							<?php echo ($TemplateData['editData']['defaultSearchField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
@@ -35,37 +32,25 @@
 						<?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
-					<small>
-						The field is used in the global search.<br />
-						<span class="" uk-icon="icon: warning"></span> Altering the default search field results in
-						a DB reindex. This could take some time to complete, depending on the amount of data.
-					</small><br />
-					<small>
-						<span class="" uk-icon="icon: warning"></span> As of version 1.6, the field 'Combined Search'
-						provides a much better default search base.<br />
-						Select the field and save. Use the option below to created or update the search data
-						for every entry in this collection.
-					</small>
+					<small><?php echo $I18n->t('managecol.globalsearchhowto'); ?></small><br />
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Update Combined Search field data</div>
+				<div class="uk-form-label"><?php echo $I18n->t('managecol.input.combinedsearch'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[updateSearchData]" value="1">
 						<small>
-							<span class="" uk-icon="icon: warning"></span> This could take some time to complete,
-							depending on the amount of data.
-						</small><br />
-						<small>Plase do this after you remove fields(text) from your collection.</small>
+							<span class="" uk-icon="icon: warning"></span><?php echo $I18n->t('managecol.input.combinedsearch.howto'); ?>
+						</small>
 					</label>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="defaultSortField">Default sort field</label>
+				<label class="uk-form-label" for="defaultSortField"><?php echo $I18n->t('managecol.input.defaultsort'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="defaultSortField" name="fdata[defaultSortField]">
-						<option value="">Please select</option>
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 						<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 						<option value="<?php echo $v['identifier']; ?>"
 						<?php echo ($TemplateData['editData']['defaultSortField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
@@ -75,16 +60,16 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="defaultSortField">Default sort order</label>
+				<label class="uk-form-label" for="defaultSortField"><?php echo $I18n->t('managecol.input.defaultsortorder'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="defaultSortOrder" name="fdata[defaultSortOrder]">
-						<option value="ASC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'ASC' ? 'selected' : '' ?>>ASCENDING</option>
-						<option value="DESC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'DESC' ? 'selected' : '' ?>>DESCENDING</option>
+						<option value="ASC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'ASC' ? 'selected' : '' ?>><?php echo $I18n->t('global.ascending'); ?></option>
+						<option value="DESC" <?php echo ($TemplateData['editData']['defaultSortOrder'] ?? '') == 'DESC' ? 'selected' : '' ?>><?php echo $I18n->t('global.descending'); ?></option>
 					</select>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="advancedSearchTableFields">Advanced search table fields</label>
+				<label class="uk-form-label" for="advancedSearchTableFields"><?php echo $I18n->t('managecol.input.advancedtablesearchfields'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="advancedSearchTableFields" name="fdata[advancedSearchTableFields][]" multiple="multiple" size="5">
 						<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
@@ -93,17 +78,14 @@
 						><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
 						<?php } ?>
 					</select>
-					<small>
-						Make sure that the default global search field is in this list.<br />
-						This does not limit the fields to search in.
-					</small>
+					<small><?php echo $I18n->t('managecol.input.advancedtablesearchfields.howto'); ?></small>
 				</div>
 			</div>
 			<div class="uk-margin">
 				<label class="uk-form-label" for="tool">Tools</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="tool" name="fdata[tool][]" multiple="multiple" size="5">
-						<option value="">None</option>
+						<option value=""><?php echo $I18n->t('global.none'); ?></option>
 						<?php foreach($TemplateData['toolSelection'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
 						<?php if(isset($TemplateData['editData']['tool'][$k])) echo 'selected'; ?>
@@ -114,7 +96,7 @@
 			</div>
 			<hr class="uk-margin-medium">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="owner">Owner *</label>
+				<label class="uk-form-label" for="owner"><?php echo $I18n->t('global.owner'); ?> *</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="owner" name="fdata[owner]">
 						<option value="">Please select</option>
@@ -127,7 +109,7 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="group">Group *</label>
+				<label class="uk-form-label" for="group"><?php echo $I18n->t('global.group'); ?> *</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="group" name="fdata[group]">
 						<option value="">Please select</option>
@@ -140,13 +122,13 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Rights</div>
+				<div class="uk-form-label"><?php echo $I18n->t('global.rights'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<table class="uk-table uk-table-small">
 						<tr>
-							<th>User</th>
-							<th>Group</th>
-							<th>Other</th>
+							<th><?php echo $I18n->t('global.user'); ?></th>
+							<th><?php echo $I18n->t('global.group'); ?></th>
+							<th><?php echo $I18n->t('global.other'); ?></th>
 						</tr>
 						<tr>
 							<td>
@@ -179,39 +161,39 @@
 			</div>
 			<?php if(isset($TemplateData['editData']['name'])) { ?>
 			<div class="uk-margin">
-				<div class="uk-form-label">Update entry with collection rights</div>
+				<div class="uk-form-label"><?php echo $I18n->t('managecol.input.overwriterights'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[doRightsForEntries]" value="1">
-						Warning: This will overwrite existing entry rights (user, group, rights) with the ones from the collection!
+						<?php echo $I18n->t('managecol.input.overwriterights.howto'); ?>
 					</label>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-label"><?php echo $I18n->t('managecol.input.delete'); ?> <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
-						Warning: This will delete ALL the data in this collection!
+						<?php echo $I18n->t('managecol.input.delete.howto'); ?>
 					</label>
 				</div>
 			</div>
 			<?php } ?>
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Save
+					<?php echo $I18n->t('global.save'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Available collections</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('managecol.availcol'); ?></h4>
 		<table class="uk-table">
 			<thead>
 			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Ownership</th>
+				<th><?php echo $I18n->t('global.name'); ?></th>
+				<th><?php echo $I18n->t('global.description'); ?></th>
+				<th><?php echo $I18n->t('global.ownership'); ?></th>
 				<th></th>
 			</tr>
 			</thead>
@@ -229,8 +211,8 @@
 					<span uk-icon="lock"></span> <?php echo $v['rights']; ?>
 				</td>
 				<td>
-					<a href="index.php?p=managecolletions&m=edit&id=<?php echo $k; ?>" uk-icon="pencil" title="Edit"></a>
-					<a href="index.php?p=managecollectionfields&id=<?php echo $k; ?>" uk-icon="list" title="Fields"></a>
+					<a href="index.php?p=managecolletions&m=edit&id=<?php echo $k; ?>" uk-icon="pencil" title="<?php echo $I18n->t('global.edit'); ?>"></a>
+					<a href="index.php?p=managecollectionfields&id=<?php echo $k; ?>" uk-icon="list" title="<?php echo $I18n->t('global.fields'); ?>"></a>
 				</td>
 			</tr>
 			<?php } ?>
