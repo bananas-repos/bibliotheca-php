@@ -1,15 +1,9 @@
-<h3 class="uk-h3">Manage your fields for: <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
+<h3 class="uk-h3"><?php echo $I18n->t('managefields.fieldsfor'); ?> <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
 
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Add or remove a field</h4>
-		<p>
-			Just use drag and drop below to add, remove or order your fields.<br />
-			<span class="" uk-icon="icon: warning"></span> Removing a field will <span class="uk-text-danger">remove</span>
-			the stored data from the collection.<br />
-			<span class="" uk-icon="icon: warning"></span> Make sure at least the <b>title</b>, <b>cover image</b>
-			and <b>description</b> fields are available.
-		</p>
+		<h4 class="uk-h4"><?php echo $I18n->t('managefields.addorremove'); ?></h4>
+		<p><?php echo $I18n->t('managefields.addorremove.description'); ?></p>
 		<div id="collectionFields" uk-sortable="group: sortable-group" class="uk-padding-small uk-padding-remove-left uk-padding-remove-right uk-background-muted">
 			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 			<div data-field-id="<?php echo $k; ?>">
@@ -24,13 +18,13 @@
 			   value="<?php echo $TemplateData['editData']['fieldSortString'] ?? ''; ?>">
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Save
+					<?php echo $I18n->t('global.save'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Available fields</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('managefields.fieldsavailable'); ?></h4>
 		<div uk-sortable="group: sortable-group">
 			<?php foreach($TemplateData['availableFields'] as $k=>$v) { ?>
 			<div data-field-id="<?php echo $k; ?>">

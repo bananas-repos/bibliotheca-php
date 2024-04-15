@@ -1,11 +1,7 @@
-<h3 >Manage your fields for: <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
+<h3><?php echo $I18n->t('managefields.fieldsfor'); ?> <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
 
-<h4 >Add or remove a field</h4>
-<p>
-	Just use drag and drop below to add, remove or order your fields.<br />
-	Removing a field will <b>remove</b> the stored data from the collection.<br />
-	Make sure at least the <b>title</b>, <b>cover image</b> and <b>description</b> fields are available.
-</p>
+<h4><?php echo $I18n->t('managefields.addorremove'); ?></h4>
+<p><?php echo $I18n->t('managefields.addorremove.description'); ?></p>
 
 <div id="sortableContainer">
 	<div class="window">
@@ -24,7 +20,7 @@
 	</div>
 	<div class="window">
 		<div class="title-bar">
-			<div class="title-bar-text">Available fields</div>
+			<div class="title-bar-text"><?php echo $I18n->t('managefields.fieldsavailable'); ?></div>
 		</div>
 		<div class="window-body">
 			<div id="availableFields">
@@ -41,7 +37,7 @@
 <form method="post" onsubmit="return saveOrderAndSubmit()">
 	<input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
 	   value="<?php echo $TemplateData['editData']['fieldSortString'] ?? ''; ?>">
-	<input type="submit" name="submitForm" value="Save">
+	<input type="submit" name="submitForm" value="<?php echo $I18n->t('global.save'); ?>">
 </form>
 
 
