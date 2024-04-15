@@ -2,7 +2,7 @@
 <?php
 if($TemplateData['pagination']['curPage'] > 1) {
 	echo '<a href="index.php?'.Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('page'=>($TemplateData['pagination']['curPage']-1))).'"
-			title="previous">&lt;</a>';
+			title="'.$I18n->t('pagination.previous').'">&lt;</a>';
 }
 $ellipsisShown = 0;
 
@@ -12,7 +12,7 @@ for($i=1;$i<=$TemplateData['pagination']['pages'];$i++) {
 
 	if(in_array($i,$TemplateData['pagination']['visibleRange'])) {
 		echo '<a class="'.$active.'" href="index.php?'.Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('page'=>$i)).'"
-							title="Goto page '.$i.'">'.$i.'</a>';
+							title="'.$I18n->t('pagination.previous') $i.'">'.$i.'</a>';
 	}
 	else {
 		if($i < $TemplateData['pagination']['currentRangeStart'] && $ellipsisShown == 0) {
@@ -28,7 +28,7 @@ for($i=1;$i<=$TemplateData['pagination']['pages'];$i++) {
 
 if($TemplateData['pagination']['curPage'] < $TemplateData['pagination']['pages']) {
 	echo '<a href="index.php?'.Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('page'=>($TemplateData['pagination']['curPage']+1))).'"
-			title="next">&gt;</a>';
+			title="'.$I18n->t('pagination.next').'">&gt;</a>';
 }
 ?>
 </div>
