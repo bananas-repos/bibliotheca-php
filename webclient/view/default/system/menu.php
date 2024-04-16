@@ -33,7 +33,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 	<div class="uk-navbar-left">
 		<ul class="uk-navbar-nav">
 			<li class="uk-parent">
-				<a href="">Show</a>
+				<a href="<?php echo $I18n->t('menu.lv1.show'); ?>"></a>
 				<div class="uk-navbar-dropdown">
 					<ul class="uk-nav uk-navbar-dropdown-nav">
 						<?php foreach($_menuShow as $entry) { ?>
@@ -49,7 +49,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 			</li>
 			<?php if(!empty($_menuManage)) { ?>
 			<li class="uk-parent">
-				<a href="">Manage</a>
+				<a href=""><?php echo $I18n->t('menu.lv1.manage'); ?></a>
 				<div class="uk-navbar-dropdown">
 					<ul class="uk-nav uk-navbar-dropdown-nav">
 						<?php foreach($_menuManage as $entry) { ?>
@@ -66,7 +66,10 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 			<?php } ?>
 			<li>
 				<a href="index.php?p=auth">
-					<?php if($Doomguy->isSignedIn() === true) { echo "Logout"; } else { echo "Login"; } ?>
+					<?php if($Doomguy->isSignedIn() === true) {
+                        echo $I18n->t('auth.logout');
+                    }
+                    else { echo $I18n->t('global.login'); } ?>
 				</a>
 			</li>
 		</ul>
@@ -83,8 +86,8 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 							}
 						}
 					?>
-					<input class="uk-search-input" type="search" placeholder="Search..." name="navSearch" autofocus>
-					<small><a href="index.php?p=advancedsearch">Advanced</a></small>
+					<input class="uk-search-input" type="search" placeholder="<?php echo $I18n->t('menu.search'); ?>" name="navSearch" autofocus>
+					<small><a href="index.php?p=advancedsearch"><?php echo $I18n->t('menu.search.advanced'); ?></a></small>
 				</form>
 			</div>
 		</div>
