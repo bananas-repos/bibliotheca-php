@@ -13,7 +13,7 @@ if(isset($TemplateData['editData'][$field['identifier']])) {
 		foreach($existingFieldValue as $ev) { ?>
 
 		<div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-<?php echo $ev; ?>">
-			<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="click to remove"><span><?php echo $ev; ?></span></a>
+			<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="<?php echo $I18n->t('global.clickremove'); ?>"><span><?php echo $ev; ?></span></a>
 		</div>
 
 	<?php
@@ -25,14 +25,14 @@ if(isset($TemplateData['editData'][$field['identifier']])) {
 		name="<?php echo $field['identifier']; ?>-input"
 		list="<?php echo $field['identifier']; ?>-datalist"
 		onkeypress="addTag(event,'<?php echo $field['identifier']; ?>','<?php echo $field['inputValidation']; ?>')"
-		placeholder="Write and press enter."
+		placeholder="<?php echo $I18n->t('global.writeenter'); ?>"
 	>
 	<?php if(isset($field['bulkedit'])) { ?>
 	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-		<option value="">Select bulk edit option</option>
-		<option value="add">Add</option>
-		<option value="replace">Replace</option>
-		<option value="empty">Clear</option>
+		<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+		<option value="add"><?php echo $I18n->t('manageentry.select.bulkedit.add'); ?></option>
+		<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+		<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 	</select>
 	<?php } ?>
 
@@ -53,5 +53,5 @@ if(isset($TemplateData['editData'][$field['identifier']])) {
 <input type="hidden" name="fdata[<?php echo $field['identifier']; ?>]" id="<?php echo $field['identifier']; ?>-save" value="<?php echo implode(',',$existingFieldValue); ?>" />
 
 <div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-template" style="display: none;">
-	<a onclick="removeTag('','<?php echo $field['identifier']; ?>')" title="click to remove"><span></span></a>
+	<a onclick="removeTag('','<?php echo $field['identifier']; ?>')" title="<?php echo $I18n->t('global.clickremove'); ?>"><span></span></a>
 </div>

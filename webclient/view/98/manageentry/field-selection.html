@@ -11,9 +11,9 @@
 
 	<?php if(isset($field['bulkedit'])) { ?>
 	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-		<option value="">Select bulk edit option</option>
-		<option value="replace">Replace</option>
-		<option value="empty">Clear</option>
+		<<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+		<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+		<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 	</select>
 	<?php } ?>
 </div>

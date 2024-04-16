@@ -6,10 +6,10 @@
 		name="fdata[<?php echo $field['identifier']; ?>]"><?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?></textarea>
 	<?php if(isset($field['bulkedit'])) { ?>
 	<select name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-		<option value="">Select bulk edit option</option>
-		<option value="add">Add</option>
-		<option value="replace">Replace</option>
-		<option value="empty">Clear</option>
+		<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+		<option value="add"><?php echo $I18n->t('manageentry.select.bulkedit.add'); ?></option>
+		<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+		<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 	</select>
 	<?php } ?>
 </div>
