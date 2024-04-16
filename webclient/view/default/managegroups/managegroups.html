@@ -1,17 +1,17 @@
-<h3 class="uk-h3">Group management</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('managegroups.groupmanagement'); ?></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Add or modify a group</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('managegroups.addormodify'); ?></h4>
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="name">Name *</label>
+				<label class="uk-form-label" for="name"><?php echo $I18n->t('managegroups.input.name'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="name" type="text" autocomplete="off" name="fdata[name]"
 					       value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="description">Description *</label>
+				<label class="uk-form-label" for="description"><?php echo $I18n->t('managegroups.input.description'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="description" type="text" autocomplete="off" name="fdata[description]"
 					       value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
@@ -20,30 +20,29 @@
 
 			<?php if(isset($TemplateData['editData']['name']) && (($TemplateData['editData']['protected'] ?? '') == '0' ? true : false)) { ?>
 			<div class="uk-margin">
-				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-label"><?php echo $I18n->t('managegroups.input.delete'); ?> <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
-						Warning: Content owned by this group will not be deleted and thus only manageable by admin!<br />
-						Right now don't do this. Only if you are sure there is no usage of this group.
+						<?php echo $I18n->t('managegroups.input.delete.howto'); ?>
 					</label>
 				</div>
 			</div>
 			<?php } ?>
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Save
+					<?php echo $I18n->t('managegroups.input.save'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Available groups</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('managegroups.availablegroups'); ?></h4>
 		<table class="uk-table">
 			<thead>
 			<tr>
-				<th>Name</th>
-				<th>Description</th>
+				<th><?php echo $I18n->t('global.name'); ?></th>
+				<th><?php echo $I18n->t('global.description'); ?></th>
 				<th></th>
 			</tr>
 			</thead>
