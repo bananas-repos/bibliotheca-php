@@ -20,20 +20,20 @@
 
 if(isset($TemplateData['message']['content'])) {
 	$cssClass = '';
-	$headlineText = 'Information';
+	$headlineText = $I18n->t('message.headline.information');
 	if(isset($TemplateData['message']['status'])) {
 		switch($TemplateData['message']['status']) {
 			case 'error':
 				$cssClass = 'danger';
-				$headlineText = 'Error';
+				$headlineText = $I18n->t('message.headline.error');
 			break;
 			case 'warning':
 				$cssClass = 'warning';
-				$headlineText = 'Warning';
+				$headlineText = $I18n->t('message.headline.warning');
 			break;
 			case 'success':
 				$cssClass = 'success';
-				$headlineText = 'Success';
+				$headlineText = $I18n->t('message.headline.success');
 			break;
 
 			case 'info':
