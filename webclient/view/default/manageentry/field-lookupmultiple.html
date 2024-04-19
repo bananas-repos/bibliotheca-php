@@ -1,6 +1,6 @@
 <?php
 $existingFieldValue = array();
-if(isset($TemplateData['editData'][$field['identifier']])) {
+if(!empty($TemplateData['editData'][$field['identifier']])) {
 	$existingFieldValue = $TemplateData['editData'][$field['identifier']];
 }
 ?>
