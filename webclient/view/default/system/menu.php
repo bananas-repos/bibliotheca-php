@@ -33,7 +33,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 	<div class="uk-navbar-left">
 		<ul class="uk-navbar-nav">
 			<li class="uk-parent">
-				<a href="<?php echo $I18n->t('menu.lv1.show'); ?>"></a>
+				<a href=""><?php echo $I18n->t('menu.lv1.show'); ?></a>
 				<div class="uk-navbar-dropdown">
 					<ul class="uk-nav uk-navbar-dropdown-nav">
 						<?php foreach($_menuShow as $entry) { ?>

@@ -28,7 +28,7 @@ const TIMEZONE = '~timezone~';
 
 # language setting
 # see i18n.md file for syntax
-const FRONTEND_LANGUAGE = 'eng';
+const FRONTEND_LANGUAGE = array('iso3' => 'eng', 'iso2' => 'en');
 
 # path settings
 const PATH_ABSOLUTE = '~pathabsolute~';
