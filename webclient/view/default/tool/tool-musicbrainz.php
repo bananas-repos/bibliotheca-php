@@ -67,12 +67,12 @@ if(isset($_POST['submitFormSearch'])) {
 			if(!empty($releaseSearch)) {
 				$TemplateData['releases'] = $releaseSearch;
 			} else {
-				$TemplateData['message']['content'] = "Nothing found.";
+				$TemplateData['message']['content'] = $I18n->t('global.message.nothingFound');
 				$TemplateData['message']['status'] = "error";
 			}
 		}
 		else {
-			$TemplateData['message']['content'] = "Invalid search term";
+			$TemplateData['message']['content'] = $I18n->t('global.message.invalidSearchTerm');
 			$TemplateData['message']['status'] = "error";
 		}
 	}
@@ -88,7 +88,7 @@ if(isset($_POST['submitFormReleaseSelect'])) {
 				if(!empty($releaseInfo)) {
 					$TemplateData['release'] = $releaseInfo;
 				} else {
-					$TemplateData['message']['content'] = "Nothing found.";
+					$TemplateData['message']['content'] = $I18n->t('global.message.nothingFound');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
@@ -147,7 +147,7 @@ if(isset($_POST['submitFormSave'])) {
 				$_r['rights'],
 				$TemplateData['editEntry']['id']
 			);
-			$TemplateData['message']['content'] = "Date saved successfully";
+			$TemplateData['message']['content'] = $I18n->t('global.message.dataSaved');
 		}
 		else {
 			// create into loaded collection
@@ -156,15 +156,14 @@ if(isset($_POST['submitFormSave'])) {
 				$_r['group'],
 				$_r['rights']
 			);
-			$TemplateData['message']['content'] = "Date saved successfully: 
-						<a href='index.php?p=manageentry&collection=".$collection['id']."&id=".$do."'>Here</a>";
+			$TemplateData['message']['content'] = $I18n->t('global.message.dataSaved')." <a href='index.php?p=manageentry&collection=".$collection['id']."&id=".$do."'>".$I18n->t('global.message.here')."</a>";
 		}
 
 		if(!empty($do)) {
 			$TemplateData['message']['status'] = "success";
 		}
 		else {
-			$TemplateData['message']['content'] = "Data could not be saved. See logs for more.";
+			$TemplateData['message']['content'] = $I18n->t('global.message.couldNotBeSaved');
 			$TemplateData['message']['status'] = "error";
 		}
 

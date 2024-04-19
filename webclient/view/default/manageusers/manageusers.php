@@ -64,7 +64,7 @@ if(isset($_POST['submitForm'])) {
 					$TemplateData['refresh'] = 'index.php?p=manageusers';
 				}
 				else {
-					$TemplateData['message']['content'] = "User could not be deleted. Make sure the user is not used anymore.";
+					$TemplateData['message']['content'] = $I18n->t('manageuser.message.couldNotBeDelete');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
@@ -82,12 +82,12 @@ if(isset($_POST['submitForm'])) {
 						$TemplateData['refresh'] = 'index.php?p=manageusers';
 					}
 					else {
-						$TemplateData['message']['content'] = "User could not be updated. Either wrong input or duplicate user name";
+						$TemplateData['message']['content'] = $I18n->t('manageuser.message.couldNotBeUpdated');
 						$TemplateData['message']['status'] = "error";
 					}
 				}
 				else {
-					$TemplateData['message']['content'] = "Provide username, login and a valid user group.";
+					$TemplateData['message']['content'] = $I18n->t('manageuser.message.missingInput');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
@@ -104,12 +104,12 @@ if(isset($_POST['submitForm'])) {
 						$TemplateData['refresh'] = 'index.php?p=manageusers';
 					}
 					else {
-						$TemplateData['message']['content'] = "User could not be created.";
+						$TemplateData['message']['content'] = $I18n->t('manageuser.message.couldNotBeCreated');
 						$TemplateData['message']['status'] = "error";
 					}
 				}
 				else {
-					$TemplateData['message']['content'] = "Provide username, login, password and a valid user group.";
+					$TemplateData['message']['content'] = $I18n->t('manageuser.message.missingInput');
 					$TemplateData['message']['status'] = "error";
 				}
 			}

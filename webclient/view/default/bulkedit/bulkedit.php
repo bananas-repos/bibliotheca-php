@@ -108,9 +108,9 @@ if(!empty($_collection)) {
 
 						$do = $ManageEntry->create($_fieldsToSave, $_owner, $_group, $_rights, $entry['id']);
 						if ($do !== 0) {
-							$_messages[] = "Entry updated: ".$entry['id'];
+							$_messages[] = $I18n->t('bulkedit.message.entryUpdated').' '.$entry['id'];
 						} else {
-							$_messages[] = "Entry could not be updated. See log for more details: ".$entry['id'];
+							$_messages[] = $I18n->t('bulkedit.message.canNotUpdate').' '.$entry['id'];
 						}
 
 						unset($data);
@@ -122,12 +122,12 @@ if(!empty($_collection)) {
 			}
 		}
 		else {
-			$TemplateData['message']['content'] = "Missing required search items to work with.";
+			$TemplateData['message']['content'] = $I18n->t('bulkedit.message.missingItems');
 			$TemplateData['message']['status'] = "error";
 		}
 	}
 	else {
-		$TemplateData['message']['content'] = "Can not load given collection.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 	}
 }

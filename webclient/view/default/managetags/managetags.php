@@ -61,20 +61,20 @@ if(!empty($_collection)) {
 				}
 			}
 			else {
-				$TemplateData['message']['content'] = "Can not execute given options. See logs for more.";
+				$TemplateData['message']['content'] = $I18n->t('managetags.message.executionError');
 				$TemplateData['message']['status'] = "error";
 			}
 		}
 		else {
 			$TemplateData['tags'] = $Trite->getTags();
 			if(empty($TemplateData['tags'])) {
-				$TemplateData['message']['content'] = "No tags available or something went wrong.";
+				$TemplateData['message']['content'] = $I18n->t('managetags.message.notTagsAvailable');
 				$TemplateData['message']['status'] = "warning";
 			}
 		}
 	}
 	else {
-		$TemplateData['message']['content'] = "Can not load given collection.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 	}
 }

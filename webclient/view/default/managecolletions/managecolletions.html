@@ -82,7 +82,7 @@
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="tool">Tools</label>
+				<label class="uk-form-label" for="tool"><?php echo $I18n->t('managecol.input.tools'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="tool" name="fdata[tool][]" multiple="multiple" size="5">
 						<option value=""><?php echo $I18n->t('global.none'); ?></option>
@@ -99,7 +99,7 @@
 				<label class="uk-form-label" for="owner"><?php echo $I18n->t('global.owner'); ?> *</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="owner" name="fdata[owner]">
-						<option value="">Please select</option>
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 						<?php foreach($TemplateData['ownerSelection'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
 						<?php echo ($TemplateData['editData']['owner'] ?? '') == $k ? 'selected' : ''; ?>
@@ -112,7 +112,7 @@
 				<label class="uk-form-label" for="group"><?php echo $I18n->t('global.group'); ?> *</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="group" name="fdata[group]">
-						<option value="">Please select</option>
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 						<?php foreach($TemplateData['groupSelection'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
 							<?php echo ($TemplateData['editData']['group'] ?? '') == $k ? 'selected' : ''; ?>

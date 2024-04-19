@@ -64,7 +64,7 @@ if(!empty($_collection)) {
 		$TemplateData['pageTitle'] = $Trite->param('name');
 	}
 	else {
-		$TemplateData['message']['content'] = "Can not load given collection.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 	}
 }

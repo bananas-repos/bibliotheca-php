@@ -14,7 +14,7 @@
 				<label class="uk-form-label"><?php echo $I18n->t('managetags.user'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" name="fdata[<?php echo $v['id']; ?>][use]">
-						<option value="">Please select</option>
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 						<?php foreach($v['entries'] as $ek=>$ev) { ?>
 						<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
 						<?php } ?>

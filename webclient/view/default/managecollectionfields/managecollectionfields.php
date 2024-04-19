@@ -63,12 +63,12 @@ if(isset($_POST['submitForm'])) {
 			if ($do === true) {
 				$TemplateData['refresh'] = 'index.php?p=managecollectionfields&id='.$_id;
 			} else {
-				$TemplateData['message']['content'] = "Fields could not be updated.";
+				$TemplateData['message']['content'] = $I18n->t('managefields.message.notUpdate');
 				$TemplateData['message']['status'] = "error";
 			}
 		}
 		else {
-			$TemplateData['message']['content'] = "Please provide valid fields.";
+			$TemplateData['message']['content'] = $I18n->t('managefields.message.provideValidFields');
 			$TemplateData['message']['status'] = "error";
 		}
 	}

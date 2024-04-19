@@ -76,12 +76,12 @@ if(!empty($_collection) && !empty($_t)) {
 		}
 		else {
 			$TemplateData['tool']['viewFile'] = '';
-			$TemplateData['message']['content'] = "Required tool files can not be found.";
+			$TemplateData['message']['content'] = $I18n->t('tool.message.missingFiles');
 			$TemplateData['message']['status'] = "error";
 		}
 	}
 	else {
-		$TemplateData['message']['content'] = "Collection nor tool could not be loaded.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 	}
 }
