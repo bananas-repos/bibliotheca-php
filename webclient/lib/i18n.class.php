@@ -88,6 +88,7 @@ class I18n {
         }
 
         // the value is another key
+        // the parse_ini_file interpolation with ${} does not work with existing values from the file itself
         if(str_starts_with($ret, "reuse.")) {
             $_ret = str_replace("reuse.","",$ret);
             if(isset($_langWorkWith[$_ret])) {
