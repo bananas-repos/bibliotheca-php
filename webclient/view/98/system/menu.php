@@ -33,7 +33,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 <menu role="tablist">
 	<?php foreach($_menuShow as $entry) { ?>
 		<li role="tab" <?php if($_requestMode == $entry['action']) echo 'aria-selected="true"'; ?>>
-			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
+			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $I18n->t($entry['text']); ?></a>
 		</li>
 	<?php } ?>
 	<li role="tab">
@@ -48,10 +48,10 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 		<a href="index.php?p=advancedsearch"><?php echo $I18n->t('menu.search.advanced'); ?></a>
 	</li>
 <?php if(!empty($_menuManage)) { ?>
-	<li role="tab"><a href=""><?php echo $I18n->t('menu.lv1.manage'); ?>:</a></li>
+	<li role="tab"><a href=""><?php echo $I18n->t('menu.manage'); ?>:</a></li>
 	<?php foreach($_menuManage as $entry) { ?>
 		<li role="tab" <?php if(!empty($_requestMode) && str_starts_with($entry['action'], $_requestMode)) echo 'aria-selected="true"'; ?>>
-			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
+			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $I18n->t($entry['text']); ?></a>
 		</li>
 	<?php } ?>
 <?php } ?>

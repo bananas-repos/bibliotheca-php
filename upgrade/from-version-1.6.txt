@@ -13,4 +13,14 @@ Replace #REPLACEME# with your table prefix. Default is bib
 ```
 UPDATE `#REPLACEME#_sys_fields` SET `value` = 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', `apiinfo` = 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11' WHERE `#REPLACEME#_sys_fields`.`id` = 17;
 UPDATE `#REPLACEME#_menu` SET `action` = 'dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
+UPDATE `#REPLACEME#_menu_menu` SET `text` = 'menu.show.dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.collections' WHERE `#REPLACEME#_menu`.`id` = 2;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.tags' WHERE `#REPLACEME#_menu`.`id` = 3;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.sysinfo' WHERE `#REPLACEME#_menu`.`id` = 19;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.add' WHERE `#REPLACEME#_menu`.`id` = 4;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.tags' WHERE `#REPLACEME#_menu`.`id` = 6;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.collections' WHERE `#REPLACEME#_menu`.`id` = 7;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.users' WHERE `#REPLACEME#_menu`.`id` = 8;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.profile' WHERE `#REPLACEME#_menu`.`id` = 16;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.groups' WHERE `#REPLACEME#_menu`.`id` = 17;
 ```
