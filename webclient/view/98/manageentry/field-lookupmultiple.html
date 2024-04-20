@@ -5,7 +5,7 @@ if(isset($TemplateData['editData'][$field['identifier']])) {
 }
 ?>
 <div class="field-row-stacked">
-	<label for="<?php echo $field['identifier']; ?>-input"><?php echo $field['displayname']; ?></label>
+	<label for="<?php echo $field['identifier']; ?>-input"><?php echo $I18n->t($field['displayname']); ?></label>
 
 	<div class="input-multiple-listbox" id="<?php echo $field['identifier']; ?>-listbox">
 	<?php

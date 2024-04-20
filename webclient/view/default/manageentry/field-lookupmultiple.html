@@ -5,7 +5,7 @@ if(!empty($TemplateData['editData'][$field['identifier']])) {
 }
 ?>
 <div class="uk-margin">
-	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>-input"><?php echo $field['displayname']; ?></label>
+	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>-input"><?php echo $I18n->t($field['displayname']); ?></label>
 	<div class="uk-form-controls">
 		<div class="input-multiple-listbox" id="<?php echo $field['identifier']; ?>-listbox">
 		<?php

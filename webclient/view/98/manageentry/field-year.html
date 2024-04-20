@@ -1,5 +1,5 @@
 <div class="field-row-stacked">
-	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $I18n->t($field['displayname']); ?></label>
 	<input id="<?php echo $field['identifier']; ?>" type="number" autocomplete="off"
 		placeholder="YYYY" min="0000" max="9999"
 		name="fdata[<?php echo $field['identifier']; ?>]"

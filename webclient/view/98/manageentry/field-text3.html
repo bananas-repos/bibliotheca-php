@@ -1,6 +1,6 @@
 <div class="field-row-stacked">
 	<label for="<?php echo $field['identifier']; ?>">
-		<?php echo $field['displayname']; ?>
+		<?php echo $I18n->t($field['displayname']); ?>
 		(<span id="<?php echo $field['identifier']; ?>_counter" ><?php echo 255-strlen($TemplateData['editData'][$field['identifier']] ?? ''); ?></span>)
 	</label>
 	<textarea autocomplete="off"

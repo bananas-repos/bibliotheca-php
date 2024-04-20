@@ -1,5 +1,5 @@
 <div class="field-row-stacked">
-	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $I18n->t($field['displayname']); ?></label>
 	<select id="<?php echo $field['identifier']; ?>" name="fdata[<?php echo $field['identifier']; ?>]">
 		<option value="">Please select</option>
 		<?php foreach($field['options'] as $k=>$v) { ?>
