@@ -35,9 +35,20 @@ class I18n {
     private array $_langData = array();
 
     /**
+     * @var array The fallback lang data.
+     */
+    private array $_langDataFallback = array();
+
+    /**
      * Translation constructor.
      */
     public function __construct() {
+        // load fallback
+        $this->_langDataFallback = parse_ini_file(PATH_ABSOLUTE.'/i18n/eng.ini');
+        if(!$this->_langDataFallback) {
+            Summoner::sysLog('[ERROR] Missing fallback language file!');
+        }
+
         if(defined('FRONTEND_LANGUAGE')) {
             $this->_iso3 = FRONTEND_LANGUAGE['iso3'];
             $this->_iso2 = FRONTEND_LANGUAGE['iso2'];
@@ -50,11 +61,7 @@ class I18n {
             }
         }
         else {
-            $_langFile = PATH_ABSOLUTE.'/i18n/'.$this->_iso3.'.ini';
-            $_langData = parse_ini_file($_langFile);
-            if($_langData !== false) {
-                $this->_langData = $_langData;
-            }
+            $this->_langData = $this->_langDataFallback;
         }
     }
 
@@ -72,19 +79,27 @@ class I18n {
      */
     public function t(string $key, mixed $replace=''): string {
         $ret = $key;
+        $_langWorkWith = $this->_langData;
         if(isset($this->_langData[$key])) {
             $ret = $this->_langData[$key];
-            // the value is another key
-            if(!str_contains($ret, '"') && str_contains($ret, ".") && isset($this->_langData[$ret])) {
-                $ret = $this->_langData[$ret];
-            }
+        } elseif(!DEBUG && isset($this->_langDataFallback[$key])) {
+            $ret = $this->_langDataFallback[$key];
+            $_langWorkWith = $this->_langDataFallback;
+        }
 
-            if(!empty($replace)) {
-                if(is_array($replace)) {
-                    $ret = vsprintf($ret, $replace);
-                } else {
-                    $ret = sprintf($ret, $replace);
-                }
+        // the value is another key
+        if(str_starts_with($ret, "reuse.")) {
+            $_ret = str_replace("reuse.","",$ret);
+            if(isset($_langWorkWith[$_ret])) {
+                $ret = $_langWorkWith[$_ret];
+            }
+        }
+
+        if(!empty($replace)) {
+            if(is_array($replace)) {
+                $ret = vsprintf($ret, $replace);
+            } else {
+                $ret = sprintf($ret, $replace);
             }
         }
         return $ret;

@@ -1,9 +1,9 @@
-<p><b>Limitations</b></p>
-<p>Data will be overwritten; No wildcardsearch or partial words.</p>
+<p><b><?php echo $I18n->t('tool.lomitations'); ?></b></p>
+<p><?php echo $I18n->t('tool.music.limitations.override'); ?></p>
 
 <form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
 	<div class="uk-margin">
-		<label class="uk-form-label" for="artist">Artist</label>
+		<label class="uk-form-label" for="artist"><?php echo $I18n->t('tool.music.input.artist'); ?></label>
 		<div class="uk-form-controls">
 			<input class="uk-input" id="artist" type="text" autocomplete="off"
 			       name="fdata[artist]"
@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	<div class="uk-margin">
-		<label class="uk-form-label" for="album">Album/Title</label>
+		<label class="uk-form-label" for="album"><?php echo $I18n->t('tool.music.input.albumTitle'); ?></label>
 		<div class="uk-form-controls">
 			<input class="uk-input" id="album" type="text" autocomplete="off"
 			       name="fdata[album]"
@@ -22,7 +22,7 @@
 	</div>
 	<div class="uk-margin">
 		<button class="uk-button uk-button-primary" type="submit" name="submitFormSearch">
-			Search
+			<?php echo $I18n->t('tool.music.search'); ?>
 		</button>
 	</div>
 </form>
@@ -31,7 +31,6 @@
 <form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
 	<div class="uk-margin">
 		<div class="uk-form-controls">
-
 			<?php foreach($TemplateData['releases'] as $k=>$v) { ?>
 
 			<label><input class="uk-radio" type="radio" name="fdata[rselect]" value="<?php echo $k; ?>"> <?php echo $v; ?></label><br>
@@ -42,7 +41,7 @@
 
 	<div class="uk-margin">
 		<button class="uk-button uk-button-primary" type="submit" name="submitFormReleaseSelect">
-			Select
+			<?php echo $I18n->t('tool.music.select'); ?>
 		</button>
 	</div>
 </form>
@@ -62,7 +61,7 @@
 	</div>
 	<div class="uk-width-1-2@s">
 		<select class="uk-select" name="fdata[into][<?php echo $k; ?>]">
-			<option value="">None</option>
+			<option value=""><?php echo $I18n->t('tool.music.select.none'); ?></option>
 			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
 		</select>
 	</div>
@@ -71,7 +70,7 @@
 
 	<div class="uk-margin">
 		<button class="uk-button uk-button-primary" type="submit" name="submitFormSave">
-			Save
+			<?php echo $I18n->t('tool.music.save'); ?>
 		</button>
 	</div>
 </form>
