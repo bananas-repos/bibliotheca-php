@@ -55,7 +55,7 @@
 			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['identifier']; ?>"
 				<?php echo ($TemplateData['editData']['defaultSearchField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
-			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+			><?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
 	</div>
@@ -74,7 +74,7 @@
 			<?php foreach($TemplateData['simpleSearchFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['identifier']; ?>"
 				<?php echo ($TemplateData['editData']['defaultSortField'] ?? '') == $v['identifier'] ? 'selected' : ''; ?>
-			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+			><?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
 	</div>
@@ -91,7 +91,7 @@
 			<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 			<option value="<?php echo $v['id']; ?>"
 			<?php if(isset($TemplateData['editData']['advancedSearchTableFields'][$v['id']])) echo 'selected'; ?>
-			><?php echo $v['displayname']; ?> (<?php echo $v['type']; ?>)</option>
+			><?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type']; ?>)</option>
 			<?php } ?>
 		</select>
 	</div>

@@ -21,7 +21,7 @@
 					if(!empty($TemplateData['simpleSearchFields'])) {
 						foreach($TemplateData['simpleSearchFields'] as $k=>$v) {
 					?>
-					<li class="<?php if(isset($v['selected'])) echo 'uk-active' ?>"><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>$k,'sd'=>'ASC')); ?>"><?php echo $v['displayname']; ?></a></li>
+					<li class="<?php if(isset($v['selected'])) echo 'uk-active' ?>"><a href="index.php?<?php echo Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('s'=>$k,'sd'=>'ASC')); ?>"><?php echo $I18n->t($v['displayname']); ?></a></li>
 					<?php
 						}
 					}

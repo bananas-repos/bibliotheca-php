@@ -16,7 +16,7 @@
 		<?php } ?>
 
 		<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
-		<h4 class="uk-heading-line"><span><a uk-toggle="target: #toggle-<?php echo $k; ?>"><?php echo $v['displayname']; ?></a></span></h4>
+		<h4 class="uk-heading-line"><span><a uk-toggle="target: #toggle-<?php echo $k; ?>"><?php echo $I18n->t($v['displayname']); ?></a></span></h4>
 		<div id="toggle-<?php echo $k; ?>">
 			<?php foreach($v['entries'] as $ek=>$ev) { ?>
 			<a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&fid=<?php echo $v['identifier']; ?>&fv=<?php echo urlencode($ev); ?>"><?php echo $ev; ?></a>,

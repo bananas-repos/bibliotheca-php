@@ -1,4 +1,4 @@
-1.x - The Ceremonial Chambers
+1.7 - The Ceremonial Chambers yyyy-mm-dd
     * Added i18n. Please read the upgrade file for more information. English and german are available
     * Added group infos to profile view.
     * Added compact theme. Based on default, but with less space.

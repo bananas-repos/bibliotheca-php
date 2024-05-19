@@ -28,7 +28,7 @@
 			<li>PHP: <code><?php echo $TemplateData['phpVersion']; ?></code></li>
 			<li>MySQL server: <code><?php echo $TemplateData['mysqlVersion']; ?></code></li>
 			<li>MySQL data usage: <code><?php echo $TemplateData['overallTableSize']; ?></code></li>
-			<li>Storage usage: <code><?php echo $TemplateData['overallStorageSize']; ?></code></li>
+			<li><?php echo $I18n->t('sysinfo.th.diskusage'); ?>: <code><?php echo $TemplateData['overallStorageSize']; ?></code></li>
 		</ul>
 	</div>
 </div>

@@ -19,7 +19,7 @@
 					<tbody>
 				<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
 						<tr>
-							<td><?php echo $v['displayname']; ?></td>
+							<td><?php echo $I18n->t($v['displayname']); ?></td>
 							<td>
 								<select name="fdata[<?php echo $v['id']; ?>][use]">
 									<option value="">Please select</option>

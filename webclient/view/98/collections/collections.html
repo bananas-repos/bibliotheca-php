@@ -19,7 +19,7 @@
 				if(!empty($TemplateData['simpleSearchFields'])) {
 					foreach($TemplateData['simpleSearchFields'] as $k=>$v) {
 			?>
-			<option value="<?php echo $k; ?>" <?php if(isset($v['selected'])) echo 'selected' ?> ><?php echo $v['displayname']; ?></option>
+			<option value="<?php echo $k; ?>" <?php if(isset($v['selected'])) echo 'selected' ?> ><?php echo $I18n->t($v['displayname']); ?></option>
 			<?php
 					}
 				}

@@ -8,7 +8,7 @@
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 
 		<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
-			<h4 class="uk-heading-line"><?php echo $v['displayname']; ?></h4>
+			<h4 class="uk-heading-line"><?php echo $I18n->t($v['displayname']); ?></h4>
 
 			<div class="uk-margin">
 				<label class="uk-form-label"><?php echo $I18n->t('managetags.user'); ?></label>

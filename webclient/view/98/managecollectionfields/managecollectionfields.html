@@ -12,7 +12,7 @@
 			<div id="collectionFields">
 				<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 				<div class="sortitem" data-field-id="<?php echo $k; ?>">
-					<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
+					<?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
 				</div>
 				<?php } ?>
 			</div>
@@ -26,7 +26,7 @@
 			<div id="availableFields">
 				<?php foreach($TemplateData['availableFields'] as $k=>$v) { ?>
 				<div class="sortitem" data-field-id="<?php echo $k; ?>">
-					<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
+					<?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
 				</div>
 				<?php } ?>
 			</div>
