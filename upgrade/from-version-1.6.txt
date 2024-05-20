@@ -54,4 +54,5 @@ UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.artist' WHERE `#RE
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.artists' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'artists';
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.isbn' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'isbn';
 ALTER TABLE `#REPLACEME#_sys_fields` CHANGE `displayname` `displayname` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+UPDATE `#REPLACEME#_tool` SET `name` = 'IMDB' WHERE `#REPLACEME#_tool`.`id` = 1;
 ```

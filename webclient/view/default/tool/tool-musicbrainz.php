@@ -156,7 +156,7 @@ if(isset($_POST['submitFormSave'])) {
 				$_r['group'],
 				$_r['rights']
 			);
-			$TemplateData['message']['content'] = $I18n->t('global.message.dataSaved')." <a href='index.php?p=manageentry&collection=".$collection['id']."&id=".$do."'>".$I18n->t('global.message.here')."</a>";
+			$TemplateData['message']['content'] = $I18n->t('global.message.dataSaved')." <a href='index.php?p=manageentry&collection=".$collection['id']."&id=".$do."'>".$I18n->t('global.view')."</a>";
 		}
 
 		if(!empty($do)) {
