@@ -60,7 +60,7 @@
 				<?php if(isset($entry['fields']['coverimage'])) { ?>
 				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
 				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
-					 alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>">
+					 alt="<?php echo $I18n->t($entry['fields']['coverimage']['displayname']); ?>">
 				</a>
 				<?php } ?>
 			</div>
@@ -74,7 +74,7 @@
 				<?php } ?>
 			</div>
 			<div class="uk-card-footer">
-				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text"><?php echo $I18n->t('global.View'); ?></a>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text"><?php echo $I18n->t('global.view'); ?></a>
 			</div>
 		</div>
 	</div>

@@ -13,7 +13,7 @@ Replace #REPLACEME# with your table prefix. Default is bib
 ```
 UPDATE `#REPLACEME#_sys_fields` SET `value` = 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', `apiinfo` = 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11' WHERE `#REPLACEME#_sys_fields`.`id` = 17;
 UPDATE `#REPLACEME#_menu` SET `action` = 'dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
-UPDATE `#REPLACEME#_menu_menu` SET `text` = 'menu.show.dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
 UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.collections' WHERE `#REPLACEME#_menu`.`id` = 2;
 UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.tags' WHERE `#REPLACEME#_menu`.`id` = 3;
 UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.sysinfo' WHERE `#REPLACEME#_menu`.`id` = 19;
@@ -28,7 +28,7 @@ UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.description' WHERE
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.content' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'content';
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.tag' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'tag';
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.category' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'category';
-UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.category' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'publisher';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.publisher' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'publisher';
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.developer' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'developer';
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.platform' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'platform';
 UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.storage' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'storage';

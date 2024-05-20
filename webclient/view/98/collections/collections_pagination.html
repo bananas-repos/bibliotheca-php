@@ -12,7 +12,7 @@ for($i=1;$i<=$TemplateData['pagination']['pages'];$i++) {
 
 	if(in_array($i,$TemplateData['pagination']['visibleRange'])) {
 		echo '<a class="'.$active.'" href="index.php?'.Summoner::createFromParameterLinkQuery($TemplateData['pagination']['currentGetParameters'],array('page'=>$i)).'"
-							title="'.$I18n->t('pagination.previous') $i.'">'.$i.'</a>';
+							title="'.$I18n->t('pagination.gotopage').' '.$i.'">'.$i.'</a>';
 	}
 	else {
 		if($i < $TemplateData['pagination']['currentRangeStart'] && $ellipsisShown == 0) {

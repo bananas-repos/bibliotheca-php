@@ -48,7 +48,7 @@ $TemplateData['showMatchingForm'] = false;
 $collectionFields = $ManangeCollectionsFields->getExistingFields(false, true);
 if(!empty($collectionFields)) {
 	foreach ($collectionFields as $k=>$v) {
-		$TemplateData['saveToSelection'] .= "<option value='".$k."' sel_".$v['identifier'].">".$v['displayname']."</option>\n";
+		$TemplateData['saveToSelection'] .= "<option value='".$k."' sel_".$v['identifier'].">".$I18n->t($v['displayname'])."</option>\n";
 	}
 }
 

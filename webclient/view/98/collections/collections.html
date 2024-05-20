@@ -74,7 +74,7 @@
 					<?php if(isset($entry['fields']['coverimage'])) { ?>
 					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
 						<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
-						     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>"
+						     alt="<?php echo $I18n->t($entry['fields']['coverimage']['displayname']); ?>"
 						     width="50px">
 					</a>
 					<?php } ?>
