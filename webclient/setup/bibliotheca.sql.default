@@ -88,24 +88,24 @@ CREATE TABLE `#REPLACEME#_menu` (
 -- Dumping data for table `#REPLACEME#_menu`
 --
 
-INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `contextaction`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES
-(1, 'Dashboard', '', '', 'home', 1, 1, 'rw-r--r--', 0, 'show'),
-(2, 'Collections', 'collections', '', 'database', 1, 1, 'rw-r--r--', 1, 'show'),
-(3, 'Tags', 'tags', '', 'tag', 1, 1, 'rw-r--r--', 2, 'show'),
-(4, 'Add', 'manageentry', 'collection', 'plus-circle', 1, 2, 'rw-rw----', 0, 'manage'),
-(6, 'Tags', 'managetags', 'collection', 'tag', 1, 2, 'rw-rw----', 2, 'manage'),
-(7, 'Collections', 'managecolletions', '', 'database', 1, 2, 'rw-rw----', 3, 'manage'),
-(8, 'Users', 'manageusers', '', 'users', 1, 1, 'rw-------', 4, 'manage'),
+INSERT INTO `bib_menu` (`id`, `text`, `action`, `contextaction`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES
+(1, 'menu.show.dashboard', 'dashboard', '', 'home', 1, 1, 'rw-r--r--', 0, 'show'),
+(2, 'menu.show.collections', 'collections', '', 'database', 1, 1, 'rw-r--r--', 1, 'show'),
+(3, 'menu.show.tags', 'tags', '', 'tag', 1, 1, 'rw-r--r--', 2, 'show'),
+(4, 'menu.manage.add', 'manageentry', 'collection', 'plus-circle', 1, 2, 'rw-rw----', 0, 'manage'),
+(6, 'menu.manage.tags', 'managetags', 'collection', 'tag', 1, 2, 'rw-rw----', 2, 'manage'),
+(7, 'menu.manage.collections', 'managecolletions', '', 'database', 1, 2, 'rw-rw----', 3, 'manage'),
+(8, 'menu.manage.users', 'manageusers', '', 'users', 1, 1, 'rw-------', 4, 'manage'),
 (9, 'Login', 'auth', '', '', 1, 1, 'rw-r--r--', 0, ''),
 (10, 'Collection fields', 'managecollectionfields', '', '', 1, 2, 'rw-rw----', 0, ''),
 (11, 'Entry', 'entry', '', '', 1, 1, 'rw-r--r--', 0, ''),
 (12, 'Search', 'search', '', '', 1, 1, 'rw-r--r--', 0, ''),
 (14, 'Tool', 'tool', '', '', 1, 2, 'rw-rw----', 0, ''),
 (15, 'Advanced search', 'advancedsearch', '', '', 1, 1, 'rw-r--r--', 0, ''),
-(16, 'Profile', 'profile', '', 'user', 1, 2, 'rw-rw----', 6, 'manage'),
-(17, 'Groups', 'managegroups', '', 'users', 1, 1, 'rw-------', 5, 'manage'),
+(16, 'menu.manage.profile', 'profile', '', 'user', 1, 2, 'rw-rw----', 6, 'manage'),
+(17, 'menu.manage.groups', 'managegroups', '', 'users', 1, 1, 'rw-------', 5, 'manage'),
 (18, 'Bulkedit', 'bulkedit', '', '', 1, 2, 'rw-rw----', 0, ''),
-(19, 'System Information', 'sysinfo', '', 'info', 1, 1, 'rw-------', 3, 'show');
+(19, 'menu.show.sysinfo', 'sysinfo', '', 'info', 1, 1, 'rw-------', 3, 'show');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ DROP TABLE IF EXISTS `#REPLACEME#_sys_fields`;
 CREATE TABLE `#REPLACEME#_sys_fields` (
   `id` int NOT NULL,
   `identifier` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `displayname` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `displayname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `searchtype` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `createstring` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -137,37 +137,37 @@ CREATE TABLE `#REPLACEME#_sys_fields` (
 --
 
 INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES
-(1, 'title', 'Title', 'text', 'entryText', '`title` varchar(128) NOT NULL, ADD FULLTEXT (`title`)', '', NULL, 'string 128', '2019-09-01 18:26:33', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(2, 'description', 'Description', 'text3', 'entryText', '`description` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`description`)', '', NULL, 'string 255', '2019-09-01 18:28:35', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(3, 'content', 'Main content', 'textarea', 'entryText', '`content` text NULL DEFAULT NULL, ADD FULLTEXT (`content`)', '', NULL, 'mysql text', '2019-09-01 18:28:35', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(5, 'tag', 'Tag', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:11:18', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(6, 'category', 'Category', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:11:18', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(7, 'publisher', 'Publisher', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2019-09-01 19:17:51', '2021-04-03 14:41:48', 0, 1, 1, 'rw-r--r--'),
-(8, 'developer', 'Developer', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2019-09-01 19:17:51', '2021-04-03 14:41:48', 0, 1, 1, 'rw-r--r--'),
-(9, 'platform', 'Platform', 'selection', 'entrySingleText', '`platform` varchar(32) NULL DEFAULT NULL', '', 'Nintendo,Nintendo Switch,PC,Playstation,Playstation 2,Playstation 3,Playstation 4,Playstation 5,Xbox,Xbox 360,Xbox One,Xbox One S,Xbox One X,Xbox Series S,Xbox Series X', 'One of Nintendo,Nintendo Switch,PC,Playstation,Playstation 2,Playstation 3,Playstation 4,Playstation 5,Xbox,Xbox 360,Xbox One,Xbox One S,Xbox One X,Xbox Series S,Xbox Series X', '2019-09-01 19:18:33', '2021-07-11 15:09:40', 0, 1, 1, 'rw-r--r--'),
-(10, 'storage', 'Storage', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:18:33', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(13, 'rating', 'Rating', 'selection', 'entrySingleText', '`rating` varchar(16) NULL DEFAULT NULL', '', '0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', 'One of 0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', '2019-09-01 19:25:35', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(14, 'year', 'Year', 'year', 'entrySingleNum', '`year` int(10) NULL, ADD INDEX (`year`)', '', NULL, 'int 10', '2019-09-01 19:30:11', '2021-07-09 08:30:23', 0, 1, 1, 'rw-r--r--'),
-(15, 'coverimage', 'Cover image', 'upload', NULL, NULL, '', NULL, 'One file in $_FILES[uploads] of post', '2019-09-01 19:48:44', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(16, 'attachment', 'Attachments', 'upload_multiple', NULL, NULL, '', NULL, 'Multiple in $_FILES[uploads] of post', '2019-09-01 19:48:44', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(17, 'os', 'Operating system and version', 'selection', 'entrySingleNum', '`os` varchar(32) NULL DEFAULT NULL', '', 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', '2019-09-01 19:55:13', '2022-10-08 10:46:55', 0, 1, 1, 'rw-r--r--'),
-(18, 'actors', 'Actors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:12:48', '2021-04-03 14:41:48', NULL, 1, 1, 'rw-r--r--'),
-(19, 'countries', 'Countries', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:16:08', '2021-04-03 14:41:48', NULL, 1, 1, 'rw-r--r--'),
-(20, 'directors', 'Directors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:17:59', '2021-04-03 14:41:48', NULL, 1, 1, 'rw-r--r--'),
-(21, 'genres', 'Genres', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2020-07-26 07:18:55', '2021-01-02 19:56:10', NULL, 1, 1, 'rw-r--r--'),
-(22, 'languages', 'Languages', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2020-07-26 07:20:45', '2021-01-02 19:56:10', NULL, 1, 1, 'rw-r--r--'),
-(23, 'runtime', 'Runtime (min)', 'number', 'entrySingleNum', '`runtime` int(10) NULL, ADD INDEX (`runtime`)', '', NULL, 'int 10', '2020-07-26 07:22:24', '2021-01-02 19:56:10', NULL, 1, 1, 'rw-r--r--'),
-(24, 'imdbrating', 'IMDB Rating', 'text', 'entrySingleText', '`imdbrating` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2020-12-27 10:00:33', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(25, 'viewcount', 'View counter', 'number', 'entrySingleNum', '`viewcount` int(10) NULL, ADD INDEX (`viewcount`)', '', NULL, 'int 10', '2020-12-27 10:41:10', '2021-01-02 19:56:10', 0, 1, 1, 'rw-r--r--'),
-(26, 'writers', 'Writers', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-01-05 09:47:20', '2021-04-03 14:41:49', NULL, 1, 1, 'rw-r--r--'),
-(27, 'localizedTitle', 'Localized Title', 'text', 'entryText', '`localizedTitle` varchar(128) NULL DEFAULT NULL, ADD FULLTEXT (`localizedTitle`)', '', NULL, 'string 128', '2021-04-25 19:33:31', '2021-07-09 08:51:17', 0, 1, 1, 'rw-r--r--'),
-(28, 'gameEngine', 'Game Engine', 'text', 'entryText', '`gameEngine` varchar(128) NOT NULL, ADD FULLTEXT (`gameEngine`)', '', NULL, 'string 128', '2021-04-25 21:21:37', '2021-04-25 21:21:37', 0, 1, 1, 'rw-r--r--'),
-(29, 'view', 'View', 'selection', 'entrySingleNum', '`view` varchar(32) NULL DEFAULT NULL', '', 'First person,Third person,Top-down', 'First person,Third person,Top-down', '2021-04-25 21:21:45', '2021-04-25 21:21:45', 0, 1, 1, 'rw-r--r--'),
-(30, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', '2021-04-25 21:21:54', '2021-04-25 21:21:54', 0, 1, 1, 'rw-r--r--'),
-(31, 'artist', 'Artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2021-07-09 08:38:33', NULL, 1, 1, 'rw-r--r--'),
-(32, 'artists', 'Artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:42:16', '2021-07-18 11:42:16', NULL, 1, 1, 'rw-r--r--'),
-(34, 'isbn', 'ISBN', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2023-04-08 08:53:55', NULL, 1, 1, 'rw-r--r--'),
-(35, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, '1', '1', 'rw-r--r--');
+(1, 'title', 'sysfield.title', 'text', 'entryText', '`title` varchar(128) NOT NULL, ADD FULLTEXT (`title`)', '', NULL, 'string 128', '2019-09-01 18:26:33', '2024-04-20 07:44:10', 0, 1, 1, 'rw-r--r--'),
+(2, 'description', 'sysfield.description', 'text3', 'entryText', '`description` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`description`)', '', NULL, 'string 255', '2019-09-01 18:28:35', '2024-04-20 07:45:18', 0, 1, 1, 'rw-r--r--'),
+(3, 'content', 'sysfield.content', 'textarea', 'entryText', '`content` text NULL DEFAULT NULL, ADD FULLTEXT (`content`)', '', NULL, 'mysql text', '2019-09-01 18:28:35', '2024-04-20 07:46:05', 0, 1, 1, 'rw-r--r--'),
+(5, 'tag', 'sysfield.tag', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:11:18', '2024-04-20 07:46:35', 0, 1, 1, 'rw-r--r--'),
+(6, 'category', 'sysfield.category', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:11:18', '2024-04-20 07:47:26', 0, 1, 1, 'rw-r--r--'),
+(7, 'publisher', 'sysfield.publisher', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2019-09-01 19:17:51', '2024-04-20 07:47:45', 0, 1, 1, 'rw-r--r--'),
+(8, 'developer', 'sysfield.developer', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2019-09-01 19:17:51', '2024-04-20 07:48:07', 0, 1, 1, 'rw-r--r--'),
+(9, 'platform', 'sysfield.platform', 'selection', 'entrySingleText', '`platform` varchar(32) NULL DEFAULT NULL', '', 'Nintendo,Nintendo Switch,PC,Playstation,Playstation 2,Playstation 3,Playstation 4,Playstation 5,Xbox,Xbox 360,Xbox One,Xbox One S,Xbox One X,Xbox Series S,Xbox Series X', 'One of Nintendo,Nintendo Switch,PC,Playstation,Playstation 2,Playstation 3,Playstation 4,Playstation 5,Xbox,Xbox 360,Xbox One,Xbox One S,Xbox One X,Xbox Series S,Xbox Series X', '2019-09-01 19:18:33', '2024-04-20 07:48:32', 0, 1, 1, 'rw-r--r--'),
+(10, 'storage', 'sysfield.storage', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2019-09-01 19:18:33', '2024-04-20 07:48:56', 0, 1, 1, 'rw-r--r--'),
+(13, 'rating', 'sysfield.rating', 'selection', 'entrySingleText', '`rating` varchar(16) NULL DEFAULT NULL', '', '0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', 'One of 0/10,2/10,3/10,4/10,5/10,6/10,7/10,8/10,9/10,10/10', '2019-09-01 19:25:35', '2024-04-20 07:49:22', 0, 1, 1, 'rw-r--r--'),
+(14, 'year', 'sysfield.year', 'year', 'entrySingleNum', '`year` int(10) NULL, ADD INDEX (`year`)', '', NULL, 'int 10', '2019-09-01 19:30:11', '2024-04-20 07:49:37', 0, 1, 1, 'rw-r--r--'),
+(15, 'coverimage', 'sysfield.coverimage', 'upload', NULL, NULL, '', NULL, 'One file in $_FILES[uploads] of post', '2019-09-01 19:48:44', '2024-04-20 07:49:59', 0, 1, 1, 'rw-r--r--'),
+(16, 'attachment', 'sysfield.attachment', 'upload_multiple', NULL, NULL, '', NULL, 'Multiple in $_FILES[uploads] of post', '2019-09-01 19:48:44', '2024-04-20 07:50:35', 0, 1, 1, 'rw-r--r--'),
+(17, 'os', 'sysfield.os', 'selection', 'entrySingleNum', '`os` varchar(32) NULL DEFAULT NULL', '', 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', '2019-09-01 19:55:13', '2024-04-20 07:51:07', 0, 1, 1, 'rw-r--r--'),
+(18, 'actors', 'sysfield.actors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:12:48', '2024-04-20 07:51:30', NULL, 1, 1, 'rw-r--r--'),
+(19, 'countries', 'sysfield.countries', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:16:08', '2024-04-20 07:52:01', NULL, 1, 1, 'rw-r--r--'),
+(20, 'directors', 'sysfield.directors', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2020-07-26 07:17:59', '2024-04-20 07:52:23', NULL, 1, 1, 'rw-r--r--'),
+(21, 'genres', 'sysfield.genres', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2020-07-26 07:18:55', '2024-04-20 07:52:44', NULL, 1, 1, 'rw-r--r--'),
+(22, 'languages', 'sysfield.languages', 'lookupmultiple', 'tag', NULL, '', NULL, 'string 64', '2020-07-26 07:20:45', '2024-04-20 07:53:17', NULL, 1, 1, 'rw-r--r--'),
+(23, 'runtime', 'sysfield.runtime', 'number', 'entrySingleNum', '`runtime` int(10) NULL, ADD INDEX (`runtime`)', '', NULL, 'int 10', '2020-07-26 07:22:24', '2024-04-20 07:53:40', NULL, 1, 1, 'rw-r--r--'),
+(24, 'imdbrating', 'sysfield.imdbrating', 'text', 'entrySingleText', '`imdbrating` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2020-12-27 10:00:33', '2024-04-20 07:54:05', 0, 1, 1, 'rw-r--r--'),
+(25, 'viewcount', 'sysfield.viewcount', 'number', 'entrySingleNum', '`viewcount` int(10) NULL, ADD INDEX (`viewcount`)', '', NULL, 'int 10', '2020-12-27 10:41:10', '2024-04-20 07:54:29', 0, 1, 1, 'rw-r--r--'),
+(26, 'writers', 'sysfield.writers', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-01-05 09:47:20', '2024-04-20 07:54:53', NULL, 1, 1, 'rw-r--r--'),
+(27, 'localizedTitle', 'sysfield.localizedTitle', 'text', 'entryText', '`localizedTitle` varchar(128) NULL DEFAULT NULL, ADD FULLTEXT (`localizedTitle`)', '', NULL, 'string 128', '2021-04-25 19:33:31', '2024-04-20 07:55:22', 0, 1, 1, 'rw-r--r--'),
+(28, 'gameEngine', 'sysfield.gameEngine', 'text', 'entryText', '`gameEngine` varchar(128) NOT NULL, ADD FULLTEXT (`gameEngine`)', '', NULL, 'string 128', '2021-04-25 21:21:37', '2024-04-20 07:55:44', 0, 1, 1, 'rw-r--r--'),
+(29, 'view', 'sysfield.view', 'selection', 'entrySingleNum', '`view` varchar(32) NULL DEFAULT NULL', '', 'First person,Third person,Top-down', 'First person,Third person,Top-down', '2021-04-25 21:21:45', '2024-04-20 07:56:12', 0, 1, 1, 'rw-r--r--'),
+(30, 'sysReq', 'sysfield.sysReq', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', '2021-04-25 21:21:54', '2024-04-20 07:56:36', 0, 1, 1, 'rw-r--r--'),
+(31, 'artist', 'sysfield.artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2024-04-20 07:56:57', NULL, 1, 1, 'rw-r--r--'),
+(32, 'artists', 'sysfield.artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:42:16', '2024-04-20 07:57:49', NULL, 1, 1, 'rw-r--r--'),
+(34, 'isbn', 'sysfield.isbn', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2024-04-20 07:57:26', NULL, 1, 1, 'rw-r--r--'),
+(35, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', '2024-01-28 09:56:32', '2024-01-28 11:21:51', NULL, 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
