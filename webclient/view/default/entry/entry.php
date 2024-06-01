@@ -63,11 +63,11 @@ if(!empty($_collection) && !empty($_id)) {
 		}
 	}
 	else {
-		$TemplateData['message']['content'] = 'Can not load given collection.';
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = 'error';
 	}
 }
 else {
 	$TemplateData['message']['status'] = 'error';
-	$TemplateData['message']['content'] = 'Missing required query parameters.';
+	$TemplateData['message']['content'] = $I18n->t('global.message.missingQueryParams');
 }

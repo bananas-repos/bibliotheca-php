@@ -312,8 +312,8 @@ class ManageCollectionFields {
 		}
 
         // add systemfields
-		$def['created'] = array('identifier' => 'created', 'displayname' => 'Created', 'type' => 'systemfield');
-		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'Modified', 'type' => 'systemfield');
+		$def['created'] = array('identifier' => 'created', 'displayname' => 'sysfield.created', 'type' => 'systemfield');
+		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'sysfield.modified', 'type' => 'systemfield');
 
 		return $def + $ret;
 	}

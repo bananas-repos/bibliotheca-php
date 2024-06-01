@@ -51,7 +51,7 @@ if(isset($_POST['submitForm'])) {
 					$TemplateData['refresh'] = 'index.php?p=managegroups';
 				}
 				else {
-					$TemplateData['message']['content'] = "Group could not be deleted.";
+					$TemplateData['message']['content'] = $I18n->t('managegroups.message.couldNotBeDelete');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
@@ -61,12 +61,12 @@ if(isset($_POST['submitForm'])) {
 					$TemplateData['refresh'] = 'index.php?p=managegroups';
 				}
 				else {
-					$TemplateData['message']['content'] = "Group could not be updated. Either wrong input or duplicate group name";
+					$TemplateData['message']['content'] = $I18n->t('managegroups.message.couldNotBeUpdated');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
 			else {
-				$TemplateData['message']['content'] = "Provide name and description.";
+				$TemplateData['message']['content'] = $I18n->t('managegroups.message.missingName');
 				$TemplateData['message']['status'] = "error";
 			}
 		}
@@ -77,12 +77,12 @@ if(isset($_POST['submitForm'])) {
 					$TemplateData['refresh'] = 'index.php?p=managegroups';
 				}
 				else {
-					$TemplateData['message']['content'] = "Group could not be created.";
+					$TemplateData['message']['content'] = $I18n->t('managegroups.message.couldNotBeCreated');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
 			else {
-				$TemplateData['message']['content'] = "Provide name and description.";
+				$TemplateData['message']['content'] = $I18n->t('managegroups.message.missingName');
 				$TemplateData['message']['status'] = "error";
 			}
 		}

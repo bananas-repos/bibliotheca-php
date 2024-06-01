@@ -82,7 +82,7 @@ if(!empty($_collection)) {
 							$TemplateData['search'] = $_search;
 						}
 						else {
-							$TemplateData['message']['content'] = "Wrong input format.";
+							$TemplateData['message']['content'] = $I18n->t('advsearch.message.wrongInputFormat');
 							$TemplateData['message']['status'] = "error";
 						}
 					} else { // ordinary search within default field
@@ -102,7 +102,7 @@ if(!empty($_collection)) {
 		}
 	}
 	else {
-		$TemplateData['message']['content'] = "Can not load given collection.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 	}
 }

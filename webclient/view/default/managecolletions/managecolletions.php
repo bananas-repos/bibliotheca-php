@@ -100,7 +100,7 @@ if(isset($_POST['submitForm'])) {
 				if ($do === true) {
 					$TemplateData['refresh'] = 'index.php?p=managecolletions';
 				} else {
-					$TemplateData['message']['content'] = "Collection could not be deleted.";
+					$TemplateData['message']['content'] = $I18n->t('managecol.message.couldNotBeDelete');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
@@ -116,11 +116,11 @@ if(isset($_POST['submitForm'])) {
                         }
 						$TemplateData['refresh'] = 'index.php?p=managecolletions';
 					} else {
-						$TemplateData['message']['content'] = "Collection could not be updated.";
+						$TemplateData['message']['content'] = $I18n->t('managecol.message.couldNotBeUpdated');
 						$TemplateData['message']['status'] = "error";
 					}
 				} else {
-					$TemplateData['message']['content'] = "Provide name, owner, group and valid rights.";
+					$TemplateData['message']['content'] = $I18n->t('managecol.message.missingRights');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
@@ -135,15 +135,14 @@ if(isset($_POST['submitForm'])) {
 					if ($do === true) {
 						$TemplateData['refresh'] = 'index.php?p=managecolletions';
 					} else {
-						$TemplateData['message']['content'] = "Collection could not be created.";
+						$TemplateData['message']['content'] = $I18n->t('managecol.message.notBeCreated');
 						$TemplateData['message']['status'] = "error";
 					}
 				} else {
-					$TemplateData['message']['content'] = "Provide name, owner, group and valid rights.";
+					$TemplateData['message']['content'] = $I18n->t('managecol.message.missingRights');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
 		}
-
 	}
 }

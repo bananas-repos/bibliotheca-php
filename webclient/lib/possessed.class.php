@@ -290,25 +290,27 @@ class Possessed {
 		$ret = false;
 
 		if(Summoner::validate($id,'digit')) {
-			try {
-				$this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-				$d1 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user` 
-					WHERE `id` = '".$this->_DB->real_escape_string($id)."'
-					AND ".$this->_User->getSQLRightsString("delete")."
-					AND `protected` = '0'");
-				$d2 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
-				$d3 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
 
-				if($d1 === false || $d2 === false || $d3 === false) {
-					throw new Exception('Failed to delete the user');
-				}
-				$this->_DB->commit();
-				$ret = true;
-			}
-			catch (Exception $e) {
-				$this->_DB->rollback();
-				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			}
+            if(!$this->_checkIfUserIsInUse($id)) {
+                try {
+                    $this->_DB->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+                    $d1 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user` 
+                        WHERE `id` = '".$this->_DB->real_escape_string($id)."'
+                        AND ".$this->_User->getSQLRightsString("delete")."
+                        AND `protected` = '0'");
+                    $d2 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_user2group` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
+                    $d3 = $this->_DB->query("DELETE FROM `".DB_PREFIX."_userSession` WHERE `fk_user_id` = '".$this->_DB->real_escape_string($id)."'");
+
+                    if ($d1 === false || $d2 === false || $d3 === false) {
+                        throw new Exception('Failed to delete the user');
+                    }
+                    $this->_DB->commit();
+                    $ret = true;
+                } catch (Exception $e) {
+                    $this->_DB->rollback();
+                    Summoner::sysLog("[ERROR] " . __METHOD__ . " mysql catch: " . $e->getMessage());
+                }
+            }
 		}
 
 		return $ret;
@@ -387,18 +389,19 @@ class Possessed {
 		$ret = false;
 
 		if(Summoner::validate($id,'digit')) {
-			$queryStr = "DELETE FROM `".DB_PREFIX."_group`
-						WHERE ".$this->_User->getSQLRightsString("delete")."
-							AND `protected` = '0'
-							AND `id` = '".$this->_DB->real_escape_string($id)."'";
-			if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
-			try {
-				$this->_DB->query($queryStr);
-				$ret = true;
-			}
-			catch (Exception $e) {
-				Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
-			}
+            if(!$this->_checkIfGroupIsInUse($id)) {
+                $queryStr = "DELETE FROM `" . DB_PREFIX . "_group`
+                            WHERE " . $this->_User->getSQLRightsString("delete") . "
+                                AND `protected` = '0'
+                                AND `id` = '" . $this->_DB->real_escape_string($id) . "'";
+                if (QUERY_DEBUG) Summoner::sysLog("[QUERY] " . __METHOD__ . " query: " . Summoner::cleanForLog($queryStr));
+                try {
+                    $this->_DB->query($queryStr);
+                    $ret = true;
+                } catch (Exception $e) {
+                    Summoner::sysLog("[ERROR] " . __METHOD__ . " mysql catch: " . $e->getMessage());
+                }
+            }
 		}
 
 		return $ret;
@@ -647,4 +650,84 @@ class Possessed {
 
 		return $ret;
 	}
+
+    /**
+     * Check if given userId is used and should not be deleted.
+     *
+     * @param string $userId
+     * @return bool
+     */
+    private function _checkIfUserIsInUse(string $userId): bool {
+        $ret = false;
+
+        $queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection` 
+                    WHERE `owner` = '".$this->_DB->real_escape_string($userId)."'";
+        if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+        try {
+            $query = $this->_DB->query($queryStr);
+            if($query !== false && $query->num_rows > 0) {
+                $ret = true;
+            }
+        }
+        catch (Exception $e) {
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+        }
+
+        if(!$ret) {
+            $queryStr = "SELECT `id` FROM `".DB_PREFIX."_user2group` 
+                    WHERE `fk_user_id` = '".$this->_DB->real_escape_string($userId)."'";
+            if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+            try {
+                $query = $this->_DB->query($queryStr);
+                if($query !== false && $query->num_rows > 0) {
+                    $ret = true;
+                }
+            }
+            catch (Exception $e) {
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * Check if given groupId is used and should not be deleted.
+     *
+     * @param string $groupId
+     * @return bool
+     */
+    private function _checkIfGroupIsInUse(string $groupId): bool {
+        $ret = false;
+
+        $queryStr = "SELECT `id` FROM `".DB_PREFIX."_collection` 
+                    WHERE `group` = '".$this->_DB->real_escape_string($groupId)."'";
+        if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+        try {
+            $query = $this->_DB->query($queryStr);
+            if($query !== false && $query->num_rows > 0) {
+                $ret = true;
+            }
+        }
+        catch (Exception $e) {
+            Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+        }
+
+        if(!$ret) {
+            $queryStr = "SELECT `fk_group_id` FROM `".DB_PREFIX."_user2group` 
+                    WHERE `fk_group_id` = '".$this->_DB->real_escape_string($groupId)."'";
+            if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
+            try {
+                $query = $this->_DB->query($queryStr);
+                if($query !== false && $query->num_rows > 0) {
+                    $ret = true;
+                }
+            }
+            catch (Exception $e) {
+                Summoner::sysLog("[ERROR] ".__METHOD__." mysql catch: ".$e->getMessage());
+            }
+        }
+
+        return $ret;
+    }
 }

@@ -4,12 +4,12 @@ if(!empty($TemplateData['editFields'])) {
 	if(!empty($TemplateData['editData']) && isset($TemplateData['editData']['id'])) {
 		$_entry = $TemplateData['editData']['id'];
 ?>
-		<h3>Update an entry in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+		<h3><?php echo $I18n->t('manageentry.updateentry'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 		<p>
-			<a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>">View entry</a>
+			<a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $I18n->t('manageentry.viewentry'); ?></a>
 		</p>
 <?php if(!empty($TemplateData['possibleDuplicates'])) { ?>
-Possible duplicate
+<?php echo $I18n->t('manageentry.possibleduplicate'); ?>
 <ul>
 	<?php
 	foreach($TemplateData['possibleDuplicates'] as $key=>$entry) {
@@ -19,11 +19,11 @@ Possible duplicate
 </ul>
 <?php } ?>
 <?php } else { ?>
-		<h3>Add an entry to: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+		<h3><?php echo $I18n->t('manageentry.addentry'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 <?php } ?>
 
 <?php if(!empty($TemplateData['availableTools'])) { ?>
-<h4>Available tools</h4>
+<h4><?php echo $I18n->t('manageentry.availabletools'); ?></h4>
 <ul>
 	<?php foreach($TemplateData['availableTools'] as $tool) { ?>
 	<li><a href="index.php?p=tool&t=<?php echo $tool['action']; ?>&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $_entry; ?>"
@@ -51,55 +51,55 @@ Possible duplicate
 	?>
 
 	<div class="field-row-stacked">
-		<label>Rights *</label>
+		<label><?php echo $I18n->t('global.rights'); ?> *</label>
 
 		<table>
 			<thead>
 			<tr>
-				<th>User</th>
-				<th>Group</th>
-				<th>Other</th>
+				<th><?php echo $I18n->t('global.user'); ?></th>
+				<th><?php echo $I18n->t('global.group'); ?></th>
+				<th><?php echo $I18n->t('global.other'); ?></th>
 			</tr>
 			</thead>
 			<tbody>
 			<tr>
 				<td>
 					<input id="user_read" type="checkbox" name="fdata[rights][user][read]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['user']['read'] ?? '') == 'r' ? "checked" : ""; ?>>
 					<label for="user_read">r &nbsp; &nbsp; &nbsp;</label>
 
 					<input id="user_write" type="checkbox" name="fdata[rights][user][write]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['user']['write'] ?? '') == 'w' ? "checked" : ""; ?>>
 					<label for="user_write">w &nbsp; &nbsp; &nbsp;</label>
 
 					<input id="user_delete" type="checkbox" name="fdata[rights][user][delete]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['user']['delete'] ?? '') == 'x' ? "checked" : ""; ?>>
 					<label for="user_delete">x &nbsp; &nbsp; &nbsp;</label>
 				</td>
 				<td>
 					<input id="group_read" type="checkbox" name="fdata[rights][group][read]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['group']['read'] ?? '') == 'r' ? "checked" : ""; ?>>
 					<label for="group_read">r &nbsp; &nbsp; &nbsp;</label>
 
 					<input id="group_write" type="checkbox" name="fdata[rights][group][write]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['group']['write'] ?? '') == 'w' ? "checked" : ""; ?>>
 					<label for="group_write">w &nbsp; &nbsp; &nbsp;</label>
 
 					<input id="group_delete" type="checkbox" name="fdata[rights][group][delete]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['group']['delete'] ?? '') == 'x' ? "checked" : ""; ?>>
 					<label for="group_delete">x &nbsp; &nbsp; &nbsp;</label>
 				</td>
 				<td>
 					<input id="other_read" type="checkbox" name="fdata[rights][other][read]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['other']['read'] ?? '') == 'r' ? "checked" : ""; ?>>
 					<label for="other_read">r &nbsp; &nbsp; &nbsp;</label>
 
 					<input id="other_write" type="checkbox" name="fdata[rights][other][write]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['other']['write'] ?? '') == 'w' ? "checked" : ""; ?>>
 					<label for="other_write">w &nbsp; &nbsp; &nbsp;</label>
 
 					<input id="other_delete" type="checkbox" name="fdata[rights][other][delete]" value="1"
-					<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>>
+					<?php echo ($TemplateData['editData']['rights']['other']['delete'] ?? '') == 'x' ? "checked" : ""; ?>>
 					<label for="other_delete">x &nbsp; &nbsp; &nbsp;</label>
 				</td>
 			</tr>
@@ -113,24 +113,24 @@ Possible duplicate
 
 	<div class="field-row-stacked">
 		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
-		<label for="doDelete">Delete</label>
+		<label for="doDelete"><?php echo $I18n->t('global.delete'); ?></label>
 	</div>
 
 	<?php } ?>
 
 	<div class="field-row-stacked">
-		<input type="submit" name="submitForm" value="Save">
+		<input type="submit" name="submitForm" value="<?php echo $I18n->t('global.save'); ?>">
 	</div>
 </form>
 
 <?php } else { ?>
-<h3>Please select a collection first</h3>
+<h3><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 <div class="sunken-panel">
 	<table width="100%">
 		<thead>
 		<tr>
-			<th width="100px">Name</th>
-			<th>Description</th>
+			<th width="100px"><?php echo $I18n->t('global.name'); ?></th>
+			<th><?php echo $I18n->t('global.description'); ?></th>
 		</tr>
 		</thead>
 		<tbody>

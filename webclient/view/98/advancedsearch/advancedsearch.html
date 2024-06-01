@@ -2,68 +2,59 @@
 
 	<form method="post">
 		<div class="field-row">
-			<label for="search">Search for</label>
+			<label for="search"><?php echo $I18n->t('advsearch.input.search.label'); ?></label>
 			<input id="search" type="text" autocomplete="off" name="fdata[search]"
-			       placeholder="See search syntax for options" size="50" />
+			       placeholder="<?php echo $I18n->t('advsearch.input.search.placeholder'); ?>" size="50" />
 		</div>
 		<div class="field-row">
-			<p>This uses the table view as default. Remember to select the fields to show in collection config</p>
+			<p><?php echo $I18n->t('advsearch.input.description'); ?></p>
 		</div>
 		<div class="field-row">
-			<input type="submit" name="submitForm" value="Search" />
+			<input type="submit" name="submitForm" value="<?php echo $I18n->t('global.search'); ?>" />
 		</div>
 	</form>
 
-	<h4>Syntax</h4>
-	<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
-	<p>
-		To search within the possible fields of a collection type the field <b>identifier</b> followed by <b>:</b> and then a space. Not every search operator does make sense with tag search fields.
-		If the search is within a field witch is not configured to be displayed in the table view, it will be added.
-	</p>
+	<h4><?php echo $I18n->t('advsearch.headline.syntax'); ?></h4>
+	<p><?php echo $I18n->t('advsearch.help.1'); ?></p>
+	<p><?php echo $I18n->t('advsearch.help.2'); ?></p>
 	<pre>title: bourne</pre>
-	<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
+	<p><?php echo $I18n->t('advsearch.explain.fields', $TemplateData['loadedCollection']['name'] ?? ''); ?></p>
 	<pre style="white-space: normal">
 	<?php foreach($TemplateData['collectionFields'] as $k=>$v) {
 		echo $v['identifier']." ";
 	} ?>
 	</pre>
-	<p>Possible search operators:</p>
+	<p><?php echo $I18n->t('advsearch.operators'); ?></p>
 	<dl>
 		<dt>&ast;</dt>
-		<dd>
-			The asterisk serves as the truncation (or wildcard) operator. Unlike the other operators,
-			it is appended to the word to be affected. Words match if they begin with the word preceding the * operator.
-		</dd>
+		<dd><?php echo $I18n->t('advsearch.operators.asterisk'); ?></dd>
 
 		<dt>&plus;</dt>
-		<dd>A leading plus sign indicates that this word must be present in each row that is returned.</dd>
+		<dd><?php echo $I18n->t('advsearch.operators.plus'); ?></dd>
 
 		<dt>&minus;</dt>
-		<dd>A leading minus sign indicates that this word must not be present in any of the rows that are returned.</dd>
+		<dd><?php echo $I18n->t('advsearch.operators.minus'); ?></dd>
 
 		<dt>&quot;</dt>
-		<dd>A phrase that is enclosed within double quote (") characters matches only rows that contain the phrase literally, as it was typed.</dd>
+		<dd><?php echo $I18n->t('advsearch.operators.quote'); ?></dd>
 
 		<dt>&gt;</dt>
-		<dd>A leading greater than sign indicates that rows greater than the number will be returned.</dd>
+		<dd><?php echo $I18n->t('advsearch.operators.greater'); ?></dd>
 
 		<dt>&lt;</dt>
-		<dd>A leading less than sign indicates that rows smaller than the number will be returned.</dd>
+		<dd><?php echo $I18n->t('advsearch.operators.less'); ?></dd>
 	</dl>
 
 	<?php if(!empty($TemplateData['search'])) { ?>
 		<div class="window">
 			<div class="title-bar">
-				<div class="title-bar-text">Search</div>
+				<div class="title-bar-text"><?php echo $I18n->t('global.search'); ?></div>
 				<div class="title-bar-controls">
 					<button aria-label="Close" id="searchNoteWindowCloseButton"></button>
 				</div>
 			</div>
 			<div class="window-body">
-				<p>
-					Display result for: <b><?php echo $TemplateData['search']; ?></b><br>
-					(Max. result of 60)
-				</p>
+				<p><?php echo $I18n->t('advsearch.result', $TemplateData['search'] ?? ''); ?></p>
 			</div>
 		</div>
 		<script>
@@ -80,7 +71,7 @@
 			<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
 			<?php } ?>
 			<div class="field-row">
-				<input type="submit" value="Bulkedit these results">
+				<input type="submit" value="<?php echo $I18n->t('advsearch.submit.bulkedit'); ?>">
 			</div>
 		</form>
 
@@ -88,7 +79,7 @@
 			<table width="100%">
 				<thead>
 				<tr>
-					<th width="60px">View</th>
+					<th width="60px"><?php echo $I18n->t('global.view'); ?></th>
 					<?php
 					foreach($TemplateData['collectionFields'] as $f) {
 						if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
@@ -103,7 +94,7 @@
 				<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
 				<tr>
 					<td>
-						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">View</a>
+						<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>"><?php echo $I18n->t('global.view'); ?></a>
 					</td>
 
 					<?php
@@ -112,7 +103,7 @@
 						?>
 					<td>
 						<?php
-								if(Summoner::ifset($f, 'value')) {
+								if(isset($f['value'])) {
 									if(is_array($f['value'])) {
 										echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
 									}
@@ -135,13 +126,13 @@
 <?php }
 	} else { ?>
 
-	<h3>Please select a collection first</h3>
+	<h3><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 	<div class="sunken-panel">
 		<table width="100%">
 			<thead>
 			<tr>
-				<th width="100px">Name</th>
-				<th>Description</th>
+				<th width="100px"><?php echo $I18n->t('global.name'); ?></th>
+				<th><?php echo $I18n->t('global.description'); ?></th>
 			</tr>
 			</thead>
 			<tbody>

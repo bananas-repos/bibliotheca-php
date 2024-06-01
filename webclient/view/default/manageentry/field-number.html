@@ -1,16 +1,16 @@
 <div class="uk-margin">
-	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $I18n->t($field['displayname']); ?></label>
 	<div class="uk-form-controls">
 		<input class="uk-input" id="<?php echo $field['identifier']; ?>" type="number"
 		       autocomplete="off" maxlength="10"
 		       name="fdata[<?php echo $field['identifier']; ?>]"
-		       value="<?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?>"
+		       value="<?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?>"
 		>
-		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+		<?php if(isset($field['bulkedit'])) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-			<option value="">Select bulk edit option</option>
-			<option value="replace">Replace</option>
-			<option value="empty">Clear</option>
+			<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+			<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+			<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 		</select>
 		<?php } ?>
 	</div>

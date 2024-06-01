@@ -1,102 +1,101 @@
-<h3 class="uk-h3">User management</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('manageuser.usermanagement'); ?></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Add or modify a user</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('manageuser.addormodify'); ?></h4>
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="username">Username *</label>
+				<label class="uk-form-label" for="username"><?php echo $I18n->t('global.username'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="username" type="text" autocomplete="off" name="fdata[username]"
-						value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+						value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="login">Login *</label>
+				<label class="uk-form-label" for="login"><?php echo $I18n->t('global.login'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="login" type="text" autocomplete="off" name="fdata[login]"
-						value="<?php echo Summoner::ifset($TemplateData['editData'], 'login'); ?>">
+						value="<?php echo $TemplateData['editData']['login'] ?? ''; ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="password">Password *</label>
+				<label class="uk-form-label" for="password"><?php echo $I18n->t('global.password'); ?> *</label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="password" type="password" autocomplete="off" name="fdata[password]">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="group">Main group *</label>
+				<label class="uk-form-label" for="group"><?php echo $I18n->t('manageuser.input.maingroup'); ?> *</label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="group" name="fdata[group]">
-						<option value="">Please select</option>
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 						<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-							<?php if(Summoner::ifsetValue($TemplateData['editData'], 'baseGroupId',$k)) echo 'selected'; ?>
+							<?php echo ($TemplateData['editData']['baseGroupId'] ?? '') == $k ? 'selected' : ''; ?>
 							><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 						<?php } ?>
 					</select>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<label class="uk-form-label" for="groups">Additional groups</label>
+				<label class="uk-form-label" for="groups"><?php echo $I18n->t('manageuser.input.addgroups'); ?></label>
 				<div class="uk-form-controls">
 					<select class="uk-select" id="groups" name="fdata[groups][]" multiple="multiple"
 						size="5">
-						<option value="">None</option>
+						<option value=""><?php echo $I18n->t('global.none'); ?></option>
 						<?php foreach($TemplateData['existingGroups'] as $k=>$v) { ?>
 						<option value="<?php echo $k; ?>"
-						<?php if(Summoner::ifset($TemplateData['editData']['groups'],$k)) echo 'selected'; ?>
+						<?php if(isset($TemplateData['editData']['groups'][$k])) echo 'selected'; ?>
 						><?php echo $v['name']; ?> (<?php echo $v['description']; ?>)</option>
 						<?php } ?>
 					</select>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Can login</div>
+				<div class="uk-form-label"><?php echo $I18n->t('manageuser.input.canloging'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[active]" value="1"
-							<?php if(Summoner::ifset($TemplateData['editData'], 'active')) echo "checked"; ?>>
+							<?php if(isset($TemplateData['editData']['active'])) echo "checked"; ?>>
 					</label>
 				</div>
 			</div>
-			<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+			<?php if(isset($TemplateData['editData']['name']) && (($TemplateData['editData']['protected'] ?? '') == '0' ? true : false)) { ?>
 			<div class="uk-margin">
-				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-label"><?php echo $I18n->t('manageuser.input.delete'); ?> <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
-						Warning: Content owned by this user will not be deleted and thus only manageable by admin!<br />
-						Better disable the user if there is content.
+						<?php echo $I18n->t('manageuser.input.delete.howto'); ?>
 					</label>
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Create API Token</div>
+				<div class="uk-form-label"><?php echo $I18n->t('manageuser.input.apitoken'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[refreshApiToken]" value="1"><br />
-						Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
-						<?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+						<?php echo $I18n->t('manageuser.input.apitoken.valid'); ?> <?php echo $TemplateData['editData']['apiTokenValidDate'] ?? ''; ?><br />
+						<?php echo $TemplateData['editData']['apiToken'] ?? ''; ?>
 					</label>
 				</div>
 			</div>
 			<?php } ?>
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Save
+					<?php echo $I18n->t('global.save'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Available users</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('manageuser.availableusers'); ?></h4>
 		<table class="uk-table">
 			<thead>
 				<tr>
-					<th>Login</th>
-					<th>Username</th>
-					<th>Group(s)</th>
-					<th>Status</th>
+					<th><?php echo $I18n->t('global.login'); ?></th>
+					<th><?php echo $I18n->t('global.username'); ?></th>
+					<th><?php echo $I18n->t('manageuser.groups'); ?></th>
+					<th><?php echo $I18n->t('manageuser.status'); ?></th>
 					<th></th>
 				</tr>
 			</thead>

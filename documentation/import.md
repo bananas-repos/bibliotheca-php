@@ -1,3 +1,5 @@
+# Import
+
 The API provides an import method.
 
 You need the URL to your installation and api file.
@@ -5,11 +7,13 @@ You need the token. Can be created in user management and has a lifespan.
 You need the information which collection to import to and what data can be imported.
 
 A working php example with example data-crow data can be found here:
+```
 http://91.132.146.200:3000/Banana/bibliotheca-tools/src/master/data-crow/run-import-to-bibliotheca.php
 http://91.132.146.200:3000/Banana/bibliotheca-tools/src/master/data-crow/README
+```
 
 Info which data can be imported in example collation #1
-
+```
 {
   "message": "API POST and FILES data information for collection: Movies",
   "status": 200,
@@ -70,9 +74,11 @@ Info which data can be imported in example collation #1
     }
   }
 }
+```
 
-Array structure to be send as POST with curl to: api.php?&authKey=API_TOKEN&collection=COLLECTION_ID
+Array structure to be send as POST with curl to: `api.php?&authKey=API_TOKEN&collection=COLLECTION_ID`
 
+```
 array(15) {
     ["actors"]=> string(52) "Amber Heard,Gary Oldman,Harrison Ford,Liam Hemsworth"
     ["countries"]=> string(20) "France,United States"
@@ -89,3 +95,4 @@ array(15) {
     ["attachment[0]"]=> object(CURLFile)#343 (3) { ["name"]=> string(87) "import/movie/movies-export_images/0efb720d-d9e5-406b-aa42-e356f9c544e9_PictureFront.jpg" ["mime"]=> string(0) "" ["postname"]=> string(0) "" }
     ["attachment[1]"]=> object(CURLFile)#342 (3) { ["name"]=> string(87) "import/movie/movies-export_images/3edf49eb-0270-456d-a15d-e5ddcba302ed_PictureFront.jpg" ["mime"]=> string(0) "" ["postname"]=> string(0) "" }
 }
+```

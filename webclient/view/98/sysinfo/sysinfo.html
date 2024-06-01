@@ -1,15 +1,15 @@
-<h3>System information</h3>
+<h3><?php echo $I18n->t('sysinfo.headline.sysinfo'); ?></h3>
 <div class="sunken-panel">
 	<table width="100%">
 		<thead>
 		<tr>
-			<th>Collection</th>
-			<th>Description</th>
-			<th>Created</th>
-			<th>Entries</th>
-			<th>Tags</th>
-			<th>DB Usage</th>
-			<th>Disk Usage</th>
+			<th><?php echo $I18n->t('sysinfo.th.collection'); ?></th>
+			<th><?php echo $I18n->t('sysinfo.th.description'); ?></th>
+			<th><?php echo $I18n->t('sysinfo.th.created'); ?></th>
+			<th><?php echo $I18n->t('sysinfo.th.entries'); ?></th>
+			<th><?php echo $I18n->t('sysinfo.th.tags'); ?></th>
+			<th><?php echo $I18n->t('sysinfo.th.dbusage'); ?></th>
+			<th><?php echo $I18n->t('sysinfo.th.diskusage'); ?></th>
 		</tr>
 		</thead>
 		<tbody>
@@ -58,7 +58,7 @@
 				<td><?php echo $TemplateData['overallTableSize']; ?></td>
 			</tr>
 			<tr>
-				<td>Storage usage</td>
+				<td><?php echo $I18n->t('sysinfo.th.diskusage'); ?></td>
 				<td><?php echo $TemplateData['overallStorageSize']; ?></td>
 			</tr>
 		</tbody>

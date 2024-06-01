@@ -1,11 +1,7 @@
-<h3 >Manage your fields for: <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
+<h3><?php echo $I18n->t('managefields.fieldsfor'); ?> <a href="index.php?p=managecolletions&m=edit&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $TemplateData['editData']['name']; ?></a></h3>
 
-<h4 >Add or remove a field</h4>
-<p>
-	Just use drag and drop below to add, remove or order your fields.<br />
-	Removing a field will <b>remove</b> the stored data from the collection.<br />
-	Make sure at least the <b>title</b>, <b>cover image</b> and <b>description</b> fields are available.
-</p>
+<h4><?php echo $I18n->t('managefields.addorremove'); ?></h4>
+<p><?php echo $I18n->t('managefields.addorremove.description'); ?></p>
 
 <div id="sortableContainer">
 	<div class="window">
@@ -16,7 +12,7 @@
 			<div id="collectionFields">
 				<?php foreach($TemplateData['existingFields'] as $k=>$v) { ?>
 				<div class="sortitem" data-field-id="<?php echo $k; ?>">
-					<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
+					<?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
 				</div>
 				<?php } ?>
 			</div>
@@ -24,13 +20,13 @@
 	</div>
 	<div class="window">
 		<div class="title-bar">
-			<div class="title-bar-text">Available fields</div>
+			<div class="title-bar-text"><?php echo $I18n->t('managefields.fieldsavailable'); ?></div>
 		</div>
 		<div class="window-body">
 			<div id="availableFields">
 				<?php foreach($TemplateData['availableFields'] as $k=>$v) { ?>
 				<div class="sortitem" data-field-id="<?php echo $k; ?>">
-					<?php echo $v['displayname']; ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
+					<?php echo $I18n->t($v['displayname']); ?> (<?php echo $v['type'],'; ',$v['identifier']; ?>)
 				</div>
 				<?php } ?>
 			</div>
@@ -40,10 +36,9 @@
 
 <form method="post" onsubmit="return saveOrderAndSubmit()">
 	<input type="hidden" name="fdata[fieldSortString]" id="fieldSort"
-	   value="<?php echo Summoner::ifset($TemplateData['editData'], 'fieldSortString'); ?>">
-	<input type="submit" name="submitForm" value="Save">
+	   value="<?php echo $TemplateData['editData']['fieldSortString'] ?? ''; ?>">
+	<input type="submit" name="submitForm" value="<?php echo $I18n->t('global.save'); ?>">
 </form>
-
 
 
 <script src="view/98/ui/js/sortable.js"></script>

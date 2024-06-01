@@ -3,9 +3,7 @@
 <?php if(!empty($TemplateData['search'])) { ?>
 <div uk-alert id="searchNotice">
 	<button class="uk-alert-close" type="button" uk-close></button>
-	<p>Display result for: <b><?php echo $TemplateData['search']; ?></b><br />
-		<small>(Max. result of 60)</small>
-	</p>
+	<p><?php echo $I18n->t('advsearch.result', $TemplateData['search'] ?? ''); ?></p>
 </div>
 <div class="uk-padding-small uk-padding-remove-left">
 	<script type="text/javascript">
@@ -14,10 +12,10 @@
 		});
 	</script>
 	<button class="uk-button uk-button-default uk-button-small"
-	        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden">Toggle search</button>
-	<?php if(!empty($TemplateData['entries'])) { ?>
+	        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden"><?php echo $I18n->t('advsearch.togglesearch'); ?></button>
+	<?php if(!empty($TemplateData['entries']) && $Doomguy->isSignedIn() === true) { ?>
 	<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>" class="uk-display-inline-block">
-		<button type="submit" class="uk-button uk-button-default uk-button-small">Bulkedit these results</button>
+		<button type="submit" class="uk-button uk-button-default uk-button-small"><?php echo $I18n->t('advsearch.submit.bulkedit'); ?></button>
 		<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
 		<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
 		<?php } ?>
@@ -29,41 +27,38 @@
 
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small <?php if(!empty($TemplateData['search'])) { ?>uk-hidden<?php } ?>"
 	uk-grid id="searchFrame">
-	<div class="uk-width-1-2">
+	<div class="uk-width-1-2@l">
 		<form class="uk-form-horizontal uk-margin-small" method="post">
 			<div class="uk-margin">
-				<label class="uk-form-label" for="search">Search for</label>
+				<label class="uk-form-label" for="search"><?php echo $I18n->t('advsearch.input.search.label'); ?></label>
 				<div class="uk-form-controls">
 					<input class="uk-input" id="search" type="text" autocomplete="off" name="fdata[search]"
-					       placeholder="See search syntax for options">
+					       placeholder="<?php echo $I18n->t('advsearch.input.search.placeholder'); ?>">
 				</div>
 			</div>
 			<div class="uk-margin">
-				<div class="uk-form-label">Table view</div>
+				<div class="uk-form-label"><?php echo $I18n->t('advsearch.input.tableview.label'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[tableView]" value="1"><br>
-						<small>Make sure to define the fields which will be used in table view in collection config</small>
+						<small><?php echo $I18n->t('advsearch.tableview.description'); ?></small>
 					</label>
 				</div>
 			</div>
 
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Search
+					<?php echo $I18n->t('global.search'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
-	<div class="uk-width-1-2">
-		<h4>Syntax</h4>
-		<p>To search within the collection default search field, like the ordinary search, just type the search term and go.</p>
-		<p>
-			To search within the possible fields of a collection type the field identifier followed by : and then a space. Not every search operator does make sense with tag search fields.
-			If the search is within a field witch is not configured to be displayed in the table view, it will be added.
-		</p>
+	<div class="uk-width-1-2@l">
+		<h4><?php echo $I18n->t('advsearch.headline.syntax'); ?></h4>
+		<p><?php echo $I18n->t('advsearch.help.1'); ?></p>
+		<p><?php echo $I18n->t('advsearch.help.2'); ?></p>
 		eg.: <code>title: bourne</code>
-		<p>Available fields in <b><?php echo Summoner::ifset($TemplateData['loadedCollection'], 'name'); ?></b> are:</p>
+		<p><?php echo $I18n->t('advsearch.explain.fields', $TemplateData['loadedCollection']['name'] ?? ''); ?></p>
 		<pre style="white-space: normal">
 		<?php
 		foreach($TemplateData['collectionFields'] as $k=>$v) {
@@ -71,16 +66,13 @@
 		}
 		?>
 		</pre>
-		<p>Possible search operators:</p>
-		<p>
-			* = The asterisk serves as the truncation (or wildcard) operator. Unlike the other operators,
-			it is appended to the word to be affected. Words match if they begin with the word preceding the * operator.
-		</p>
-		<p>+ = A leading plus sign indicates that this word must be present in each row that is returned.</p>
-		<p>- = A leading minus sign indicates that this word must not be present in any of the rows that are returned.</p>
-		<p>" = A phrase that is enclosed within double quote (") characters matches only rows that contain the phrase literally, as it was typed.</p>
-		<p>&gt; = A leading greater than sign indicates that rows greater than the number will be returned.</p>
-		<p>&lt; = A leading less than sign indicates that rows smaller than the number will be returned.</p>
+		<p><?php echo $I18n->t('advsearch.operators'); ?></p>
+		<p>* = <?php echo $I18n->t('advsearch.operators.asterisk'); ?></p>
+		<p>+ = <?php echo $I18n->t('advsearch.operators.plus'); ?></p>
+		<p>- = <?php echo $I18n->t('advsearch.operators.plus'); ?></p>
+		<p>" = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+		<p>&gt; = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+		<p>&lt; = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
 	</div>
 </div>
 
@@ -115,7 +107,7 @@
 		?>
 			<td>
 				<?php
-				if(Summoner::ifset($f, 'value')) {
+				if(isset($f['value'])) {
 					if(is_array($f['value'])) {
 						echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
 					}
@@ -142,7 +134,7 @@
 	<div class="uk-width-1-4@s uk-width-1-6@l">
 		<div class="uk-card uk-card-default uk-card-small">
 			<div class="uk-card-media-top">
-				<?php if(Summoner::ifset($entry['fields'], 'coverimage')) { ?>
+				<?php if(isset($entry['fields']['coverimage'])) { ?>
 				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank>
 				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
 				     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>">
@@ -150,16 +142,16 @@
 				<?php } ?>
 			</div>
 			<div class="uk-card-body uk-visible@l">
-				<?php if(Summoner::ifset($entry['fields'], 'title')) { ?>
+				<?php if(isset($entry['fields']['title'])) { ?>
 				<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
 				<?php } ?>
 
-				<?php if(Summoner::ifset($entry['fields'], 'description')) { ?>
+				<?php if(isset($entry['fields']['description'])) { ?>
 				<p><?php echo $entry['fields']['description']['value']; ?></p>
 				<?php } ?>
 			</div>
 			<div class="uk-card-footer">
-				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text" target=_blank>View</a>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text" target=_blank><?php echo $I18n->t('global.view'); ?></a>
 			</div>
 		</div>
 	</div>
@@ -171,7 +163,7 @@
 <?php } ?>
 
 <?php } else { ?>
-<h3 class="uk-h3">Please select a collection first</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-2-3@m uk-width-1-2@xl">
 		<dl class="uk-description-list uk-description-list-divider">

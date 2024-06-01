@@ -339,7 +339,7 @@ class IMDB
 		}
 
 		// Was the movie found?
-		$sMatch = $this->matchRegex($sSource, self::IMDB_SEARCH, "1");
+		$sMatch = $this->matchRegex($sSource, self::IMDB_SEARCH_ADV, "1");
 		if (false !== $sMatch) {
 			$sUrl = 'https://www.imdb.com/title/' . $sMatch . '/reference';
 			if ($this->IMDB_DEBUG) {
@@ -351,7 +351,7 @@ class IMDB
 
 			return true;
 		}
-		$sMatch = $this->matchRegex($sSource, self::IMDB_NOT_FOUND, "0");
+		$sMatch = $this->matchRegex($sSource, self::IMDB_NOT_FOUND_ADV, "0");
 		if (false !== $sMatch) {
 			if ($this->IMDB_DEBUG) {
 				echo '<pre><b>Movie not found:</b> ' . $sSearch . '</pre>';
@@ -890,7 +890,7 @@ class IMDB
 	public function getDescription()
 	{
 		if (true === $this->isReady) {
-			$sMatch = $this->matchRegex($this->sSource, self::IMDB_DESCRIPTION, "1");
+			$sMatch = $this->matchRegex($this->sSource, self::IMDB_MOVIE_DESC, "1");
 			if (false !== $sMatch) {
 				return $this->cleanString($sMatch);
 			}

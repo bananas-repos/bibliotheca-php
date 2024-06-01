@@ -1,0 +1,180 @@
+<?php if(!empty($TemplateData['loadedCollection'])) { ?>
+
+<?php if(!empty($TemplateData['search'])) { ?>
+<div uk-alert id="searchNotice">
+	<button class="uk-alert-close" type="button" uk-close></button>
+	<p><?php echo $I18n->t('advsearch.result', $TemplateData['search'] ?? ''); ?></p>
+</div>
+<div class="uk-padding-small uk-padding-remove-left">
+	<script type="text/javascript">
+		UIkit.util.on('#searchNotice', 'hide', function () {
+			window.location.href="index.php?p=advancedsearch&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>";
+		});
+	</script>
+	<button class="uk-button uk-button-default uk-button-small"
+	        type="button" uk-toggle="target: #searchFrame; animation: uk-animation-scale-down; cls: uk-hidden"><?php echo $I18n->t('advsearch.togglesearch'); ?></button>
+	<?php if(!empty($TemplateData['entries']) && $Doomguy->isSignedIn() === true) { ?>
+	<form method="post" action="index.php?p=bulkedit&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>" class="uk-display-inline-block">
+		<?php foreach($TemplateData['entries']['ids'] as $f) { ?>
+		<input type="hidden" name="bulkedit[]" value="<?php echo $f; ?>" />
+		<?php } ?>
+		<button type="submit" class="uk-button uk-button-default uk-button-small"><?php echo $I18n->t('advsearch.submit.bulkedit'); ?></button>
+	</form>
+	<?php } ?>
+</div>
+
+<?php } ?>
+
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small <?php if(!empty($TemplateData['search'])) { ?>uk-hidden<?php } ?>"
+	uk-grid id="searchFrame">
+	<div class="uk-width-1-2@l">
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+			<div class="uk-margin">
+				<label class="uk-form-label" for="search"><?php echo $I18n->t('advsearch.input.search.label'); ?></label>
+				<div class="uk-form-controls">
+					<input class="uk-input" id="search" type="text" autocomplete="off" name="fdata[search]"
+					       placeholder="<?php echo $I18n->t('advsearch.input.search.placeholder'); ?>">
+				</div>
+			</div>
+			<div class="uk-margin">
+				<div class="uk-form-label"><?php echo $I18n->t('advsearch.input.tableview.label'); ?></div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[tableView]" value="1"><br>
+						<small><?php echo $I18n->t('advsearch.tableview.description'); ?></small>
+					</label>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					<?php echo $I18n->t('global.search'); ?>
+				</button>
+			</div>
+		</form>
+	</div>
+	<div class="uk-width-1-2@l">
+		<h4><?php echo $I18n->t('advsearch.headline.syntax'); ?></h4>
+		<p><?php echo $I18n->t('advsearch.help.1'); ?></p>
+		<p><?php echo $I18n->t('advsearch.help.2'); ?></p>
+		eg.: <code>title: bourne</code>
+		<p><?php echo $I18n->t('advsearch.explain.fields', $TemplateData['loadedCollection']['name'] ?? ''); ?></p>
+		<pre style="white-space: normal">
+		<?php
+		foreach($TemplateData['collectionFields'] as $k=>$v) {
+			echo $v['identifier']." ";
+		}
+		?>
+		</pre>
+		<p><?php echo $I18n->t('advsearch.operators'); ?></p>
+		<p>* = <?php echo $I18n->t('advsearch.operators.asterisk'); ?></p>
+		<p>+ = <?php echo $I18n->t('advsearch.operators.plus'); ?></p>
+		<p>- = <?php echo $I18n->t('advsearch.operators.plus'); ?></p>
+		<p>" = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+		<p>&gt; = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+		<p>&lt; = <?php echo $I18n->t('advsearch.operators.quote'); ?></p>
+	</div>
+</div>
+
+<?php if(!empty($TemplateData['entries'])) { ?>
+<div>
+	<?php if($TemplateData['searchResultStyle'] == "table") { ?>
+
+	<table class="uk-table uk-table-small uk-table-divider uk-table-justify">
+		<thead>
+			<tr>
+				<th class="">#</th>
+			<?php
+				foreach($TemplateData['collectionFields'] as $f) {
+					if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
+						echo '<th>'.$f['displayname'].'</th>';
+					}
+				}
+			?>
+			</tr>
+		</thead>
+		<tbody>
+
+	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
+		<tr>
+			<td class="">
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank><span class="" uk-icon="icon: link"></span></a>
+			</td>
+
+		<?php
+		foreach($entry['fields'] as $f) {
+			if(in_array($f['id'],$TemplateData['loadedCollection']['advancedSearchTableFields'])) {
+		?>
+			<td>
+				<?php
+				if(isset($f['value'])) {
+					if(is_array($f['value'])) {
+						echo Summoner::limitWithDots(implode(', ',$f['value']),100,'...');
+					}
+					else {
+						echo Summoner::limitWithDots($f['value'],100,'...');
+					}
+				}
+				?>
+			</td>
+		<?php
+		    }
+		}
+		?>
+		</tr>
+	<?php } ?>
+		</tbody>
+	</table>
+</div>
+	<?php
+	} else {
+	?>
+
+	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) {	?>
+
+		<div class="uk-card uk-card-default uk-grid-collapse uk-margin uk-grid">
+			<div class="uk-card-media-left uk-cover-container uk-width-1-2@s uk-width-1-3@m uk-width-1-6@l uk-visible@s">
+				<?php if(isset($entry['fields']['coverimage'])) { ?>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" target=_blank>
+					<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
+				     alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>" uk-cover>
+					<canvas width="400" height="200"></canvas>
+				</a>
+				<?php } ?>
+			</div>
+			<div class="uk-width-1-2@s uk-width-2-3@m uk-width-5-6@l">
+				<div class="uk-card-body">
+					<?php if(isset($entry['fields']['title'])) { ?>
+					<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
+					<?php } ?>
+
+					<?php if(isset($entry['fields']['description'])) { ?>
+					<p><?php echo $entry['fields']['description']['value']; ?></p>
+					<?php } ?>
+				</div>
+				<div class="uk-card-footer">
+					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text" target=_blank><?php echo $I18n->t('global.view'); ?></a>
+				</div>
+			</div>
+		</div>
+
+	<?php
+		}
+	}
+	?>
+
+<?php } ?>
+
+<?php } else { ?>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-2-3@m uk-width-1-2@xl">
+		<h3 class="uk-heading-divider"><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
+		<dl class="uk-description-list">
+			<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+			<dt><a href="index.php?p=advancedsearch&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>
+			<dd><?php echo $v['description']; ?></dd>
+			<?php } ?>
+		</dl>
+	</div>
+</div>
+<?php } ?>

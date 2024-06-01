@@ -154,7 +154,7 @@ if(!empty($_collection)) {
 
 	}
 	else {
-		$TemplateData['message']['content'] = "Can not load given collection.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 	}
 }

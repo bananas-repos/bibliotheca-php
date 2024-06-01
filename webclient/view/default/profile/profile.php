@@ -39,13 +39,13 @@ if(!empty($TemplateData['editData'])) {
 			if ($do === true) {
 				$TemplateData['refresh'] = 'index.php?p=profile';
 			} else {
-				$TemplateData['message']['content'] = "Your profile could not be updated.";
+				$TemplateData['message']['content'] = $I18n->t('profile.message.couldNotBeUpdated');
 				$TemplateData['message']['status'] = "error";
 			}
 		}
 	}
 }
 else {
-	$TemplateData['message']['content'] = "Something went wrong. See logs for more details.";
+	$TemplateData['message']['content'] = $I18n->t('global.message.somethingWentWrong');
 	$TemplateData['message']['status'] = "error";
 }

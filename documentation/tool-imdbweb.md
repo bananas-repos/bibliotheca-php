@@ -1,4 +1,4 @@
-IMDB web parser tool
+# IMDB web parser tool
 
 It provides easy searching for a movie entry within https://www.imdb.com.
 Creating a new one with the selected fields or updating an existing one.
@@ -16,6 +16,6 @@ An option to make the target fields automatically selected by default to given v
 in the config file.
 
 # Setup
-Rename the config-imdbweb.php.default to config-imdbweb.php in the config folder.
-Follow the comments to update the settings.
-Add the tool to your music collection
+
+Rename the `config-imdbweb.php.default` to `config-imdbweb.php` in the config folder.
+Follow the comments to update the settings. Add the tool to your collection.

@@ -4,13 +4,13 @@ if(!empty($TemplateData['editFields'])) {
 	if(!empty($TemplateData['editData'])) {
 		$_entry = $TemplateData['editData']['id'];
 ?>
-		<h3 class="uk-h3">Update an entry in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+		<h3 class="uk-h3"><?php echo $I18n->t('manageentry.updateentry'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 		<p>
 			<span uk-icon="arrow-left"></span>
-			<a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>">View entry</a>
+			<a href="index.php?p=entry&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $TemplateData['editData']['id']; ?>"><?php echo $I18n->t('manageentry.viewentry'); ?></a>
 		</p>
 <?php if(!empty($TemplateData['possibleDuplicates'])) { ?>
-Possible duplicate
+<?php echo $I18n->t('manageentry.possibleduplicate'); ?>
 <ul>
 	<?php
 	foreach($TemplateData['possibleDuplicates'] as $key=>$entry) {
@@ -20,7 +20,7 @@ Possible duplicate
 </ul>
 <?php } ?>
 <?php } else { ?>
-		<h3 class="uk-h3">Add an entry to: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+		<h3 class="uk-h3"><?php echo $I18n->t('manageentry.addentry'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 <?php } ?>
 <div class="uk-grid-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-2-3">
@@ -42,38 +42,38 @@ Possible duplicate
 
 			<hr class="uk-margin-medium">
 			<div class="uk-margin">
-				<div class="uk-form-label">Rights</div>
+				<div class="uk-form-label"><?php echo $I18n->t('global.rights'); ?></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<table class="uk-table uk-table-small">
 						<tr>
-							<th>User</th>
-							<th>Group</th>
-							<th>Other</th>
+							<th><?php echo $I18n->t('global.user'); ?></th>
+							<th><?php echo $I18n->t('global.group'); ?></th>
+							<th><?php echo $I18n->t('global.other'); ?></th>
 						</tr>
 						<tr>
 							<td>
 								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][read]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'read', 'r')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['user']['read'] ?? '') == 'r' ? "checked" : ""; ?>></label>
 								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][write]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'write', 'w')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['user']['write'] ?? '') == 'w' ? "checked" : ""; ?>></label>
 								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][user][delete]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['user'], 'delete', 'x')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['user']['delete'] ?? '') == 'x' ? "checked" : ""; ?>></label>
 							</td>
 							<td>
 								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][read]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'read', 'r')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['group']['read'] ?? '') == 'r' ? "checked" : ""; ?>></label>
 								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][write]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'write', 'w')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['group']['write'] ?? '') == 'w' ? "checked" : ""; ?>></label>
 								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][group][delete]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['group'], 'delete', 'x')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['group']['delete'] ?? '') == 'x' ? "checked" : ""; ?>></label>
 							</td>
 							<td>
 								<label>r:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][read]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'read', 'r')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['other']['read'] ?? '') == 'r' ? "checked" : ""; ?>></label>
 								<label>w:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][write]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'write', 'w')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['other']['write'] ?? '') == 'w' ? "checked" : ""; ?>></label>
 								<label>x:<input class="uk-checkbox" type="checkbox" name="fdata[rights][other][delete]" value="1"
-									<?php if(Summoner::ifsetValue($TemplateData['editData']['rights']['other'], 'delete', 'x')) echo "checked"; ?>></label>
+									<?php echo ($TemplateData['editData']['rights']['other']['delete'] ?? '') == 'x' ? "checked" : ""; ?>></label>
 							</td>
 						</tr>
 					</table>
@@ -86,7 +86,7 @@ Possible duplicate
 
 			<hr class="uk-margin-medium">
 			<div class="uk-margin">
-				<div class="uk-form-label">Delete <span uk-icon="warning"></span></div>
+				<div class="uk-form-label"><?php echo $I18n->t('global.delete'); ?> <span uk-icon="warning"></span></div>
 				<div class="uk-form-controls uk-form-controls-text">
 					<label>
 						<input class="uk-checkbox" type="checkbox" name="fdata[doDelete]" value="1">
@@ -98,14 +98,14 @@ Possible duplicate
 
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Save
+					<?php echo $I18n->t('global.save'); ?>
 				</button>
 			</div>
 		</form>
 	</div>
 	<div class="uk-width-1-3">
 		<?php if(!empty($TemplateData['availableTools'])) { ?>
-		<h4>Available tools</h4>
+		<h4><?php echo $I18n->t('manageentry.availabletools'); ?></h4>
 		<ul>
 		<?php foreach($TemplateData['availableTools'] as $tool) { ?>
 			<li><a href="index.php?p=tool&t=<?php echo $tool['action']; ?>&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&id=<?php echo $_entry; ?>"
@@ -117,10 +117,10 @@ Possible duplicate
 </div>
 <script type="text/javascript" src="view/default/ui/js/suggest-tag.js"></script>
 <?php } else { ?>
-<h3 class="uk-h3">Add an entry to your collection</h3>
+<h3 class="uk-h3"><?php echo $I18n->t('manageentry.addentrycollection'); ?></h3>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
 	<div class="uk-width-1-2">
-		<h4 class="uk-h4">Please select a collection first:</h4>
+		<h4 class="uk-h4"><?php echo $I18n->t('global.collection.select.notice'); ?></h4>
 		<dl class="uk-description-list uk-description-list-divider">
 			<?php foreach($TemplateData['existingCollections'] as $k=>$v) { ?>
 			<dt><a href="index.php?p=manageentry&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>

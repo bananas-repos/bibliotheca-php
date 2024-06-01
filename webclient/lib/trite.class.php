@@ -233,8 +233,8 @@ class Trite {
 
 	/**
 	 * return the simple search fields for loaded collection
-	 * Every field witch has a column in the entry table is a simple search field.
-	 * Name starts with entry
+	 * Every field whitch has a column in the entry table is a simple search field.
+	 * Name starts with entry. But no hidden fields
 	 *
 	 * @see ManageCollectionFields->getSimpleSearchFields()
 	 *
@@ -246,15 +246,16 @@ class Trite {
 		$fields = $this->getCollectionFields();
 		if(!empty($fields)) {
 			foreach($fields as $k=>$v) {
-				if(isset($v['searchtype']) && strpos($v['searchtype'],'entry') !== false) {
+				if(isset($v['searchtype']) && strpos($v['searchtype'],'entry') !== false
+				    && $v['type'] !== 'hidden') {
 					$ret[$k] = $v;
 				}
 			}
 		}
 
         // add systemfields
-		$def['created'] = array('identifier' => 'created', 'displayname' => 'Created', 'type' => 'systemfield');
-		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'Modified', 'type' => 'systemfield');
+		$def['created'] = array('identifier' => 'created', 'displayname' => 'sysfield.created', 'type' => 'systemfield');
+		$def['modified'] = array('identifier' => 'modified', 'displayname' => 'sysfield.modified', 'type' => 'systemfield');
 		return $def + $ret;
 	}
 

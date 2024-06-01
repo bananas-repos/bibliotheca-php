@@ -1,36 +1,43 @@
-<h3>Manage your profile</h3>
+<h3><?php echo $I18n->t('profile.yourprofile'); ?></h3>
 
 <form method="post" class="maxSizeForm">
 	<div class="field-row-stacked">
-		<label for="username">Username</label>
+		<label for="username"><?php echo $I18n->t('global.username'); ?></label>
 		<input id="username" type="text" autocomplete="off" name="fdata[username]"
-		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+		       value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
-		<label for="password">Password</label>
+		<label for="password"><?php echo $I18n->t('global.password'); ?></label>
 		<input id="password" type="password" autocomplete="off" name="fdata[password]">
 	</div>
 	<div class="field-row-stacked">
-		<label for="group">Main group</label>
+		<label for="group"><?php echo $I18n->t('profile.input.maingroup'); ?></label>
 		<input  id="group" type="text" name="fdata[group]" disabled
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'baseGroupName'); ?>">
+			value="<?php echo $TemplateData['editData']['baseGroupName'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
-		<label for="additionalGroups">Additional groups</label>
-		<input id="additionalGroups" type="text" name="fdata[additionalGroups]" disabled
-			value="To be done">
+		<label for="additionalGroups"><?php echo $I18n->t('profile.input.addgroups'); ?></label>
+		<select multiple="multiple" size="5" id="additionalGroups" name="fdata[additionalGroups]" disabled>
+			<?php
+			foreach($TemplateData['editData']['groups'] as $k=>$v) {
+				if($v['groupName'] !== $TemplateData['editData']['baseGroupName']) {
+					echo "<option>".$v['groupName']."</option>";
+				}
+			}
+			?>
+		</select>
 	</div>
 	<div class="field-row-stacked">
 		<input id="refreshApiToken" type="checkbox" name="fdata[refreshApiToken]" value="1">
-		<label for="refreshApiToken">Create API Token</label>
+		<label for="refreshApiToken"><?php echo $I18n->t('profile.input.createtoken'); ?></label>
 	</div>
 	<div class="field-row-stacked">
 		<label>
-			Valid until: <?php echo Summoner::ifset($TemplateData['editData'], 'apiTokenValidDate'); ?><br />
-			Token: <?php echo Summoner::ifset($TemplateData['editData'], 'apiToken'); ?>
+			<?php echo $I18n->t('profile.input.apitoken.valid'); ?> <?php echo $TemplateData['editData']['apiTokenValidDate'] ?? ''; ?><br />
+			<?php echo $I18n->t('profile.input.apitoken.current'); ?> <?php echo $TemplateData['editData']['apiToken'] ?? ''; ?>
 		</label>
 	</div>
 	<div class="field-row-stacked">
-		<input type="submit" name="submitForm" value="Save">
+		<input type="submit" name="submitForm" value="<?php echo $I18n->t('global.save'); ?>">
 	</div>
 </form>

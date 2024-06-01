@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2023 Johannes Keßler
+ * Copyright 2018-2024 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -29,18 +29,18 @@ if(!empty($_collection)) {
 $_menuShow = $Gorenest->get('show');
 $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 ?>
-<nav class="uk-navbar-container" uk-navbar>
+<nav class="uk-container uk-container-expand uk-navbar-container" uk-navbar>
 	<div class="uk-navbar-left">
 		<ul class="uk-navbar-nav">
 			<li class="uk-parent">
-				<a href="">Show</a>
+				<a href=""><?php echo $I18n->t('menu.show'); ?></a>
 				<div class="uk-navbar-dropdown">
 					<ul class="uk-nav uk-navbar-dropdown-nav">
 						<?php foreach($_menuShow as $entry) { ?>
 							<li>
 								<a href="index.php?p=<?php echo $entry['action']; ?>">
 									<span class="uk-icon uk-margin-small-right" uk-icon="icon: <?php echo $entry['icon']; ?>"></span>
-									<?php echo $entry['text']; ?>
+									<?php echo $I18n->t($entry['text']); ?>
 								</a>
 							</li>
 						<?php } ?>
@@ -49,14 +49,14 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 			</li>
 			<?php if(!empty($_menuManage)) { ?>
 			<li class="uk-parent">
-				<a href="">Manage</a>
+				<a href=""><?php echo $I18n->t('menu.manage'); ?></a>
 				<div class="uk-navbar-dropdown">
 					<ul class="uk-nav uk-navbar-dropdown-nav">
 						<?php foreach($_menuManage as $entry) { ?>
 							<li>
 								<a href="index.php?p=<?php echo $entry['action']; ?>">
 									<span class="uk-icon uk-margin-small-right" uk-icon="icon: <?php echo $entry['icon']; ?>"></span>
-									<?php echo $entry['text']; ?>
+                                    <?php echo $I18n->t($entry['text']); ?>
 								</a>
 							</li>
 						<?php } ?>
@@ -66,7 +66,10 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 			<?php } ?>
 			<li>
 				<a href="index.php?p=auth">
-					<?php if($Doomguy->isSignedIn() === true) { echo "Logout"; } else { echo "Login"; } ?>
+					<?php if($Doomguy->isSignedIn() === true) {
+                        echo $I18n->t('auth.logout');
+                    }
+                    else { echo $I18n->t('global.login'); } ?>
 				</a>
 			</li>
 		</ul>
@@ -83,8 +86,8 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 							}
 						}
 					?>
-					<input class="uk-search-input" type="search" placeholder="Search..." name="navSearch" autofocus>
-					<small><a href="index.php?p=advancedsearch">Advanced</a></small>
+					<input class="uk-search-input" type="search" placeholder="<?php echo $I18n->t('menu.search'); ?>" name="navSearch" autofocus>
+					<small><a href="index.php?p=advancedsearch"><?php echo $I18n->t('menu.search.advanced'); ?></a></small>
 				</form>
 			</div>
 		</div>

@@ -63,7 +63,7 @@ if(!empty($_collection)) {
 			$TemplateData['editData'] = $ManageEntry->getEditData($_id);
 			// special case. Title field should be always available.
 			if(!isset($TemplateData['editData']['title'])) {
-				$TemplateData['message']['content'] = "Entry has no value in title field.";
+				$TemplateData['message']['content'] = $I18n->t('manageentry.message.noTitle');
 				$TemplateData['message']['status'] = "error";
 			}
 			else {
@@ -116,7 +116,7 @@ if(!empty($_collection)) {
 						if ($do === true) {
 							$TemplateData['refresh'] = 'index.php?p=collections&collection='.$_collection;
 						} else {
-							$TemplateData['message']['content'] = "Entry could not be removed.";
+							$TemplateData['message']['content'] = $I18n->t('manageentry.message.couldNotBeRemoved');
 							$TemplateData['message']['status'] = "error";
 						}
 					} elseif (!empty($_fieldsToSave) && isset($_fieldsToSave['title'])) {
@@ -124,7 +124,7 @@ if(!empty($_collection)) {
 						if ($do !== 0) {
 							$TemplateData['refresh'] = 'index.php?p=entry&collection='.$_collection.'&id='.$_id;
 						} else {
-							$TemplateData['message']['content'] = "Entry could not be updated.";
+							$TemplateData['message']['content'] = $I18n->t('manageentry.message.couldNotBeUpdated');
 							$TemplateData['message']['status'] = "error";
 						}
 					}
@@ -134,18 +134,19 @@ if(!empty($_collection)) {
 					if (!empty($_fieldsToSave) && !empty($_fieldsToSave['title']['valueToSave'])) {
 						$do = $ManageEntry->create($_fieldsToSave, $_owner, $_group, $_rights);
 						if (!empty($do)) {
-							$TemplateData['message']['content'] = "<a href='index.php?p=entry&collection=".$_collection."&id=".$do."'>View your new entry</a> | <a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>Edit your new entry</a>";
+							$TemplateData['message']['content'] = "<a href='index.php?p=entry&collection=".$_collection."&id=".$do."'>".$I18n->t('manageentry.message.viewNewEntry')."</a> 
+                                                                    | <a href='index.php?p=manageentry&collection=".$_collection."&id=".$do."'>".$I18n->t('manageentry.message.editNewEntry')."</a>";
 							$TemplateData['message']['status'] = "success";
 						} else {
 							// use editData to display given data
 							$TemplateData['editData'] = $fdata;
-							$TemplateData['message']['content'] = "Entry could not be added.";
+							$TemplateData['message']['content'] = $I18n->t('manageentry.message.couldNotBeAdded');
 							$TemplateData['message']['status'] = "error";
 						}
 					} else {
 						// use editData to display given data
 						$TemplateData['editData'] = $fdata;
-						$TemplateData['message']['content'] = "Provide at least 'Title'.";
+						$TemplateData['message']['content'] = $I18n->t('manageentry.message.missingTitle');
 						$TemplateData['message']['status'] = "error";
 					}
 				}
@@ -153,7 +154,7 @@ if(!empty($_collection)) {
 		}
 	}
 	else {
-		$TemplateData['message']['content'] = "Collection could not be loaded.";
+		$TemplateData['message']['content'] = $I18n->t('global.message.couldNotLoadCollection');
 		$TemplateData['message']['status'] = "error";
 		$TemplateData['existingCollections'] = $Trite->getCollections("write");
 	}

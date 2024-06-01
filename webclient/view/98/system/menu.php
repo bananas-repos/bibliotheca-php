@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2023 Johannes Keßler
+ * Copyright 2018-2024 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 <menu role="tablist">
 	<?php foreach($_menuShow as $entry) { ?>
 		<li role="tab" <?php if($_requestMode == $entry['action']) echo 'aria-selected="true"'; ?>>
-			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
+			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $I18n->t($entry['text']); ?></a>
 		</li>
 	<?php } ?>
 	<li role="tab">
@@ -42,16 +42,16 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 		</a>
 	</li>
 	<li role="tab">
-		<a id="showNavSearch" href="#" onclick="showNavSearch();">Search</a>
+		<a id="showNavSearch" href="#" onclick="showNavSearch();"><?php echo $I18n->t('menu.search'); ?></a>
 	</li>
 	<li role="tab" <?php if($_requestMode == 'advancedsearch') echo 'aria-selected="true"'; ?>>
-		<a href="index.php?p=advancedsearch">Advanced search</a>
+		<a href="index.php?p=advancedsearch"><?php echo $I18n->t('menu.search.advanced'); ?></a>
 	</li>
 <?php if(!empty($_menuManage)) { ?>
-	<li role="tab"><a href="">Manage:</a></li>
+	<li role="tab"><a href=""><?php echo $I18n->t('menu.manage'); ?>:</a></li>
 	<?php foreach($_menuManage as $entry) { ?>
 		<li role="tab" <?php if(!empty($_requestMode) && str_starts_with($entry['action'], $_requestMode)) echo 'aria-selected="true"'; ?>>
-			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $entry['text']; ?></a>
+			<a href="index.php?p=<?php echo $entry['action']; ?>"><?php echo $I18n->t($entry['text']); ?></a>
 		</li>
 	<?php } ?>
 <?php } ?>
@@ -60,7 +60,7 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 
 <dialog id="navSearchDialog" class="window">
 	<div class="title-bar">
-		<div class="title-bar-text">Search</div>
+		<div class="title-bar-text"><?php echo $I18n->t('menu.search'); ?></div>
 		<div class="title-bar-controls">
 			<button aria-label="Close" id="closeNavSearchDialog"></button>
 		</div>
@@ -74,14 +74,14 @@ $_menuManage = $Gorenest->get('manage', false, $_contextActions);
 				}
 			}
 			?>
-			<input type="search" placeholder="Search..." name="navSearch" autofocus>
-			<input type="submit" value="Search" />
-			<p><a href="index.php?p=advancedsearch">Advanced</a></p>
+			<input type="search" placeholder="<?php echo $I18n->t('menu.search'); ?>" name="navSearch" autofocus>
+			<input type="submit" value="<?php echo $I18n->t('menu.search'); ?>" />
+			<p><a href="index.php?p=advancedsearch"><?php echo $I18n->t('menu.search.advanced'); ?></a></p>
 		</form>
 	</div>
 	<div class="status-bar">
-		<p class="status-bar-field">Press enter to search</p>
-		<p class="status-bar-field">Search within the default search field</p>
+		<p class="status-bar-field"><?php echo $I18n->t('menu.search.enter'); ?></p>
+		<p class="status-bar-field"><?php echo $I18n->t('menu.search.within'); ?></p>
 	</div>
 </dialog>
 

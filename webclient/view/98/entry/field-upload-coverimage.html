@@ -1,6 +1,6 @@
 <div data-field-name="upload-coverimage">
-	<img src="<?php echo $TemplateData['storagePath'].'/'.Summoner::ifset($field, 'value'); ?>"
-		 title="<?php echo Summoner::ifset($field, 'value'); ?>"
+	<img src="<?php echo $TemplateData['storagePath'].'/'.$field['value'] ?? ''; ?>"
+		 title="<?php echo $field['value'] ?? ''; ?>"
 		 width="500px"
 	/>
 </div>

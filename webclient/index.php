@@ -20,7 +20,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.6 - Chizra';
+const BIB_VERSION = '1.7 - The Ceremonial Chambers';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
@@ -46,12 +46,15 @@ else {
 # time settings
 date_default_timezone_set(TIMEZONE);
 
+# i18n
+require_once 'lib/i18n.class.php';
+$I18n = new I18n();
+
 # static helper class
 require_once 'lib/summoner.class.php';
 # general includes
 require_once 'lib/doomguy.class.php';
 require_once 'lib/gorenest.class.php';
-
 
 ## main vars
 # the template data as an array
@@ -82,7 +85,7 @@ $Doomguy = new Doomguy($DB);
 # menu Object
 $Gorenest = new GoreNest($DB,$Doomguy);
 
-$_requestMode = false;
+$_requestMode = "dashboard";
 if(isset($_GET['p']) && !empty($_GET['p'])) {
 	$_requestMode = trim($_GET['p']);
 	$_requestMode = Summoner::validate($_requestMode,'nospace') ? $_requestMode : "dashboard";

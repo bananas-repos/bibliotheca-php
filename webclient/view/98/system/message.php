@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2023 Johannes Keßler
+ * Copyright 2018-2024 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,20 +20,20 @@
 
 if(isset($TemplateData['message']['content'])) {
 	$cssClass = '';
-	$headlineText = 'Information';
+	$headlineText = $I18n->t('message.headline.information');
 	if(isset($TemplateData['message']['status'])) {
 		switch($TemplateData['message']['status']) {
 			case 'error':
 				$cssClass = 'danger';
-				$headlineText = 'Error';
+				$headlineText = $I18n->t('message.headline.error');
 			break;
 			case 'warning':
 				$cssClass = 'warning';
-				$headlineText = 'Warning';
+				$headlineText = $I18n->t('message.headline.warning');
 			break;
 			case 'success':
 				$cssClass = 'success';
-				$headlineText = 'Success';
+				$headlineText = $I18n->t('message.headline.success');
 			break;
 
 			case 'info':

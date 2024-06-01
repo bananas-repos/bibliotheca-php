@@ -1,1 +1,1 @@
-<p data-field-name="textarea" data-field-id="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?>: <?php echo nl2br(Summoner::ifset($field, 'value')); ?></p>
+<p data-field-name="textarea" data-field-id="<?php echo $field['identifier']; ?>"><?php echo $I18n->t($field['displayname']); ?>: <?php echo nl2br($field['value'] ?? ''); ?></p>

@@ -1,0 +1,58 @@
+# Config changes
+
+Add the following lines to your `config.php`.
+```
+# language setting
+# see i18n.md file for syntax
+const FRONTEND_LANGUAGE = array('iso3' => 'eng', 'iso2' => 'en');
+```
+
+# DB changes. Run each line against your bibliotheca DB.
+
+Replace #REPLACEME# with your table prefix. Default is bib
+```
+UPDATE `#REPLACEME#_sys_fields` SET `value` = 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11', `apiinfo` = 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 98,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 7,Windows 8,Windows 10,Windows 11' WHERE `#REPLACEME#_sys_fields`.`id` = 17;
+UPDATE `#REPLACEME#_menu` SET `action` = 'dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.dashboard' WHERE `#REPLACEME#_menu`.`id` = 1;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.collections' WHERE `#REPLACEME#_menu`.`id` = 2;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.tags' WHERE `#REPLACEME#_menu`.`id` = 3;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.show.sysinfo' WHERE `#REPLACEME#_menu`.`id` = 19;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.add' WHERE `#REPLACEME#_menu`.`id` = 4;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.tags' WHERE `#REPLACEME#_menu`.`id` = 6;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.collections' WHERE `#REPLACEME#_menu`.`id` = 7;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.users' WHERE `#REPLACEME#_menu`.`id` = 8;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.profile' WHERE `#REPLACEME#_menu`.`id` = 16;
+UPDATE `#REPLACEME#_menu` SET `text` = 'menu.manage.groups' WHERE `#REPLACEME#_menu`.`id` = 17;
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.title' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'title';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.description' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'description';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.content' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'content';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.tag' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'tag';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.category' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'category';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.publisher' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'publisher';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.developer' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'developer';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.platform' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'platform';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.storage' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'storage';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.rating' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'rating';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.year' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'year';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.coverimage' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'coverimage';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.attachment' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'attachment';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.os' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'os';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.actors' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'actors';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.countries' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'countries';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.directors' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'directors';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.genres' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'genres';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.languages' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'languages';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.runtime' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'runtime';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.imdbrating' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'imdbrating';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.viewcount' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'viewcount';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.writers' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'writers';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.localizedTitle' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'localizedTitle';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.gameEngine' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'gameEngine';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.view' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'view';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.sysReq' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'sysReq';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.artist' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'artist';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.artists' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'artists';
+UPDATE `#REPLACEME#_sys_fields` SET `displayname` = 'sysfield.isbn' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'isbn';
+ALTER TABLE `#REPLACEME#_sys_fields` CHANGE `displayname` `displayname` VARCHAR(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL;
+UPDATE `#REPLACEME#_tool` SET `name` = 'IMDB' WHERE `id` = 1;
+```

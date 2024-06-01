@@ -1,13 +1,7 @@
 <?php if(!empty($TemplateData['loadedCollection'])) { ?>
 
-	<h3 >Manage Tags in: <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
-	<p>
-		The actions are top down. If you choose to move and rename, only move will be executed.<br />
-		Deletion will remove without recover!<br />
-		If you rename and input an existing one a move will be done instead.<br />
-		Tag values are stored how they come and treated that way here (case sensitive).
-		In search they are case insensitive.
-	</p>
+	<h3><?php echo $I18n->t('managetags.managetagsin'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+<p><?php echo $I18n->t('managetags.howto'); ?></p>
 
 	<?php if(!empty($TemplateData['tags'])) { ?>
 		<form method="post">
@@ -15,17 +9,17 @@
 				<table width="100%">
 					<thead>
 						<tr>
-							<th width="100px">Tagfield</th>
-							<th>Use</th>
-							<th>Move to (rename to existig)</th>
-							<th>Rename</th>
-							<th width="100px">Delete</th>
+							<th width="100px"><p><?php echo $I18n->t('managetags.tagfield'); ?></p></th>
+							<th><?php echo $I18n->t('managetags.use'); ?></th>
+							<th><?php echo $I18n->t('managetags.moveorrename'); ?></th>
+							<th><?php echo $I18n->t('managetags.rename'); ?></th>
+							<th width="100px"><?php echo $I18n->t('managetags.delete'); ?></th>
 						</tr>
 					</thead>
 					<tbody>
 				<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
 						<tr>
-							<td><?php echo $v['displayname']; ?></td>
+							<td><?php echo $I18n->t($v['displayname']); ?></td>
 							<td>
 								<select name="fdata[<?php echo $v['id']; ?>][use]">
 									<option value="">Please select</option>
@@ -57,18 +51,18 @@
 					</tbody>
 				</table>
 			</div>
-			<input type="submit" name="submitForm" value="Do it" />
+			<input type="submit" name="submitForm" value="<?php echo $I18n->t('managetags.save'); ?>" />
 		</form>
 	<?php } ?>
 
 <?php } else { ?>
-<h3>Please select a collection first</h3>
+<h3><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
 <div class="sunken-panel">
 	<table width="100%">
 		<thead>
 		<tr>
-			<th width="100px">Name</th>
-			<th>Description</th>
+			<th width="100px"><?php echo $I18n->t('global.name'); ?></th>
+			<th><?php echo $I18n->t('global.description'); ?></th>
 		</tr>
 		</thead>
 		<tbody>

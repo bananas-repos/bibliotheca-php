@@ -1,19 +1,19 @@
 <div class="field-row-stacked">
 	<label for="<?php echo $field['identifier']; ?>">
-		<?php echo $field['displayname']; ?>
-		(<span id="<?php echo $field['identifier']; ?>_counter" ><?php echo 255-strlen(Summoner::ifset($TemplateData['editData'], $field['identifier'])); ?></span>)
+		<?php echo $I18n->t($field['displayname']); ?>
+		(<span id="<?php echo $field['identifier']; ?>_counter" ><?php echo 255-strlen($TemplateData['editData'][$field['identifier']] ?? ''); ?></span>)
 	</label>
 	<textarea autocomplete="off"
 			  id="<?php echo $field['identifier']; ?>"
 			  rows="3" maxlength="255"
-			  name="fdata[<?php echo $field['identifier']; ?>]"><?php echo Summoner::ifset($TemplateData['editData'], $field['identifier']); ?></textarea>
+			  name="fdata[<?php echo $field['identifier']; ?>]"><?php echo $TemplateData['editData'][$field['identifier']] ?? ''; ?></textarea>
 
-	<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+	<?php if(isset($field['bulkedit'])) { ?>
 	<select  name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-		<option value="">Select bulk edit option</option>
-		<option value="add">Add</option>
-		<option value="replace">Replace</option>
-		<option value="empty">Clear</option>
+		<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+		<option value="add"><?php echo $I18n->t('manageentry.select.bulkedit.add'); ?></option>
+		<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+		<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 	</select>
 	<?php } ?>
 </div>

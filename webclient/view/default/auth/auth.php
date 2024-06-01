@@ -41,12 +41,12 @@ elseif(isset($_POST['submitForm'])) {
 					$TemplateData['refresh'] = 'index.php';
 				}
 				else {
-					$TemplateData['message']['content'] = "Invalid username or password.";
+					$TemplateData['message']['content'] = $I18n->t('auth.message.invalidInput');
 					$TemplateData['message']['status'] = "error";
 				}
 			}
 			else {
-				$TemplateData['message']['content'] = "Please provide valid e-Mail and password.";
+				$TemplateData['message']['content'] = $I18n->t('auth.message.missingInput');
 				$TemplateData['message']['status'] = "error";
 			}
 		}

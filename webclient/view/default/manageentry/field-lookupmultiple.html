@@ -1,11 +1,11 @@
 <?php
 $existingFieldValue = array();
-if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
+if(!empty($TemplateData['editData'][$field['identifier']])) {
 	$existingFieldValue = $TemplateData['editData'][$field['identifier']];
 }
 ?>
 <div class="uk-margin">
-	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>-input"><?php echo $field['displayname']; ?></label>
+	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>-input"><?php echo $I18n->t($field['displayname']); ?></label>
 	<div class="uk-form-controls">
 		<div class="input-multiple-listbox" id="<?php echo $field['identifier']; ?>-listbox">
 		<?php
@@ -13,7 +13,7 @@ if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
 			foreach($existingFieldValue as $ev) { ?>
 
 			<div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-<?php echo $ev; ?>">
-				<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="click to remove"><span class="uk-label"><?php echo $ev; ?></span></a>
+				<a onclick="removeTag('<?php echo $ev; ?>','<?php echo $field['identifier']; ?>')" title="<?php echo $I18n->t('global.clickremove'); ?>"><span class="uk-label"><?php echo $ev; ?></span></a>
 			</div>
 
 		<?php
@@ -25,14 +25,14 @@ if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
 			name="<?php echo $field['identifier']; ?>-input"
 			list="<?php echo $field['identifier']; ?>-datalist"
 			onkeypress="addTag(event,'<?php echo $field['identifier']; ?>','<?php echo $field['inputValidation']; ?>')"
-			placeholder="Write and press enter."
+			placeholder="<?php echo $I18n->t('global.writeenter'); ?>"
 		>
-		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+		<?php if(isset($field['bulkedit'])) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-			<option value="">Select bulk edit option</option>
-			<option value="add">Add</option>
-			<option value="replace">Replace</option>
-			<option value="empty">Clear</option>
+			<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+			<option value="add"><?php echo $I18n->t('manageentry.select.bulkedit.add'); ?></option>
+			<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+			<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 		</select>
 		<?php } ?>
 	</div>
@@ -53,5 +53,5 @@ if(Summoner::ifset($TemplateData['editData'], $field['identifier'])) {
 <input type="hidden" name="fdata[<?php echo $field['identifier']; ?>]" id="<?php echo $field['identifier']; ?>-save" value="<?php echo implode(',',$existingFieldValue); ?>" />
 
 <div class="input-multiple-template" id="<?php echo $field['identifier']; ?>-template" style="display: none;">
-	<a onclick="removeTag('','<?php echo $field['identifier']; ?>')" title="click to remove"><span class="uk-label"></span></a>
+	<a onclick="removeTag('','<?php echo $field['identifier']; ?>')" title="<?php echo $I18n->t('global.clickremove'); ?>"><span class="uk-label"></span></a>
 </div>

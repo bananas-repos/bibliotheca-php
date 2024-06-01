@@ -1,4 +1,4 @@
-<h3 class="uk-h3">Bulkedit these entries in: <a href="index.php?p=colletions&collection<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+<h3 class="uk-h3"><?php echo $I18n->t('bulkedit.headline.edit'); ?> <a href="index.php?p=colletions&collection<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
 
 <?php if(!empty($TemplateData['itemsToWorkWith'])) { ?>
 
@@ -26,7 +26,7 @@
 ?>
 			<div class="uk-margin">
 				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
-					Save
+					<?php echo $I18n->t('global.save'); ?>
 				</button>
 			</div>
 

@@ -1,19 +1,19 @@
 <div class="uk-margin">
-	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<label class="uk-form-label" for="<?php echo $field['identifier']; ?>"><?php echo $I18n->t($field['displayname']); ?></label>
 	<div class="uk-form-controls">
 		<select class="uk-select" id="<?php echo $field['identifier']; ?>" name="fdata[<?php echo $field['identifier']; ?>]">
-			<option value="">Please select</option>
+			<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
 			<?php foreach($field['options'] as $k=>$v) { ?>
 			<option value="<?php echo $v; ?>"
-				<?php if(Summoner::ifsetValue($TemplateData['editData'], $field['identifier'],$v)) echo 'selected'; ?>
+				<?php echo ($TemplateData['editData'][$field['identifier']] ?? '') == $v ? 'selected' : ''; ?>
 			><?php echo $v; ?></option>
 			<?php } ?>
 		</select>
-		<?php if(Summoner::ifset($field,'bulkedit')) { ?>
+		<?php if(isset($field['bulkedit'])) { ?>
 		<select class="uk-select" name="fdata[additionalEditOption][<?php echo $field['identifier']; ?>]">
-			<option value="">Select bulk edit option</option>
-			<option value="replace">Replace</option>
-			<option value="empty">Clear</option>
+			<option value=""><?php echo $I18n->t('manageentry.select.bulkedit'); ?></option>
+			<option value="replace"><?php echo $I18n->t('manageentry.select.bulkedit.replace'); ?></option>
+			<option value="empty"><?php echo $I18n->t('manageentry.select.bulkedit.clear'); ?></option>
 		</select>
 		<?php } ?>
 	</div>

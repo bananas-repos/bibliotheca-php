@@ -1,0 +1,37 @@
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2@l">
+	<?php if(!empty($TemplateData['tags'])) { ?>
+		<h3 class="uk-h3"><?php echo $I18n->t('tags.headline.tagsfor'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id'] ?? ''; ?>"><?php echo $TemplateData['loadedCollection']['name'] ?? ''; ?></a></h3>
+
+		<?php if(!empty($TemplateData['search'])) { ?>
+		<div uk-alert id="searchNotice">
+			<button class="uk-alert-close" type="button" uk-close></button>
+			<p><?php echo $I18n->t('global.search.resultfor', $TemplateData['search'] ?? ''); ?></p>
+		</div>
+		<script type="text/javascript">
+			UIkit.util.on('#searchNotice', 'hide', function () {
+				window.location.href="index.php?p=tags&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>";
+			});
+		</script>
+		<?php } ?>
+
+		<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
+		<h4 class="uk-heading-line"><span><a uk-toggle="target: #toggle-<?php echo $k; ?>"><?php echo $I18n->t($v['displayname']); ?></a></span></h4>
+		<div id="toggle-<?php echo $k; ?>">
+			<?php foreach($v['entries'] as $ek=>$ev) { ?>
+			<a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>&fid=<?php echo $v['identifier']; ?>&fv=<?php echo urlencode($ev); ?>"><?php echo $ev; ?></a>,
+			<?php } ?>
+		</div>
+		<?php } ?>
+
+	<?php } elseif(!empty($TemplateData['collections'])) { ?>
+		<h3 class="uk-heading-divider"><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
+		<dl class="uk-description-list">
+			<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+			<dt><a href="index.php?p=tags&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>
+			<dd><?php echo $v['description']; ?></dd>
+			<?php } ?>
+		</dl>
+	<?php } ?>
+	</div>
+</div>

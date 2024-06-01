@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2023 Johannes Keßler
+ * Copyright 2018-2024 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -26,6 +26,10 @@ const QUERY_DEBUG = false;
 # timezone settings
 const TIMEZONE = '~timezone~';
 
+# language setting
+# see i18n.md file for syntax
+const FRONTEND_LANGUAGE = array('iso3' => 'eng', 'iso2' => 'en');
+
 # path settings
 const PATH_ABSOLUTE = '~pathabsolute~';
 const PATH_SYSTEMOUT = PATH_ABSOLUTE.'/systemout';
@@ -41,7 +45,7 @@ const DB_NAME = '~dbname~';
 const DB_PREFIX = '~dbprefix~'; # a _ is added automatically as separation
 
 ## theme support
-# available values are: default, 98
+# available values are: default, 98, compact
 # fallback is default theme
 const UI_THEME = 'default';
 # additional config for each theme with fallback

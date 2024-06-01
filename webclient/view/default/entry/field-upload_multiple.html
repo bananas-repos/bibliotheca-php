@@ -1,4 +1,4 @@
-<p data-field-name="upload_multiple" data-field-id="<?php echo $field['identifier']; ?>"><span class="uk-text-muted"><?php echo $field['displayname']; ?>:</span>
+<p data-field-name="upload_multiple" data-field-id="<?php echo $field['identifier']; ?>"><span class="uk-text-muted"><?php echo $I18n->t($field['displayname']); ?>:</span>
 <ul class="uk-list uk-list-collapse uk-list-disc">
 	<?php foreach ($field['value'] as $_uEntry) { ?>
 	<li><a href="<?php echo $TemplateData['storagePath'].'/'.$_uEntry; ?>" target="_blank"><?php echo $_uEntry; ?></a></li>

@@ -1,5 +1,5 @@
 <div class="field-row-stacked">
-	<label for="<?php echo $field['identifier']; ?>"><?php echo $field['displayname']; ?></label>
+	<label for="<?php echo $field['identifier']; ?>"><?php echo $I18n->t($field['displayname']); ?></label>
 	<input type="file" id="<?php echo $field['identifier']; ?>" multiple="true"
 		name="fdata[<?php echo $field['identifier']; ?>][]"
 	/>
@@ -15,7 +15,7 @@
 				title="Delete"
 				id="<?php echo $field['identifier'].$_i; ?>_delete"
 		/>
-		<label for="<?php echo $field['identifier'].$_i; ?>_delete">Delete</label>
+		<label for="<?php echo $field['identifier'].$_i; ?>_delete"><?php echo $I18n->t('global.delete'); ?></label>
 		<br>
 	<?php
 		$_i++;

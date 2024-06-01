@@ -1,43 +1,42 @@
-<h3>Group management</h3>
-<h4>Add or modify a group</h4>
+<h3><?php echo $I18n->t('managegroups.groupmanagement'); ?></h3>
+<h4><?php echo $I18n->t('managegroups.addormodify'); ?></h4>
 
 <form class="maxSizeForm" method="post">
 	<div class="field-row-stacked">
-		<label for="name">Name *</label>
+		<label for="name"><?php echo $I18n->t('managegroups.input.name'); ?> *</label>
 		<input id="name" type="text" autocomplete="off" name="fdata[name]"
-			value="<?php echo Summoner::ifset($TemplateData['editData'], 'name'); ?>">
+			value="<?php echo $TemplateData['editData']['name'] ?? ''; ?>">
 	</div>
 	<div class="field-row-stacked">
-		<label for="description">Description *</label>
+		<label for="description"><?php echo $I18n->t('managegroups.input.description'); ?> *</label>
 		<input id="description" type="text" autocomplete="off" name="fdata[description]"
-		       value="<?php echo Summoner::ifset($TemplateData['editData'], 'description'); ?>">
+		       value="<?php echo $TemplateData['editData']['description'] ?? ''; ?>">
 	</div>
 
-	<?php if(Summoner::ifset($TemplateData['editData'], 'name') && Summoner::ifsetValue($TemplateData['editData'], 'protected', '0')) { ?>
+	<?php if(isset($TemplateData['editData']['name']) && (($TemplateData['editData']['protected'] ?? '') == '0' ? true : false)) { ?>
 	<div class="field-row-stacked">
 		<p>
-			Warning: Content owned by this group will not be deleted and thus only manageable by admin!<br />
-			Right now don't do this. Only if you are sure there is no usage of this group.
+			<?php echo $I18n->t('managegroups.input.delete.howto'); ?>
 		</p>
 	</div>
 	<div class="field-row-stacked">
 		<input id="doDelete" type="checkbox" name="fdata[doDelete]" value="1">
-		<label for="doDelete">Delete</label>
+		<label for="doDelete"><?php echo $I18n->t('managegroups.input.delete'); ?></label>
 	</div>
 	<?php } ?>
 	<div class="field-row-stacked">
-		<input type="submit" name="submitForm" value="Save" />
+		<input type="submit" name="submitForm" value="<?php echo $I18n->t('managegroups.input.save'); ?>" />
 	</div>
 </form>
 
-<h4>Available groups</h4>
+<h4><?php echo $I18n->t('managegroups.availablegroups'); ?></h4>
 <div class="sunken-panel">
 	<table width="100%">
 		<thead>
 			<tr>
-				<th width="200px">Name</th>
-				<th>Created</th>
-				<th>Description</th>
+				<th width="200px"><?php echo $I18n->t('global.name'); ?></th>
+				<th><?php echo $I18n->t('global.created'); ?></th>
+				<th><?php echo $I18n->t('global.description'); ?></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -48,7 +47,7 @@
 				<td><?php echo $v['created']; ?></td>
 				<td><?php echo $v['description']; ?></td>
 				<td>
-					<a href="index.php?p=managegroups&m=edit&id=<?php echo $k; ?>">Edit</a>
+					<a href="index.php?p=managegroups&m=edit&id=<?php echo $k; ?>"><?php echo $I18n->t('global.edit'); ?></a>
 				</td>
 			</tr>
 			<?php } ?>

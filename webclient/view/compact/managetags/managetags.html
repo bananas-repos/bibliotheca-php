@@ -1,0 +1,82 @@
+<?php if(!empty($TemplateData['loadedCollection'])) { ?>
+<div class="uk-grid-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-1-2">
+		<h3 class="uk-h3"><?php echo $I18n->t('managetags.managetagsin'); ?> <a href="index.php?p=collections&collection=<?php echo $TemplateData['loadedCollection']['id']; ?>"><?php echo $TemplateData['loadedCollection']['name']; ?></a></h3>
+		<p><?php echo $I18n->t('managetags.howto'); ?></p>
+		<?php if(!empty($TemplateData['tags'])) { ?>
+
+		<form class="uk-form-horizontal uk-margin-small" method="post">
+
+		<?php foreach($TemplateData['tags'] as $k=>$v) { ?>
+			<h4 class="uk-heading-line"><?php echo $I18n->t($v['displayname']); ?></h4>
+
+			<div class="uk-margin">
+				<label class="uk-form-label"><?php echo $I18n->t('managetags.user'); ?></label>
+				<div class="uk-form-controls">
+					<select class="uk-select" name="fdata[<?php echo $v['id']; ?>][use]">
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
+						<?php foreach($v['entries'] as $ek=>$ev) { ?>
+						<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+				<label class="uk-form-label"><?php echo $I18n->t('managetags.moveorrename'); ?></label>
+				<div class="uk-form-controls">
+					<select class="uk-select" name="fdata[<?php echo $v['id']; ?>][move]">
+						<option value=""><?php echo $I18n->t('global.pleaseselect'); ?></option>
+						<?php foreach($v['entries'] as $ek=>$ev) { ?>
+						<option value="<?php echo $ev; ?>"><?php echo $ev; ?></option>
+						<?php } ?>
+					</select>
+				</div>
+			</div>
+
+			<div class="uk-margin">
+				<label class="uk-form-label" ><?php echo $I18n->t('managetags.rename'); ?></label>
+				<div class="uk-form-controls">
+					<input class="uk-input" type="text" autocomplete="off"
+					       name="fdata[<?php echo $v['id']; ?>][rename]"
+					>
+				</div>
+			</div>
+
+
+			<div class="uk-margin">
+				<div class="uk-form-label"><?php echo $I18n->t('managetags.delete'); ?> <span uk-icon="warning"></span></div>
+				<div class="uk-form-controls uk-form-controls-text">
+					<label>
+						<input class="uk-checkbox" type="checkbox" name="fdata[<?php echo $v['id']; ?>][doDelete]" value="1">
+					</label>
+				</div>
+			</div>
+
+
+		<?php } ?>
+
+			<div class="uk-margin">
+				<button class="uk-button uk-button-primary" type="submit" name="submitForm">
+					<?php echo $I18n->t('global.save'); ?>
+				</button>
+			</div>
+		</form>
+
+		<?php } ?>
+	</div>
+</div>
+
+<?php } else { ?>
+<div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>
+	<div class="uk-width-2-3@m uk-width-1-2@xl">
+		<h3 class="uk-heading-divider"><?php echo $I18n->t('global.collection.select.notice'); ?></h3>
+		<dl class="uk-description-list">
+			<?php foreach($TemplateData['collections'] as $k=>$v) { ?>
+			<dt><a href="index.php?p=managetags&collection=<?php echo $k; ?>"><?php echo $v['name']; ?></a></dt>
+			<dd><?php echo $v['description']; ?></dd>
+			<?php } ?>
+		</dl>
+	</div>
+</div>
+<?php } ?>

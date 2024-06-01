@@ -1,18 +1,19 @@
-<p><b>Limitations</b></p>
-<p>Data will be overwritten</p>
+<p><b><?php echo $I18n->t('tool.limitations'); ?></b></p>
+<p><?php echo $I18n->t('tool.limitations.override'); ?></p>
+<p><a href="http://www.impawards.com/" target=_blank>Movie posters</a></p>
 
 <form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
 	<div class="uk-margin">
-		<label class="uk-form-label" for="search">Search</label>
+		<label class="uk-form-label" for="search"><?php echo $I18n->t('tool.imdb.search'); ?></label>
 		<div class="uk-form-controls">
 			<input class="uk-input" id="search" type="text" autocomplete="off"
 				   name="fdata[search]"
-				   value="<?php echo Summoner::ifset($TemplateData['editEntry'], 'title'); ?>"
+				   value="<?php echo $TemplateData['editEntry']['title'] ?? ''; ?>"
 			>
 		</div>
 		<div class="uk-margin">
 			<button class="uk-button uk-button-primary" type="submit" name="submitFormSearch">
-				Search
+				<?php echo $I18n->t('tool.imdb.search'); ?>
 			</button>
 		</div>
 	</div>
@@ -34,7 +35,7 @@
 	</div>
 	<div class="uk-width-1-2@s">
 		<select class="uk-select" name="fdata[into][<?php echo $k; ?>]">
-			<option value="">None</option>
+			<option value=""><?php echo $I18n->t('tool.imdb.select.none'); ?></option>
 			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
 		</select>
 	</div>
@@ -46,7 +47,7 @@
 
 	<div class="uk-margin">
 		<button class="uk-button uk-button-primary" type="submit" name="submitFormSave">
-			Save
+			<?php echo $I18n->t('tool.imdb.save'); ?>
 		</button>
 	</div>
 

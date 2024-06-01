@@ -1,19 +1,10 @@
 * Better error handling and display while adding / update and delete
 ** Maybe some message "store"
-* query optimization and default indexes on columns
-* make documentation markdown to be nicer
 * change multiple-attachment to a field which tells it is used for a image gallery
-* update JS and remove deprecations
-* complete profile view. Groups still missing.
-* minimal theme
-** https://watercss.kognise.dev/
-* create a real fallback theme, which does not depend on any styling/css
-** change the css and js lookup too in main file
-* i18n support
-* Definition of fields in "card view"
-* User and groupmanagement: Check where a user or group is used!
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
-* remove ifset and maybe ifsetvalue from summoner
 
-* Field management: Web interface to configure or even create new ones.
+* update JS and remove deprecations
+* Definition of fields in "card view"
+
+* language setting in setup
