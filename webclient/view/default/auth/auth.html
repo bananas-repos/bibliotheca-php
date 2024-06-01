@@ -1,7 +1,7 @@
 <?php if($Doomguy->isSignedIn() === true) { ?>
 <h3 class="uk-h3"><?php echo $I18n->t('auth.logout'); ?></h3>
 <a class="uk-button uk-button-primary" href="index.php?p=auth&m=logout">
-	Logout
+	<?php echo $I18n->t('auth.logout'); ?>
 	<span uk-icon="icon: sign-out"></span>
 </a>
 <?php } else { ?>

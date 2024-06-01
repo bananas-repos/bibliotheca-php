@@ -3,7 +3,7 @@
 <form method="get" action="index.php">
 	<input type="hidden" name="p" value="auth" />
 	<input type="hidden" name="m" value="logout" />
-	<input type="submit" value="Logout" />
+	<input type="submit" value="<?php echo $I18n->t('auth.logout'); ?>" />
 </form>
 <?php } else { ?>
 <h3><?php echo $I18n->t('global.login'); ?></h3>
