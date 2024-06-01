@@ -20,7 +20,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.7 - The Ceremonial Chambers';
+const BIB_VERSION = '1.x - Dark Arena';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
