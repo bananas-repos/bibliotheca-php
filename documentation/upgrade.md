@@ -12,8 +12,7 @@ webclient/api.php
 webclient/index.php
 ```
 
-and follow the upgrade file(s). After the first launch, visit `/index.php?p=managesystem` and check if there any
-further changes to be done.
+and follow the upgrade file(s).
 
 In those files there are the steps needed to make an upgrade. If you upgrade multiple versions make sure to read
 all the files in the correct order. Within the upgrade files itself there is an order. Make sure to follow.
