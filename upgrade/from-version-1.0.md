@@ -1,0 +1,48 @@
+#1 Migration of the config files into one config file
+Please copy the new config/config.php.default to config/config.php and adapt the settings which you
+have on the old config files. After that you can delete config/database|path|system files.
+
+#2 Deletion of config definition
+The definition of USER_DEFAULT_RIGHTS_STRING can be removed from config file.
+
+#3 New config file
+Copy config/config-imdbweb.php.default to config/config-imdbweb.php
+See too-imdbweb.txt documentation for more information.
+
+#4 following files can be removed
+```
+view/default/system/pagination.html
+view/default/system/pagination_after.php
+view/default/system/pagination_before.php
+```
+
+#5 DB changes. Run each line against your bibliotheca DB.
+Replace #REPLACEME# with your table prefix. Default is bib
+```
+UPDATE `#REPLACEME#_menu` SET `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 10;
+UPDATE `#REPLACEME#_menu` SET `group` = '2' WHERE `#REPLACEME#_menu`.`id` = 10;
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Profile', 'profile', 'user', '1', '2', 'rw-rw----', '5', 'manage');
+DELETE FROM `#REPLACEME#_menu` WHERE `#REPLACEME#_menu`.`id` = 13;
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Groups', 'managegroups', 'users', '1', '1', 'rw-------', '5', 'manage');
+UPDATE `#REPLACEME#_menu` SET `position` = '6' WHERE `#REPLACEME#_menu`.`id` = 16;
+UPDATE `#REPLACEME#_menu` SET `group` = '2', `rights` = 'rw-rw----' WHERE `#REPLACEME#_menu`.`id` = 14;
+ALTER TABLE `#REPLACEME#_collection` ADD `defaultSortField` VARCHAR(16) NOT NULL AFTER `defaultSearchField`;
+INSERT INTO `#REPLACEME#_menu` (`id`, `text`, `action`, `icon`, `owner`, `group`, `rights`, `position`, `category`) VALUES (NULL, 'Bulkedit', 'bulkedit', '', '1', '2', 'rw-rw----', '0', '');
+ALTER TABLE `#REPLACEME#_sys_fields` ADD `inputValidation` VARCHAR(32) NOT NULL AFTER `createstring`;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 18;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 19;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 7;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 8;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 20;
+UPDATE `#REPLACEME#_sys_fields` SET `inputValidation` = 'allowSpace' WHERE `bib_sys_fields`.`id` = 26;
+ALTER TABLE `#REPLACEME#_collection` ADD `advancedSearchTableFields` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL AFTER `defaultSortField`;
+ALTER TABLE `#REPLACEME#_sys_fields` ADD UNIQUE (`identifier`);
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'localizedTitle', 'Localized Title', 'text', 'entryText', '`localizedTitle` varchar(128) NOT NULL, ADD FULLTEXT (`localizedTitle`)', '', NULL, 'string 128', NOW(), '0', '1', '1', 'rw-r--r--');
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'gameEngine', 'Game Engine', 'text', 'entryText', '`gameEngine` varchar(128) NOT NULL, ADD FULLTEXT (`gameEngine`)', '', NULL, 'string 128', NOW(), '0', '1', '1', 'rw-r--r--');
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'view', 'View', 'selection', 'entrySingleNum', '`view` varchar(32) NULL DEFAULT NULL', '', 'First person,Third person,Top-down', 'First person,Third person,Top-down', NOW(), '0', '1', '1', 'rw-r--r--')
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'sysReq', 'System Requirements', 'text3', 'entryText', '`sysReq` varchar(255) NULL DEFAULT NULL, ADD FULLTEXT (`sysReq`)', '', NULL, 'string 255', NOW(), '0', '1', '1', 'rw-r--r--');
+INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES (NULL, 'Game infos', 'Game infos', 'gameinfo', '_self', '1', '1', 'rw-r--r--');
+```
+
+# 6
+Update your collection settings. There are new options which should be set.

@@ -1,0 +1,29 @@
+# Copy the following directories and files to your installation folder, overriding the existing ones:
+```
+webclient/config/
+webclient/lib/
+webclient/view/
+webclient/.htaccess
+webclient/api.php
+webclient/index.php
+```
+
+# DB changes. Run each line against your bibliotheca DB.
+Replace #REPLACEME# with your table prefix. Default is bib
+```
+INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES (NULL, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', '1', '1', 'rw-r--r--');
+INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`, `searchtype`, `createstring`, `inputValidation`, `value`, `apiinfo`, `created`, `modified`, `modificationuser`, `owner`, `group`, `rights`) VALUES (NULL, 'artist', 'Artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', NOW(), NOW(), NULL, '1', '1', 'rw-r--r--');
+UPDATE `#REPLACEME#_sys_fields` SET `type` = 'year' WHERE `identifier` = 'year';
+UPDATE `#REPLACEME#_sys_fields` SET `createstring` = '`localizedTitle` varchar(128) NULL DEFAULT NULL, ADD FULLTEXT (`localizedTitle`)' WHERE `identifier` = 'localizedTitle';
+UPDATE `#REPLACEME#_sys_fields` SET `value` = 'DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 99,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 8,Windows 10', `apiinfo` = 'One of DOS,Windows 1,Windows 2,Windows 3,Windows 95,Windows 99,Windows XP,Windows 2000,Windows ME,Windows Vista,Windows 8,Windows 10' WHERE `identifier` = 'os';
+UPDATE `#REPLACEME#_sys_fields` SET `value` = 'Nintendo,Nintendo Switch,PC,Playstation,Playstation 2,Playstation 3,Playstation 4,Playstation 5,Xbox,Xbox 360,Xbox One,Xbox One S,Xbox One X,Xbox Series S,Xbox Series X', `apiinfo` = 'One of Nintendo,Nintendo Switch,PC,Playstation,Playstation 2,Playstation 3,Playstation 4,Playstation 5,Xbox,Xbox 360,Xbox One,Xbox One S,Xbox One X,Xbox Series S,Xbox Series X' WHERE `identifier` = 'platform';
+```
+
+# if you have the field "localizedTitle" already in use and get an error about it, run the following statement.
+Replace #REPLACEME# with your table prefix. Default is bib
+```
+ALTER TABLE `#REPLACEME#_collection_entry_1` CHANGE `localizedTitle` `localizedTitle` VARCHAR(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL;
+```
+
+# New tool for grabbing information from Musicbrainz available
+To use it, read tool-musicbrainz.txt in the documentation folder.

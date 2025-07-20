@@ -1,0 +1,22 @@
+# Copy the following directories and files to your installation folder, overriding the existing ones:
+```
+webclient/config/
+webclient/lib/
+webclient/view/
+webclient/.htaccess
+webclient/api.php
+webclient/index.php
+```
+
+# New syntax in config files
+"define(.." syntax needs to be replace with "const" syntax in all the config files.
+See the default ones about the changes.
+
+# DB changes. Run each line against your bibliotheca DB.
+Replace #REPLACEME# with your table prefix. Default is bib
+```
+ALTER TABLE `#REPLACEME#_collection` ADD `defaultSortOrder` VARCHAR(4) NOT NULL AFTER `defaultSortField`;
+ALTER TABLE `#REPLACEME#_menu` ADD `contextaction` VARCHAR(64) NOT NULL AFTER `action`;
+UPDATE `#REPLACEME#_menu` SET `contextaction` = 'collection' WHERE `#REPLACEME#_menu`.`id` = 4;
+UPDATE `#REPLACEME#_menu` SET `contextaction` = 'collection' WHERE `#REPLACEME#_menu`.`id` = 6;
+```
