@@ -55,33 +55,37 @@
 	<span class="uk-text-meta"><?php echo $TemplateData['loadedCollection']['description']; ?></span>
 </h3>
 
-<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
-	<div class="uk-card uk-card-default uk-grid-collapse uk-margin uk-grid">
-		<div class="uk-card-media-left uk-cover-container uk-width-1-2@s uk-width-1-3@m uk-width-1-6@l uk-visible@s">
-			<?php if(isset($entry['fields']['coverimage'])) { ?>
-			<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
-				<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
-				 alt="<?php echo $I18n->t($entry['fields']['coverimage']['displayname']); ?>" uk-cover>
-				<canvas width="400" height="200"></canvas>
-			</a>
-			<?php } ?>
-		</div>
-		<div class="uk-width-1-2@s uk-width-2-3@m uk-width-5-6@l">
-			<div class="uk-card-body">
-				<?php if(isset($entry['fields']['title'])) { ?>
-				<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
-				<?php } ?>
-
-				<?php if(isset($entry['fields']['description']['value'])) { ?>
-				<p><?php echo $entry['fields']['description']['value']; ?></p>
+<div class="uk-grid-small uk-grid-match" uk-grid>
+	<?php foreach($TemplateData['entries']['results'] as $entryK=>$entry) { ?>
+	<div class="uk-width-1-2@xl">
+		<div class="uk-card uk-card-default uk-grid-collapse uk-margin uk-grid">
+			<div class="uk-card-media-left uk-cover-container uk-width-1-2@s uk-width-1-3@m uk-width-2-6@l uk-visible@s">
+				<?php if(isset($entry['fields']['coverimage'])) { ?>
+				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>">
+					<img src="<?php echo $TemplateData['storagePath'].'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
+					 alt="<?php echo $I18n->t($entry['fields']['coverimage']['displayname']); ?>" uk-cover>
+					<canvas width="400" height="200"></canvas>
+				</a>
 				<?php } ?>
 			</div>
-			<div class="uk-card-footer">
-				<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text"><?php echo $I18n->t('global.view'); ?></a>
+			<div class="uk-width-1-2@s uk-width-2-3@m uk-width-4-6@l">
+				<div class="uk-card-body">
+					<?php if(isset($entry['fields']['title'])) { ?>
+					<h3 class="uk-card-title"><?php echo $entry['fields']['title']['value']; ?></h3>
+					<?php } ?>
+
+					<?php if(isset($entry['fields']['description']['value'])) { ?>
+					<p><?php echo $entry['fields']['description']['value']; ?></p>
+					<?php } ?>
+				</div>
+				<div class="uk-card-footer">
+					<a href="<?php echo $TemplateData['entryLinkPrefix']; ?>&id=<?php echo $entryK; ?>" class="uk-button uk-button-text"><?php echo $I18n->t('global.view'); ?></a>
+				</div>
 			</div>
 		</div>
 	</div>
-<?php } ?>
+	<?php } ?>
+</div>
 
 <?php } elseif(!empty($TemplateData['collections'])) { ?>
 <div class="uk-grid-small uk-grid-row-small uk-grid-row-small" uk-grid>

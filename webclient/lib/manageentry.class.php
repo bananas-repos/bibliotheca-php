@@ -808,9 +808,9 @@ class Manageentry {
                 list($width, $height) = getimagesize($workWith);
                 $_maxThemeWidth = Summoner::themeConfig('coverImageMaxWidth', UI_THEME);
                 if(!empty($_maxThemeWidth) && ($width > $_maxThemeWidth)) {
-                    $_ratio = $_maxThemeWidth/$width;
+                    $_ratio = (int) $_maxThemeWidth/$width;
                     $newWidth = (int) $_maxThemeWidth;
-                    $newHeight = (int) $height * $_ratio;
+                    $newHeight = (int) ($height * $_ratio);
                     if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image ratio: ".$_ratio);
                     if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image width: ".$width);
                     if(DEBUG)Summoner::sysLog("[DEBUG] ".__METHOD__." image height: ".$height);
@@ -837,7 +837,9 @@ class Manageentry {
                             break;
                     }
                     imagedestroy($_tmp_image);
-                    imagedestroy($src);
+                    if(!empty($src)) {
+                        imagedestroy($src);
+                    }
                 }
             }
         }
