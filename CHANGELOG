@@ -4,6 +4,8 @@
     * Fixed: Usage of default sorting in dashboard and collection view.
     * Updated to uikit-3.23.11
     * Upgrade information files are markdown files.
+    * Updated PHP-IMDB-Grabber to https://github.com/FabianBeiner/PHP-IMDB-Grabber/tree/v6.2.6
+        with some heavy modifications.
 
 1.7 - The Ceremonial Chambers 2024-06-01
     * Added i18n. Please read the upgrade file for more information. English and german are available
