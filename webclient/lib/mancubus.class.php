@@ -116,12 +116,12 @@ class Mancubus {
 	/**
 	 * Get all available collections for display based on current user
 	 *
-	 * @param string $selections Number of selections
+	 * @param string $collections Number of collections
 	 * @param string $entries Number of entries
 	 * @param string $search Search string to search for
 	 * @return array
 	 */
-	public function getLatest(string $selections, string $entries, string $search = ''): array {
+	public function getLatest(string $collections, string $entries, string $search = ''): array {
 		$ret = array();
 
 		$queryStr = "SELECT `c`.`id`, `c`.`name`, `c`.`description`, `c`.`created`,
@@ -132,7 +132,7 @@ class Mancubus {
 					LEFT JOIN `".DB_PREFIX."_group` AS g ON `c`.`group` = `g`.`id`
 					WHERE ".$this->_User->getSQLRightsString("read", "c")."
 					ORDER BY `c`.`name`
-					LIMIT $selections";
+					LIMIT $collections";
 		if(QUERY_DEBUG) Summoner::sysLog("[QUERY] ".__METHOD__." query: ".Summoner::cleanForLog($queryStr));
 		try {
 			$query = $this->_DB->query($queryStr);
@@ -142,20 +142,19 @@ class Mancubus {
 					$_mObj = new Mancubus($this->_DB,$this->_User);
 					$_mObj->setCollection($result['id']);
 
+                    require_once 'lib/trite.class.php';
+                    $_colObj = new Trite($this->_DB,$this->_User);
+                    $_colObj->load($result['id']);
+                    $_mObj->setQueryOptions(array(
+                        'limit' => $entries,
+                        'sortDirection' => $_colObj->param('defaultSortOrder'),
+                        'sort' => $_colObj->param('defaultSortField')
+                    ));
+
 					if(!empty($search)) {
-						require_once 'lib/trite.class.php';
-						$_colObj = new Trite($this->_DB,$this->_User);
-						$_colObj->load($result['id']);
 						$_fd = $_colObj->getCollectionFields();
-						$_defSearchField = $_colObj->param('defaultSearchField');
 
-                        $_mObj->setQueryOptions(array(
-                            'limit' => $entries,
-                            'sortDirection' => $_colObj->param('defaultSortOrder'),
-                            'sort' => $_colObj->param('defaultSortField')
-                        ));
-						$_defSearchField = $_colObj->param('defaultSearchField');
-
+                        $_defSearchField = $_colObj->param('defaultSearchField');
 						if(!empty($_defSearchField)) {
 							$result['entries'] = $_mObj->getEntries(
 								array(
@@ -172,7 +171,6 @@ class Mancubus {
 						}
 					}
 					else {
-
 						$result['entries'] = $_mObj->getEntries();
 					}
 					$ret[$result['id']] = $result;
@@ -241,11 +239,11 @@ class Mancubus {
 					}
 					elseif ($sd['fieldData']['searchtype'] == "entrySingleNum" && strstr($sd['colValue'],'<')) {
 						$_s = str_replace('<','',$sd['colValue']);
-						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` < ".(int)$_s."";
+						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` < ".(int)$_s;
 					}
 					elseif ($sd['fieldData']['searchtype'] == "entrySingleNum" && strstr($sd['colValue'],'>')) {
 						$_s = str_replace('>','',$sd['colValue']);
-						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` > ".(int)$_s."";
+						$queryWhere .= " AND `t`.`".$this->_DB->real_escape_string($sd['colName'])."` > ".(int)$_s;
 					}
 					elseif($sd['fieldData']['searchtype'] == "entryText") {
 						$_isFulltext = true;

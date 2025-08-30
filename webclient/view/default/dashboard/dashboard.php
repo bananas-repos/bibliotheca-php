@@ -31,7 +31,7 @@ if(isset($_GET['navSearch'])) {
 	$TemplateData['navSearched'] = '&navSearch='.urlencode($_search);
 }
 
-$TemplateData['latest'] = $Mancubus->getLatest(5,5,$_search);
+$TemplateData['latest'] = $Mancubus->getLatest(5,6,$_search);
 if (!empty($_search)) {
 	$TemplateData['search'] = $_search;
 }
