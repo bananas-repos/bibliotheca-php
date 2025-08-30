@@ -19,5 +19,5 @@ correct tag
 $ git checkout-index -a -f --prefix=/absolute/path/to/new/dir/
 # remove some unwanted files if needed from the export
 $ cd /absolute/path/to/new/
-$ tar -cvJf archive.xz /absolute/path/to/new/dir/
-$ sha1sum archive.xz > archive.xz.sha1sum
+$ tar --zstd -cvf archive.tar.zst /absolute/path/to/new/dir/
+$ sha1sum archive.tar.zst > archive.tar.zst.sha1sum
