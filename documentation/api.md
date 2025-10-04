@@ -11,7 +11,7 @@ ID of a collection `collection=NUMBER`
 Get the latest 10 for given collection `p=list`
     
 POST call to add a new entry to given collection. `p=add&collection=NUMBER&authKey=API_AUTH_TOKEN`
-See p=addInfo for the details which info is needed in the add call.  More information can be found in import.txt
+See `p=addInfo` for the details which info is needed in the add call.  More information can be found in import.md
 
 Describes how the data in the POST add call should be formatted. `p=addInfo&collection=NUMBER`
 The JSON info in the data field, tells which fields are available and in which format the value

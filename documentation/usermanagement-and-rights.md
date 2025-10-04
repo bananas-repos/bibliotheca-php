@@ -15,6 +15,7 @@ Default user groups are and Should not be changed or removed:
 
 
 ## Rights
+
 A user can be in multiple groups.
 A collection has one owner and one group.
 An entry has one owner and group.

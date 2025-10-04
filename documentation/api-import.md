@@ -1,4 +1,4 @@
-# Import
+# API Import
 
 The API provides an import method.
 
@@ -8,8 +8,8 @@ You need the information which collection to import to and what data can be impo
 
 A working php example with example data-crow data can be found here:
 ```
-http://91.132.146.200:3000/Banana/bibliotheca-tools/src/master/data-crow/run-import-to-bibliotheca.php
-http://91.132.146.200:3000/Banana/bibliotheca-tools/src/master/data-crow/README
+http://91.132.146.200/gitweb/?p=bibliotheca-tools.git;a=blob_plain;f=data-crow/run-import-to-bibliotheca.php;hb=HEAD
+http://91.132.146.200/gitweb/?p=bibliotheca-tools.git;a=blob_plain;f=data-crow/README;hb=HEAD
 ```
 
 Info which data can be imported in example collation #1
