@@ -15,7 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+ *  along with this program. If not, see http://www.gnu.org/licenses/gpl-3.0
  */
 
 /**
@@ -23,6 +23,7 @@
  * Requirements and more information come from the main tool.php file
  */
 
+/*
 require_once 'lib/imdbwebparser.class.php';
 if(file_exists(PATH_ABSOLUTE.'/config/config-imdbweb.php')) {
 	require_once 'config/config-imdbweb.php';
@@ -36,6 +37,20 @@ $IMDB = new IMDB(array(
 	'browserLang' => TOOL_IMDBWEB_BROWSER_ACCEPT_LANG,
 	'browserAccept' => TOOL_IMDBWEB_BROWSER_ACCEPT,
 	'debug' => false
+));
+*/
+
+require_once 'lib/imdbweb.class.php';
+if(file_exists(PATH_ABSOLUTE.'/config/config-imdbweb.php')) {
+    require_once 'config/config-imdbweb.php';
+}
+$IMDB = new IMDBWEB(array(
+    'storage' => TOOL_IMDBWEB_CACHE_STORAGE,
+    'browserAgent' => TOOL_IMDBWEB_BROWSER_AGENT,
+    'browserLang' => TOOL_IMDBWEB_BROWSER_ACCEPT_LANG,
+    'browserAccept' => TOOL_IMDBWEB_BROWSER_ACCEPT,
+    'attributes' => TOOL_IMDBWEB_ATTRIBUTES,
+    'debug' => DEBUG
 ));
 
 
@@ -59,16 +74,12 @@ if(isset($_POST['submitFormSearch'])) {
 		$search = Summoner::validate($search) ? $search : false;
 
 		if(!empty($search)) {
-			try {
-				$IMDB->search($search);
-			}
-			catch (Exception $e) {
-				if(DEBUG) Summoner::sysLog("[DEBUG] imdb search catch: ".$e->getMessage());
-			}
+            $mData = $IMDB->search($search);
+            var_dump($mData);
 
-			if ($IMDB->isReady) {
-				$TemplateData['movieData'] = $IMDB->getAll();
-				$TemplateData['movieImdbId'] = "tt".$IMDB->iId; // this is the IMDB id you can search for
+			if (!empty($mData)) {
+				$TemplateData['movieData'] = $mData;
+				$TemplateData['movieImdbId'] = "tt"; // this is the IMDB id you can search for
 				$TemplateData['showMatchingForm'] = true;
 			} else {
 				$TemplateData['message']['content'] = $I18n->t('global.message.nothingFound');
@@ -90,7 +101,7 @@ if(isset($_POST['submitFormSave'])) {
 
 		if(!empty($_imdbId)) {
 			try {
-				$IMDB->search($_imdbId); // cache used
+				$IMDB->search($_imdbId);
 			}
 			catch (Exception $e) {
 				if(DEBUG) Summoner::sysLog("[DEBUG] imdb search catch: ".$e->getMessage());

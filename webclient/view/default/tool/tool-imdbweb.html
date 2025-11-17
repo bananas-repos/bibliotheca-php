@@ -1,8 +1,11 @@
 <p><b><?php echo $I18n->t('tool.limitations'); ?></b></p>
 <p><?php echo $I18n->t('tool.limitations.override'); ?></p>
 <p>
-	<?php echo $I18n->t('tool.imdb.posters'); ?> <a href="http://www.impawards.com/" target=_blank>impawards</a><br />
 	<?php echo $I18n->t('tool.imdb.search.hint'); ?>
+
+</p>
+<p>
+	<?php echo $I18n->t('tool.imdb.posters'); ?> <a href="http://www.impawards.com/" target=_blank>impawards</a
 </p>
 
 <form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
@@ -10,6 +13,7 @@
 		<label class="uk-form-label" for="search"><?php echo $I18n->t('tool.imdb.search'); ?></label>
 		<div class="uk-form-controls">
 			<input class="uk-input" id="search" type="text" autocomplete="off"
+					placeholder="tt123456790"
 				   name="fdata[search]"
 				   value="<?php echo $TemplateData['editEntry']['title'] ?? ''; ?>"
 			>
