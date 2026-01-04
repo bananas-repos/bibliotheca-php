@@ -1,4 +1,3 @@
-*.log
-cache
-cast
-posters
+*
+!.gitignore
+!session

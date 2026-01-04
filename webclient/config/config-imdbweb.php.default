@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2024 Johannes Keßler
+ * Copyright 2018-2026 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+ *  along with this program. If not, see http://www.gnu.org/licenses/gpl-3.0
  */
 
 /**
@@ -24,33 +24,27 @@
  * TOOL_IMDBWEB_SEARCH can be 'movie = 'tv = 'episode = 'game = 'all'. Default is movie
  * TOOL_IMDBWEB_FIELDS is an array to define which fields from IMDB are displayed for selection
  * 		an empty array() shows all.
- * 		getAka, getAkas, getAspectRatio, getAwards, getBudget, getCast, getCastAndCharacter, CastAndCharacterAsUrl,
- * 		getCastAsUrl, getCertification, getColor, getCompany, getCompanyAsUrl, getCountry, getCountryAsUrl,
- * 		getCreator, getCreatorAsUrl, getDescription, getDirector, getDirectorAsUrl, getGenre, getGenreAsUrl,
- * 		getGross, getLanguage, getLanguageAsUrl, getLocation, getLocationAsUrl, getLocations, getMpaa, getPlot,
- * 		getPlotKeywords, getPoster, getRating, getRatingCount, getReleaseDate, getReleaseDates, getRuntime,
- * 		getSeasons, getSeasonsAsUrl, getSoundMix, getTagline, getTitle, getTrailerAsUrl, getUrl, getUserReview,
- * 		getVotes, getWriter, getWriterAsUrl, getYear
+ * 		runtime, rating, genres, title, originalTitle, year, plot, synopses,
+ * 		directors, writers, cast
  * TOOL_IMDBWEB_FIELDS_TO is a array to define which imdbwebfield (see TOOL_IMDBWEB_FIELDS) should be saved into
  *		a bibliotheca field. Those or the fields a collection can have. Use the identifier of a field.
  *		Depends on your settings so make sure everything is setup first. Leave it commented if not needed.
  *      nameFromService => bibFieldName
  * TOOL_IMDBWEB_BROWSERSTRING a current browser agent string. Should be updated from time to time. See default config file.
  * TOOL_IMDBWEB_BROWSER_ACCEPT_LANG should define in which language the content returns
-*/
-const TOOL_IMDBWEB_SEARCH = 'movie';
-const TOOL_IMDBWEB_FIELDS = array(
-	'getCast', 'getDescription', 'getDirector', 'getGenre', 'getPlot', 'getRating', 'getRuntime', 'getTitle',
-	'getWriter', 'getYear'
+ */
+const TOOL_IMDBWEB_ATTRIBUTES = array(
+	'runtime', 'rating', 'genres', 'title', 'originalTitle', 'year', 'plot', 'synopses', 'directors',
+	'writers', 'cast', 'coverImage'
 );
-/*
 const TOOL_IMDBWEB_FIELDS_TO = array(
-	'getCast' => 'actors', 'getDescription' => 'description', 'getDirector' => 'directors', 'getGenre' => 'genres',
-	'getPlot' => 'content', 'getRating' => 'imdbrating', 'getRuntime' => 'runtime', 'getTitle' => 'title',
-	'getWriter' => 'writers', 'getYear' => 'year'
+	'cast' => 'actors', 'synopses' => 'content', 'directors' => 'directors', 'genres' => 'genres',
+	'plot' => 'description', 'rating' => 'imdbrating', 'runtime' => 'runtime', 'originalTitle' => 'title',
+	'writers' => 'writers', 'year' => 'year', 'title' => 'localizedTitle', 'coverImage' => 'coverimage'
 );
-*/
 
+// reuse existing constants but define it to the tool
 const TOOL_IMDBWEB_BROWSER_AGENT = BROWSER_AGENT;
 const TOOL_IMDBWEB_BROWSER_ACCEPT = BROWSER_ACCEPT;
 const TOOL_IMDBWEB_BROWSER_ACCEPT_LANG = BROWSER_ACCEPT_LANG;
+const TOOL_IMDBWEB_CACHE_STORAGE = PATH_SYSTEMOUT.'/imdb';

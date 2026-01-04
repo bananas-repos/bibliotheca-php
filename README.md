@@ -28,7 +28,6 @@ See Contributing document: CONTRIBUTING.md
 
 # Uses
 
-+ https://github.com/FabianBeiner/PHP-IMDB-Grabber with some modifications
 + https://getuikit.com/
 + https://jdan.github.io/98.css/
 + https://sortablejs.github.io/Sortable/

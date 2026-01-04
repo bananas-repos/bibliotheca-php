@@ -70,16 +70,16 @@ if(!empty($collectionFields)) {
 if(isset($_POST['submitFormSearch'])) {
 	$fdata = $_POST['fdata'];
 	if (!empty($fdata)) {
+	    // this is the imdb id
 		$search = trim($fdata['search']);
-		$search = Summoner::validate($search) ? $search : false;
+		$search = Summoner::validate($search, "nospace") ? $search : false;
 
-		if(!empty($search)) {
+		if (!empty($search)) {
             $mData = $IMDB->search($search);
-            var_dump($mData);
 
 			if (!empty($mData)) {
 				$TemplateData['movieData'] = $mData;
-				$TemplateData['movieImdbId'] = "tt"; // this is the IMDB id you can search for
+				$TemplateData['movieImdbId'] = $search;
 				$TemplateData['showMatchingForm'] = true;
 			} else {
 				$TemplateData['message']['content'] = $I18n->t('global.message.nothingFound');
@@ -100,32 +100,48 @@ if(isset($_POST['submitFormSave'])) {
 		$_imdbId = Summoner::validate($_imdbId,'nospace') ? $_imdbId : false;
 
 		if(!empty($_imdbId)) {
-			try {
-				$IMDB->search($_imdbId);
-			}
-			catch (Exception $e) {
-				if(DEBUG) Summoner::sysLog("[DEBUG] imdb search catch: ".$e->getMessage());
-			}
+		    // why search again?
+		    // Cache is used, so not really a new search and the data stays the same without a roundtrip
+		    // thriugh the requsts
+            $mData = $IMDB->search($_imdbId);
 
-			if ($IMDB->isReady) {
+            if (!empty($mData)) {
 				$TemplateData['movieImdbId'] = $_imdbId;
-				$_movieData = $IMDB->getAll();
 
 				// build data array based on submit
 				// see creation log for structure
 				$_data = array();
 				foreach($fdata['into'] as $k=>$v) {
 					if(!empty($v)) {
-						$_t = $IMDB->$k();
+						$_t = $mData[$k];
 
 						// multiple selections format for field type lookup_multiple
-						if(strstr($_t, $IMDB->sSeparator)) {
-							$_t = str_replace($IMDB->sSeparator,",", $_t);
+						if(is_array($_t)) {
+							$_t = implode(",", $_t);
 						}
 
 						if(isset($collectionFields[$v])) {
 							$_data[$v] = $collectionFields[$v];
 							$_data[$v]['valueToSave'] = $_t;
+
+							// special case for cover image since there is no POST and FILES
+                            if($k == "coverImage") {
+                                $fieldData = array();
+
+                                $_f = $IMDB->downloadCover($_t);
+                                if($_f && is_file($_f)) {
+                                    $_e = UPLOAD_ERR_OK;
+                                    // build _FILES based on regular add form
+                                    $fieldData['name'][$_data[$v]['identifier']] = 'cover.jpg';
+                                    $fieldData['type'][$_data[$v]['identifier']] = mime_content_type($_f);
+                                    $fieldData['size'][$_data[$v]['identifier']] = filesize($_f);
+                                    $fieldData['tmp_name'][$_data[$v]['identifier']] = $_f;
+                                    $fieldData['error'][$_data[$v]['identifier']] = UPLOAD_ERR_OK;
+                                    $fieldData['rebuildUpload'][$_data[$v]['identifier']] = true;
+                                }
+
+                                $_data[$v]['uploadData'] = $fieldData;
+                            }
 						}
 					}
 				}
@@ -164,7 +180,7 @@ if(isset($_POST['submitFormSave'])) {
 			}
 		}
 		else {
-			$TemplateData['message']['content'] = "IMDB search result information lost.";
+			$TemplateData['message']['content'] = $I18n->t('tool.imdb.search.missingid');
 			$TemplateData['message']['status'] = "error";
 		}
 	}
@@ -190,4 +206,18 @@ function toolMethod_GetTargetSelection(string $optionString, string $imdbKey): s
 	}
 
 	return $optionString;
+}
+
+/**
+ * Make the given mixed data displayable as a string
+ *
+ * @param mixed $value
+ * @return string
+ */
+function toolMethod_DisplayValues(mixed $value): string {
+    $ret = $value;
+    if(is_array($value)) {
+        $ret = implode(", ", $value);
+    }
+    return $ret;
 }

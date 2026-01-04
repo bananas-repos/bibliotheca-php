@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2025 Johannes Keßler
+ * Copyright 2018-2026 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.x - Harobed Village';
+const BIB_VERSION = '1.8.1 - Harobed Village';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');

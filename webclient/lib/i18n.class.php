@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2024 Johannes Keßler
+ * Copyright 2018-2026 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see http://www.gnu.org/licenses/gpl-3.0.
+ *  along with this program. If not, see http://www.gnu.org/licenses/gpl-3.0
  */
 
 class I18n {

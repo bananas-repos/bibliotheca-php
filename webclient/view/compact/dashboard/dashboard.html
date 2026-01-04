@@ -28,7 +28,7 @@
 						<?php if(isset($entry['fields']['coverimage'])) { ?>
 						<a href="index.php?p=entry&collection=<?php echo $k ?>&id=<?php echo $entryK; ?>">
 						<img src="<?php echo PATH_WEB_STORAGE.'/'.$k.'/'.$entryK.'/'.$entry['fields']['coverimage']['value']; ?>"
-							 alt="<?php echo $entry['fields']['coverimage']['displayname']; ?>" uk-cover>
+							 alt="<?php echo $I18n->t($entry['fields']['coverimage']['displayname']); ?>" uk-cover>
 						<canvas width="400" height="200"></canvas>
 						</a>
 						<?php } ?>

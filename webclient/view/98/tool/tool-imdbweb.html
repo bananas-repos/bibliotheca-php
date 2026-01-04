@@ -1,6 +1,11 @@
+<p><b><?php echo $I18n->t('tool.limitations'); ?></b></p>
+<p><?php echo $I18n->t('tool.limitations.override'); ?></p>
 <p>
-	<b>Limitations</b><br />
-	Data will be overwritten
+	<?php echo $I18n->t('tool.imdb.search.hint'); ?>
+
+</p>
+<p>
+	<?php echo $I18n->t('tool.imdb.posters'); ?> <a href="http://www.impawards.com/" target=_blank>impawards</a
 </p>
 
 <form class="maxSizeForm" method="post" enctype="multipart/form-data">
@@ -12,7 +17,7 @@
 		/>
 	</div>
 	<div class="field-row-stacked">
-		<input value="Search" type="submit" name="submitFormSearch">
+		<input value="<?php echo $I18n->t('tool.imdb.fetch'); ?>" type="submit" name="submitFormSearch">
 	</div>
 </form>
 
@@ -26,11 +31,11 @@
 
 	<div class="field-row-stacked">
 		<p>
-			<b><?php echo $v['name']; ?></b><br />
-			<?php echo $v['value']; ?>
+			<b><?php echo $k; ?></b><br />
+			<?php echo toolMethod_DisplayValues($v); ?>
 		</p>
 		<select name="fdata[into][<?php echo $k; ?>]">
-			<option value="">None</option>
+			<option value=""><?php echo $I18n->t('tool.imdb.select.none'); ?></option>
 			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
 		</select>
 	</div>
@@ -41,7 +46,7 @@
 	?>
 
 	<div class="field-row-stacked">
-		<input value="Save" type="submit" name="submitFormSave" />
+		<input value="<?php echo $I18n->t('tool.imdb.save'); ?>" type="submit" name="submitFormSave" />
 	</div>
 
 </form>

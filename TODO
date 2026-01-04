@@ -3,6 +3,8 @@
 * change multiple-attachment to a field which tells it is used for a image gallery
 * Export of an entry, collection or everything. Stored on disk.
 * Import of the export
+* cache and session cleanup of the systemout folder
+* Update to date PHP syntax
 
 * update JS and remove deprecations
 * Definition of fields in "card view"

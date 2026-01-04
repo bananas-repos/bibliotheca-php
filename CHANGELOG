@@ -1,4 +1,9 @@
-1.x - Harobed Village
+1.8.1 - Harobed Village
+    * Config Update: See upgrade/from-version-1.8.md
+    * DB Update (non breaking): See upgrade/from-version-1.8.md
+    * Fixed: GH issue #1. IMDB web parser not working. Switched to own implementation.
+    * Updated some translation keys and values
+    * Updated USES and README file.
 
 1.8 - Dark Arena 2025-08-30
     * Config change: See upgrade/from-version-1.7.md

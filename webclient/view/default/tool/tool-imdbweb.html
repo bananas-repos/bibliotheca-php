@@ -10,7 +10,7 @@
 
 <form class="uk-form-horizontal uk-margin-small" method="post" enctype="multipart/form-data">
 	<div class="uk-margin">
-		<label class="uk-form-label" for="search"><?php echo $I18n->t('tool.imdb.search'); ?></label>
+		<label class="uk-form-label" for="search"><?php echo $I18n->t('tool.imdb.imdbid'); ?></label>
 		<div class="uk-form-controls">
 			<input class="uk-input" id="search" type="text" autocomplete="off"
 					placeholder="tt123456790"
@@ -20,7 +20,7 @@
 		</div>
 		<div class="uk-margin">
 			<button class="uk-button uk-button-primary" type="submit" name="submitFormSearch">
-				<?php echo $I18n->t('tool.imdb.search'); ?>
+				<?php echo $I18n->t('tool.imdb.fetch'); ?>
 			</button>
 		</div>
 	</div>
@@ -36,8 +36,8 @@
 
 	<div class="uk-width-1-2@s uk-overflow-hidden">
 		<p>
-			<b><?php echo $v['name']; ?></b><br />
-			<?php echo $v['value']; ?>
+			<b><?php echo $k; ?></b><br />
+			<?php echo toolMethod_DisplayValues($v); ?>
 		</p>
 	</div>
 	<div class="uk-width-1-2@s">
