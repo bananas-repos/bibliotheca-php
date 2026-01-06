@@ -20,7 +20,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = '1.8.1 - Harobed Village';
+const BIB_VERSION = 'x.x.x - Terraniux Underground';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');
