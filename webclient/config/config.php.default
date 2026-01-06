@@ -62,9 +62,9 @@ const UI_THEME_CONFIG = array(
 );
 
 # session
-const SESSION_LIFETIME =  43200; // 8 hours
-const SESSION_NAME =  "bibliotheca-session";
-const SESSION_SAVE_PATH =  PATH_SYSTEMOUT.'/session';
+const SESSION_LIFETIME = 43200; // 8 hours
+const SESSION_NAME = "bibliotheca-session";
+const SESSION_SAVE_PATH = PATH_SYSTEMOUT.'/session';
 
 # usersettings
 const ADMIN_GROUP_ID = '1';

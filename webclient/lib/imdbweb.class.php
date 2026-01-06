@@ -2,7 +2,7 @@
 /**
  * Bibliotheca
  *
- * Copyright 2018-2025 Johannes Keßler
+ * Copyright 2018-2026 Johannes Keßler
  *
  * This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -19,15 +19,14 @@
  */
 
 /**
- * Class ImdbWeb
+ * Class IMDBWEB
  *
  * Based on the idea of  https://github.com/FabianBeiner/PHP-IMDB-Grabber/
  * But since the web srcaping does not work anymore, here is an own implementation
  *
  * Main and important action is at _processData
  */
-class IMDBWEB
-{
+class IMDBWEB {
     /**
      * Set this to true if you run into problems.
      */

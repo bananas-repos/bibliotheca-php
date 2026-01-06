@@ -14,7 +14,7 @@ See first-steps.txt for first usage steps.
 
 # Requirements
 
-See documentation/requirements.txt
+See documentation/requirements.md
 
 # Technical information
 

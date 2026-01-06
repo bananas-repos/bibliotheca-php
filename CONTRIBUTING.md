@@ -36,5 +36,29 @@ will generally not be accepted.
 
 Start reading the code and you'll get the hang of it. The code is optimized for readability.
 
+## Use of so called AI tools
+
+If you are using any kind of AI assistance while contributing, **this must be disclosed in the pull request**, 
+along with the extent to which AI assistance was used (e.g. docs only vs. code generation).
+
+**Note that AI _assistance_ does not equal AI _generation_**. A significant amount of human accountability, 
+involvement and interaction even within AI-assisted contributions, is required. Contributors are required to be able
+to understand the AI-assisted output, reason with it and answer critical  questions about it. 
+Should a PR see no visible human accountability and  involvement, or it is so broken that it 
+requires significant rework to be  acceptable, **the PR is closed without hesitation**.
+
+**In addition, AI assistance is currently restricted to code changes only**. No AI-generated media, e.g. artwork, 
+icons, videos and other assets is allowed, as it goes against the methodology and ethos behind this project. 
+While AI-assisted code can help with productive prototyping, creative inspiration and even automated bugfinding, 
+there is currently zero benefit to AI-generated assets.
+
+Likewise, all community interactions, including all comments on issues and discussions and all PR titles 
+and descriptions must be composed by a human. Community moderators and maintainers reserve the right 
+to mark AI-generated responses as spam or disruptive content, and ban users who have been repeatedly caught 
+relying entirely on LLMs during interactions.
+
+Please be respectful to maintainers and disclose AI assistance.
+
+
 [masterbranch]: https://github.com/bananas-repos/bibliotheca-php/tree/master
 [developbranch]: https://github.com/bananas-repos/bibliotheca-php/tree/develop

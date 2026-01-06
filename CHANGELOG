@@ -1,4 +1,4 @@
-1.8.1 - Harobed Village
+1.8.1 - Harobed Village 2026-01-06
     * Config Update: See upgrade/from-version-1.8.md
     * DB Update (non breaking): See upgrade/from-version-1.8.md
     * Fixed: GH issue #1. IMDB web parser not working. Switched to own implementation.
