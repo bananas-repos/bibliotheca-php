@@ -1,29 +1,29 @@
 <p><b><?php echo $I18n->t('tool.limitations'); ?></b></p>
 <p><?php echo $I18n->t('tool.limitations.override'); ?></p>
 <p>
-	<?php echo $I18n->t('tool.imdb.search.hint'); ?>
+	<?php echo $I18n->t('tool.metacritic.search.hint'); ?>
 
 </p>
 <p>
-	<?php echo $I18n->t('tool.imdb.posters'); ?> <a href="http://www.impawards.com/" target=_blank>impawards</a
+	<?php echo $I18n->t('tool.metacritic.posters'); ?> <a href="https://www.impawards.com/" target=_blank>impawards</a>
 </p>
 
 <form class="maxSizeForm" method="post" enctype="multipart/form-data">
 	<div class="field-row-stacked">
 		<label for="search">Search</label>
 		<input id="search" type="text" autocomplete="off"
-			   name="fdata[search]"
-			   value="<?php echo $TemplateData['editEntry']['title'] ?? ''; ?>"
+		       name="fdata[search]"
+		       value=""
 		/>
 	</div>
 	<div class="field-row-stacked">
-		<input value="<?php echo $I18n->t('tool.imdb.fetch'); ?>" type="submit" name="submitFormSearch">
+		<input value="<?php echo $I18n->t('tool.metacritic.fetch'); ?>" type="submit" name="submitFormSearch">
 	</div>
 </form>
 
 <?php if($TemplateData['showMatchingForm']) { ?>
 <form class="maxSizeForm" method="post" enctype="multipart/form-data">
-	<input type="hidden" name="fdata[imdbId]" value="<?php echo $TemplateData['movieImdbId']; ?>">
+	<input type="hidden" name="fdata[urlpart]" value="<?php echo $TemplateData['urlpart']; ?>">
 	<?php
 	if(!empty($TemplateData['movieData'])) {
 		foreach($TemplateData['movieData'] as $k=>$v) {
@@ -35,7 +35,7 @@
 			<?php echo toolMethod_DisplayValues($v); ?>
 		</p>
 		<select name="fdata[into][<?php echo $k; ?>]">
-			<option value=""><?php echo $I18n->t('tool.imdb.select.none'); ?></option>
+			<option value=""><?php echo $I18n->t('tool.metacritic.select.none'); ?></option>
 			<?php echo toolMethod_GetTargetSelection($TemplateData['saveToSelection'],$k); ?>
 		</select>
 	</div>
@@ -46,7 +46,7 @@
 	?>
 
 	<div class="field-row-stacked">
-		<input value="<?php echo $I18n->t('tool.imdb.save'); ?>" type="submit" name="submitFormSave" />
+		<input value="<?php echo $I18n->t('tool.metacritic.save'); ?>" type="submit" name="submitFormSave" />
 	</div>
 
 </form>

@@ -6,7 +6,7 @@ Updated BROWSER_AGENT string. See default config file for its new value.
 
 Run each line against your bibliotheca DB.
 
-Replace #REPLACEME# with your table prefix. Default is bib
+Replace `#REPLACEME#` with your table prefix. Default is bib
 
 ```
 UPDATE `#REPLACEME#_sys_fields` SET `createstring` = '`imdbrating` varchar(4) NULL DEFAULT NULL', `apiinfo` = 'string 4' WHERE `#REPLACEME#_sys_fields`.`identifier` = 'imdbrating';

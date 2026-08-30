@@ -1,0 +1,50 @@
+<?php
+/**
+ * Bibliotheca
+ *
+ * Copyright 2018-2026 Johannes Keßler
+ *
+ * This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program. If not, see http://www.gnu.org/licenses/gpl-3.0
+ */
+
+/**
+ * Options for the metacritic grabber
+ *
+ * TOOL_METACRITIC_ATTRIBUTES_MOVIE is an array to define which fields from Metracitic are displayed for selection
+ * 		an empty array() shows all.
+ * 		'description', 'datePublished', 'ratingValue', 'genre', 'name', 'actor', 'duration', 'director
+ *
+ * TOOL_METACRITIC_FIELDS_TO_MOVIE is a array to define which attribute (see TOOL_METACRITIC_ATTRIBUTES_MOVIE) should be saved into
+ *		a bibliotheca field. Those or the fields a collection can have. Use the identifier of a field.
+ *		Depends on your settings so make sure everything is setup first. Leave it commented if not needed.
+ *      nameFromService => bibFieldName
+ * TOOL_METACRITIC_BROWSER_AGENT A current browser agent string. See default config file.
+ * TOOL_METACRITIC_BROWSER_ACCEPT Browser accept request string. See default config file.
+ * TOOL_METACRITIC_BROWSER_ACCEPT_LANG Defines in which language the content returns
+ * TOOL_METACRITIC_CACHE_STORAGE Cache storage path
+ */
+const TOOL_METACRITIC_ATTRIBUTES_MOVIE = array(
+    'description', 'datePublished', 'ratingValue', 'genre', 'name', 'actor', 'duration', 'director'
+);
+const TOOL_METACRITIC_FIELDS_TO_MOVIE = array(
+    'actor' => 'actors', 'director' => 'directors', 'genre' => 'genres',
+    'description' => 'description', 'ratingValue' => 'metacritic', 'duration' => 'runtime',
+    'name' => 'title', 'datePublished' => 'year'
+);
+
+// reuse existing constants but define it to the tool
+const TOOL_METACRITIC_BROWSER_AGENT = BROWSER_AGENT;
+const TOOL_METACRITIC_BROWSER_ACCEPT = BROWSER_ACCEPT;
+const TOOL_METACRITIC_BROWSER_ACCEPT_LANG = BROWSER_ACCEPT_LANG;
+const TOOL_METACRITIC_CACHE_STORAGE = PATH_SYSTEMOUT.'/metacritic';
