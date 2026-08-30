@@ -20,7 +20,7 @@
 
 require_once './config/config.php';
 
-const BIB_VERSION = 'x.x.x - Terraniux Underground';
+const BIB_VERSION = '1.9.0 - Terraniux Underground';
 
 mb_http_output('UTF-8');
 mb_internal_encoding('UTF-8');

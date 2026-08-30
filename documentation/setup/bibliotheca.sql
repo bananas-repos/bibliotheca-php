@@ -25,7 +25,7 @@ CREATE TABLE `#REPLACEME#_collection` (
   `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `defaultSearchField` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `defaultSortField` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `defaultSortOrder` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `defaultSortOrder` varchar(4) COLLATE utf8mb4_unicode_ci NOT NULL,
   `advancedSearchTableFields` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modified` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -167,7 +167,8 @@ INSERT INTO `#REPLACEME#_sys_fields` (`id`, `identifier`, `displayname`, `type`,
 (31, 'artist', 'sysfield.artist', 'text', 'entrySingleText', '`artist` varchar(128) NULL DEFAULT NULL', '', NULL, 'string 128', '2021-07-09 08:30:11', '2024-04-20 07:56:57', NULL, 1, 1, 'rw-r--r--'),
 (32, 'artists', 'sysfield.artists', 'lookupmultiple', 'tag', NULL, 'allowSpace', NULL, 'string 64', '2021-07-18 11:42:16', '2024-04-20 07:57:49', NULL, 1, 1, 'rw-r--r--'),
 (34, 'isbn', 'sysfield.isbn', 'text', 'entrySingleText', '`isbn` varchar(32) NULL, ADD INDEX (`isbn`)', '', NULL, 'varchar 32', '2022-10-08 10:47:01', '2024-04-20 07:57:26', NULL, 1, 1, 'rw-r--r--'),
-(35, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', '2024-01-28 09:56:32', '2024-01-28 11:21:51', NULL, 1, 1, 'rw-r--r--');
+(35, 'combSearch', 'Combined Search', 'hidden', 'entryText', '`combSearch` text NULL DEFAULT NULL, ADD FULLTEXT (`combSearch`)', '', NULL, 'mysql text - Content will be auto generated from other entry fields', '2024-01-28 09:56:32', '2024-01-28 11:21:51', NULL, 1, 1, 'rw-r--r--'),
+(36, 'metacritic', 'sysfield.metacritic', 'text', 'entrySingleText', '`metacritic` varchar(4) NULL DEFAULT NULL', '', '', 'string 4', '2026-08-30 12:36:57', '2026-08-30 12:36:57', NULL, 1, 1, 'rw-r--r--');
 
 -- --------------------------------------------------------
 
@@ -192,7 +193,7 @@ CREATE TABLE `#REPLACEME#_tool` (
 --
 
 INSERT INTO `#REPLACEME#_tool` (`id`, `name`, `description`, `action`, `target`, `owner`, `group`, `rights`) VALUES
-(1, 'IMDB web', 'Web parser', 'imdbweb', '_self', 1, 1, 'rw-r--r--'),
+(1, 'Metacritic Movie', 'Web parser', 'metacriticMovie', '_self', 1, 1, 'rw-r--r--'),
 (2, 'Game infos', 'Game infos', 'gameinfo', '_self', 1, 1, 'rw-r--r--'),
 (3, 'Musicbrainz', 'Album infos', 'musicbrainz', '_self', 1, 1, 'rw-r--r--'),
 (4, 'Google Books', 'Book infos from Google', 'googlebooks', '_self', 1, 1, 'rw-r--r--');
@@ -364,7 +365,7 @@ ALTER TABLE `#REPLACEME#_menu`
 -- AUTO_INCREMENT for table `#REPLACEME#_sys_fields`
 --
 ALTER TABLE `#REPLACEME#_sys_fields`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `#REPLACEME#_tool`
