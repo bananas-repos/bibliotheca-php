@@ -268,7 +268,13 @@ class Metacritic {
         return $ret;
     }
 
-
+    private function _get_description2(array $data): string {
+        $ret = '';
+        if(isset($data['description'])) {
+            $ret = strlen($data['description']) > 110 ? substr( $data['description'], 0, 110 ) . "..." : $data['description'];
+        }
+        return $ret;
+    }
 
     /**
      * The duration something like this: PT2M11S

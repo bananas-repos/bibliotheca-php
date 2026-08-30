@@ -9,7 +9,7 @@ Run each line against your bibliotheca DB.
 Replace `#REPLACEME#` with your table prefix. Default is bib
 
 ```
-UPDATE `#REPLACEME#_tool` SET `name` = 'Metacritic Movie', `action` = 'metacriticMovie' WHERE `bib_tool`.`id` = 1;
+UPDATE `#REPLACEME#_tool` SET `name` = 'Metacritic Movie', `action` = 'metacriticMovie' WHERE `#REPLACEME#_tool`.`id` = 1;
 ```
 
 ```
@@ -25,10 +25,10 @@ config/config-imdbweb.php
 config/config-imdbweb.php.default
 lib/imdbweb.class.php
 systemout/imdb
-view/default/tool-imdbweb.html
-view/default/tool-imdbweb.php
-view/98/tool-imdbweb.html
-view/98/tool-imdbweb.php
+view/default/tool/tool-imdbweb.html
+view/default/tool/tool-imdbweb.php
+view/98/tool/tool-imdbweb.html
+view/98/tool/tool-imdbweb.php
 ```
 
 # Tool changes

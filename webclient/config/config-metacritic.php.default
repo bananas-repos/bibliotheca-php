@@ -22,8 +22,9 @@
  * Options for the metacritic grabber
  *
  * TOOL_METACRITIC_ATTRIBUTES_MOVIE is an array to define which fields from Metracitic are displayed for selection
+ * description2 is a workaround to write the data not truncated into the content field.
  * 		an empty array() shows all.
- * 		'description', 'datePublished', 'ratingValue', 'genre', 'name', 'actor', 'duration', 'director
+ * 		'description', 'description2', 'datePublished', 'ratingValue', 'genre', 'name', 'actor', 'duration', 'director
  *
  * TOOL_METACRITIC_FIELDS_TO_MOVIE is a array to define which attribute (see TOOL_METACRITIC_ATTRIBUTES_MOVIE) should be saved into
  *		a bibliotheca field. Those or the fields a collection can have. Use the identifier of a field.
@@ -35,12 +36,13 @@
  * TOOL_METACRITIC_CACHE_STORAGE Cache storage path
  */
 const TOOL_METACRITIC_ATTRIBUTES_MOVIE = array(
-    'description', 'datePublished', 'ratingValue', 'genre', 'name', 'actor', 'duration', 'director'
+    'description', 'datePublished', 'ratingValue', 'genre', 'name', 'actor', 'duration', 'director',
+    'description2'
 );
 const TOOL_METACRITIC_FIELDS_TO_MOVIE = array(
     'actor' => 'actors', 'director' => 'directors', 'genre' => 'genres',
-    'description' => 'description', 'ratingValue' => 'metacritic', 'duration' => 'runtime',
-    'name' => 'title', 'datePublished' => 'year'
+    'description' => 'content', 'ratingValue' => 'metacritic', 'duration' => 'runtime',
+    'name' => 'title', 'datePublished' => 'year', 'description2' => 'description'
 );
 
 // reuse existing constants but define it to the tool
